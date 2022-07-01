@@ -1,0 +1,73 @@
+.main{
+    background-color: white;
+}
+.main .title-standar{
+    text-align: right;
+    color: #011254;
+    font-size: 50px;
+    font-weight: bold;
+    margin: 1%;
+}
+
+.main .title-map{
+    text-align: left;
+    color: #011254;
+    font-size: 50px;
+    font-weight: bold;
+    margin: 1%;
+}
+
+.row-cont{
+    column-count: 2;
+    background-color: #1E86C0;
+    column-gap: 50px;
+    height: 300px;
+}
+
+.row-contend{
+    column-count: 2;
+    background-color: #1E86C0;
+    column-gap: 50px;
+    height: 300px;
+}
+
+.row-contend .col-text{
+    text-align: center;
+    column-fill: auto;
+    margin: 20px;
+    
+}
+
+.row-contend .col-video{
+    column-fill: auto;
+    height: 300px;
+    margin: 20px;
+}
+
+
+.row-map{
+    column-count: 2;
+    background-color: #779C43;
+    column-gap: 50px;
+    height: 310px;
+
+
+}
+
+.row-map .col-text{
+    text-align: left;
+    column-fill: auto;
+    margin: 10px;
+    
+}
+
+.row-map .col-map{
+    column-fill: auto;
+    height: 290px;
+    margin: 10px;
+}
+
+.leaflet-container {
+    height: 290px;
+    width: 100%;
+  }

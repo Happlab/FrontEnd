@@ -1,0 +1,6 @@
+@mixin lineamientos_columnas($fondo){
+    margin: 20px;
+    background-color: $fondo;
+    color: $color-words;
+
+}
