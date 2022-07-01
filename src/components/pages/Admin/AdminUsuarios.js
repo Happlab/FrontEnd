@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import Header from './TemplatesAdmin/Header'
 import Menu from './TemplatesAdmin/Menu'
-import Dashboard from './TemplatesAdmin/DashboardAdmUsuarios'
+import DashboardAdmUsuarios from './TemplatesAdmin/DashboardAdmUsuarios'
 
 export default class AdminUsuarios extends Component {
   render() {
@@ -9,8 +9,7 @@ export default class AdminUsuarios extends Component {
       <div class="wrapper">
         <Header/>
         <Menu/>
-        <Dashboard/>
-        
+        <DashboardAdmUsuarios/>
       </div>
     )
   }
