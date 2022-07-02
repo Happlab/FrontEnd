@@ -53,8 +53,8 @@ $tam-2: 100px;
 
 .columna-inicio-video{
     @include formacion_imagen($tam-2,$posicion-izq);
-    margin-top: 20%;
     margin-right: 20%;
+    margin-left: 20%;
     height: 300px;
 }
 
