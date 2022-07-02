@@ -1,5 +1,4 @@
-//import './App.css'; #TODO: Revisar App.css genera conflictos con la plantilla de administrador
-import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
+import { Navigate, Route, Routes } from 'react-router-dom';
 import Inicio from './components/pages/Inicio/Inicio';
 import About from './components/pages/About';
 import Acerca from './components/pages/Acerca de/Acerca';

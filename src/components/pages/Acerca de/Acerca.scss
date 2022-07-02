@@ -1,0 +1,68 @@
+@import "/src/components/navegation/footer/mixins";
+
+$color-background: #1E86C0;
+$posicion-izq: left;
+$posicion-rig: right;
+$tam: 150px;
+$tam-2: 100px;
+
+.titulo-estandar{
+    text-align: right;
+    color: #011254;
+    font-size: 50px;
+    font-weight: bold;
+    margin: 1%;
+}
+
+.title-map{
+    text-align: left;
+    color: #011254;
+    font-size: 50px;
+    font-weight: bold;
+    margin: 1%;
+}
+
+.columna-acerca{
+    @include formacion_columnas($color-background);
+    margin: 1%;
+    border-radius: 35px 35px 35px 35px;
+    -moz-border-radius: 35px 35px 35px 35px;
+    -webkit-border-radius: 35px 35px 35px 35px;
+    border: 0px solid #000000;
+}
+
+.columna-acerca-text{
+    @include formacion_texto($tam,$posicion-izq);
+    margin-top: 3%;
+    margin-left: 20%;
+}
+
+.columna-acerca-video{
+    @include formacion_imagen($tam-2,$posicion-izq);
+    margin-top: 20%;
+    margin-right: 20%;
+    height: 300px;
+}
+
+.row-map{
+    @include formacion_columnas(#779C43);
+    margin: 1%;
+    border-radius: 35px 35px 35px 35px;
+    -moz-border-radius: 35px 35px 35px 35px;
+    -webkit-border-radius: 35px 35px 35px 35px;
+    border: 0px solid #000000;
+    height: 310px;
+}
+
+.col-text{
+    @include formacion_texto(100px,left);
+}
+
+.col-map{
+    height: 290px;
+    margin: 10px;
+}
+
+.leaflet-container {
+    height: 280px;
+  }

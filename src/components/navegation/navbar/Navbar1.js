@@ -1,6 +1,6 @@
 import { Navbar,Nav,Container,NavDropdown} from 'react-bootstrap'
 import { Outlet, Link } from 'react-router-dom'
-import './Navbar.css';
+import "../colores.scss"
 import logo from "../../../../src/assets/images/logo3.jpg"; 
 const Navbar1 = () => {
   return (

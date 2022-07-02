@@ -50,15 +50,12 @@
     background-color: #779C43;
     column-gap: 50px;
     height: 310px;
-
-
 }
 
 .row-map .col-text{
     text-align: left;
     column-fill: auto;
     margin: 10px;
-    
 }
 
 .row-map .col-map{
@@ -68,6 +65,6 @@
 }
 
 .leaflet-container {
-    height: 290px;
+    height: 250px;
     width: 100%;
   }
