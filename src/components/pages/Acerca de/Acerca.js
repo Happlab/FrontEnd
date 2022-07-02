@@ -30,7 +30,7 @@ const Acerca = () => {
                             />
                         </div>
                     </div>
-                <h2 className='title-map'>¿Donde nos encuentras?</h2>
+                <h2 className='title-map'>¿Dónde nos encuentras?</h2>
                 <div className='row-map'>
                         <div className='col-map'>
                             <link rel="stylesheet" href="https://unpkg.com/leaflet@1.8.0/dist/leaflet.css"
