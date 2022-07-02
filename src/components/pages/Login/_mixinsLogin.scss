@@ -1,0 +1,10 @@
+@mixin estilos-svg ($altura,$ancho){
+        background-color: #fff;
+        .elementor-shape-fill{
+            fill: #1e86c0;
+        }
+        svg{
+            width: calc($ancho + 1.3px);
+            height: $altura;
+        }
+} 
