@@ -8,6 +8,7 @@ import Login from './components/pages/Login/Login'
 import Registro from './components/pages/Registro/Registro'
 import Investigadores from './components/pages/Investigadores/Investigadores';
 import AdminUsuarios from './components/pages/Admin/AdminUsuarios';
+import Contenido from './components/pages/Contenido/Contenido'
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
             <Route path='Login' element={<Login/>}/>
             <Route path='Registro' element={<Registro/>}/>
             <Route path='AdminUsuarios' element={<AdminUsuarios/>}/>
+            <Route path='Contenido' element={<Contenido/>}/>
             <Route path='*' element={<Navigate replace to="/"/>}/>
         </Routes>
     </div>

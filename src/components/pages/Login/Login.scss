@@ -1,10 +1,10 @@
 @import './_mixinsLogin.scss';
 
 #svg-top{
-    @include estilos-svg(145px,123%);
+    @include estilos-svg(145px,123%,#1e86c0);
 }
 #svg-bottom{
-    @include estilos-svg(218px,169%);
+    @include estilos-svg(218px,169%,#1e86c0);
 }
 .eael-lr-form-wrapper.style-2 {
     flex-direction: column;
