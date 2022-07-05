@@ -10,6 +10,8 @@ import Registro from './components/pages/Registro/Registro'
 import Investigadores from './components/pages/Investigadores/Investigadores';
 import AdminUsuarios from './components/pages/Admin/AdminUsuarios';
 import AdminNoticias from './components/pages/Admin/AdminNoticias';
+import AdminContenido from './components/pages/Admin/AdminContenido';
+
 
 function App() {
   return (
@@ -25,6 +27,7 @@ function App() {
             <Route path='Registro' element={<Registro/>}/>
             <Route path='AdminUsuarios' element={<AdminUsuarios/>}/>
             <Route path='AdminNoticias' element={<AdminNoticias/>}/>
+            <Route path='AdminContenido' element={<AdminContenido/>}/>
             <Route path='*' element={<Navigate replace to="/"/>}/>
         </Routes>
     </div>
