@@ -4,8 +4,24 @@ import Footer from '../../navegation/footer/Footer'
 import './Contenido.scss'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch, faUpload} from '@fortawesome/free-solid-svg-icons';
-import {ListGroupItem, ListGroup, InputGroup, Button, FormControl, Dropdown, DropdownButton, ButtonGroup, Form} from 'react-bootstrap'
+import {ListGroupItem, ListGroup, InputGroup, Button, FormControl, Dropdown, DropdownButton, ButtonGroup, Form, CardGroup} from 'react-bootstrap'
 import imagenes from '../../../assets/imagenes'
+import { Card, CardText, CardBody,
+  CardTitle} from 'reactstrap';
+import Rating from 'react-rating'
+import Slider from "react-slick";
+  
+  function handleClick() {
+    alert('Hello!');
+  } 
+
+  var settings = {
+    dots: false,
+    infinite: false,
+    speed: 500,
+    slidesToShow: 3,
+    slidesToScroll: 1
+  };
 
 class Contenido extends React.Component{
     constructor(props){
@@ -14,10 +30,8 @@ class Contenido extends React.Component{
             arrayContenidos:[
                 {
                     "img":imagenes.img2,
-                },
-                {
-                    "img":imagenes.img2,
                 }
+
             ],
             estadoSubirContenido:false
         }
@@ -45,9 +59,19 @@ class Contenido extends React.Component{
         const MostrarContenido=(props)=>{
             const array2=[];
             if(!this.state.estadoSubirContenido){ 
-                for (let i = 0; i < this.state.arrayContenidos.length; i++) {
+                for (let i = 0; i < 6; i++) {
                         //aqui va el contenido
-                        array2[i]=<img key={i} src={this.state.arrayContenidos[i].img}  width={500} height={200}></img>
+                        array2[i]=
+                                <Card className='card-change' onClick={handleClick} style={{ cursor: "pointer" }}>
+                                    <CardBody>
+                                    <CardTitle className='title-card'>Contenido 1</CardTitle>
+                                    <CardText className='subtittle-card'>Usuario 1</CardText>
+                                    <CardText className='stars-card'><Rating initialRating={2.5} fractions={2} readonly emptySymbol="far fa-star fa-2x"
+                                    fullSymbol="fas fa-star fa-2x" /></CardText>
+                                    <CardText className='content-card'>Resumen del contenido educativo</CardText>
+                                    <CardText className='content-card'> #Etiqueta1 #Etiqueta2</CardText>
+                                    </CardBody>
+                                </Card>   
                 }
                 return(
                     array2
@@ -157,13 +181,12 @@ class Contenido extends React.Component{
                     </div>
                 </section>
                 <section>
-                    <div className='mostrar' style={{display: 'flex',justifyContent: 'center',alignItems: 'center'}}>
+                    <CardGroup>
                         <MostrarContenido/>
-                    </div>
+                    </CardGroup>
                 </section>
-                
-                <Footer/>
-            </div>
+        <Footer/>
+    </div>
         );
     }
 }

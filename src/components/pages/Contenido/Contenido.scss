@@ -1,4 +1,9 @@
 @import '../Login/mixinsLogin'; 
+@import "/src/components/navegation/footer/mixins";
+
+$posicion-text: center;
+$color-text: gray;
+$color-tittle: black;
 
 .titulo > div{
     width: 100%;
@@ -111,3 +116,35 @@
     }
 }
 
+.contenido-prueba{
+    @include formacion_columnas(#2987BA);
+    margin: 2%;
+}
+
+.carrusel-cards{
+    background-color: #2987BA;
+}
+
+.card-change{
+    margin: 2%;
+}
+
+.title-card{
+    text-align: $posicion-text;
+    $color-text: $color-tittle;
+}
+
+.subtittle-card{
+    text-align: $posicion-text;
+    $color-text: $color-text;
+}
+
+.stars-card{
+    text-align: $posicion-text;
+    $color-text: $color-text;
+}
+
+.content-card{
+    text-align: $posicion-text;
+    $color-text: $color-text;
+}
