@@ -60,6 +60,7 @@ export default class DashboardAdminContenido extends Component {
                                                         <th>Usuario</th>
                                                         <th>Documentación</th>
                                                         <th>Etiquetas</th>
+                                                        <th>Fecha de cargue</th>
                                                         <th>Acción</th>
                                                     </tr>
                                                 </thead>
@@ -79,6 +80,7 @@ export default class DashboardAdminContenido extends Component {
                                                         <td>
                                                             <textarea id="inputDescription" className="form-control" rows={4} defaultValue={'"Etiq. 1", "Etiq. 2", "Etiq. 3", "Etiq. 4", "Etiq. 5"'} />
                                                         </td>
+                                                        <td>02-07-2022</td>
                                                         <td>
                                                             <div className="input-group-prepend">
                                                                 <button type="button" className="btn btn-warning dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
@@ -106,6 +108,7 @@ export default class DashboardAdminContenido extends Component {
                                                         <td>
                                                             <textarea id="inputDescription" className="form-control" rows={4} defaultValue={'"Etiq. 1", "Etiq. 2", "Etiq. 3", "Etiq. 4", "Etiq. 5"'} />
                                                         </td>
+                                                        <td>01-05-2022</td>
                                                         <td>
                                                             <div className="input-group-prepend">
                                                                 <button type="button" className="btn btn-warning dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
@@ -135,6 +138,7 @@ export default class DashboardAdminContenido extends Component {
                                                         <td>
                                                             <textarea id="inputDescription" className="form-control" rows={4} defaultValue={'"Etiq. 1", "Etiq. 2", "Etiq. 3", "Etiq. 4", "Etiq. 5"'} />
                                                         </td>
+                                                        <td>01-05-2022</td>
                                                         <td>
                                                             <div className="input-group-prepend">
                                                                 <button type="button" className="btn btn-warning dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
@@ -187,6 +191,7 @@ export default class DashboardAdminContenido extends Component {
                                                         <th>Documentación</th>
                                                         <th>Valoración</th>
                                                         <th>Etiquetas</th>
+                                                        <th>Fecha de cargue</th>
                                                         <th>Acciones</th>
                                                     </tr>
                                                 </thead>
@@ -210,13 +215,14 @@ export default class DashboardAdminContenido extends Component {
                                                         <td>
                                                             <textarea id="inputDescription" className="form-control" rows={4} defaultValue={'"Etiq. 1", "Etiq. 2", "Etiq. 3", "Etiq. 4", "Etiq. 5"'} />
                                                         </td>
+                                                        <td>30-04-2022</td>
                                                         <td>
                                                             <div className="input-group-prepend">
                                                                 <button type="button" className="btn btn-warning dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
                                                                     Acción
                                                                 </button>
                                                                 <ul className="dropdown-menu" style={{}}>
-                                                                    <li className="dropdown-item">Editar</li>
+                                                                    <li className="dropdown-item">Ocultar</li>
                                                                     <li className="dropdown-item">Eliminar</li>
                                                                 </ul>
                                                             </div>
@@ -235,7 +241,7 @@ export default class DashboardAdminContenido extends Component {
                         <div className="container-fluid">
                             <div className="card card-primary">
                                 <div className="card-header">
-                                    <h3 className="card-title">Crear/Editar Contenido</h3>
+                                    <h3 className="card-title">Subir Contenido</h3>
                                     <div className="card-tools">
                                         <button type="button" className="btn btn-tool" data-card-widget="collapse" title="Collapse">
                                             <i className="fas fa-minus" />
@@ -252,7 +258,7 @@ export default class DashboardAdminContenido extends Component {
                                         <textarea id="inputDescription" className="form-control" rows={4} defaultValue={""} />
                                     </div>
                                     <div className="form-group">
-                                        <label htmlFor="inputProjectLeader">Imagén de la noticia</label>
+                                        <label htmlFor="inputProjectLeader">Imagén del contenido</label>
                                         <div className="input-group">
                                             <div className="custom-file">
                                                 <input type="file" className="custom-file-input" id="exampleInputFile" />
@@ -274,7 +280,7 @@ export default class DashboardAdminContenido extends Component {
                                         <textarea id="inputDescription" className="form-control" rows={4} defaultValue={"Ej: etiq1, etiq2, etiq3"} />
                                     </div>
                                     <div className="card-footer">
-                                        <button type="submit" className="btn btn-primary">Añadir/Actualizar noticia</button>
+                                        <button type="submit" className="btn btn-primary">Añadir contenido</button>
                                     </div>
                                 </div>
                             </div>
