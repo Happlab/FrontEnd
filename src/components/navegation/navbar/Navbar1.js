@@ -1,6 +1,6 @@
 import { Navbar,Nav,Container,NavDropdown} from 'react-bootstrap'
 import { Outlet, Link } from 'react-router-dom'
-import './Navbar.css';
+import "../colores.scss"
 import logo from "../../../../src/assets/images/logo3.jpg"; 
 const Navbar1 = () => {
   return (
@@ -13,7 +13,7 @@ const Navbar1 = () => {
             <Nav className="me-auto" justify={true}>
               <Nav.Link as={Link} to="/">Inicio </Nav.Link>
               <Nav.Link as={Link} to="/Noticias">Noticias </Nav.Link>
-              <Nav.Link as={Link} to="/About">Contenidos </Nav.Link>
+              <Nav.Link as={Link} to="/Contenido">Contenidos </Nav.Link>
               <NavDropdown title="Investigacion" id="navbarScrollingDropdown">
                 <NavDropdown.Item as={Link} to="/About">Lineas de Investigacion</NavDropdown.Item>
                 <NavDropdown.Item as={Link} to="/Investigadores">Investigadores</NavDropdown.Item>

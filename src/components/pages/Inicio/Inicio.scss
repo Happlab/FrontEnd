@@ -1,0 +1,70 @@
+@import "/src/components/navegation/footer/mixins";
+
+$color-background: #1E86C0;
+$color-page: white;
+$colr-titulos: #B33030;
+$posicion-izq: left;
+$posicion-rig: right;
+$tam: 150px;
+$tam-2: 100px;
+
+.main-inicio{
+    background-color: $color-background;
+}
+
+.row-inicio{
+    @include formacion_columnas($color-page);
+}
+
+.title{
+    color: $colr-titulos;
+}
+
+.text-lore-happ{
+    text-align: left;
+    margin: 10px;
+    font-size: x-large;
+}
+
+.title-h2{
+    color: $color-page;
+    margin: 5px;
+    text-shadow: 1px 1px 2px black;
+}
+
+.hr-line-white{
+    color: white;
+}
+
+.columna-inicio{
+    @include formacion_columnas($color-page);
+    margin: 1%;
+    border-radius: 35px 35px 35px 35px;
+    -moz-border-radius: 35px 35px 35px 35px;
+    -webkit-border-radius: 35px 35px 35px 35px;
+    border: 0px solid #000000;
+}
+
+.columna-inicio-texto{
+    @include formacion_texto($tam,$posicion-izq);
+    margin-top: 3%;
+    margin-left: 20%;
+}
+
+.columna-inicio-video{
+    @include formacion_imagen($tam-2,$posicion-izq);
+    margin-right: 20%;
+    margin-left: 20%;
+    height: 300px;
+}
+
+.title-dest{
+    margin-left: 20%;
+    color: $colr-titulos;
+    
+}
+
+.carousel{
+    background-color: $color-page;
+    text-align: center;
+  }

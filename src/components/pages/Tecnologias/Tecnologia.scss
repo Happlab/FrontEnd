@@ -1,0 +1,45 @@
+@import "/src/components/navegation/footer/mixins";
+$posicion-izq: left;
+$posicion-rig: right;
+$tam: 150px;
+$tam-2: 100px;
+
+.columna-tecno{
+    @include formacion_columnas(white);
+}
+
+.columna-tecno-text{
+    @include formacion_texto($tam,$posicion-izq);
+}
+
+.columna-tecno-img{
+    @include formacion_imagen($tam-2,$posicion-rig);
+}
+
+.columna-tecno-2{
+    @include formacion_columnas(white);
+}
+
+.columna-tecno-text-2{
+    @include formacion_texto($tam,$posicion-rig);
+}
+
+.columna-tecno-img-2{
+    @include formacion_imagen($tam,$posicion-izq);
+}
+
+
+.main .title-standar{
+    text-align: center;
+    color: black;
+    font-size: 50px;
+    font-weight: bold;
+    margin: 1%;
+}
+
+.main .text-standar{
+    text-align: left;
+    margin: 1%;
+}
+
+

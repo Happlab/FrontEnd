@@ -1,10 +1,40 @@
 import React from 'react'
 import Navbar1 from '../../navegation/navbar/Navbar1'
 import Footer from '../../navegation/footer/Footer'
-import '../Login/Login.css'
-import '../../../assets/css/898af8e09.min.css'
+import '../Login/Login.scss'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import {faEye,faEyeLowVision} from '@fortawesome/free-solid-svg-icons';
+import { render } from '@testing-library/react';
 
-const Login=()=>{
+class Login extends React.Component{
+	constructor(props){
+		super(props);
+		this.state={
+			press: false
+		}
+		this.handleClickOcultar=this.handleClickOcultar.bind(this);
+	}
+
+	handleClickOcultar(){
+
+		var tipo=document.getElementById('eael-user-password');
+		if(tipo.type==='password'){
+			tipo.type='text';
+			this.setState(state=>({press: true}));
+		}else{
+			if(tipo.type==='text'){
+				tipo.type='password';
+				this.setState(state=>({press: false}))
+			}
+		}
+	}
+
+render(){
+	var icono=<FontAwesomeIcon icon={faEye} size='1x' fixedWidth/>;
+	if(this.state.press){
+		icono=<FontAwesomeIcon icon={faEyeLowVision} size='1x' fixedWidth/>;
+	}
+	
     return(
         <div className='main-login'>
             <Navbar1/>
@@ -53,8 +83,8 @@ const Login=()=>{
 									                            <label htmlFor="eael-user-password" className="eael-field-label">Contraseña</label>                                    
                                                                 <div className="eael-lr-password-wrapper">
                                                                     <input type="password" name="eael-user-password" className="eael-lr-form-control" id="eael-user-password" placeholder="Contraseña" required/>
-										                            <button type="button" id="wp-hide-pw" className="wp-hide-pw hide-if-no-js" aria-label="Show password">
-                                                                        <span className="dashicons dashicons-visibility" aria-hidden="true"></span>
+										                            <button type="button" id="wp-hide-pw" onClick={(e)=>this.handleClickOcultar()} className="wp-hide-pw hide-if-no-js" aria-label="Show password">
+                                                                        <span id='ocultar' className="dashicons dashicons-visibility"  aria-hidden="true">{icono}</span>
                                                                     </button>
 															    </div>
                                                             </div>
@@ -90,5 +120,7 @@ const Login=()=>{
             <Footer/>
         </div>
     )
+}
+
 }
 export default Login;
