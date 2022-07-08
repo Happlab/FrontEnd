@@ -236,56 +236,6 @@ export default class DashboardAdminContenido extends Component {
                             </div>
                         </div>
                     </section>
-                    {/* Editor de contenido */}
-                    <section className="content">
-                        <div className="container-fluid">
-                            <div className="card card-primary">
-                                <div className="card-header">
-                                    <h3 className="card-title">Subir Contenido</h3>
-                                    <div className="card-tools">
-                                        <button type="button" className="btn btn-tool" data-card-widget="collapse" title="Collapse">
-                                            <i className="fas fa-minus" />
-                                        </button>
-                                    </div>
-                                </div>
-                                <div className="card-body">
-                                    <div className="form-group">
-                                        <label htmlFor="inputName">Título</label>
-                                        <input type="text" id="inputName" className="form-control" />
-                                    </div>
-                                    <div className="form-group">
-                                        <label htmlFor="inputDescription">Descripción</label>
-                                        <textarea id="inputDescription" className="form-control" rows={4} defaultValue={""} />
-                                    </div>
-                                    <div className="form-group">
-                                        <label htmlFor="inputProjectLeader">Imagén del contenido</label>
-                                        <div className="input-group">
-                                            <div className="custom-file">
-                                                <input type="file" className="custom-file-input" id="exampleInputFile" />
-                                                <label className="custom-file-label" htmlFor="exampleInputFile">Subir imagen</label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className="form-group">
-                                        <label htmlFor="inputProjectLeader">Documentación</label>
-                                        <div className="input-group">
-                                            <div className="custom-file">
-                                                <input type="file" className="custom-file-input" id="exampleInputFile" />
-                                                <label className="custom-file-label" htmlFor="exampleInputFile">Subir recurso (PDF, .rar, .zip, .mp4)</label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className="form-group">
-                                        <label htmlFor="inputDescription">Etiquetas</label>
-                                        <textarea id="inputDescription" className="form-control" rows={4} defaultValue={"Ej: etiq1, etiq2, etiq3"} />
-                                    </div>
-                                    <div className="card-footer">
-                                        <button type="submit" className="btn btn-primary">Añadir contenido</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </section>
                 </div>
             </div>
         )
