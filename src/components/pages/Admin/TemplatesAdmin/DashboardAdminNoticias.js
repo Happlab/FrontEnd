@@ -27,15 +27,6 @@ export default class DashboardAdminInicio extends Component {
                     <textarea id="inputDescription" className="form-control" rows={4} defaultValue={""} />
                   </div>
                   <div className="form-group">
-                    <label htmlFor="inputStatus">Categoría</label>
-                    <select id="inputStatus" className="form-control custom-select">
-                      <option selected disabled>Seleciona uno</option>
-                      <option>Noticias</option>
-                      <option>Cursos</option>
-                      <option>Eventos</option>
-                    </select>
-                  </div>
-                  <div className="form-group">
                     <label htmlFor="inputClientCompany">Link de la noticia</label>
                     <input type="text" id="inputClientCompany" className="form-control" />
                   </div>
@@ -89,7 +80,6 @@ export default class DashboardAdminInicio extends Component {
                           <tr>
                             <th>ID Noticia</th>
                             <th>Título</th>
-                            <th>Categoría</th>
                             <th>Fecha de publicación</th>
                             <th>Acción</th>
                           </tr>
@@ -98,7 +88,6 @@ export default class DashboardAdminInicio extends Component {
                           <tr>
                             <td>1</td>
                             <td>Noticia 1</td>
-                            <td>Categoría 1</td>
                             <td>03-07-2022</td>
                             <td>
                               <div className="input-group-prepend">
@@ -116,7 +105,6 @@ export default class DashboardAdminInicio extends Component {
                           <tr>
                             <td>2</td>
                             <td>Noticia 2</td>
-                            <td>Categoría 2</td>
                             <td>04-07-2022</td>
                             <td>
                               <div className="input-group-prepend">
@@ -159,15 +147,6 @@ export default class DashboardAdminInicio extends Component {
                   <div className="form-group">
                     <label htmlFor="inputDescription">Descripción</label>
                     <textarea id="inputDescription" className="form-control" rows={4} defaultValue={""} />
-                  </div>
-                  <div className="form-group">
-                    <label htmlFor="inputStatus">Categoría</label>
-                    <select id="inputStatus" className="form-control custom-select">
-                      <option selected disabled>Seleciona uno</option>
-                      <option>Noticias</option>
-                      <option>Cursos</option>
-                      <option>Eventos</option>
-                    </select>
                   </div>
                   <div className="form-group">
                     <label htmlFor="inputClientCompany">Link de la noticia</label>
