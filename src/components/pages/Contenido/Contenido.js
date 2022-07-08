@@ -9,8 +9,11 @@ import imagenes from '../../../assets/imagenes'
 import { Card, CardText, CardBody,
   CardTitle} from 'reactstrap';
 import Rating from 'react-rating'
-import Slider from "react-slick";
+import Row from 'react-bootstrap/Row'
+import Col from 'react-bootstrap/Col'
   
+var titulo,user,rate,resumen,etiqueta;
+
   function handleClick() {
     alert('Hello!');
   } 
@@ -29,7 +32,24 @@ class Contenido extends React.Component{
         this.state={
             arrayContenidos:[
                 {
+                    "tittle":"Hola",
+                    "user":"Juan",
+                    "rating":1.5,
+                    "resume":"Nos preocupamos por tu salud",
+                    "etiqueta1":"#JamesPuto"
+                },
+                {
+                    "tittle":"Holiwis",
+                    "user":"JuanA",
+                    "rating":3.5,
+                    "resume":"Nos preocupamos por tu salud y tu dinero",
+                    "etiqueta1":"#JamesPuto"
+                },
+                {
                     "img":imagenes.img2,
+                },
+                {
+                    "img":imagenes.img2
                 }
 
             ],
@@ -59,20 +79,23 @@ class Contenido extends React.Component{
         const MostrarContenido=(props)=>{
             const array2=[];
             if(!this.state.estadoSubirContenido){ 
-                for (let i = 0; i < 6; i++) {
                         //aqui va el contenido
-                        array2[i]=
+                titulo = this.state.arrayContenidos[0].tittle;
+                user = this.state.arrayContenidos[0].user;
+                rate = this.state.arrayContenidos[0].rating;
+                resumen = this.state.arrayContenidos[0].resume;
+                etiqueta = this.state.arrayContenidos[0].etiqueta1;
+                        array2[1]=
                                 <Card className='card-change' onClick={handleClick} style={{ cursor: "pointer" }}>
                                     <CardBody>
-                                    <CardTitle className='title-card'>Contenido 1</CardTitle>
-                                    <CardText className='subtittle-card'>Usuario 1</CardText>
-                                    <CardText className='stars-card'><Rating initialRating={2.5} fractions={2} readonly emptySymbol="far fa-star fa-2x"
+                                    <CardTitle className='title-card'> {titulo} </CardTitle>
+                                    <CardText className='subtittle-card'>{user}</CardText>
+                                    <CardText className='stars-card'><Rating initialRating={rate} fractions={2} readonly emptySymbol="far fa-star fa-2x"
                                     fullSymbol="fas fa-star fa-2x" /></CardText>
-                                    <CardText className='content-card'>Resumen del contenido educativo</CardText>
-                                    <CardText className='content-card'> #Etiqueta1 #Etiqueta2</CardText>
+                                    <CardText className='content-card'>{resumen}</CardText>
+                                    <CardText className='content-card'> {etiqueta} #Etiqueta2</CardText>
                                     </CardBody>
                                 </Card>   
-                }
                 return(
                     array2
                 )
@@ -181,9 +204,15 @@ class Contenido extends React.Component{
                     </div>
                 </section>
                 <section>
-                    <CardGroup>
-                        <MostrarContenido/>
-                    </CardGroup>
+                <Row xs={3}>
+            {[...Array(this.state.arrayContenidos.length)].map((e, i) => {
+                return (
+                  <Col>
+                      <MostrarContenido/>
+                  </Col>
+                )
+            })}
+            </Row>
                 </section>
         <Footer/>
     </div>
