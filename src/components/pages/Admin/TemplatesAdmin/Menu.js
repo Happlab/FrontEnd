@@ -1,11 +1,11 @@
+/* eslint-disable jsx-a11y/img-redundant-alt */
 import React, { Component } from 'react'
-
 export default class Menu extends Component {
     render() {
         return (
             <div class="wraper">
                 <aside className="main-sidebar sidebar-dark-primary elevation-4">
-                    <a href="index3.html" className="brand-link">
+                    <a href="#" className="brand-link">
                         <span className="brand-text font-weight-light">Admin HappLab</span>
                     </a>
                     <div className="sidebar">
@@ -17,7 +17,6 @@ export default class Menu extends Component {
                                 <a href="#" className="d-block">Administrador</a>
                             </div>
                         </div>
-
                         <nav className="mt-2">
                             <ul className="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
                                 <li className="nav-item menu-open">
@@ -30,44 +29,36 @@ export default class Menu extends Component {
                                     </a>
                                     <ul className="nav nav-treeview">
                                         <li className="nav-item">
-                                            <a href='./components/pages/Admin/AdminUsuarios' className="nav-link active">
+                                            <a href='./AdminUsuarios' className="nav-link">
                                                 <i className="far fa-circle nav-icon" />
                                                 <p>Administrar usuarios</p>
                                             </a>
                                         </li>
                                         <li className="nav-item">
-                                            <a href="./index2.html" className="nav-link">
+                                            <a href='./AdminNoticias' className="nav-link active">
+                                                <i className="far fa-circle nav-icon" />
+                                                <p>Administrar noticias</p>
+                                            </a>
+                                        </li>
+                                        <li className="nav-item">
+                                            <a href="./AdminContenido" className="nav-link">
+                                                <i className="far fa-circle nav-icon" />
+                                                <p>Administrar contenidos</p>
+                                            </a>
+                                        </li>
+                                        <li className="nav-item">
+                                            <a href="./AdminInicio" className="nav-link">
                                                 <i className="far fa-circle nav-icon" />
                                                 <p>Administrar inicio</p>
                                             </a>
                                         </li>
                                         <li className="nav-item">
-                                            <a href="./index3.html" className="nav-link">
+                                            <a href="./AdminAcercaDe" className="nav-link">
                                                 <i className="far fa-circle nav-icon" />
-                                                <p>Dashboard v3</p>
+                                                <p>Administrar acercade</p>
                                             </a>
                                         </li>
                                     </ul>
-                                </li>
-
-                                <li className="nav-header">LABELS</li>
-                                <li className="nav-item">
-                                    <a href="#" className="nav-link">
-                                        <i className="nav-icon far fa-circle text-danger" />
-                                        <p className="text">Important</p>
-                                    </a>
-                                </li>
-                                <li className="nav-item">
-                                    <a href="#" className="nav-link">
-                                        <i className="nav-icon far fa-circle text-warning" />
-                                        <p>Warning</p>
-                                    </a>
-                                </li>
-                                <li className="nav-item">
-                                    <a href="#" className="nav-link">
-                                        <i className="nav-icon far fa-circle text-info" />
-                                        <p>Informational</p>
-                                    </a>
                                 </li>
                             </ul>
                         </nav>
