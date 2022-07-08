@@ -249,6 +249,7 @@ export default class DashboardAdminContenido extends Component {
                             </div>
                         </div>
                     </section>
+<<<<<<< HEAD
                     {/* Editor de contenido */}
                     <section className="content">
                         <div className="container-fluid">
@@ -305,6 +306,8 @@ export default class DashboardAdminContenido extends Component {
                             </div>
                         </div>
                     </section>
+=======
+>>>>>>> e93cfba19ecec80e4b0b0bbe52ef6304f20811bc
                 </div>
             </div>
         )
