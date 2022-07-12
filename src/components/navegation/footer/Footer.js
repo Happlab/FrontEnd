@@ -1,5 +1,5 @@
 import React from 'react'
-import './Footer.scss';
+import "../colores.scss"
 import LogoU from "../../../../src/assets/images/logo2.png"; 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFacebookSquare, faInstagram, faLinkedin, faTwitter } from '@fortawesome/free-brands-svg-icons';

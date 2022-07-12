@@ -46,6 +46,18 @@ export default class Menu extends Component {
                                                 <p>Administrar contenidos</p>
                                             </a>
                                         </li>
+                                        <li className="nav-item">
+                                            <a href="./Admininicio" className="nav-link">
+                                                <i className="far fa-circle nav-icon" />
+                                                <p>Administrar inicio</p>
+                                            </a>
+                                        </li>
+                                        <li className="nav-item">
+                                            <a href="./AdminAcercaDe" className="nav-link">
+                                                <i className="far fa-circle nav-icon" />
+                                                <p>Administrar Acerca de</p>
+                                            </a>
+                                        </li>
                                     </ul>
                                 </li>
                             </ul>

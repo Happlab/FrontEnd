@@ -2,11 +2,7 @@ import ReactDOM from 'react-dom/client';
 import React, { createElement, useState} from 'react'
 import Navbar1 from '../../navegation/navbar/Navbar1'
 import Footer from '../../navegation/footer/Footer'
-import './Noticias.css'
-import '../../../assets/css/style.min.css'
-import '../../../assets/css/global.css'
-import '../../../assets/css/post-9.css'
-import '../../../assets/css/frontend-lite.min.css'
+import './Noticias.scss'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faLink, faSearch} from '@fortawesome/free-solid-svg-icons';
 import {Collapse, Fade} from 'react-bootstrap'
@@ -34,7 +30,7 @@ class Noticias extends React.Component {
             return(
             <div className="col-md-4 col-sm-6 mix mix-082e3a1 portfolio-item business-082e3a1 onepage-082e3a1" >
                 
-                <span style={{backgrounColor:'black'}}>
+                <span className='span-img' style={{backgrounColor:'black'}}>
                 <Fade in={!open}>
                         <img src={props.srcImg} alt="Switch Pro" onMouseEnter={()=>setOpen(true)} onMouseOut={()=>setOpen(false)}/>
                 </Fade>
@@ -43,10 +39,10 @@ class Noticias extends React.Component {
                 <Fade className="portfolio-buttons" in={open}>
                 <span onMouseOver={()=>setOpen(true)} onMouseLeave={()=>setOpen(false)}>
                     <a className='test-popup-link' href={props.LinkPage}  onMouseOver={()=>setOpen(true)}>
-                        <i className='fa fa-search'><FontAwesomeIcon icon={faLink} size='2x' fixedWidth/></i>
+                        <FontAwesomeIcon className='fa fa-search' icon={faLink} size='2x' fixedWidth/>
                     </a>
                     <a className='test-popup-link' href={props.linkImg} target="_blank" onMouseOver={()=>setOpen(true)}>
-                        <i className='fa fa-search'><FontAwesomeIcon icon={faSearch} size='2x' fixedWidth/></i>
+                        <FontAwesomeIcon className='fa fa-search' icon={faSearch} size='2x' fixedWidth/>
                     </a>
                 </span>
                 </Fade>
@@ -74,8 +70,8 @@ class Noticias extends React.Component {
     return(
     <div className='main-noticias'>
         <Navbar1 />
-        <section className="elementor-section elementor-top-section elementor-element elementor-element-bdd763f elementor-section-boxed elementor-section-height-default elementor-section-height-default" data-id="bdd763f" data-element_type="section">
-			<div className="elementor-shape elementor-shape-top" data-negative="false">
+        <section  className="elementor-section elementor-top-section elementor-element elementor-element-bdd763f elementor-section-boxed elementor-section-height-default elementor-section-height-default" data-id="bdd763f" data-element_type="section">
+			<div id='shape-top' className="elementor-shape elementor-shape-top" data-negative="false">
 			    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 20" preserveAspectRatio="none">
 	                <path className="elementor-shape-fill" d="M0,0v3c0,0,393.8,0,483.4,0c9.2,0,16.6,7.4,16.6,16.6c0-9.1,7.4-16.6,16.6-16.6C606.2,3,1000,3,1000,3V0H0z"></path>
                 </svg>		
@@ -91,7 +87,7 @@ class Noticias extends React.Component {
 				    </div>
 		        </div>
 			</div>
-			<div className="elementor-shape elementor-shape-bottom" data-negative="false">
+			<div id='shape-bottom' className="elementor-shape elementor-shape-bottom" data-negative="false">
 			    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 20" preserveAspectRatio="none">
 	                <path className="elementor-shape-fill" d="M0,0v3c0,0,393.8,0,483.4,0c9.2,0,16.6,7.4,16.6,16.6c0-9.1,7.4-16.6,16.6-16.6C606.2,3,1000,3,1000,3V0H0z"></path>
                 </svg>		

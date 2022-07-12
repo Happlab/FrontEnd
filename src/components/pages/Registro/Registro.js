@@ -1,8 +1,6 @@
 // vendors
 import React, { useState } from "react";
-import { gql } from '@apollo/client';
-import { useMutation } from '@apollo/react-hooks'
-import { Formik, useFormik } from "formik";
+import { Formik} from 'formik';
 import * as Yup from 'yup';
 import Alert from 'react-bootstrap/Alert';
 import Row from "react-bootstrap/Row";
@@ -12,95 +10,84 @@ import Button from "react-bootstrap/Button";
 import { Link } from 'react-router-dom';
 import Navbar1 from '../../navegation/navbar/Navbar1'
 import Footer from '../../navegation/footer/Footer'
-import Select from 'react-select';
 import './Registro.css'
 
-const REGISTER = gql`
-  mutation Register($input: RegisterInput!) {
-    register(input: $input) {
-      _id
-    }
-  }
-`;
-
-const initialValues = {
-    name: '',
-    lastName: '',
-    documentId: '',
-    email: '',
-    repeatPassword: '',
-    password: '',
-    teacherType: '',
-};
-
-const validationSchema = Yup.object({
+const SignupSchema = Yup.object().shape({
     name: Yup.string().required('Campo requerido'),
     lastName: Yup.string().required('Campo requerido'),
-    documentId: Yup.number('Ingresa solo números').required('Campo requerido'),
+    documentId: Yup.number('Ingresa solo números').required('Campo requerido').min(999999999,'Debe tener almenos 10 caracteres'),
     email: Yup.string().email('Correo inválido').required('Campo requerido'),
-    password: Yup.string().required('Campo requerido'),
-    repeatPassword: Yup.string().required('Campo requerido'),
+    password: Yup.string().required('Campo requerido').matches(
+        /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&'/*'"{}=+-_()])(?=.{8,})/,
+        "Debe contener almenos 8 caracteres, Una mayuscula, Una minuscula, Un numero y Un caracter Especial"
+      ),
+    repeatPassword: Yup.string().required('Campo requerido').oneOf([Yup.ref("password"), null], "Contraseña debe ser la misma"),
     teacherType: Yup.string().required('Campo requerido')
 })
-
-const options = [
-    { value: 'primaria', label: 'Primaria' },
-    { value: 'secundaria', label: 'Secundaria' },
-    { value: 'universidad', label: 'Universidad' },
-    { value: 'otro', label: 'Otro' }
-]
 
 const Registro = () => {
     const [error, setError] = useState(false);
     const [success, setSuccess] = useState(false);
-    const [register] = useMutation(REGISTER);
 
     return (
-        <div className="main-registro">
+        <Row className="mx-auto justify-content-center" >
+
             <Navbar1 />
-            <Row className="mx-auto justify-content-center">
-                <Col lg="5">
-                    <Alert dismissible variant="danger" onClose={() => setError(false)} show={error}>
-                        Error regitrando el usuario
-                    </Alert>
-                    <Alert dismissible variant="success" onClose={() => setSuccess(false)} show={success}>
-                        Usuario creado con éxito. Haz click <Link className="alert-link" to="/">aquí</Link> para iniciar sesión
-                    </Alert>
+            <Alert dismissible variant="danger" onClose={() => setError(true)} show={error}>
+                Error regitrando el usuario, Correo electronico ya registrado.
+            </Alert>
+            <Alert dismissible variant="success" onClose={() => setSuccess(true)} show={success}>
+                Usuario creado con éxito. Haz click <Link className="alert-link" to="/">aquí</Link> para iniciar sesión
+            </Alert>
+            <Col lg='5'>
+                <div lg='5'>
+
                     <Formik
-                        initialValues={initialValues}
-                        validationSchema={validationSchema}
-                        onSubmit={(values) => {
-                            register({
-                                variables: {
-                                    input: {
-                                        ...values,
-                                    }
-                                }
-                            })
-                                .then(() => {
-                                    setError(false);
-                                    setSuccess(true);
-                                })
-                                .catch(() => setError(true));
+                        initialValues={{
+                            name: '',
+                            lastName: '',
+                            documentId: '',
+                            email: '',
+                            repeatPassword: '',
+                            password: '',
+                            teacherType: '',
                         }}
+                        validationSchema={SignupSchema}
+                        onSubmit={values => {
+                            const data = { 'email': values.email, 'password': values.password, 'cedula': values.documentId, 'nombres': values.name, 'apellidos': values.lastName, 'rol': values.teacherType, 'tokens': 0 };
+                            alert(JSON.stringify(data))
+                            const requestOptions = {
+                                method: 'POST',
+                                mode: 'cors',
+                                headers: {
+                                    'Accept': 'application/json',
+                                    'Content-Type': 'application/json',
+                                    'Access-Control-Allow-Origin': '*'
+                                },
+                                body: JSON.stringify(data)
+                            }
+                            fetch('http://api-happlab.herokuapp.com/persona/registro', requestOptions)
+                                .then(response => {
+                                    console.log("Response", response)
+                                    if (response.status === 200) setSuccess(true)
+                                    else setError(true)
+                                })
+                                .catch(error => console.log("Error", error))
+                        }}
+
                     >
-                        {({
-                            handleSubmit,
-                            getFieldProps,
-                            errors,
-                            touched
-                        }) => (
-                            <Form noValidate onSubmit={handleSubmit}>
+                        {props => (
+                            <Form onSubmit={props.handleSubmit}>
                                 <Form.Group className="mb-3" controlId="formName">
                                     <Form.Label>Nombre</Form.Label>
                                     <Form.Control
                                         name="name"
                                         placeholder="Ingresa tu nombre"
-                                        isInvalid={touched.name && !!errors.name}
-                                        {...getFieldProps('name')}
+                                        isInvalid={props.touched.name && !!props.errors.name}
+                                        value={props.values.name} onChange={props.handleChange}
                                     />
                                     <Form.Control.Feedback type="invalid">
-                                        {errors.name}
+                                        {props.errors.name}
                                     </Form.Control.Feedback>
                                 </Form.Group>
                                 <Form.Group className="mb-3" controlId="formLastName">
@@ -108,11 +95,11 @@ const Registro = () => {
                                     <Form.Control
                                         name="lastName"
                                         placeholder="Ingresa tu apellido"
-                                        isInvalid={touched.lastName && !!errors.lastName}
-                                        {...getFieldProps('lastName')}
+                                        isInvalid={props.touched.lastName && !!props.errors.lastName}
+                                        value={props.values.lastName} onChange={props.handleChange}
                                     />
                                     <Form.Control.Feedback type="invalid">
-                                        {errors.lastName}
+                                        {props.errors.lastName}
                                     </Form.Control.Feedback>
                                 </Form.Group>
                                 <Form.Group className="mb-3" controlId="formDocumentId">
@@ -121,11 +108,11 @@ const Registro = () => {
                                         name="documentId"
                                         type="number"
                                         placeholder="Ingresa tu documento de identidad"
-                                        isInvalid={touched.documentId && !!errors.documentId}
-                                        {...getFieldProps('documentId')}
+                                        isInvalid={props.touched.documentId && !!props.errors.documentId}
+                                        value={props.values.documentId} onChange={props.handleChange}
                                     />
                                     <Form.Control.Feedback type="invalid">
-                                        {errors.documentId}
+                                        {props.errors.documentId}
                                     </Form.Control.Feedback>
                                 </Form.Group>
                                 <Form.Group className="mb-3" controlId="formEmail">
@@ -134,11 +121,11 @@ const Registro = () => {
                                         name="email"
                                         type="email"
                                         placeholder="Ingresa tu correo"
-                                        isInvalid={touched.email && !!errors.email}
-                                        {...getFieldProps('email')}
+                                        isInvalid={props.touched.email && !!props.errors.email}
+                                        value={props.values.email} onChange={props.handleChange}
                                     />
                                     <Form.Control.Feedback type="invalid">
-                                        {errors.email}
+                                        {props.errors.email}
                                     </Form.Control.Feedback>
                                 </Form.Group>
                                 <Form.Group className="mb-3" controlId="formtPassword">
@@ -147,42 +134,53 @@ const Registro = () => {
                                         name="password"
                                         type="password"
                                         placeholder="Contraseña"
-                                        isInvalid={touched.password && !!errors.password}
-                                        {...getFieldProps('password')}
+                                        isInvalid={props.touched.password && !!props.errors.password}
+                                        value={props.values.password} onChange={props.handleChange}
                                     />
                                     <Form.Control.Feedback type="invalid">
-                                        {errors.password}
+                                        {props.errors.password}
                                     </Form.Control.Feedback>
                                 </Form.Group>
-                                <Form.Group className="mb-3" controlId="formtPassword">
+                                <Form.Group className="mb-3" controlId="formtrepeatPassword">
                                     <Form.Label>Repite la Contraseña</Form.Label>
                                     <Form.Control
-                                        name="password"
+                                        name="repeatPassword"
                                         type="password"
                                         placeholder="Contraseña"
-                                        isInvalid={touched.repeatPassword && !!errors.repeatPassword}
-                                        {...getFieldProps('repeatPassword')}
+                                        isInvalid={props.touched.repeatPassword && !!props.errors.repeatPassword}
+                                        value={props.values.repeatPassword} onChange={props.handleChange}
+
                                     />
                                     <Form.Control.Feedback type="invalid">
-                                        {errors.repeatPassword}
+                                        {props.errors.repeatPassword}
                                     </Form.Control.Feedback>
                                 </Form.Group>
                                 <Form.Group className="mb-3" controlId="formTeacherType">
                                     <Form.Label>Soy docente de</Form.Label>
-                                    <Select 
-                                        placeholder="Seleccione una opcion"
-                                        options={options} />
+
+                                    <Form.Select
+                                        name="teacherType"
+                                        isInvalid={props.touched.teacherType && !!props.errors.teacherType}
+                                        value={props.values.teacherType} onChange={props.handleChange}
+                                    >
+                                        <option hidden selected>Selecciona una opción</option>
+                                        <option value= 'Docente de primaria'>Primaria</option>
+                                        <option value= 'Docente de Secundaria'>Secundaria</option>
+                                        <option value= 'Docente Universitario'>Universidad</option>
+                                        <option value= 'Otro'>Otro</option>
+                                    </Form.Select>
                                 </Form.Group>
                                 <Button type="submit">Enviar</Button>
                             </Form>
+
                         )}
                     </Formik>
-                </Col>
-            </Row>
+                </div>
+            </Col>
             <hr className='hr-line-white' />
             <Footer />
-        </div>
-    );
+
+        </Row>)
 };
 
 export default Registro;

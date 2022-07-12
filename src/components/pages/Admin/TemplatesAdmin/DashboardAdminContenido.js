@@ -60,7 +60,9 @@ export default class DashboardAdminContenido extends Component {
                                                         <th>Usuario</th>
                                                         <th>Documentación</th>
                                                         <th>Etiquetas</th>
+
                                                         <th>Fecha de cargue</th>
+
                                                         <th>Acción</th>
                                                     </tr>
                                                 </thead>
@@ -81,6 +83,7 @@ export default class DashboardAdminContenido extends Component {
                                                             <textarea id="inputDescription" className="form-control" rows={4} defaultValue={'"Etiq. 1", "Etiq. 2", "Etiq. 3", "Etiq. 4", "Etiq. 5"'} />
                                                         </td>
                                                         <td>02-07-2022</td>
+
                                                         <td>
                                                             <div className="input-group-prepend">
                                                                 <button type="button" className="btn btn-warning dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
@@ -108,7 +111,9 @@ export default class DashboardAdminContenido extends Component {
                                                         <td>
                                                             <textarea id="inputDescription" className="form-control" rows={4} defaultValue={'"Etiq. 1", "Etiq. 2", "Etiq. 3", "Etiq. 4", "Etiq. 5"'} />
                                                         </td>
+
                                                         <td>01-05-2022</td>
+
                                                         <td>
                                                             <div className="input-group-prepend">
                                                                 <button type="button" className="btn btn-warning dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
@@ -138,7 +143,9 @@ export default class DashboardAdminContenido extends Component {
                                                         <td>
                                                             <textarea id="inputDescription" className="form-control" rows={4} defaultValue={'"Etiq. 1", "Etiq. 2", "Etiq. 3", "Etiq. 4", "Etiq. 5"'} />
                                                         </td>
+
                                                         <td>01-05-2022</td>
+
                                                         <td>
                                                             <div className="input-group-prepend">
                                                                 <button type="button" className="btn btn-warning dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
@@ -191,7 +198,9 @@ export default class DashboardAdminContenido extends Component {
                                                         <th>Documentación</th>
                                                         <th>Valoración</th>
                                                         <th>Etiquetas</th>
+
                                                         <th>Fecha de cargue</th>
+
                                                         <th>Acciones</th>
                                                     </tr>
                                                 </thead>
@@ -215,14 +224,18 @@ export default class DashboardAdminContenido extends Component {
                                                         <td>
                                                             <textarea id="inputDescription" className="form-control" rows={4} defaultValue={'"Etiq. 1", "Etiq. 2", "Etiq. 3", "Etiq. 4", "Etiq. 5"'} />
                                                         </td>
+
                                                         <td>30-04-2022</td>
+
                                                         <td>
                                                             <div className="input-group-prepend">
                                                                 <button type="button" className="btn btn-warning dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
                                                                     Acción
                                                                 </button>
                                                                 <ul className="dropdown-menu" style={{}}>
+
                                                                     <li className="dropdown-item">Ocultar</li>
+
                                                                     <li className="dropdown-item">Eliminar</li>
                                                                 </ul>
                                                             </div>

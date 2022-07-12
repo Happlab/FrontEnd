@@ -1,12 +1,75 @@
 import React from 'react'
+import { Navigate } from "react-router-dom";
 import Navbar1 from '../../navegation/navbar/Navbar1'
 import Footer from '../../navegation/footer/Footer'
-import '../Login/Login.css'
-import '../../../assets/css/898af8e09.min.css'
+import '../Login/Login.scss'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import {faEye,faEyeLowVision} from '@fortawesome/free-solid-svg-icons';
+import { render } from '@testing-library/react';
 
-const Login=()=>{
+class Login extends React.Component {
+	constructor(props) {
+		super(props);
+		this.state = {
+			email: "",
+			password: "",
+			valid_user: null,
+			press: false
+		};
+		this.handleChange = this.handleChange.bind(this);
+		this.handleSubmit = this.handleSubmit.bind(this);
+		this.handleClickOcultar=this.handleClickOcultar.bind(this);
+	}
+
+	handleChange(event) {
+		let name = event.target.name;
+		let value = event.target.value;
+		this.setState(values => ({ ...values, [name]: value }));
+	}
+	handleClickOcultar(){
+
+		var tipo=document.getElementById('eael-user-password');
+		if(tipo.type==='password'){
+			tipo.type='text';
+			this.setState(state=>({press: true}));
+		}else{
+			if(tipo.type==='text'){
+				tipo.type='password';
+				this.setState(state=>({press: false}))
+			}
+		}
+	}
+
+
+	handleSubmit(event) {
+		event.preventDefault();
+		let status = 0;
+		const request_options = {
+			method: 'GET',
+			mode: 'cors',
+		}
+		fetch('https://api-happlab.herokuapp.com/persona/Login/'+this.state.email+"&"+this.state.password, request_options)
+			.then(response => {
+				let text = response.text();
+				status = response.status;
+				return text;
+			})
+			.then(data => {
+				if( status === 200 && data !== "" ) this.setState(values => ({ ...values, valid_user: true }))
+				else alert("El correo o la contraseña son incorrectas")
+			})
+			.catch(error => console.log("Error", error))
+	}
+
+	render() {
+	var icono=<FontAwesomeIcon icon={faEye} size='1x' fixedWidth/>;
+	if(this.state.press){
+		icono=<FontAwesomeIcon icon={faEyeLowVision} size='1x' fixedWidth/>;
+	}
+	let valid_user = this.state.valid_user;
     return(
         <div className='main-login'>
+			{valid_user && (<Navigate to="/Dashboard" replace={true} />)}
             <Navbar1/>
             <section id='contenedor' className="elementor-section elementor-top-section elementor-element elementor-element-2bd9dc1 elementor-section-full_width elementor-section-height-full elementor-section-height-default elementor-section-items-middle" data-id="2bd9dc1" data-element_type="section" style={{backgroundColor : '#fff'}}>
 					<div id='svg-top' className="elementor-shape elementor-shape-top" data-negative="false">
@@ -44,17 +107,18 @@ const Login=()=>{
 			                                <section id="eael-login-form-wrapper" className="" data-recaptcha-theme="light" data-recaptcha-size="normal" style={{backgroundColor : 'transparent'}}>
                                                 <div className="eael-login-form-wrapper eael-lr-form-wrapper style-2 ">
 					                                <div className="lr-form-wrapper">
-														<form className="eael-login-form eael-lr-form" id="eael-login-form" method="post" >
+														<form className="eael-login-form eael-lr-form" id="eael-login-form" onSubmit={this.handleSubmit} >
 								                            <div className="eael-lr-form-group">
 									                            <label htmlFor="eael-user-login" className="eael-field-label">Nombre de usuario o dirección de correo electrónico</label>                                    
-                                                                <input type="email" name="eael-user-login" id="eael-user-login" className="eael-lr-form-control" aria-describedby="emailHelp" placeholder="Nombre de usuario o dirección de correo electrónico" required/>
+                                                                <input type="email" name="email" id="eael-user-login" className="eael-lr-form-control" aria-describedby="emailHelp" placeholder="Nombre de usuario o dirección de correo electrónico" onChange={this.handleChange} required/>
 									                        </div>
                                                             <div className="eael-lr-form-group">
 									                            <label htmlFor="eael-user-password" className="eael-field-label">Contraseña</label>                                    
                                                                 <div className="eael-lr-password-wrapper">
-                                                                    <input type="password" name="eael-user-password" className="eael-lr-form-control" id="eael-user-password" placeholder="Contraseña" required/>
-										                            <button type="button" id="wp-hide-pw" className="wp-hide-pw hide-if-no-js" aria-label="Show password">
-                                                                        <span className="dashicons dashicons-visibility" aria-hidden="true"></span>
+
+                                                                    <input type="password" name="password" className="eael-lr-form-control" id="eael-user-password" placeholder="Contraseña" onChange={this.handleChange} required/>
+										                            <button type="button" id="wp-hide-pw" onClick={(e)=>this.handleClickOcultar()} className="wp-hide-pw hide-if-no-js" aria-label="Show password">
+                                                                        <span id='ocultar' className="dashicons dashicons-visibility" aria-hidden="true">{icono}</span>
                                                                     </button>
 															    </div>
                                                             </div>
@@ -68,7 +132,7 @@ const Login=()=>{
                                                                 </p>
                                                             </div>
                                                             <div className="eael-lr-footer">
-                                                                <input type="submit" name="eael-login-submit" id="eael-login-submit" className="g-recaptcha eael-lr-btn eael-lr-btn-block " value="Acceder"/>
+                                                                <input type="submit" name="eael-login-submit" id="eael-login-submit" className="g-recaptcha eael-lr-btn eael-lr-btn-block " value="Submit"/>
                                                             </div>
 								                            <div className="eael-form-validation-container">
 									                        </div>
@@ -90,5 +154,8 @@ const Login=()=>{
             <Footer/>
         </div>
     )
+	}
 }
+
+
 export default Login;
