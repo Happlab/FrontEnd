@@ -1,0 +1,19 @@
+@mixin size-fuente ($tamano,$fuente){
+    .elementor-heading-title.elementor-size-#{$tamano}{
+        font-size: $fuente;
+    }
+}
+@mixin transicion ($modificar) {
+    transition: #{$modificar};      
+    -moz-transition: #{$modificar};
+    -webkit-transition: #{$modificar};
+    -o-transition: #{$modificar};
+    -ms-transition: #{$modificar};
+}
+@mixin transformar ($funcion,$valor){
+    -webkit-transform: #{$funcion}($valor);
+    -ms-transform: #{$funcion}($valor);
+    -o-transform: #{$funcion}($valor);
+    -moz-transform: #{$funcion}($valor);
+    transform: #{$funcion}($valor);
+}
