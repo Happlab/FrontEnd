@@ -8,6 +8,10 @@ import Login from './components/pages/Login/Login'
 import Registro from './components/pages/Registro/Registro'
 import Investigadores from './components/pages/Investigadores/Investigadores';
 import AdminUsuarios from './components/pages/Admin/AdminUsuarios';
+import AdminNoticias from './components/pages/Admin/AdminNoticias';
+import AdminContenido from './components/pages/Admin/AdminContenido';
+import AdminInicio from './components/pages/Admin/AdminInicio';
+import AdminAcercaDe from './components/pages/Admin/AdminAcercaDe';
 import Contenido from './components/pages/Contenido/Contenido'
 
 function App() {
@@ -23,8 +27,13 @@ function App() {
             <Route path='Login' element={<Login/>}/>
             <Route path='Registro' element={<Registro/>}/>
             <Route path='AdminUsuarios' element={<AdminUsuarios/>}/>
+            <Route path='AdminNoticias' element={<AdminNoticias/>}/>
+            <Route path='AdminContenido' element={<AdminContenido/>}/>
+            <Route path='AdminInicio' element={<AdminInicio />}/>
+            <Route path='AdminAcercaDe' element={<AdminAcercaDe />}/>
             <Route path='Contenido' element={<Contenido/>}/>
             <Route path='*' element={<Navigate replace to="/"/>}/>
+           
         </Routes>
     </div>
   );

@@ -1,15 +1,14 @@
 import React, { Component } from 'react'
 import Header from './TemplatesAdmin/Header'
 import Menu from './TemplatesAdmin/Menu'
-import DashboardAdmUsuarios from './TemplatesAdmin/DashboardAdmUsuarios'
-
-export default class AdminUsuarios extends Component {
+import DashboardAdmAcercaDe from './TemplatesAdmin/DashboardAdminAcercaDe'
+export default class AdminAcercaDe extends Component {
   render() {
     return (
-      <div class="wrapper">
+      <div>
         <Header/>
         <Menu/>
-        <DashboardAdmUsuarios/>
+        <DashboardAdmAcercaDe/>
       </div>
     )
   }
