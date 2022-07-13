@@ -109,7 +109,7 @@ class Login extends React.Component {
 					                                <div className="lr-form-wrapper">
 														<form className="eael-login-form eael-lr-form" id="eael-login-form" onSubmit={this.handleSubmit} >
 								                            <div className="eael-lr-form-group">
-									                            <label htmlFor="eael-user-login" className="eael-field-label">Nombre de usuario o dirección de correo electrónico</label>                                    
+									                            <label htmlFor="eael-user-login" className="eael-field-label">Dirección de correo electrónico</label>                                    
                                                                 <input type="email" name="email" id="eael-user-login" className="eael-lr-form-control" aria-describedby="emailHelp" placeholder="Nombre de usuario o dirección de correo electrónico" onChange={this.handleChange} required/>
 									                        </div>
                                                             <div className="eael-lr-form-group">
@@ -122,24 +122,9 @@ class Login extends React.Component {
                                                                     </button>
 															    </div>
                                                             </div>
-                                                            <div className="eael-forever-forget eael-lr-form-group">
-									                            <p className="forget-menot">
-                                                                    <input name="eael-rememberme" type="checkbox" id="rememberme" className="remember-me " value="forever"/>
-                                                                    <label htmlFor="rememberme" className="eael-checkbox-label rememberme">Recuérdame</label>
-                                                                </p>
-									                            <p className="forget-pass">
-                                                                    <a href="https://james.amigos4all.com/wp-login.php?action=lostpassword">¿Has olvidado tu contraseña?</a>
-                                                                </p>
-                                                            </div>
                                                             <div className="eael-lr-footer">
                                                                 <input type="submit" name="eael-login-submit" id="eael-login-submit" className="g-recaptcha eael-lr-btn eael-lr-btn-block " value="Submit"/>
                                                             </div>
-								                            <div className="eael-form-validation-container">
-									                        </div>
-								                            <input type="hidden" id="eael-login-nonce" name="eael-login-nonce" value="ed1c1c15f5"/>
-                                                            <input type="hidden" name="_wp_http_referer" value="/?page_id=875"/>        
-                                                            <input type="hidden" name="page_id" value="875"/>
-                                                            <input type="hidden" name="widget_id" value="ddf06f2"/>
 		                                                </form>
 							                        </div>
 						                        </div>

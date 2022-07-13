@@ -53,17 +53,30 @@ class Contenido extends React.Component{
                 }
 
             ],
-            estadoSubirContenido:false
+            estadoSubirContenido:false,
+            sesion:true,
+            Tag: '',
+            ClaveBusqueda: ''
         }
         this.handleClick=this.handleClick.bind(this);
         this.handleClickSubirContenido=this.handleClickSubirContenido.bind(this);
+        this.handleInput=this.handleInput.bind(this);
+    }
+
+    handleInput(){
+        if(document.getElementById('link-contenido').value!=='' ){
+            document.getElementById('archivo-contenido').disabled=true;
+            document.getElementById('archivo-contenido').value='';
+        }else{
+            document.getElementById('archivo-contenido').disabled=false;
+        }
     }
     handleClickSubirContenido(){
         this.setState({estadoSubirContenido: !this.state.estadoSubirContenido});
     }
-    handleClick(e, patronBusqueda){
-        
-        //aqui va arreglo con resultado de metodo GET ya sea del filtro o la busqueda por palabra clave
+    handleClick(e, tag, claveBusqueda){
+        //aqui va arreglo con resultado de metodo GET del filtro(la variable tag) 
+        //y la busqueda por palabra clave seleccionada(claveBusqueda), dentro de arrayContenidos
         this.setState({arrayContenidos:[
             {
                 "img":imagenes.imgSam
@@ -72,10 +85,20 @@ class Contenido extends React.Component{
                 "img":imagenes.imgUni
             }
         ],
-        estadoSubirContenido: false
+        estadoSubirContenido: false,
+        Tag: tag,
+        ClaveBusqueda: claveBusqueda
     });
     }
     render(){
+        var activarBoton=document.getElementById('btn-form');
+        if(activarBoton!==null){
+            if(this.state.sesion){
+                document.getElementById('btn-form').disabled=false;
+            }else{
+                document.getElementById('btn-form').disabled=true;
+            }
+        }
         const MostrarContenido=(props)=>{
             const array2=[];
             if(!this.state.estadoSubirContenido){ 
@@ -105,21 +128,26 @@ class Contenido extends React.Component{
             
         }
         const FormularioSubirContenido=(props)=>{
+            var estado;
             if(this.state.estadoSubirContenido){
                 return(
                 <Form className='form-contenido'>
                     <Form.Group className="mb-3" >
-                        <Form.Label>Autores</Form.Label>
-                        <Form.Control type="text" placeholder="Autores que participaron en la elaboracion" />
+                        <Form.Label>Titulo</Form.Label>
+                        <Form.Control id='titulo-contenido' type="text" placeholder="Titulo de la publicacion" required/>
                     </Form.Group>
-                    <Form.Group controlId="formFile" className="mb-3">
+                    <Form.Group className="mb-3" >
+                        <Form.Label>Autores</Form.Label>
+                        <Form.Control id='autor-contenido' type="text" placeholder="Autores que participaron en la elaboracion" required/>
+                    </Form.Group>
+                    <Form.Group className="mb-3">
                         <Form.Label>Seleccione el archivo</Form.Label>
-                        <Form.Control type="file" />
-                        <Form.Control type="text" placeholder="En su defecto ingrese el link" />
+                        <Form.Control id='archivo-contenido' type="file" required/>
+                        <Form.Control id='link-contenido' type="text" placeholder="En su defecto ingrese el link" onInput={this.handleInput}/>  
                     </Form.Group>
                     <Form.Group className="mb-3">
                         <Form.Label>Resumen</Form.Label>
-                        <textarea className="form-control" placeholder="Ingrese un resumen del material que desea subir" id="exampleFormControlTextarea1" rows="5"></textarea>
+                        <textarea className="form-control" placeholder="Ingrese un resumen del material que desea subir" id="exampleFormControlTextarea1" rows="5" required></textarea>
                     </Form.Group>
                     <Button variant="primary" type="submit">
                         Submit
@@ -128,7 +156,7 @@ class Contenido extends React.Component{
             }else{
                 return null;
             }
-            
+              
         }
         return(
             <div className='main-contenido'>
@@ -162,7 +190,7 @@ class Contenido extends React.Component{
                                 aria-label="Buscar por palabra clave"
                                 aria-describedby="input para ingresar una palabra clave de busqueda"
                             />
-                            <Button className='btn-busqueda' onClick={(e)=>this.handleClick(e,document.getElementById('busqueda').value)} variant="outline-secondary" id="button-addon2">
+                            <Button className='btn-busqueda' onClick={(e)=>this.handleClick(e,this.state.Tag,document.getElementById('busqueda').value)} variant="outline-secondary" id="button-addon2">
                                 <FontAwesomeIcon className='fa fa-search' icon={faSearch} fixedWidth/>
                             </Button>
                         </InputGroup>
@@ -174,27 +202,18 @@ class Contenido extends React.Component{
                             <ListGroup.Item as={'li'} className='item-filtro'>
                                 <h2 id='texto-filtro'>Filtros</h2>
                             </ListGroup.Item>
-                            <ListGroup.Item onClick={(e)=>this.handleClick(e,'Primaria')} action className='item-filtro'>Primaria</ListGroup.Item>
-                            <ListGroup.Item onClick={(e)=>this.handleClick(e,'Secundaria')} action className='item-filtro'>Secundaria</ListGroup.Item>
-                            <ListGroup.Item onClick={(e)=>this.handleClick(e,'Educacion Superior')} action className='item-filtro'>Educacion Superior</ListGroup.Item>
-                            <ListGroup.Item onClick={(e)=>this.handleClick(e,'Articulos')} action className='item-filtro'>Articulos</ListGroup.Item>
-                            <ListGroup.Item id='btn-materias' as={DropdownButton}  title='Materias'  action className='item-filtro'>
-                                Mas filtros
-                                    <Dropdown.Item onClick={(e)=>this.handleClick(e,'')} eventKey="1">Dropdown link</Dropdown.Item>
-                                    <Dropdown.Item onClick={(e)=>this.handleClick(e,'')} eventKey="2">Dropdown link</Dropdown.Item>
-                                    <Dropdown.Item onClick={(e)=>this.handleClick(e,'')} eventKey="1">Dropdown link</Dropdown.Item>
-                                    <Dropdown.Item onClick={(e)=>this.handleClick(e,'')} eventKey="2">Dropdown link</Dropdown.Item>
-                                    <Dropdown.Item onClick={(e)=>this.handleClick(e,'')} eventKey="1">Dropdown link</Dropdown.Item>
-                                    <Dropdown.Item onClick={(e)=>this.handleClick(e,'')} eventKey="2">Dropdown link</Dropdown.Item>
-                            </ListGroup.Item>
+                            <ListGroup.Item id='tag1' onClick={(e)=>this.handleClick(e,'Primaria',this.state.ClaveBusqueda)} action className='item-filtro'>Primaria</ListGroup.Item>
+                            <ListGroup.Item id='tag2' onClick={(e)=>this.handleClick(e,'Secundaria',this.state.ClaveBusqueda)} action className='item-filtro'>Secundaria</ListGroup.Item>
+                            <ListGroup.Item id='tag3' onClick={(e)=>this.handleClick(e,'Educacion Superior',this.state.ClaveBusqueda)} action className='item-filtro'>Educacion Superior</ListGroup.Item>
+                            <ListGroup.Item id='tag4' onClick={(e)=>this.handleClick(e,'Articulos',this.state.ClaveBusqueda)} action className='item-filtro'>Articulos</ListGroup.Item>
                             <ListGroup.Item id='boton-busqueda' className='item-filtro'>
-                                <Button  className='btn-busqueda' onClick={this.handleClickSubirContenido} variant="outline-secondary" size='md'>
+                                <Button id='btn-form' className='btn-busqueda' onClick={this.handleClickSubirContenido} variant="outline-secondary" size='md' >
                                     <FontAwesomeIcon className='fa fa-upload' icon={faUpload} fixedWidth/>
                                     Subir Contenido
                                 </Button>
                             </ListGroup.Item>
-                            
                         </ListGroup>
+                        
                     </div>
                 </section>
                 <hr/>
