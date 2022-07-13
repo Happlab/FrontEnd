@@ -7,36 +7,41 @@ class Perfil extends React.Component {
         return (
             <div class="row">
                 <Navbar1 />
-                <section >
-                    <div class="container h-100">
-                        <h3 class="mb-4 pb-2 pb-md-0 mb-md-5 d-flex justify-content-center align-items-center">Actualizacion de contraseña</h3>
-                        <form>
-                            <div class="d-flex justify-content-center align-items-center">
-                                <div class="form-outline">
-                                    <label for="inputEmail3" class="col-lg-6 control-label d-flex justify-content-center align-items-center">Nueva contraseña</label>
-                                    <div class="col-lg-100">
-                                        <input type="password" class="form-control d-flex justify-content-center align-items-center" id="inputEmail3" required placeholder="Escriba su nueva clave" />
-                                    </div>
+                <div class="col-md-6 offset-md-3">
+                    <span class="anchor" id="formChangePassword"></span>
+                    <hr class="mb-5" />
+                    <div class="card card-outline-secondary">
+                        <div class="card-header">
+                            <h3 class="mb-1">Actualizar Contraseña</h3>
+                        </div>
+                        <div class="card-body">
+                            <form class="form" role="form" autocomplete="off">
+                                <div class="form-group">
+                                    <label for="inputPasswordOld">Contraseña actual</label>
+                                    <input type="password" class="form-control" id="inputPasswordOld" required />
                                 </div>
-                            </div>
-                            <div class="d-flex justify-content-center align-items-center">
-                                <div class="form-outline">
-                                    <label for="inputPassword3" class="col-lg-6 control-label d-flex justify-content-center align-items-center">Repetir contraseña</label>
-                                    <div class="col-lg-100">
-                                        <input type="password" class="form-control d-flex justify-content-center align-items-center" id="inputPassword3" required placeholder="Confirme su nueva clave" />
-                                    </div>
+                                <div class="form-group">
+                                    <label for="inputPasswordNew">Nueva contraseña</label>
+                                    <input type="password" class="form-control" id="inputPasswordNew" required />
+                                    <span class="form-text small text-muted">
+                                        La contraseña debe tener al menos 8 caracteres, y <em>no</em> debe tener espacios.
+                                    </span>
                                 </div>
-                            </div>
-                            <div class="d-flex justify-content-center align-items-center">
-                                <div class="form-group row">
-                                    <div class="col-sm-10 d-flex justify-content-center align-items-center">
-                                        <button type="submit" class="btn btn-primary d-flex justify-content-center align-items-center">Guardar contraseña</button>
-                                    </div>
+                                <div class="form-group">
+                                    <label for="inputPasswordNewVerify">Verificar contraseña</label>
+                                    <input type="password" class="form-control" id="inputPasswordNewVerify" required />
+                                    <span class="form-text small text-muted">
+                                        Para confirmar, escriba la contraseña nuevamente.
+                                    </span>
                                 </div>
-                            </div>
-                        </form>
+                                <div class="form-group">
+                                    <button type="submit" class="btn btn-outline-primary ms-1">Guardar</button>
+                                </div>
+                            </form>
+                        </div>
                     </div>
-                </section>
+                    <hr class="mb-5" />
+                </div>
                 <Footer />
             </div>
         )

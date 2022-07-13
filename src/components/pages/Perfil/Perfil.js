@@ -15,7 +15,7 @@ class Perfil extends React.Component {
                                     <div class="card-body">
                                         <div class="d-flex flex-column align-items-center text-center p-4 py-3"><img class="rounded-circle mt-5" width="200px" src="https://st3.depositphotos.com/15648834/17930/v/600/depositphotos_179308454-stock-illustration-unknown-person-silhouette-glasses-profile.jpg" alt='Foto perfil' /><span class="font-weight-bold">CRISTIAN</span><span class="text-black-50">cdnarvaez@ejemplo.edu.co</span><span> </span></div>
                                         <div class="d-flex justify-content-center mb-2">
-                                            <button type="button" class="btn btn-primary">Cambiar contraseña</button>
+                                            <a href="/Password" class="btn btn-primary">Cambiar contraseña</a>
                                             <button type="button" class="btn btn-outline-primary ms-1">Editar cargo</button>
                                         </div>
                                     </div>
