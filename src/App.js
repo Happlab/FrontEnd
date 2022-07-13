@@ -13,6 +13,7 @@ import AdminContenido from './components/pages/Admin/AdminContenido';
 import AdminInicio from './components/pages/Admin/AdminInicio';
 import AdminAcercaDe from './components/pages/Admin/AdminAcercaDe';
 import Contenido from './components/pages/Contenido/Contenido'
+import Perfil from './components/pages/Perfil/Perfil';
 
 function App() {
   return (
@@ -32,6 +33,7 @@ function App() {
             <Route path='AdminInicio' element={<AdminInicio />}/>
             <Route path='AdminAcercaDe' element={<AdminAcercaDe />}/>
             <Route path='Contenido' element={<Contenido/>}/>
+            <Route path='Perfil' element={<Perfil/>}/>
             <Route path='*' element={<Navigate replace to="/"/>}/>
            
         </Routes>
