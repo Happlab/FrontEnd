@@ -1,5 +1,4 @@
 import React from 'react'
-//import { Navigate } from "react-router-dom";
 import Navbar1 from '../../navegation/navbar/Navbar1'
 import Footer from '../../navegation/footer/Footer'
 
