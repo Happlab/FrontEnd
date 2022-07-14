@@ -54,9 +54,7 @@ class Contenido extends React.Component{
 
             ],
             estadoSubirContenido:false,
-            sesion:true,
-            Tag: '',
-            ClaveBusqueda: ''
+            sesion:true
         }
         this.handleClick=this.handleClick.bind(this);
         this.handleClickSubirContenido=this.handleClickSubirContenido.bind(this);
@@ -67,16 +65,17 @@ class Contenido extends React.Component{
         if(document.getElementById('link-contenido').value!=='' ){
             document.getElementById('archivo-contenido').disabled=true;
             document.getElementById('archivo-contenido').value='';
+            document.getElementById('link-contenido').required=true;
         }else{
             document.getElementById('archivo-contenido').disabled=false;
+            document.getElementById('archivo-contenido').required=true;
         }
     }
     handleClickSubirContenido(){
         this.setState({estadoSubirContenido: !this.state.estadoSubirContenido});
     }
-    handleClick(e, tag, claveBusqueda){
+    handleClick(e, tag){
         //aqui va arreglo con resultado de metodo GET del filtro(la variable tag) 
-        //y la busqueda por palabra clave seleccionada(claveBusqueda), dentro de arrayContenidos
         this.setState({arrayContenidos:[
             {
                 "img":imagenes.imgSam
@@ -85,19 +84,13 @@ class Contenido extends React.Component{
                 "img":imagenes.imgUni
             }
         ],
-        estadoSubirContenido: false,
-        Tag: tag,
-        ClaveBusqueda: claveBusqueda
+        estadoSubirContenido: false
     });
     }
     render(){
         var activarBoton=document.getElementById('btn-form');
         if(activarBoton!==null){
-            if(this.state.sesion){
-                document.getElementById('btn-form').disabled=false;
-            }else{
-                document.getElementById('btn-form').disabled=true;
-            }
+            document.getElementById('btn-form').disabled=this.state.sesion;
         }
         const MostrarContenido=(props)=>{
             const array2=[];
@@ -128,7 +121,6 @@ class Contenido extends React.Component{
             
         }
         const FormularioSubirContenido=(props)=>{
-            var estado;
             if(this.state.estadoSubirContenido){
                 return(
                 <Form className='form-contenido'>
@@ -183,18 +175,6 @@ class Contenido extends React.Component{
                         </div>
                     </div>
                 </section>
-                <section className='busqueda'>
-                        <InputGroup className="form-busqueda" size='lg'>
-                            <FormControl id='busqueda' className='input-busqueda'
-                                placeholder="Buscar por palabra clave"
-                                aria-label="Buscar por palabra clave"
-                                aria-describedby="input para ingresar una palabra clave de busqueda"
-                            />
-                            <Button className='btn-busqueda' onClick={(e)=>this.handleClick(e,this.state.Tag,document.getElementById('busqueda').value)} variant="outline-secondary" id="button-addon2">
-                                <FontAwesomeIcon className='fa fa-search' icon={faSearch} fixedWidth/>
-                            </Button>
-                        </InputGroup>
-                </section>
                 <hr/>
                 <section className='sec-filtros'>
                     <div  className='filtros'>
@@ -202,12 +182,12 @@ class Contenido extends React.Component{
                             <ListGroup.Item as={'li'} className='item-filtro'>
                                 <h2 id='texto-filtro'>Filtros</h2>
                             </ListGroup.Item>
-                            <ListGroup.Item id='tag1' onClick={(e)=>this.handleClick(e,'Primaria',this.state.ClaveBusqueda)} action className='item-filtro'>Primaria</ListGroup.Item>
-                            <ListGroup.Item id='tag2' onClick={(e)=>this.handleClick(e,'Secundaria',this.state.ClaveBusqueda)} action className='item-filtro'>Secundaria</ListGroup.Item>
-                            <ListGroup.Item id='tag3' onClick={(e)=>this.handleClick(e,'Educacion Superior',this.state.ClaveBusqueda)} action className='item-filtro'>Educacion Superior</ListGroup.Item>
-                            <ListGroup.Item id='tag4' onClick={(e)=>this.handleClick(e,'Articulos',this.state.ClaveBusqueda)} action className='item-filtro'>Articulos</ListGroup.Item>
+                            <ListGroup.Item id='tag1' onClick={(e)=>this.handleClick(e,'Primaria')} action className='item-filtro'>Primaria</ListGroup.Item>
+                            <ListGroup.Item id='tag2' onClick={(e)=>this.handleClick(e,'Secundaria')} action className='item-filtro'>Secundaria</ListGroup.Item>
+                            <ListGroup.Item id='tag3' onClick={(e)=>this.handleClick(e,'Educacion Superior')} action className='item-filtro'>Educacion Superior</ListGroup.Item>
+                            <ListGroup.Item id='tag4' onClick={(e)=>this.handleClick(e,'Articulos')} action className='item-filtro'>Articulos</ListGroup.Item>
                             <ListGroup.Item id='boton-busqueda' className='item-filtro'>
-                                <Button id='btn-form' className='btn-busqueda' onClick={this.handleClickSubirContenido} variant="outline-secondary" size='md' >
+                                <Button id='btn-form' className='btn-busqueda' onClick={this.handleClickSubirContenido} variant="outline-secondary" size='md' disabled>
                                     <FontAwesomeIcon className='fa fa-upload' icon={faUpload} fixedWidth/>
                                     Subir Contenido
                                 </Button>

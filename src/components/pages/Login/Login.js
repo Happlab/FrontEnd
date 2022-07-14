@@ -110,13 +110,13 @@ class Login extends React.Component {
 														<form className="eael-login-form eael-lr-form" id="eael-login-form" onSubmit={this.handleSubmit} >
 								                            <div className="eael-lr-form-group">
 									                            <label htmlFor="eael-user-login" className="eael-field-label">Dirección de correo electrónico</label>                                    
-                                                                <input type="email" name="email" id="eael-user-login" className="eael-lr-form-control" aria-describedby="emailHelp" placeholder="Nombre de usuario o dirección de correo electrónico" onChange={this.handleChange} required/>
+                                                                <input type="email" name="email" id="eael-user-login" className="eael-lr-form-control" aria-describedby="emailHelp" placeholder="Digite su correo electrónico" onChange={this.handleChange} required/>
 									                        </div>
                                                             <div className="eael-lr-form-group">
 									                            <label htmlFor="eael-user-password" className="eael-field-label">Contraseña</label>                                    
                                                                 <div className="eael-lr-password-wrapper">
 
-                                                                    <input type="password" name="password" className="eael-lr-form-control" id="eael-user-password" placeholder="Contraseña" onChange={this.handleChange} required/>
+                                                                    <input type="password" name="password" className="eael-lr-form-control" id="eael-user-password" placeholder="Digite su contraseña" onChange={this.handleChange} required/>
 										                            <button type="button" id="wp-hide-pw" onClick={(e)=>this.handleClickOcultar()} className="wp-hide-pw hide-if-no-js" aria-label="Show password">
                                                                         <span id='ocultar' className="dashicons dashicons-visibility" aria-hidden="true">{icono}</span>
                                                                     </button>
