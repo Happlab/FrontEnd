@@ -5,7 +5,6 @@ import Footer from '../../navegation/footer/Footer'
 import '../Login/Login.scss'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {faEye,faEyeLowVision} from '@fortawesome/free-solid-svg-icons';
-import { render } from '@testing-library/react';
 
 class Login extends React.Component {
 	constructor(props) {
@@ -14,7 +13,8 @@ class Login extends React.Component {
 			email: "",
 			password: "",
 			valid_user: null,
-			press: false
+			press: false,
+			data_user: {}
 		};
 		this.handleChange = this.handleChange.bind(this);
 		this.handleSubmit = this.handleSubmit.bind(this);
@@ -26,20 +26,19 @@ class Login extends React.Component {
 		let value = event.target.value;
 		this.setState(values => ({ ...values, [name]: value }));
 	}
-	handleClickOcultar(){
 
-		var tipo=document.getElementById('eael-user-password');
-		if(tipo.type==='password'){
-			tipo.type='text';
-			this.setState(state=>({press: true}));
+	handleClickOcultar(){
+		var tipo = document.getElementById('eael-user-password');
+		if(tipo.type === 'password'){
+			tipo.type = 'text';
+			this.setState(state => ({press: true}));
 		}else{
-			if(tipo.type==='text'){
-				tipo.type='password';
-				this.setState(state=>({press: false}))
+			if(tipo.type === 'text'){
+				tipo.type = 'password';
+				this.setState(state => ({press: false}))
 			}
 		}
 	}
-
 
 	handleSubmit(event) {
 		event.preventDefault();
@@ -55,7 +54,10 @@ class Login extends React.Component {
 				return text;
 			})
 			.then(data => {
-				if( status === 200 && data !== "" ) this.setState(values => ({ ...values, valid_user: true }))
+				if( status === 200 && data !== "" ) {
+					this.setState(values => ({ ...values, valid_user: true, data_user: data }));
+					alert(data);
+				}
 				else alert("El correo o la contraseña son incorrectas")
 			})
 			.catch(error => console.log("Error", error))
@@ -67,9 +69,10 @@ class Login extends React.Component {
 		icono=<FontAwesomeIcon icon={faEyeLowVision} size='1x' fixedWidth/>;
 	}
 	let valid_user = this.state.valid_user;
+	let data = this.state.data_user;
     return(
         <div className='main-login'>
-			{valid_user && (<Navigate to="/Dashboard" replace={true} />)}
+			{valid_user && (<Navigate to="/perfil" state={{ data }}/>)}
             <Navbar1/>
             <section id='contenedor' className="elementor-section elementor-top-section elementor-element elementor-element-2bd9dc1 elementor-section-full_width elementor-section-height-full elementor-section-height-default elementor-section-items-middle" data-id="2bd9dc1" data-element_type="section" style={{backgroundColor : '#fff'}}>
 					<div id='svg-top' className="elementor-shape elementor-shape-top" data-negative="false">

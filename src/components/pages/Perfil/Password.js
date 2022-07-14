@@ -2,45 +2,72 @@ import React from 'react'
 import Navbar1 from '../../navegation/navbar/Navbar1'
 import Footer from '../../navegation/footer/Footer'
 
-class Perfil extends React.Component {
+class Password extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            // data_user: props.location.state.data,
+            inputPasswordOld: "",
+            inputPasswordNew: "",
+            inputPasswordVerified: ""
+        }
+        this.handleChange = this.handleChange.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
+    }
+
+    handleChange(event) {
+        let name = event.target.name;
+        let value = event.target.value;
+        this.setState(values => ({
+            ...values, [name]: value
+        }))
+    }
+
+    handleSubmit(event) {
+        event.preventDefault();
+        console.log(this.state.data_user);
+        // alert(this.state.data_user.state);
+        alert("old " + this.state.inputPasswordOld+" new " + this.state.inputPasswordNew + " verified" + this.state.inputPasswordVerified);
+    }
+
     render() {
         return (
-            <div class="row">
+            <div className="row">
                 <Navbar1 />
-                <div class="col-md-6 offset-md-3">
-                    <span class="anchor" id="formChangePassword"></span>
-                    <hr class="mb-5" />
-                    <div class="card card-outline-secondary">
-                        <div class="card-header">
-                            <h3 class="mb-1">Actualizar Contraseña</h3>
+                <div className="col-md-6 offset-md-3">
+                    <span className="anchor" id="formChangePassword"></span>
+                    <hr className="mb-5" />
+                    <div className="card card-outline-secondary">
+                        <div className="card-header">
+                            <h3 className="mb-1">Actualizar Contraseña</h3>
                         </div>
-                        <div class="card-body">
-                            <form class="form" role="form" autocomplete="off">
-                                <div class="form-group">
-                                    <label for="inputPasswordOld">Contraseña actual</label>
-                                    <input type="password" class="form-control" id="inputPasswordOld" required />
+                        <div className="card-body">
+                            <form className="form" role="form" onSubmit={this.handleSubmit}>
+                                <div className="form-group">
+                                    <label htmlFor="inputPasswordOld">Contraseña actual</label>
+                                    <input name='inputPasswordOld' onChange={this.handleChange} type="password" className="form-control" id="inputPasswordOld" required />
                                 </div>
-                                <div class="form-group">
-                                    <label for="inputPasswordNew">Nueva contraseña</label>
-                                    <input type="password" class="form-control" id="inputPasswordNew" required />
-                                    <span class="form-text small text-muted">
+                                <div className="form-group">
+                                    <label htmlFor="inputPasswordNew">Nueva contraseña</label>
+                                    <input name="inputPasswordNew" onChange={this.handleChange} type="password" className="form-control" id="inputPasswordNew" required />
+                                    <span className="form-text small text-muted">
                                         La contraseña debe tener al menos 8 caracteres, y <em>no</em> debe tener espacios.
                                     </span>
                                 </div>
-                                <div class="form-group">
-                                    <label for="inputPasswordNewVerify">Verificar contraseña</label>
-                                    <input type="password" class="form-control" id="inputPasswordNewVerify" required />
-                                    <span class="form-text small text-muted">
+                                <div className="form-group">
+                                    <label htmlFor="inputPasswordNewVerify">Verificar contraseña</label>
+                                    <input name='inputPasswordVerified' onChange={this.handleChange} type="password" className="form-control" id="inputPasswordNewVerify" required />
+                                    <span className="form-text small text-muted">
                                         Para confirmar, escriba la contraseña nuevamente.
                                     </span>
                                 </div>
-                                <div class="form-group">
-                                    <button type="submit" class="btn btn-outline-primary ms-1">Guardar</button>
+                                <div className="form-group">
+                                    <button type="submit" className="btn btn-outline-primary ms-1">Guardar</button>
                                 </div>
                             </form>
                         </div>
                     </div>
-                    <hr class="mb-5" />
+                    <hr className="mb-5" />
                 </div>
                 <Footer />
             </div>
@@ -48,4 +75,4 @@ class Perfil extends React.Component {
     }
 }
 
-export default Perfil;
+export default Password;
