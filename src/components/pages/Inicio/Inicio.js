@@ -12,17 +12,6 @@ const Inicio = () => {
       <Navbar1 />
             <div className='container-inicio'>
               <hr/>
-                <div className='row-inicio'>
-                    <div className='col-textInicio'>
-                        <h4 className='title'>HappLab</h4>
-                        <p className='text-lore-happ'>Happlab Lorem fistrum por la gloria de mi madre esse jarl aliqua llevame al sircoo. De la pradera ullamco qué dise usteer está la cosa muy malar.</p>
-                    </div>
-                    <div className='col-imgInicio'>
-                        <img 
-                        src = {imagenes.img1} alt="" width={500} height={200}
-                        />
-                    </div>
-                  </div>
               <h3 className='title-h2'>Destacados de la semana</h3>
               <hr className='hr-line-white'/>       
               </div>

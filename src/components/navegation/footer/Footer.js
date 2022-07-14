@@ -1,8 +1,33 @@
 import React from 'react'
 import "../colores.scss"
 import LogoU from "../../../../src/assets/images/logo2.png"; 
+import imagenes from '../../../assets/imagenes';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFacebookSquare, faInstagram, faLinkedin, faTwitter } from '@fortawesome/free-brands-svg-icons';
+
+const redireccionF = () => {
+    window.open('https://www.facebook.com/JuanCMesa1293', '_blank');
+  }
+
+const redireccionT = () => {
+    window.open('https://twitter.com/JuanCMesa1', '_blank');
+  }
+
+const redireccionI = () => {
+    window.open('https://www.instagram.com/juanmesa129311/', '_blank');
+  }
+
+const redireccionL = () => {
+    window.open('https://www.linkedin.com/in/juan-carlos-mesa-ceballos-a90308231/', '_blank');
+  }
+
+const redireccionUni = () => {
+    window.open('http://www.unicauca.edu.co/versionP/', '_blank');
+  }
+
+const redireccionGico = () => {
+    window.open('https://www.unicauca.edu.co/gico/', '_blank');
+  }
 
 const Footer = () => {  
     return (
@@ -12,26 +37,24 @@ const Footer = () => {
                     {/* Redes sociales */}
                     <div className='pos1'>
                         <h4>¡Aqui puedes encontar nuestras redes sociales!</h4>
-                        <FontAwesomeIcon icon={faFacebookSquare} size='2x' fixedWidth/>
-                        <FontAwesomeIcon icon={faTwitter} size='2x'fixedWidth />
-                        <FontAwesomeIcon icon={faInstagram} size='2x' fixedWidth />
-                        <FontAwesomeIcon icon={faLinkedin} size='2x' fixedWidth />
+                        <FontAwesomeIcon icon={faFacebookSquare} size='2x' onClick={redireccionF} style={{ cursor: "pointer" }} fixedWidth/>
+                        <FontAwesomeIcon icon={faTwitter} size='2x' onClick={redireccionT} style={{ cursor: "pointer" }} fixedWidth />
+                        <FontAwesomeIcon icon={faInstagram} size='2x' onClick={redireccionI} style={{ cursor: "pointer" }} fixedWidth />
+                        <FontAwesomeIcon icon={faLinkedin} size='2x' onClick={redireccionL} style={{ cursor: "pointer" }} fixedWidth />
                     </div>
                     {/* Escudo */}
                     <div className='pos2'>
-                        <img 
+                        <img className='images-footer'
                         src = {LogoU} alt="" width={150} height={220}
+                        onClick={redireccionUni} style={{ cursor: "pointer" }}
                         />
                     </div>
                     {/* Contactenos */}
                     <div className='pos3'>
-                        <h3>Escribenos tu correo, nosotros te contactamos!</h3>
-                        <form>
-                            <label>
-                                <input type="email" name="name" />
-                            </label>
-                            <input className='emailbtn'icon='' type="button" value="Enviar" />
-                        </form>
+                    <img className='images-footer'
+                        src = {imagenes.imgGico} alt="" width={250} height={150}
+                        onClick={redireccionGico} style={{ cursor: "pointer" }}
+                        />
                     </div>
                 </div>
             </div>

@@ -4,27 +4,19 @@ import Footer from '../../navegation/footer/Footer'
 import './Contenido.scss'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch, faUpload} from '@fortawesome/free-solid-svg-icons';
-import {ListGroupItem, ListGroup, InputGroup, Button, FormControl, Dropdown, DropdownButton, ButtonGroup, Form, CardGroup} from 'react-bootstrap'
+import {ListGroup, InputGroup, Button, FormControl, Dropdown, DropdownButton, Form} from 'react-bootstrap'
 import imagenes from '../../../assets/imagenes'
 import { Card, CardText, CardBody,
   CardTitle} from 'reactstrap';
 import Rating from 'react-rating'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
-  
-var titulo,user,rate,resumen,etiqueta;
+import Fancybox from '../../pages/Investigadores/fancybox'
 
   function handleClick() {
     alert('Hello!');
   } 
 
-  var settings = {
-    dots: false,
-    infinite: false,
-    speed: 500,
-    slidesToShow: 3,
-    slidesToScroll: 1
-  };
 
 class Contenido extends React.Component{
     constructor(props){
@@ -80,22 +72,35 @@ class Contenido extends React.Component{
             const array2=[];
             if(!this.state.estadoSubirContenido){ 
                         //aqui va el contenido
-                titulo = this.state.arrayContenidos[0].tittle;
-                user = this.state.arrayContenidos[0].user;
-                rate = this.state.arrayContenidos[0].rating;
-                resumen = this.state.arrayContenidos[0].resume;
-                etiqueta = this.state.arrayContenidos[0].etiqueta1;
-                        array2[1]=
-                                <Card className='card-change' onClick={handleClick} style={{ cursor: "pointer" }}>
-                                    <CardBody>
-                                    <CardTitle className='title-card'> {titulo} </CardTitle>
-                                    <CardText className='subtittle-card'>{user}</CardText>
-                                    <CardText className='stars-card'><Rating initialRating={rate} fractions={2} readonly emptySymbol="far fa-star fa-2x"
-                                    fullSymbol="fas fa-star fa-2x" /></CardText>
-                                    <CardText className='content-card'>{resumen}</CardText>
-                                    <CardText className='content-card'> {etiqueta} #Etiqueta2</CardText>
-                                    </CardBody>
-                                </Card>   
+                        for(var i=0;i<this.state.arrayContenidos.length;i++){
+                            array2[i]=
+                            <Fancybox>
+                                <div className='box-fancy'>
+                                    <div data-Fancybox="dialog" data-src="#dialog-content">
+                                    <Col>
+                                            <Card className='card-change' style={{ cursor: "pointer" }}>
+                                                <CardBody>
+                                                <CardTitle className='title-card'> {this.state.arrayContenidos[i].tittle} </CardTitle>
+                                                <CardText className='subtittle-card'>{this.state.arrayContenidos[i].user}</CardText>
+                                                <CardText className='stars-card'><Rating initialRating={this.state.arrayContenidos[i].rating} fractions={2} readonly emptySymbol="far fa-star fa-2x"
+                                                fullSymbol="fas fa-star fa-2x" /></CardText>
+                                                <CardText className='content-card'>{this.state.arrayContenidos[i].resume}</CardText>
+                                                <CardText className='content-card'> {this.state.arrayContenidos[i].etiqueta1} #Etiqueta2</CardText>
+                                                </CardBody>
+                                            </Card>  
+                                    </Col> 
+                                    </div>
+                                    <div id="dialog-content" style={{ display: "none", maxWidth: "500px" }}>
+                                        <h3> Titulo contenido</h3>
+                                        <h4> Autor contenido</h4>
+                                        <h5> Fecha de subida</h5>
+                                        <Rating initialRating={2.5} fractions={2}  emptySymbol="far fa-star fa-2x" fullSymbol="fas fa-star fa-2x"/>
+                                        <p> Lorem fistrum por la gloria de mi madre esse jarl aliqua llevame al sircoo. De la pradera ullamco qué dise usteer está la cosa muy malar.Lorem fistrum por la gloria de mi madre esse jarl aliqua llevame al sircoo. De la pradera ullamco qué dise usteer está la cosa muy malar.Lorem fistrum por la gloria de mi madre esse jarl aliqua llevame al sircoo. De la pradera ullamco qué dise usteer está la cosa muy malar.</p>
+                                        <p> #Tags</p>
+                                    </div>
+                                </div>
+                            </Fancybox>
+                } 
                 return(
                     array2
                 )
@@ -205,14 +210,8 @@ class Contenido extends React.Component{
                 </section>
                 <section>
                 <Row xs={3}>
-            {[...Array(this.state.arrayContenidos.length)].map((e, i) => {
-                return (
-                  <Col>
                       <MostrarContenido/>
-                  </Col>
-                )
-            })}
-            </Row>
+                </Row>
                 </section>
         <Footer/>
     </div>
