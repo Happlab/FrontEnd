@@ -2,6 +2,7 @@ import React from 'react';
 import { Navigate } from 'react-router-dom';
 import Navbar1 from '../../navegation/navbar/Navbar1';
 import Footer from '../../navegation/footer/Footer';
+import './Perfil.scss'
 
 class Perfil extends React.Component {
     constructor(props) {
@@ -42,15 +43,16 @@ class Perfil extends React.Component {
         return (
             <div className="row">
                 {this.state.isPassword && (
-                    <Navigate to="/Password" state={{ data }}/>
-                )}
-                {this.state.isCargo && (
-                    <Navigate to="/Cargo" />
+                    <Navigate to="/Password" state={{ data }} />
                 )}
                 <Navbar1 />
-                <div className="container">
+                <hr className="mb-0"/>
+                <div className="container mb-0">
+                    <div className="d-flex flex-column align-items-center text-center p-4 py-3">
+                        <h1 className="titulo-estandar">Perfil de usuario</h1>
+                    </div>
                     <div className="row">
-                        <div className="col-md-5">
+                        <div className="col-md-4 border-right">
                             <div className="p-5 py-5">
                                 <div className="card mb-3">
                                     <div className="card-body">
@@ -63,8 +65,8 @@ class Perfil extends React.Component {
                                 </div>
                             </div>
                         </div>
-                        <div className="col-md-6">
-                            <div className="p-8 py-5">
+                        <div className="col-md-4 border-right">
+                            <div className="p-5 py-5">
                                 <div className="card mb-5">
                                     <div className="card-body">
                                         <div className="row">
@@ -105,29 +107,54 @@ class Perfil extends React.Component {
                                         <hr />
                                         <div className="row">
                                             <div className="col-sm-3">
-                                                <p className="mb-0">Telefono</p>
+                                                <p className="mb-0">Rol</p>
                                             </div>
                                             <div className="col-sm-9">
-                                                <p className="text-muted mb-0">3006851012</p>
+                                                <p className="text-muted mb-0">Docente</p>
                                             </div>
                                         </div>
                                         <hr />
                                         <div className="row">
                                             <div className="col-sm-3">
-                                                <p className="mb-0">Direccion</p>
+                                                <p className="mb-0">Token</p>
                                             </div>
                                             <div className="col-sm-9">
-                                                <p className="text-muted mb-0">Santo Domingo, Popayan</p>
+                                                <p className="text-muted mb-0">13455</p>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="p-5 py-5">
+                                <div className="card mb-4">
+                                    <div className="card-body">
+                                        <div class="d-flex justify-content-between align-items-center cargo"><h4>Cargo Actual</h4></div><br />
+                                        <label for="selectCargo">Usted es docente de</label>
+                                        <select class="form-control" id="selectCargo" disabled={!this.state.isCargo}>
+                                            <option>Primaria</option>
+                                            <option>Secundaria</option>
+                                            <option>Universidad</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
                             <div className="d-flex justify-content-center">
-                                <button onClick={this.onChangedStatusAccount} className="btn btn-primary">Darme de baja</button>
+                                <button onClick={this.onChangedCargo} className="btn btn-outline-primary ms-1" disabled={!this.state.isCargo}>Guardar</button>
                             </div>
                         </div>
                     </div>
+                    <div className="row d-flex justify-content-center">
+                        <div class="col-md-0">
+                            <div class="p-0 py-0">
+                                <div className="d-flex justify-content-center">
+                                    <button onClick={this.onChangedStatusAccount} className="btn-lg btn-primary">Darme de baja</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <br/>
                 </div>
                 <Footer />
             </div>

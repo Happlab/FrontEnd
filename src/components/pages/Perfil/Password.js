@@ -27,7 +27,7 @@ class Password extends React.Component {
         event.preventDefault();
         console.log(this.state.data_user);
         // alert(this.state.data_user.state);
-        alert("old " + this.state.inputPasswordOld+" new " + this.state.inputPasswordNew + " verified" + this.state.inputPasswordVerified);
+        alert("old " + this.state.inputPasswordOld + " new " + this.state.inputPasswordNew + " verified" + this.state.inputPasswordVerified);
     }
 
     render() {
@@ -38,8 +38,8 @@ class Password extends React.Component {
                     <span className="anchor" id="formChangePassword"></span>
                     <hr className="mb-5" />
                     <div className="card card-outline-secondary">
-                        <div className="card-header">
-                            <h3 className="mb-1">Actualizar Contraseña</h3>
+                        <div className="header-tarjeta">
+                            <h3 className="titulo-form">Actualizar Contraseña</h3>
                         </div>
                         <div className="card-body">
                             <form className="form" role="form" onSubmit={this.handleSubmit}>
@@ -67,7 +67,7 @@ class Password extends React.Component {
                             </form>
                         </div>
                     </div>
-                    <hr className="mb-5" />
+                    <hr className="mb-5"/>
                 </div>
                 <Footer />
             </div>
