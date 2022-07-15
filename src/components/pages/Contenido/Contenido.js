@@ -13,10 +13,6 @@ import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import Fancybox from '../../pages/Investigadores/fancybox'
 
-  function handleClick() {
-    alert('Hello!');
-  } 
-
 
 class Contenido extends React.Component{
     constructor(props){
@@ -90,7 +86,7 @@ class Contenido extends React.Component{
                                             </Card>  
                                     </Col> 
                                     </div>
-                                    <div id="dialog-content" style={{ display: "none", maxWidth: "500px" }}>
+                                    <div id="dialog-content" style={{ display: "none", maxWidth: "800px" }}>
                                         <h3> Titulo contenido</h3>
                                         <h4> Autor contenido</h4>
                                         <h5> Fecha de subida</h5>
