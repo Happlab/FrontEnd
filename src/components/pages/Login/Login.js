@@ -14,7 +14,7 @@ class Login extends React.Component {
 			password: "",
 			valid_user: null,
 			press: false,
-			data_user: {}
+			data_user: "",
 		};
 		this.handleChange = this.handleChange.bind(this);
 		this.handleSubmit = this.handleSubmit.bind(this);
@@ -54,10 +54,7 @@ class Login extends React.Component {
 				return text;
 			})
 			.then(data => {
-				if( status === 200 && data !== "" ) {
-					this.setState(values => ({ ...values, valid_user: true, data_user: data }));
-					alert(data);
-				}
+				if( status === 200 && data !== "" ) this.setState(values => ({ ...values, valid_user: true, data_user: data }));
 				else alert("El correo o la contraseña son incorrectas")
 			})
 			.catch(error => console.log("Error", error))
@@ -70,9 +67,10 @@ class Login extends React.Component {
 	}
 	let valid_user = this.state.valid_user;
 	let data = this.state.data_user;
+	console.log(data);
     return(
         <div className='main-login'>
-			{valid_user && (<Navigate to="/perfil" state={{ data }}/>)}
+			{valid_user && (<Navigate to='/perfil' state={{ data }} />)}
             <Navbar1/>
             <section id='contenedor' className="elementor-section elementor-top-section elementor-element elementor-element-2bd9dc1 elementor-section-full_width elementor-section-height-full elementor-section-height-default elementor-section-items-middle" data-id="2bd9dc1" data-element_type="section" style={{backgroundColor : '#fff'}}>
 					<div id='svg-top' className="elementor-shape elementor-shape-top" data-negative="false">
@@ -159,6 +157,5 @@ class Login extends React.Component {
     )
 	}
 }
-
 
 export default Login;

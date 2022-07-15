@@ -1,15 +1,13 @@
 import React from 'react';
-import { Navigate } from 'react-router-dom';
+import { useLocation, Navigate } from 'react-router-dom';
 import Navbar1 from '../../navegation/navbar/Navbar1';
 import Footer from '../../navegation/footer/Footer';
 
 class Perfil extends React.Component {
     constructor(props) {
         super(props);
-        console.log(props.state);
-        console.log(props.location);
         this.state = {
-            // data_user: props.location.state.data,
+            data_user: this.props.location.state.data,
             isPassword: false,
             isCargo: false,
             isStatus: true
@@ -35,17 +33,21 @@ class Perfil extends React.Component {
         this.setState(previousState => ({
             ...previousState, isStatus: !previousState.isStatus
         }))
+        fetch('https://api-happlab.herokuapp.com/persona/update/')
     }
 
     render() {
         let data = this.state.data_user;
+        data = JSON.parse(data);
+        console.log(data);
         return (
             <div className="row">
                 {this.state.isPassword && (
-                    <Navigate to="/Password" state={{ data }}/>
+                    data = JSON.stringify(data),
+                    <Navigate to="/Password" state={{ data }} />
                 )}
                 {this.state.isCargo && (
-                    <Navigate to="/Cargo" />
+                    <Navigate to="/Cargo" state={{ data }} />
                 )}
                 <Navbar1 />
                 <div className="container">
@@ -54,7 +56,7 @@ class Perfil extends React.Component {
                             <div className="p-5 py-5">
                                 <div className="card mb-3">
                                     <div className="card-body">
-                                        <div className="d-flex flex-column align-items-center text-center p-4 py-3"><img className="rounded-circle mt-5" width="200px" src="https://st3.depositphotos.com/15648834/17930/v/600/depositphotos_179308454-stock-illustration-unknown-person-silhouette-glasses-profile.jpg" alt='Foto perfil' /><span className="font-weight-bold">CRISTIAN</span><span className="text-black-50">cdnarvaez@ejemplo.edu.co</span><span> </span></div>
+                                        <div className="d-flex flex-column align-items-center text-center p-4 py-3"><img className="rounded-circle mt-5" width="200px" src="https://st3.depositphotos.com/15648834/17930/v/600/depositphotos_179308454-stock-illustration-unknown-person-silhouette-glasses-profile.jpg" alt='Foto perfil' /><span className="font-weight-bold">{data.nombres}</span><span className="text-black-50">{data.email}</span><span> </span></div>
                                         <div className="d-flex justify-content-center mb-2">
                                             <button onClick={this.onChangedPassword} className="btn btn-primary">Cambiar contraseña</button>
                                             <button onClick={this.onChangedCargo} className="btn btn-outline-primary ms-1">Editar cargo</button>
@@ -72,7 +74,7 @@ class Perfil extends React.Component {
                                                 <p className="mb-0">Cedula</p>
                                             </div>
                                             <div className="col-sm-9">
-                                                <p className="text-muted mb-0">106174156987</p>
+                                                <p className="text-muted mb-0">{data.cedula}</p>
                                             </div>
                                         </div>
                                         <hr />
@@ -81,7 +83,7 @@ class Perfil extends React.Component {
                                                 <p className="mb-0">Nombre</p>
                                             </div>
                                             <div className="col-sm-9">
-                                                <p className="text-muted mb-0">Cristian</p>
+                                                <p className="text-muted mb-0">{data.nombres}</p>
                                             </div>
                                         </div>
                                         <hr />
@@ -90,7 +92,7 @@ class Perfil extends React.Component {
                                                 <p className="mb-0">Apellido</p>
                                             </div>
                                             <div className="col-sm-9">
-                                                <p className="text-muted mb-0">Narvaez</p>
+                                                <p className="text-muted mb-0">{data.apellidos}</p>
                                             </div>
                                         </div>
                                         <hr />
@@ -99,25 +101,25 @@ class Perfil extends React.Component {
                                                 <p className="mb-0">Email</p>
                                             </div>
                                             <div className="col-sm-9">
-                                                <p className="text-muted mb-0">example@example.com</p>
+                                                <p className="text-muted mb-0">{data.email}</p>
                                             </div>
                                         </div>
                                         <hr />
                                         <div className="row">
                                             <div className="col-sm-3">
-                                                <p className="mb-0">Telefono</p>
+                                                <p className="mb-0">Rol</p>
                                             </div>
                                             <div className="col-sm-9">
-                                                <p className="text-muted mb-0">3006851012</p>
+                                                <p className="text-muted mb-0">{data.rol}</p>
                                             </div>
                                         </div>
                                         <hr />
                                         <div className="row">
                                             <div className="col-sm-3">
-                                                <p className="mb-0">Direccion</p>
+                                                <p className="mb-0">Tokens</p>
                                             </div>
                                             <div className="col-sm-9">
-                                                <p className="text-muted mb-0">Santo Domingo, Popayan</p>
+                                                <p className="text-muted mb-0">{data.tokens}</p>
                                             </div>
                                         </div>
                                     </div>
@@ -135,4 +137,7 @@ class Perfil extends React.Component {
     }
 }
 
-export default Perfil;
+export default function WithRoutePerfil(props) {
+    let location = useLocation();
+    return <Perfil {...props} location={location}/>
+}
