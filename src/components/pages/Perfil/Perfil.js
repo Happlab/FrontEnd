@@ -2,6 +2,7 @@ import React from 'react';
 import { useLocation, Navigate } from 'react-router-dom';
 import Navbar1 from '../../navegation/navbar/Navbar1';
 import Footer from '../../navegation/footer/Footer';
+import './Perfil.scss'
 
 class Perfil extends React.Component {
     constructor(props) {
@@ -10,11 +11,16 @@ class Perfil extends React.Component {
             data_user: this.props.location.state.data,
             isPassword: false,
             isCargo: false,
-            isStatus: true
+            isStatus: false,
+            cargo: "",
+            updateVerified: false
         };
         this.onChangedPassword = this.onChangedPassword.bind(this);
         this.onChangedCargo = this.onChangedCargo.bind(this);
         this.onChangedStatusAccount = this.onChangedStatusAccount.bind(this);
+        this.onChangedStatus = this.onChangedStatus.bind(this);
+        this.onChangedUpdate = this.onChangedUpdate.bind(this);
+        this.handleChange = this.handleChange.bind(this);
     }
 
     onChangedPassword() {
@@ -29,30 +35,88 @@ class Perfil extends React.Component {
         }))
     }
 
-    onChangedStatusAccount() {
+    onChangedStatus() {
         this.setState(previousState => ({
             ...previousState, isStatus: !previousState.isStatus
+        }));
+    }
+
+    onChangedUpdate() {
+        this.setState(previousState => ({
+            ...previousState, updateVerified: !previousState.updateVerified
+        }));
+    }
+
+    onChangedStatusAccount(email) {
+        const requestOptions = {
+            method: 'DELETE',
+        };
+        fetch('https://api-happlab.herokuapp.com/persona/desactivar/'+email, requestOptions)
+            .then(response => {
+                if(response.status === 200) alert("Cuenta desactivada");
+                else alert("No se pudo desactivar la cuenta");
+            })
+    }
+
+    handleChange(event) {
+        this.setState(previousState => ({
+            ...previousState, cargo: event.target.value
         }))
-        fetch('https://api-happlab.herokuapp.com/persona/update/')
+    }
+
+    saveChange(data) {
+        this.setState(values => ({ ...values, updateVerified: !this.state.updateVerified, isCargo: !this.state.isCargo}));
+        let status = 0;
+        const requestOptions = {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        };
+        fetch('https://api-happlab.herokuapp.com/persona/update', requestOptions)
+            .then(response => {
+                let text = response.text();
+                status = response.status;
+                return text;
+            })
+            .then(data => {
+                if(status === 200 && data !== "")  {
+                    alert("Cargo modificado");
+                    this.setState(values => ({
+                        ...values, data_user: data
+                    }))
+                }
+                else alert("No se pudo modificar el cargo");
+            })
+            .catch(error => console.log("Error", error))
     }
 
     render() {
         let data = this.state.data_user;
         data = JSON.parse(data);
-        console.log(data);
+        console.log(this.state.cargo);
+        data.rol = (this.state.cargo !== "") ? this.state.cargo : data.rol;
         return (
             <div className="row">
                 {this.state.isPassword && (
                     data = JSON.stringify(data),
                     <Navigate to="/Password" state={{ data }} />
                 )}
-                {this.state.isCargo && (
-                    <Navigate to="/Cargo" state={{ data }} />
+                {this.state.isStatus && (
+                    this.onChangedStatusAccount(data.email)
+                )}
+                {this.state.updateVerified && (
+                    this.saveChange(data),
+                    console.log(data)
                 )}
                 <Navbar1 />
-                <div className="container">
+                <div className="container m-0">
+                    <div className="d-flex flex-column align-items-center text-center p-4 py-3">
+                        <h1 className="titulo-estandar">Perfil de usuario</h1>
+                    </div>
                     <div className="row">
-                        <div className="col-md-5">
+                        <div className="col-md-4 border-right">
                             <div className="p-5 py-5">
                                 <div className="card mb-3">
                                     <div className="card-body">
@@ -65,71 +129,96 @@ class Perfil extends React.Component {
                                 </div>
                             </div>
                         </div>
-                        <div className="col-md-6">
-                            <div className="p-8 py-5">
+                        <div className="col-md-4 border-right">
+                            <div className="p-5 py-5">
                                 <div className="card mb-5">
                                     <div className="card-body">
                                         <div className="row">
-                                            <div className="col-sm-3">
+                                            <div className="col-sm-4">
                                                 <p className="mb-0">Cedula</p>
                                             </div>
-                                            <div className="col-sm-9">
+                                            <div className="col-sm-8">
                                                 <p className="text-muted mb-0">{data.cedula}</p>
                                             </div>
                                         </div>
                                         <hr />
                                         <div className="row">
-                                            <div className="col-sm-3">
+                                            <div className="col-sm-4">
                                                 <p className="mb-0">Nombre</p>
                                             </div>
-                                            <div className="col-sm-9">
+                                            <div className="col-sm-8">
                                                 <p className="text-muted mb-0">{data.nombres}</p>
                                             </div>
                                         </div>
                                         <hr />
                                         <div className="row">
-                                            <div className="col-sm-3">
+                                            <div className="col-sm-4">
                                                 <p className="mb-0">Apellido</p>
                                             </div>
-                                            <div className="col-sm-9">
+                                            <div className="col-sm-8">
                                                 <p className="text-muted mb-0">{data.apellidos}</p>
                                             </div>
                                         </div>
                                         <hr />
                                         <div className="row">
-                                            <div className="col-sm-3">
+                                            <div className="col-sm-4">
                                                 <p className="mb-0">Email</p>
                                             </div>
-                                            <div className="col-sm-9">
+                                            <div className="col-sm-8">
                                                 <p className="text-muted mb-0">{data.email}</p>
                                             </div>
                                         </div>
                                         <hr />
                                         <div className="row">
-                                            <div className="col-sm-3">
+                                            <div className="col-sm-4">
                                                 <p className="mb-0">Rol</p>
                                             </div>
-                                            <div className="col-sm-9">
+                                            <div className="col-sm-8">
                                                 <p className="text-muted mb-0">{data.rol}</p>
                                             </div>
                                         </div>
                                         <hr />
                                         <div className="row">
-                                            <div className="col-sm-3">
+                                            <div className="col-sm-4">
                                                 <p className="mb-0">Tokens</p>
                                             </div>
-                                            <div className="col-sm-9">
+                                            <div className="col-sm-8">
                                                 <p className="text-muted mb-0">{data.tokens}</p>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="p-5 py-5">
+                                <div className="card mb-4">
+                                    <div className="card-body">
+                                        <div class="d-flex justify-content-between align-items-center cargo"><h4>Cargo Actual</h4></div><br />
+                                        <label for="selectCargo">Usted es docente de</label>
+                                        <select class="form-control" id="selectCargo" disabled={!this.state.isCargo} value={data.rol} onChange={this.handleChange}>
+                                            <option value="Docente de Primaria">Primaria</option>
+                                            <option value="Docente de Secundaria">Secundaria</option>
+                                            <option value="Docente Universitario">Universidad</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
                             <div className="d-flex justify-content-center">
-                                <button onClick={this.onChangedStatusAccount} className="btn btn-primary">Darme de baja</button>
+                                <button onClick={this.onChangedUpdate} className="btn btn-outline-primary ms-1" disabled={!this.state.isCargo}>Guardar</button>
                             </div>
                         </div>
                     </div>
+                    <div className="row d-flex justify-content-center">
+                        <div class="col-md-0">
+                            <div class="p-0 py-0">
+                                <div className="d-flex justify-content-center">
+                                    <button onClick={this.onChangedStatus} className="btn-lg btn-primary">Darme de baja</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <br/>
                 </div>
                 <Footer />
             </div>

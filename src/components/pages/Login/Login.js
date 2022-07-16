@@ -67,7 +67,6 @@ class Login extends React.Component {
 	}
 	let valid_user = this.state.valid_user;
 	let data = this.state.data_user;
-	console.log(data);
     return(
         <div className='main-login'>
 			{valid_user && (<Navigate to='/perfil' state={{ data }} />)}

@@ -31,17 +31,15 @@ const Registro = () => {
 
     return (
         <Row className="mx-auto justify-content-center" >
-
             <Navbar1 />
             <Alert dismissible variant="danger" onClose={() => setError(true)} show={error}>
                 Error regitrando el usuario, Correo electronico ya registrado.
             </Alert>
             <Alert dismissible variant="success" onClose={() => setSuccess(true)} show={success}>
-                Usuario creado con éxito. Haz click <Link className="alert-link" to="/">aquí</Link> para iniciar sesión
+                Usuario creado con éxito. Haz click <Link className="alert-link" to="/Login">aquí</Link> para iniciar sesión
             </Alert>
             <Col lg='5'>
                 <div lg='5'>
-
                     <Formik
                         initialValues={{
                             name: '',
@@ -55,7 +53,6 @@ const Registro = () => {
                         validationSchema={SignupSchema}
                         onSubmit={values => {
                             const data = { 'email': values.email, 'password': values.password, 'cedula': values.documentId, 'nombres': values.name, 'apellidos': values.lastName, 'rol': values.teacherType, 'tokens': 0 };
-                            alert(JSON.stringify(data))
                             const requestOptions = {
                                 method: 'POST',
                                 mode: 'cors',
@@ -68,7 +65,6 @@ const Registro = () => {
                             }
                             fetch('http://api-happlab.herokuapp.com/persona/registro', requestOptions)
                                 .then(response => {
-                                    console.log("Response", response)
                                     if (response.status === 200) setSuccess(true)
                                     else setError(true)
                                 })
@@ -164,7 +160,7 @@ const Registro = () => {
                                         value={props.values.teacherType} onChange={props.handleChange}
                                     >
                                         <option hidden selected>Selecciona una opción</option>
-                                        <option value= 'Docente de primaria'>Primaria</option>
+                                        <option value= 'Docente de Primaria'>Primaria</option>
                                         <option value= 'Docente de Secundaria'>Secundaria</option>
                                         <option value= 'Docente Universitario'>Universidad</option>
                                         <option value= 'Otro'>Otro</option>

@@ -29,14 +29,14 @@ class Password extends React.Component {
 
     handleSubmit(event) {
         event.preventDefault();
-        alert("old " + this.state.inputPasswordOld+" new " + this.state.inputPasswordNew + " verified" + this.state.inputPasswordVerified);
         if(this.state.inputPasswordNew === this.state.inputPasswordVerified) {
             let status = 0;
+            let email = JSON.parse(this.state.data_user).email;
     		const requestOptions = {
 	    		method: 'GET',
     			mode: 'cors',
     		}
-            fetch("https://api-happlab.herokuapp.com/persona/Login/"+JSON.parse(this.state.data_user).email+"&"+this.state.inputPasswordOld, requestOptions)
+            fetch("https://api-happlab.herokuapp.com/persona/Login/"+email+"&"+this.state.inputPasswordOld, requestOptions)
                 .then(response => {
                     let text = response.text();
                     status = response.status;
@@ -52,16 +52,22 @@ class Password extends React.Component {
 
     onSendUpdateRequest(data){
         data.password = this.state.inputPasswordNew;
+        let status = 0;
         const requestOptions = {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify(data)
-        }
+        };
         fetch("https://api-happlab.herokuapp.com/persona/update", requestOptions)
             .then(response => {
-                if(response.status === 200) this.setState(values => ({ ...values, updateVerified: !this.state.updateVerified}))
+                let text = response.text();
+                status = response.status;
+                return text;
+            })
+            .then(data => {
+                if(status === 200 && data !== "") this.setState(values => ({ ...values, updateVerified: !this.state.updateVerified, data_user: data}))
             })
             .catch(error => console.log("Error", error))
     }
@@ -69,7 +75,6 @@ class Password extends React.Component {
     render() {
         let data = this.state.data_user;
         data = JSON.parse(data);
-        console.log(data);
         return (
             <div className="row">
                 {this.state.userVerified && (
@@ -84,8 +89,8 @@ class Password extends React.Component {
                     <span className="anchor" id="formChangePassword"></span>
                     <hr className="mb-5" />
                     <div className="card card-outline-secondary">
-                        <div className="card-header">
-                            <h3 className="mb-1">Actualizar Contraseña</h3>
+                        <div className="header-tarjeta">
+                            <h3 className="titulo-form">Actualizar Contraseña</h3>
                         </div>
                         <div className="card-body">
                             <form className="form" onSubmit={this.handleSubmit}>
@@ -113,7 +118,7 @@ class Password extends React.Component {
                             </form>
                         </div>
                     </div>
-                    <hr className="mb-5" />
+                    <hr className="mb-5"/>
                 </div>
                 <Footer />
             </div>
