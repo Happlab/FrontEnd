@@ -93,6 +93,18 @@ class Contenido extends React.Component{
                                         <Rating initialRating={2.5} fractions={2}  emptySymbol="far fa-star fa-2x" fullSymbol="fas fa-star fa-2x"/>
                                         <p> Lorem fistrum por la gloria de mi madre esse jarl aliqua llevame al sircoo. De la pradera ullamco qué dise usteer está la cosa muy malar.Lorem fistrum por la gloria de mi madre esse jarl aliqua llevame al sircoo. De la pradera ullamco qué dise usteer está la cosa muy malar.Lorem fistrum por la gloria de mi madre esse jarl aliqua llevame al sircoo. De la pradera ullamco qué dise usteer está la cosa muy malar.</p>
                                         <p> #Tags</p>
+                                        <p> Dejanos tu Comentario</p>
+                                        <p> <input type="text" value="" />  <button>Subir</button></p>
+                                        <h4> Comentarios </h4>
+                                        {[...Array(4)].map((e, i) => {
+                                            return(
+                                                <Card>
+                                                    <CardTitle> {this.state.arrayContenidos[1].user} </CardTitle>
+                                                    <CardText> {this.state.arrayContenidos[1].resume} </CardText>
+                                                </Card>
+
+                                            )
+                                        })}
                                     </div>
                                 </div>
                             </Fancybox>
