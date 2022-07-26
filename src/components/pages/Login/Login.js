@@ -5,6 +5,7 @@ import Footer from '../../navegation/footer/Footer'
 import '../Login/Login.scss'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {faEye,faEyeLowVision} from '@fortawesome/free-solid-svg-icons';
+import { onLogin } from '../../services/UserServices';
 
 class Login extends React.Component {
 	constructor(props) {
@@ -42,22 +43,12 @@ class Login extends React.Component {
 
 	handleSubmit(event) {
 		event.preventDefault();
-		let status = 0;
-		const request_options = {
-			method: 'GET',
-			mode: 'cors',
-		}
-		fetch('https://api-happlab.herokuapp.com/persona/Login/'+this.state.email+"&"+this.state.password, request_options)
-			.then(response => {
-				let text = response.text();
-				status = response.status;
-				return text;
-			})
-			.then(data => {
-				if( status === 200 && data !== "" ) this.setState(values => ({ ...values, valid_user: true, data_user: data }));
-				else alert("El correo o la contraseña son incorrectas")
-			})
-			.catch(error => console.log("Error", error))
+		let login = onLogin(this.state.email, this.state.password);
+		login.then(data => {
+			console.log("data1 ",data);
+			if(data !== null) this.setState(values => ({ ...values, valid_user: true, data_user: data }));
+			else alert("El correo o la contraseña son incorrectas");
+		})
 	}
 
 	render() {
@@ -69,7 +60,9 @@ class Login extends React.Component {
 	let data = this.state.data_user;
     return(
         <div className='main-login'>
-			{valid_user && (<Navigate to='/perfil' state={{ data }} />)}
+			{valid_user && (
+				<Navigate to='/perfil' state={{ data }} />
+			)}
             <Navbar1/>
             <section id='contenedor' className="elementor-section elementor-top-section elementor-element elementor-element-2bd9dc1 elementor-section-full_width elementor-section-height-full elementor-section-height-default elementor-section-items-middle" data-id="2bd9dc1" data-element_type="section" style={{backgroundColor : '#fff'}}>
 					<div id='svg-top' className="elementor-shape elementor-shape-top" data-negative="false">

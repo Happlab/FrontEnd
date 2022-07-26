@@ -2,6 +2,7 @@ import React from 'react';
 import { useLocation, Navigate } from 'react-router-dom';
 import Navbar1 from '../../navegation/navbar/Navbar1';
 import Footer from '../../navegation/footer/Footer';
+import { onLogin, updateUser } from '../../services/UserServices';
 
 class Password extends React.Component {
     constructor(props) {
@@ -30,46 +31,21 @@ class Password extends React.Component {
     handleSubmit(event) {
         event.preventDefault();
         if(this.state.inputPasswordNew === this.state.inputPasswordVerified) {
-            let status = 0;
             let email = JSON.parse(this.state.data_user).email;
-    		const requestOptions = {
-	    		method: 'GET',
-    			mode: 'cors',
-    		}
-            fetch("https://api-happlab.herokuapp.com/persona/Login/"+email+"&"+this.state.inputPasswordOld, requestOptions)
-                .then(response => {
-                    let text = response.text();
-                    status = response.status;
-                    return text;
-                })
-                .then(data => {
-                    if( status === 200 & data !=="" ){
-                        this.setState(values => ({ ...values, userVerified: !this.state.userVerified }));
-                    } else alert("La contraseña actual ingresada no es correcta");
+            let passNew = onLogin(email, this.state.inputPasswordOld);
+            passNew.then(data => {
+                    if(data !== null) this.setState(values => ({ ...values, userVerified: !this.state.userVerified }));
+                    else alert("La contraseña actual ingresada no es correcta");
                 })
         } else alert("La contraseña nueva no coinciden, verifique nuevamente");
     }
 
     onSendUpdateRequest(data){
         data.password = this.state.inputPasswordNew;
-        let status = 0;
-        const requestOptions = {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(data)
-        };
-        fetch("https://api-happlab.herokuapp.com/persona/update", requestOptions)
-            .then(response => {
-                let text = response.text();
-                status = response.status;
-                return text;
+        let update = updateUser(data);
+        update.then(data => {
+                if(data !== null) this.setState(values => ({ ...values, updateVerified: !this.state.updateVerified, data_user: data}))
             })
-            .then(data => {
-                if(status === 200 && data !== "") this.setState(values => ({ ...values, updateVerified: !this.state.updateVerified, data_user: data}))
-            })
-            .catch(error => console.log("Error", error))
     }
 
     render() {

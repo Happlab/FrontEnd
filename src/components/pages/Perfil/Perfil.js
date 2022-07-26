@@ -3,6 +3,7 @@ import { useLocation, Navigate } from 'react-router-dom';
 import Navbar1 from '../../navegation/navbar/Navbar1';
 import Footer from '../../navegation/footer/Footer';
 import './Perfil.scss'
+import { disabledUser, updateUser } from '../../services/UserServices';
 
 class Perfil extends React.Component {
     constructor(props) {
@@ -21,6 +22,7 @@ class Perfil extends React.Component {
         this.onChangedStatus = this.onChangedStatus.bind(this);
         this.onChangedUpdate = this.onChangedUpdate.bind(this);
         this.handleChange = this.handleChange.bind(this);
+        this.saveChange = this.saveChange.bind(this);
     }
 
     onChangedPassword() {
@@ -48,14 +50,11 @@ class Perfil extends React.Component {
     }
 
     onChangedStatusAccount(email) {
-        const requestOptions = {
-            method: 'DELETE',
-        };
-        fetch('https://api-happlab.herokuapp.com/persona/desactivar/'+email, requestOptions)
-            .then(response => {
-                if(response.status === 200) alert("Cuenta desactivada");
-                else alert("No se pudo desactivar la cuenta");
-            })
+        let disable = disabledUser(email);
+        disable.then(response => {
+            if(response === 200) alert("Cuenta Desactivada");
+            else alert("No se pudo desactivar la cuenta");
+        });
     }
 
     handleChange(event) {
@@ -66,36 +65,19 @@ class Perfil extends React.Component {
 
     saveChange(data) {
         this.setState(values => ({ ...values, updateVerified: !this.state.updateVerified, isCargo: !this.state.isCargo}));
-        let status = 0;
-        const requestOptions = {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(data)
-        };
-        fetch('https://api-happlab.herokuapp.com/persona/update', requestOptions)
-            .then(response => {
-                let text = response.text();
-                status = response.status;
-                return text;
-            })
-            .then(data => {
-                if(status === 200 && data !== "")  {
-                    alert("Cargo modificado");
-                    this.setState(values => ({
-                        ...values, data_user: data
-                    }))
-                }
-                else alert("No se pudo modificar el cargo");
-            })
-            .catch(error => console.log("Error", error))
+        let update = updateUser(data);
+        update.then(data_user => {
+            if (data_user !== null) {
+                this.setState(values => ({ ...values, data_user: data_user}));
+                alert("Cargo modificado");
+
+            } else alert("No se pudo modificar el cargo");
+        })
     }
 
     render() {
         let data = this.state.data_user;
         data = JSON.parse(data);
-        console.log(this.state.cargo);
         data.rol = (this.state.cargo !== "") ? this.state.cargo : data.rol;
         return (
             <div className="row">
@@ -107,8 +89,7 @@ class Perfil extends React.Component {
                     this.onChangedStatusAccount(data.email)
                 )}
                 {this.state.updateVerified && (
-                    this.saveChange(data),
-                    console.log(data)
+                    this.saveChange(data)
                 )}
                 <Navbar1 />
                 <div className="container m-0">
