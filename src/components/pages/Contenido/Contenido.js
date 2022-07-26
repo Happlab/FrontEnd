@@ -95,7 +95,7 @@ class Contenido extends React.Component{
         const MostrarContenido=(props)=>{
             const array2=[];
             if(!this.state.estadoSubirContenido){ 
-                        //aqui va el contenido
+                //aqui va el contenido
                 titulo = this.state.arrayContenidos[0].tittle;
                 user = this.state.arrayContenidos[0].user;
                 rate = this.state.arrayContenidos[0].rating;

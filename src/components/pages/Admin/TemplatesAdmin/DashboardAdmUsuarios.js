@@ -1,11 +1,75 @@
-import React, { Component } from 'react'
-
+import React, { Component , useState} from 'react'
+import {PeticionEnvio, PeticionGet} from '../PeticionesAdmin.js'
 export default class Dashboard extends Component {
+    constructor (props){
+        super();
+        this.state={
+            usuarios: [],
+            pendientes: []
+        }
+        this.Actualizar=this.Actualizar.bind(this);
+        this.Eliminar=this.Eliminar.bind(this);
+        this.Inactivar=this.Inactivar.bind(this);
+    }
+    componentDidMount(){
+        this.ListarUsuarios();
+    }
+
+    Inactivar(user){
+        const url='http://api-happlab.herokuapp.com/persona/desactivar/'+user.email;
+        const mensajeError='no fue posible inactivar el usuario';
+        const metodo='DELETE';
+        const peticion=PeticionEnvio(' ', url, mensajeError, metodo);
+        peticion.then(data =>{
+            if(data){
+                this.ListarUsuarios();
+            }
+        });
+        
+    }
+    Eliminar(user){
+        const url='http://api-happlab.herokuapp.com/persona/delete/'+user.email;
+        const mensajeError='no fue posible eliminar el usuario';
+        const metodo='DELETE';
+        const peticion=PeticionEnvio(' ', url, mensajeError, metodo);
+        peticion.then(data =>{
+            if(data){
+                this.UsuariosPendientes();
+            }
+        });  
+    }
+    Actualizar(user){
+        user.pendiente=false;
+        user.activo=true;
+        const url='http://api-happlab.herokuapp.com/persona/update';
+        const mensajeError='no fue posible actualizar estado del usuario';
+        const metodo='PUT';
+        const peticion=PeticionEnvio(user, url, mensajeError, metodo);
+        peticion.then(data =>{
+            if(data){
+                this.UsuariosPendientes();
+                this.ListarUsuarios();
+            }
+        });
+            
+    }     
+    ListarUsuarios() {
+        const url='https://api-happlab.herokuapp.com/persona/';
+        const mensajeError='no hay usuarios';
+        const datos=PeticionGet(url, mensajeError);
+        datos.then(data =>{
+            if(data!==null){
+                this.setState({usuarios: Array.from(data)});
+            }
+        });  
+    }
     render() {
         return (
             <div>
                 {/*Lista d solicitudes*/}
                 <div className="content-wrapper" style={{ minHeight: '2080.12px' }}>
+                <h1 align="center">Módulo Administrador - Usuarios</h1>
+                <br></br>
                 {/* Estádisticas de voisitantes y usuarios */}
                     <div class="container-fluid">
                     <br/>
@@ -32,7 +96,7 @@ export default class Dashboard extends Component {
                                     <div className="icon">
                                         <i className="ion ion-pie-graph" />
                                     </div>
-                                    <a href="#" className="small-box-footer">More info <i className="fas fa-arrow-circle-right" /></a>
+                                    <a href="./AdminUsuarios" className="small-box-footer">More info <i className="fas fa-arrow-circle-right" /></a>
                                 </div>
                             </div>
                         </div>
@@ -41,7 +105,7 @@ export default class Dashboard extends Component {
                         <div className="container-fluid">
                             <div className="row mb-2">
                                 <div className="col-sm-12">
-                                    <h1 text-align="center">Tablas de gestion de usuarios</h1>
+                                    <h1 text-align="center">Tablas de gestión de usuarios</h1>
                                 </div>
                             </div>
                         </div>
@@ -53,16 +117,6 @@ export default class Dashboard extends Component {
                                     <div className="card">
                                         <div className="card-header">
                                             <h3 className="card-title">Solicitudes de usuarios</h3>
-                                            <div className="card-tools">
-                                                <div className="input-group input-group-sm" style={{ width: 150 }}>
-                                                    <input type="text" name="table_search" className="form-control float-right" placeholder="Search" />
-                                                    <div className="input-group-append">
-                                                        <button type="submit" className="btn btn-default">
-                                                            <i className="fas fa-search" />
-                                                        </button>
-                                                    </div>
-                                                </div>
-                                            </div>
                                         </div>
                                         <div className="card-body table-responsive p-0" style={{ height: 300 }}>
                                             <table className="table table-head-fixed text-nowrap">
@@ -72,17 +126,18 @@ export default class Dashboard extends Component {
                                                         <th>E-mail</th>
                                                         <th>No. Documento</th>
                                                         <th>Tipo profesor</th>
-                                                        <th>Codigo Profesor</th>
                                                         <th>Solicitud</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
+                                                {[...Array(this.state.usuarios.length)].map((e, i) => {
+                                                    if(this.state.usuarios[i].pendiente){
+                                                    return(
                                                     <tr>
-                                                        <td>Luis Manuel Arango</td>
-                                                        <td>lmarango@unicauca.edu.co</td>
-                                                        <td>104616021494</td>
-                                                        <td>Universidad</td>
-                                                        <td>104616021494</td>
+                                                        <td>{this.state.usuarios[i].nombres+' '+this.state.usuarios[i].apellidos}</td>
+                                                        <td>{this.state.usuarios[i].email}</td>
+                                                        <td>{this.state.usuarios[i].cedula}</td>
+                                                        <td>{this.state.usuarios[i].rol}</td>
                                                         <td>
                                                             <div className="btn-group">
                                                                 <button type="button" className="btn btn-danger">Aprobar/Rechazar</button>
@@ -91,13 +146,15 @@ export default class Dashboard extends Component {
                                                                     <span className="sr-only">Desplegar menú</span>
                                                                 </button>
                                                                 <ul className="dropdown-menu" role="menu">
-                                                                    <li><a href="#">Aprobar</a></li>
-                                                                    <li><a href="#">Rechazar</a></li>
+                                                                    <li><a href="#" onClick={()=>this.Actualizar(this.state.usuarios[i])}>Aprobar</a></li>
+                                                                    <li><a href="#" onClick={()=>this.Eliminar(this.state.usuarios[i])}>Rechazar</a></li>
                                                                     <li className="divider" />
                                                                 </ul>
                                                             </div>
                                                         </td>
                                                     </tr>
+                                                    )}
+                                                })}
                                                 </tbody>
                                             </table>
                                         </div>
@@ -114,20 +171,10 @@ export default class Dashboard extends Component {
                                     <div className="card">
                                         <div className="card-header">
                                             <h3 className="card-title">Lista de usuarios</h3>
-                                            <div className="card-tools">
-                                                <div className="input-group input-group-sm" style={{ width: 150 }}>
-                                                    <input type="text" name="table_search" className="form-control float-right" placeholder="Search" />
-                                                    <div className="input-group-append">
-                                                        <button type="submit" className="btn btn-default">
-                                                            <i className="fas fa-search" />
-                                                        </button>
-                                                    </div>
-                                                </div>
-                                            </div>
                                         </div>
                                         <div className="card-body table-responsive p-0" style={{ height: 300 }}>
                                             <table className="table table-head-fixed text-nowrap">
-                                                <thead>
+                                                <thead> 
                                                     <tr>
                                                         <th>Nombre completo</th>
                                                         <th>E-mail</th>
@@ -135,24 +182,31 @@ export default class Dashboard extends Component {
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    <tr>
-                                                        <td>Luis Manuel Arango</td>
-                                                        <td>lmarango@unicauca.edu.co</td>
-                                                        <td>
-                                                            <div className="btn-group">
-                                                                <button type="button" className="btn btn-danger">Activar/Desactivar</button>
-                                                                <button type="button" className="btn btn-danger dropdown-toggle" data-toggle="dropdown">
-                                                                    <span className="caret" />
-                                                                    <span className="sr-only">Desplegar menú</span>
-                                                                </button>
-                                                                <ul className="dropdown-menu" role="menu">
-                                                                    <li><a href="#">Activo</a></li>
-                                                                    <li><a href="#">Inactivo</a></li>
-                                                                    <li className="divider" />
-                                                                </ul>
-                                                            </div>
-                                                        </td>
-                                                    </tr>
+                                                {[...Array(this.state.usuarios.length)].map((e, i) => {
+                                                    if (!this.state.usuarios[i].pendiente) {
+                                                    return(
+                                                        
+                                                            <tr>
+                                                            <td>{this.state.usuarios[i].nombres+' '+this.state.usuarios[i].apellidos}</td>
+                                                            <td>{this.state.usuarios[i].email}</td>
+                                                            <td>
+                                                                <div className="btn-group">
+                                                                    <button type="button" className="btn btn-danger">{this.state.usuarios[i].activo ? 'Activo' : 'Inactivo'}</button>
+                                                                    <button type="button" className="btn btn-danger dropdown-toggle" data-toggle="dropdown">
+                                                                        <span className="caret" />
+                                                                        <span className="sr-only">Desplegar menú</span>
+                                                                    </button>
+                                                                    <ul className="dropdown-menu" role="menu">
+                                                                        <li><a href="#" onClick={()=>this.Actualizar(this.state.usuarios[i])}>Activar</a></li>
+                                                                        <li><a href="#" onClick={()=>this.Inactivar(this.state.usuarios[i])}>Inactivar</a></li>
+                                                                        <li className="divider" />
+                                                                    </ul>
+                                                                </div>
+                                                            </td>
+                                                            </tr>
+                                                    )
+                                                    }
+                                                })}
                                                 </tbody>
                                             </table>
                                         </div>
