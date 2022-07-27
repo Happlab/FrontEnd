@@ -34,11 +34,12 @@ export async function updateUser(data) {
 }
 
 export async function onLogin(email, password) {
+	// return fetch('https://api-happlab.herokuapp.com/persona/Login/'+email+"&"+password, request_options)
 	request_options = {
 		method: 'GET',
 		mode: 'cors',
 	}
-	return fetch('https://api-happlab.herokuapp.com/persona/Login/'+email+"&"+password, request_options)
+    return fetch('http://localhost:8080/persona/Login/'+email+"&"+password, request_options)
 		.then(response => {
 			let text = response.text();
 			status = response.status;

@@ -45,7 +45,6 @@ class Login extends React.Component {
 		event.preventDefault();
 		let login = onLogin(this.state.email, this.state.password);
 		login.then(data => {
-			console.log("data1 ",data);
 			if(data !== null) this.setState(values => ({ ...values, valid_user: true, data_user: data }));
 			else alert("El correo o la contraseña son incorrectas");
 		})
@@ -58,6 +57,7 @@ class Login extends React.Component {
 	}
 	let valid_user = this.state.valid_user;
 	let data = this.state.data_user;
+		console.log("token: "+data);
     return(
         <div className='main-login'>
 			{valid_user && (
