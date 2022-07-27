@@ -18,10 +18,12 @@ class Contenido extends React.Component{
         super(props);
         this.state={
             arrayContenidos:[],
-            estadoSubirContenido:false
+            estadoSubirContenido:false,
+            posSeleccionado:0
         }
         this.handleClickSubirContenido=this.handleClickSubirContenido.bind(this);
         this.descarga=this.descarga.bind(this);
+        this.handleClickEditar = this.handleClickEditar.bind(this);
 
     }
     handleClickSubirContenido(){
@@ -71,6 +73,11 @@ class Contenido extends React.Component{
         });
     }
 
+    handleClickEditar(posicion){
+        this.setState({posSeleccionado: posicion});
+        console.log(this.state.posSeleccionado);
+      }
+
     render(){
 
         const MostrarContenido=(props)=>{
@@ -78,7 +85,7 @@ class Contenido extends React.Component{
             const array2=[];
             if(!this.state.estadoSubirContenido){ 
                         //aqui va el contenido
-                        for(var i=0;i<this.state.arrayContenidos.length;i++){
+                        for(let i=0;i<this.state.arrayContenidos.length;i++){
                             array2[i]=
                             <div>
                                     <Col>
@@ -91,9 +98,13 @@ class Contenido extends React.Component{
                                                 <CardText className='content-card'>{this.state.arrayContenidos[i].resumen}</CardText>
                                                 <CardText className='content-card'> {this.state.arrayContenidos[i].tags} </CardText>
                                                 </CardBody>
-                                                <button onClick={()=> setButtonPopup(true)}> Open Popup </button>
-                                            </Card>  
-                                            
+                                                <button
+                                                    onClick={() => {
+                                                        this.handleClickEditar(i);
+                                                        setButtonPopup(true);
+                                                    }}
+                                                >Mas informacion</button>
+                                            </Card>      
                                     </Col> 
                                     <Popup trigger={buttonPopup} setTrigger={setButtonPopup}>
                                         <h3> Titulo contenido</h3>
@@ -101,7 +112,7 @@ class Contenido extends React.Component{
                                         <h5> Fecha de subida</h5>
                                         <Rating initialRating={2.5} fractions={2}  emptySymbol="far fa-star fa-2x" fullSymbol="fas fa-star fa-2x"/>
                                         <p> Lorem fistrum por la gloria de mi madre esse jarl aliqua llevame al sircoo. De la pradera ullamco qué dise usteer está la cosa muy malar.Lorem fistrum por la gloria de mi madre esse jarl aliqua llevame al sircoo. De la pradera ullamco qué dise usteer está la cosa muy malar.Lorem fistrum por la gloria de mi madre esse jarl aliqua llevame al sircoo. De la pradera ullamco qué dise usteer está la cosa muy malar.</p>
-                                        <button onClick={()=>window.location.href='http://localhost:8080/contenido/download/62bbd3690e541c67f2654ec41658812807645etesech.jpg'}>Descarga</button>
+                                        <button onClick={()=>this.descarga(this.state.arrayContenidos[this.state.posSeleccionado].link)}>Descarga</button>
                                         <p> #Tags</p>
                                         <p> Dejanos tu Comentario</p>
                                         <p> <input type="text" value="" /> <button >Subir</button></p>
