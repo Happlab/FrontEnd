@@ -5,7 +5,6 @@ import './Contenido.scss'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch, faUpload} from '@fortawesome/free-solid-svg-icons';
 import {ListGroup, InputGroup, Button, FormControl, Dropdown, DropdownButton, Form} from 'react-bootstrap'
-import imagenes from '../../../assets/imagenes'
 import { Card, CardText, CardBody,
   CardTitle} from 'reactstrap';
 import Rating from 'react-rating'
@@ -18,52 +17,62 @@ class Contenido extends React.Component{
     constructor(props){
         super(props);
         this.state={
-            arrayContenidos:[
-                {
-                    "tittle":"Hola",
-                    "user":"Juan",
-                    "rating":1.5,
-                    "resume":"Nos preocupamos por tu salud",
-                    "etiqueta1":"#JamesPuto"
-                },
-                {
-                    "tittle":"Holiwis",
-                    "user":"JuanA",
-                    "rating":3.5,
-                    "resume":"Nos preocupamos por tu salud y tu dinero",
-                    "etiqueta1":"#JamesPuto"
-                },
-                {
-                    "img":imagenes.img2,
-                },
-                {
-                    "img":imagenes.img2
-                }
-
-            ],
+            arrayContenidos:[],
             estadoSubirContenido:false
         }
-        this.handleClick=this.handleClick.bind(this);
         this.handleClickSubirContenido=this.handleClickSubirContenido.bind(this);
+        this.descarga=this.descarga.bind(this);
+
     }
     handleClickSubirContenido(){
         this.setState({estadoSubirContenido: !this.state.estadoSubirContenido});
     }
-    handleClick(e, patronBusqueda){
-        
-        //aqui va arreglo con resultado de metodo GET ya sea del filtro o la busqueda por palabra clave
-        this.setState({arrayContenidos:[
-            {
-                "img":imagenes.imgSam
-            },
-            {
-                "img":imagenes.imgUni
+
+    PeticionGet(url, mensajeError) {
+        let status = 0;
+        let content;
+        const request_options = {
+            method: 'GET',
+            mode: 'cors',
+            ContentType: 'application/json',
+            headers:{
+                'Access-Control-Allow-Origin': '*'
             }
-        ],
-        estadoSubirContenido: false
-    });
+        }
+        return fetch(url, request_options)
+            .then(response => {
+                content = response.json(); 
+                status = response.status;
+                return content;
+            })
+            .then(data => { 
+                if( status === 200 && data !== "" ){
+                    return data;
+                }else{
+                    alert(mensajeError);
+                    return null;
+                }
+            })
+            .catch(error => console.log("Error", error));
     }
+
+    descarga(contenido_link){
+        window.location.href='http://localhost:8080/contenido/download/'+contenido_link;
+    }
+
+    componentDidMount(){
+        const url='http://localhost:8080/contenido/';
+        const mensajeError='no hay contenidos';
+        const datos=this.PeticionGet(url, mensajeError);
+        datos.then(data =>{
+            if(data!==null){
+                this.setState({arrayContenidos: Array.from(data)});
+            }
+        });
+    }
+
     render(){
+
         const MostrarContenido=(props)=>{
             const array2=[];
             if(!this.state.estadoSubirContenido){ 
@@ -74,14 +83,15 @@ class Contenido extends React.Component{
                                 <div className='box-fancy'>
                                     <div data-Fancybox="dialog" data-src="#dialog-content">
                                     <Col>
-                                            <Card className='card-change' style={{ cursor: "pointer" }}>
+                                            <Card className='card-change' onClick={()=>this.descarga(this.state.arrayContenidos[0].link)} style={{ cursor: "pointer" }}>
                                                 <CardBody>
-                                                <CardTitle className='title-card'> {this.state.arrayContenidos[i].tittle} </CardTitle>
-                                                <CardText className='subtittle-card'>{this.state.arrayContenidos[i].user}</CardText>
-                                                <CardText className='stars-card'><Rating initialRating={this.state.arrayContenidos[i].rating} fractions={2} readonly emptySymbol="far fa-star fa-2x"
+                                                <CardTitle className='title-card'> {this.state.arrayContenidos[i].id_contenido} </CardTitle>
+                                                <CardText className='subtittle-card'>{this.state.arrayContenidos[i].id_autor.nombres}</CardText>
+                                                <CardText className='stars-card'><Rating initialRating={this.state.arrayContenidos[i].valoracion_general} fractions={2}  emptySymbol="far fa-star fa-2x"
                                                 fullSymbol="fas fa-star fa-2x" /></CardText>
-                                                <CardText className='content-card'>{this.state.arrayContenidos[i].resume}</CardText>
-                                                <CardText className='content-card'> {this.state.arrayContenidos[i].etiqueta1} #Etiqueta2</CardText>
+                                                <CardText className='content-card'>{this.state.arrayContenidos[i].resumen}</CardText>
+                                                <CardText className='content-card'> {this.state.arrayContenidos[i].tags} </CardText>
+                                                
                                                 </CardBody>
                                             </Card>  
                                     </Col> 
@@ -94,7 +104,10 @@ class Contenido extends React.Component{
                                         <p> Lorem fistrum por la gloria de mi madre esse jarl aliqua llevame al sircoo. De la pradera ullamco qué dise usteer está la cosa muy malar.Lorem fistrum por la gloria de mi madre esse jarl aliqua llevame al sircoo. De la pradera ullamco qué dise usteer está la cosa muy malar.Lorem fistrum por la gloria de mi madre esse jarl aliqua llevame al sircoo. De la pradera ullamco qué dise usteer está la cosa muy malar.</p>
                                         <p> #Tags</p>
                                         <p> Dejanos tu Comentario</p>
-                                        <p> <input type="text" value="" />  <button>Subir</button></p>
+                                        <p> <input type="text" value="" /> <button >Subir</button></p>
+                                        <p>
+                                            <button  onClick={()=>this.descarga(this.state.arrayContenidos[0].link)} data-fancybox="dialog" data-src="#dialog-content">Launch Dialog</button>
+                                        </p>
                                         <h4> Comentarios </h4>
                                         {[...Array(4)].map((e, i) => {
                                             return(
