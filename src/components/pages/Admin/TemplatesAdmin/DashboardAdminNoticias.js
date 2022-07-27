@@ -22,8 +22,8 @@ export default class DashboardAdminInicio extends Component {
   componentDidMount(){
     this.ListarNoticias();
   }
-  handleEliminar(e, id){
-    const url='http://api-happlab.herokuapp.com/noticia/delete/'+id;
+  handleEliminar(id){
+    const url='http://localhost:8080/noticia/delete/'+id;
     const mensajeError='no fue posible eliminar noticia';
     const metodo='DELETE';
     const peticion=PeticionEnvio(' ', url, mensajeError, metodo);
@@ -37,7 +37,7 @@ export default class DashboardAdminInicio extends Component {
     
     const user=this.state.noticias[posicion];
     user.visible=!this.state.noticias[posicion].visible;
-    const url='http://api-happlab.herokuapp.com/noticia/Update';
+    const url='http://localhost:8080/noticia/Update';
     const mensajeError='no fue posible ocultar noticia';
     const metodo='PUT';
     const peticion=PeticionEnvio(user, url, mensajeError, metodo);
@@ -50,13 +50,13 @@ export default class DashboardAdminInicio extends Component {
   handleSubmitEditar(){
     const titulo=document.getElementById('inputNameEdit').value;
     const url_noticia=document.getElementById('inputClientCompanyEdit').value
-    const link_contenido=document.getElementById('inputFileEdit').value;
+    const link_contenido=document.getElementById('inputFileEdit').files[0];
     const user={'id_noticia': this.state.noticias[this.state.posSeleccionado].id_noticia,
                 'titulo_noticia': titulo,
                 'url_noticia': url_noticia,
-                'link_contenido': link_contenido,
+                'imagen': link_contenido,
                 'visible': this.state.noticias[this.state.posSeleccionado].visible};
-    const url='http://api-happlab.herokuapp.com/noticia/Update';
+    const url='http://localhost:8080/noticia/Update';
     const mensajeError='no fue posible actualizar noticia';
     const metodo='PUT';
     const peticion=PeticionEnvio(user, url, mensajeError, metodo);
@@ -77,14 +77,35 @@ export default class DashboardAdminInicio extends Component {
     this.setState((state)=>({[name]: value}));
   }
   handleSubmitAgregar(){
+    var formdata = new FormData();
+        const coordenadas=[
+          0
+        ];
+        formdata.append("titulo_seccion", "Nuevas tecnologías clave para mejorar la eficiencia logística");
+        formdata.append("url", "https://www.youtube.com/watch?v=OBA1EJWhpxA");
+        formdata.append("contenido", document.getElementById('inputFileAdd').files[0]);
+        formdata.append("descripcion", "En esta nueva entrada sobre la Guía Práctica del Borrador de nueva Constitución te contamos cómo la propuesta constitucional reconoce los desafíos que traen los avances de la ciencia y la tecnología para el Chile del presente y futuro. Ineditamente, se incorporan normas como el derecho a la participación política digital, a la información, al conocimiento, a la educación y conectividad digital, y a la protección de los datos personales, para contribuir al desarrollo de las comunidades, sin ser vulnerar de sus derechos.");
+        formdata.append("coordenadas", coordenadas);
+        const url='http://localhost:8080/seccion/update/0';
+        const mensajeError='no fue posible actualizar estado del contenido';
+        const metodo='PUT';
+        const peticion=PeticionEnvioDataFrom(formdata, url, mensajeError, metodo);
+        peticion.then(data =>{
+            if(data){
+
+            }
+        });
     /*
     var formdata = new FormData();
-    formdata.append("email_autor", "andrescd@gmail");
-    formdata.append("archivo", this.state.link_contenido);
-    formdata.append("resumen", "ETE SECHHH");
-    formdata.append("autores", "sech, juan");
-    formdata.append("tags", "tag1,tag2");
-    const url='http://localhost:8080/contenido/create';
+    const titulo_noticia=document.getElementById('inputName').value;
+    const url_noticia=document.getElementById('inputClientCompany').value;
+    const imagen=document.getElementById('inputFileAdd').files[0];
+    formdata.append("titulo_noticia", titulo_noticia);
+    formdata.append("url_noticia", url_noticia);
+    formdata.append("imagen", imagen);
+    formdata.append("visible", true);
+    console.log(formdata);
+    const url='http://localhost:8080/noticia/create';
     const mensajeError='no fue posible agregar noticia';
     const metodo='POST';
     const peticion=PeticionEnvioDataFrom(formdata, url, mensajeError, metodo);
@@ -93,28 +114,15 @@ export default class DashboardAdminInicio extends Component {
             this.ListarNoticias();
         }
     });*/
-    
-    const user={'titulo_noticia': this.state.titulo_noticia,
-                'url_noticia': this.state.url_noticia,
-                'link_contenido': this.state.link_contenido,
-                'visible': this.state.visible};
-    const url='http://api-happlab.herokuapp.com/noticia/create';
-    const mensajeError='no fue posible agregar noticia';
-    const metodo='POST';
-    const peticion=PeticionEnvio(user, url, mensajeError, metodo);
-    peticion.then(data =>{
-        if(data){
-            this.ListarNoticias();
-        }
-    });
   }
   handleClickEditar(i,posicion){
     this.setState({posSeleccionado: posicion});
     document.getElementById('inputNameEdit').value=this.state.noticias[posicion].titulo_noticia;
+    //document.getElementById('inputFileEdit').files[0]=this.state.noticias[posicion].link_contenido;
     document.getElementById('inputClientCompanyEdit').value=this.state.noticias[posicion].url_noticia;
   }
   ListarNoticias() {
-    const url='https://api-happlab.herokuapp.com/noticia/';
+    const url='http://localhost:8080/noticia/';
         const mensajeError='no hay noticias';
         const datos=PeticionGet(url, mensajeError);
         datos.then(data =>{
@@ -155,7 +163,7 @@ export default class DashboardAdminInicio extends Component {
                     <label htmlFor="inputProjectLeader">Imagén de la noticia</label>
                     <div className="input-group">
                       <div className="custom-file">
-                        <input name='link_contenido'  type="file" className="custom-file-input" id="exampleInputFile" accept='image/*' onChange={this.handleChange} required/>
+                        <input name='link_contenido'  type="file" className="custom-file-input" id="inputFileAdd" accept='image/*' onChange={this.handleChange} required/>
                         <label className="custom-file-label" htmlFor="exampleInputFile">Subir imagen</label>
                       </div>
                     </div>
@@ -211,7 +219,7 @@ export default class DashboardAdminInicio extends Component {
                                   </button>
                                   <ul className="dropdown-menu" style={{}}>
                                     <li className="dropdown-item"><a href='#' onClick={()=>this.handleClickEditar(this, i)}> Editar</a></li>
-                                    <li className="dropdown-item"><a href='#' onClick={()=>this.handleEliminar(this, this.state.noticias[i].id_noticia)}>Eliminar</a></li>
+                                    <li className="dropdown-item"><a href='#' onClick={()=>this.handleEliminar(this.state.noticias[i].link_contenido)}>Eliminar</a></li>
                                     <li className="dropdown-item"><a href='#'onClick={()=>this.handleOcultar(this, i)} >{this.state.noticias[i].visible ? 'Ocultar' : 'Mostrar'}</a></li>
                                   </ul>
                                 </div>

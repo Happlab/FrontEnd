@@ -17,6 +17,7 @@ export function PeticionGet(url, mensajeError) {
             return content;
         })
         .then(data => { 
+            console.log(data);
             if( status && data !== "" ){
                 return data;
             }else{

@@ -16,7 +16,7 @@ export default class Dashboard extends Component {
     }
 
     Inactivar(user){
-        const url='http://api-happlab.herokuapp.com/persona/desactivar/'+user.email;
+        const url='http://localhost:8080/persona/desactivar/'+user.email;
         const mensajeError='no fue posible inactivar el usuario';
         const metodo='DELETE';
         const peticion=PeticionEnvio(' ', url, mensajeError, metodo);
@@ -28,7 +28,7 @@ export default class Dashboard extends Component {
         
     }
     Eliminar(user){
-        const url='http://api-happlab.herokuapp.com/persona/delete/'+user.email;
+        const url='http://localhost:8080/persona/delete/'+user.email;
         const mensajeError='no fue posible eliminar el usuario';
         const metodo='DELETE';
         const peticion=PeticionEnvio(' ', url, mensajeError, metodo);
@@ -41,7 +41,7 @@ export default class Dashboard extends Component {
     Actualizar(user){
         user.pendiente=false;
         user.activo=true;
-        const url='http://api-happlab.herokuapp.com/persona/update';
+        const url='http://localhost:8080/persona/update';
         const mensajeError='no fue posible actualizar estado del usuario';
         const metodo='PUT';
         const peticion=PeticionEnvio(user, url, mensajeError, metodo);
@@ -54,7 +54,7 @@ export default class Dashboard extends Component {
             
     }     
     ListarUsuarios() {
-        const url='https://api-happlab.herokuapp.com/persona/';
+        const url='http://localhost:8080/persona/';
         const mensajeError='no hay usuarios';
         const datos=PeticionGet(url, mensajeError);
         datos.then(data =>{

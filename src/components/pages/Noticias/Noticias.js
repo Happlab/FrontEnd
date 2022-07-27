@@ -3,6 +3,7 @@ import Navbar1 from '../../navegation/navbar/Navbar1'
 import Footer from '../../navegation/footer/Footer'
 import './Noticias.scss'
 import {Fade} from 'react-bootstrap'
+import {PeticionEnvio, PeticionGet} from '../Admin/PeticionesAdmin.js'
 
 
 
@@ -10,6 +11,7 @@ class Noticias extends React.Component {
     constructor(props){
         super(props);
         this.state={
+            arrayNoticias: [],
             cambioEnNoticias: false
         };
         this.handleClick=this.handleCambioEnNoticias.bind(this);
@@ -17,45 +19,20 @@ class Noticias extends React.Component {
 
     //variable que contiene todas las noticias y
     //contiene la peticion get 
-    arrayNoticias=//datos de ejemplo
-    [
-        {   key: 1,
-            titulo: "Profesor del Colegio Mayor Realiza Nueva Investigacion ",
-            srcImg: "https://thumbs.dreamstime.com/b/ilustraci%C3%B3n-de-vectores-fondo-live-breaking-news-im%C3%A1genes-noticias-%C3%BAltima-hora-en-directo-eps-170013711.jpg",
-            LinkPage: "https://www.unicauca.edu.co/versionP/acerca-de-unicauca/centros/cecav"
-        },
-        {
-            key: 2,
-            titulo: "NUEVA NOTICIA: ASEPIFS FALOGUDS JUHCIOLIMSUSPOLI TRAOPDEIS",
-            srcImg: "https://thumbs.dreamstime.com/b/ilustraci%C3%B3n-de-vectores-fondo-live-breaking-news-im%C3%A1genes-noticias-%C3%BAltima-hora-en-directo-eps-170013711.jpg",
-            LinkPage: "https://www.unicauca.edu.co/versionP/acerca-de-unicauca/centros/cecav"
-        },
-        {
-            key: 3,
-            titulo: "Profesor del Colegio Mayor Realiza Nueva Investigacion",
-            srcImg: "https://thumbs.dreamstime.com/b/ilustraci%C3%B3n-de-vectores-fondo-live-breaking-news-im%C3%A1genes-noticias-%C3%BAltima-hora-en-directo-eps-170013711.jpg",
-            LinkPage: "https://www.unicauca.edu.co/versionP/acerca-de-unicauca/centros/cecav"
-        },
-        {
-            key: 4,
-            titulo: "NUEVA NOTICIA: ASEPIFS FALOGUDS JUHCIOLIMSUSPOLI TRAOPDEIS",
-            srcImg: "https://thumbs.dreamstime.com/b/ilustraci%C3%B3n-de-vectores-fondo-live-breaking-news-im%C3%A1genes-noticias-%C3%BAltima-hora-en-directo-eps-170013711.jpg",
-            LinkPage: "https://www.unicauca.edu.co/versionP/acerca-de-unicauca/centros/cecav"
-        },
-        {
-            key: 5,
-            titulo: "Profesor del Colegio Mayor Realiza Nueva Investigacion",
-            srcImg: "https://thumbs.dreamstime.com/b/ilustraci%C3%B3n-de-vectores-fondo-live-breaking-news-im%C3%A1genes-noticias-%C3%BAltima-hora-en-directo-eps-170013711.jpg",
-            LinkPage: "https://www.unicauca.edu.co/versionP/acerca-de-unicauca/centros/cecav"
-        },
-        {
-            key: 6,
-            titulo: "NUEVA NOTICIA: ASEPIFS FALOGUDS JUHCIOLIMSUSPOLI TRAOPDEIS",
-            srcImg: "https://thumbs.dreamstime.com/b/ilustraci%C3%B3n-de-vectores-fondo-live-breaking-news-im%C3%A1genes-noticias-%C3%BAltima-hora-en-directo-eps-170013711.jpg",
-            LinkPage: "https://www.unicauca.edu.co/versionP/acerca-de-unicauca/centros/cecav"
-        }
-    ]; 
-
+    arrayNoticias=[]; 
+    componentDidMount(){
+        this.ListarNoticias();
+    }
+    ListarNoticias(){
+        const url='http://localhost:8080/noticia/';
+        const mensajeError='no hay noticias';
+        const datos=PeticionGet(url, mensajeError);
+        datos.then(data =>{
+            if(data!==null){
+                this.setState({arrayNoticias: Array.from(data)});
+            }
+        });
+    }
     handleCambioEnNoticias(cant, e){
        this.setState(state=>({cantidadNoticias:true}));
     }
@@ -82,13 +59,12 @@ class Noticias extends React.Component {
         /*Formar y llenar Array de noticias listas para ser mostradas*/
         const MostrarNoticias=(props)=>{
             const arrayContendor=[];
-            for (let i = 0; i < this.arrayNoticias.length; i++) {
+            for (let i = 0; i < this.state.arrayNoticias.length; i++) {
                 arrayContendor.push(
                         <ContenidoNoticias 
-                            key={this.arrayNoticias[i].key}
-                            titulo={this.arrayNoticias[i].titulo}
-                            srcImg={this.arrayNoticias[i].srcImg}
-                            LinkPage={this.arrayNoticias[i].LinkPage}
+                            titulo={this.state.arrayNoticias[i].titulo_noticia}
+                            srcImg={'http://localhost:8080/noticia/img/'+this.state.arrayNoticias[i].link_contenido}
+                            LinkPage={this.state.arrayNoticias[i].url_noticia}
                         />
                     )
             }

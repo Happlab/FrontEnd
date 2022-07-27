@@ -5,67 +5,79 @@ import ReactPlayer from 'react-player'
 import Navbar1 from '../../navegation/navbar/Navbar1'
 import Footer from '../../navegation/footer/Footer'
 import { Carousel } from 'react-bootstrap'
+import {PeticionGet} from '../Admin/PeticionesAdmin'
 
-const Inicio = () => {
-  return (
+class Inicio extends React.Component {
+  constructor(props){
+    super();
+    this.state={
+      inicio:[]
+    }
+  }
+  componentDidMount(){
+    this.ListarInicio();
+  }
+  ListarInicio(){
+    const url='http://localhost:8080/seccion/';
+    const mensajeError='no hay informacion de inicio';
+    const datos=PeticionGet(url, mensajeError);
+    datos.then(data =>{
+        if(data!==null){
+            this.setState({inicio: Array.from(data)});
+        }
+    });
+  }
+  render(){
+    const video=(props)=>{
+                  return(
+                  <ReactPlayer
+                    url={props.url}
+                    width='100%'
+                    height='100%'
+                    controls
+                    loop
+                  />)};
+    const imagen=(props)=>{
+                  return(<img 
+                    style={{width:'100%'}}
+                    className="images-carousel"
+                    src={props.img} width={400} height={150}
+                    alt="Third slide"
+                  />)};
+    return(
     <div className='main-inicio'>
       <Navbar1 />
             <div className='container-inicio'>
               <hr/>
-                <div className='row-inicio'>
-                    <div className='col-textInicio'>
-                        <h4 className='title'>HappLab</h4>
-                        <p className='text-lore-happ'>Happlab Lorem fistrum por la gloria de mi madre esse jarl aliqua llevame al sircoo. De la pradera ullamco qué dise usteer está la cosa muy malar.</p>
-                    </div>
-                    <div className='col-imgInicio'>
-                        <img 
-                        src = {imagenes.img1} alt="" width={500} height={200}
-                        />
-                    </div>
-                  </div>
               <h3 className='title-h2'>Destacados de la semana</h3>
               <hr className='hr-line-white'/>       
               </div>
-              <div className='content-video'>
-              <div className='columna-inicio'>
-                  <h3 className='title-dest'>Contenido destacado 1</h3>
-                  <div className='columna-inicio-texto'>
-                    <p className='text-lore'>
-                      Lorem fistrum por la gloria de mi madre esse jarl aliqua llevame al sircoo. De la pradera ullamco qué dise usteer está la cosa muy malar.Lorem fistrum por la gloria de mi madre esse jarl aliqua llevame al sircoo. De la pradera ullamco qué dise usteer está la cosa muy malar.Lorem fistrum por la gloria de mi madre esse jarl aliqua llevame al sircoo. De la pradera ullamco qué dise usteer está la cosa muy malar.                      
-                   </p>
-                  </div>
-                  <div className='columna-inicio-video'>
-                    <ReactPlayer
-                      url='https://www.youtube.com/watch?v=N029UUlH1Dc'
-                      width='100%'
-                      height='100%'
-                      controls
-                        loop
+              {[...Array(this.state.inicio.length)].map((e, i) => {
+                return(
+                <div className='content-video'>
+                  <div className='columna-inicio'>
+                      <h3 className='title-dest'>{this.state.inicio[i].titulo_seccion}</h3>
+                      <div className='columna-inicio-texto'>
+                        <p className='text-lore'>
+                          {this.state.inicio[i].descripcion}                      
+                        </p>
+                      </div>
+                      <div className='columna-inicio-video'>
+                      <img 
+                        style={{width:'100%'}}
+                        className="images-carousel"
+                        src={"http://localhost:8080/seccion/contenido/"+this.state.inicio[i].nombre_contenido} width={400} height={150}
+                        alt="Third slide"
                       />
-                  </div>
-                </div> 
-            </div>
+                        {/*this.state.inicio[i].url!=='' ? <video url={"http://localhost:8080/seccion/contenido/"+this.state.inicio[i].contenido}/> : <imagen img={this.state.inicio[i].url} />*/} 
+                      </div>
+                  </div> 
+                </div>
+                )
+              })}
             <hr className='hr-line-white'/>  
-            <div className='content-video'>
-              <div className='columna-inicio'>
-                  <h3 className='title-dest'>Contenido destacado 2</h3>
-                  <div className='columna-inicio-texto'>
-                    <p className='text-lore'>
-                      Lorem fistrum por la gloria de mi madre esse jarl aliqua llevame al sircoo. De la pradera ullamco qué dise usteer está la cosa muy malar.Lorem fistrum por la gloria de mi madre esse jarl aliqua llevame al sircoo. De la pradera ullamco qué dise usteer está la cosa muy malar.Lorem fistrum por la gloria de mi madre esse jarl aliqua llevame al sircoo. De la pradera ullamco qué dise usteer está la cosa muy malar.                      
-                   </p>
-                  </div>
-                  <div className='columna-inicio-video'>
-                    <ReactPlayer
-                      url='https://www.youtube.com/watch?v=N029UUlH1Dc'
-                      width='100%'
-                      height='100%'
-                      controls
-                        loop
-                      />
-                  </div>
-                </div> 
-            </div>
-            <hr className='hr-line-white'/>  
+            
+  
           <div className='carousel'>
             <Carousel fade variant="dark" indicators={false}>
               <Carousel.Item interval={1000}>
@@ -96,5 +108,6 @@ const Inicio = () => {
             <Footer/>
     </div>
   )
+  }
 }
 export default Inicio
