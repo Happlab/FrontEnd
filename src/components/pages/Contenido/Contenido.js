@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Navbar1 from '../../navegation/navbar/Navbar1'
 import Footer from '../../navegation/footer/Footer'
 import './Contenido.scss'
@@ -10,7 +10,7 @@ import { Card, CardText, CardBody,
 import Rating from 'react-rating'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
-import Fancybox from '../../pages/Investigadores/fancybox'
+import Popup from './popUp';
 
 
 class Contenido extends React.Component{
@@ -74,40 +74,37 @@ class Contenido extends React.Component{
     render(){
 
         const MostrarContenido=(props)=>{
+            const [buttonPopup, setButtonPopup] = useState(false);
             const array2=[];
             if(!this.state.estadoSubirContenido){ 
                         //aqui va el contenido
                         for(var i=0;i<this.state.arrayContenidos.length;i++){
                             array2[i]=
-                            <Fancybox>
-                                <div className='box-fancy'>
-                                    <div data-Fancybox="dialog" data-src="#dialog-content">
+                            <div>
                                     <Col>
-                                            <Card className='card-change' onClick={()=>this.descarga(this.state.arrayContenidos[0].link)} style={{ cursor: "pointer" }}>
+                                            <Card className='card-change' style={{ cursor: "pointer" }}>
                                                 <CardBody>
-                                                <CardTitle className='title-card'> {this.state.arrayContenidos[i].id_contenido} </CardTitle>
+                                                <CardText className='title-card'> {this.state.arrayContenidos[i].id_contenido} </CardText>
                                                 <CardText className='subtittle-card'>{this.state.arrayContenidos[i].id_autor.nombres}</CardText>
-                                                <CardText className='stars-card'><Rating initialRating={this.state.arrayContenidos[i].valoracion_general} fractions={2}  emptySymbol="far fa-star fa-2x"
+                                                <CardText className='stars-card'><Rating initialRating={this.state.arrayContenidos[i].valoracion_general} readonly fractions={4}  emptySymbol="far fa-star fa-2x"
                                                 fullSymbol="fas fa-star fa-2x" /></CardText>
                                                 <CardText className='content-card'>{this.state.arrayContenidos[i].resumen}</CardText>
                                                 <CardText className='content-card'> {this.state.arrayContenidos[i].tags} </CardText>
-                                                
                                                 </CardBody>
+                                                <button onClick={()=> setButtonPopup(true)}> Open Popup </button>
                                             </Card>  
+                                            
                                     </Col> 
-                                    </div>
-                                    <div id="dialog-content" style={{ display: "none", maxWidth: "800px" }}>
+                                    <Popup trigger={buttonPopup} setTrigger={setButtonPopup}>
                                         <h3> Titulo contenido</h3>
                                         <h4> Autor contenido</h4>
                                         <h5> Fecha de subida</h5>
                                         <Rating initialRating={2.5} fractions={2}  emptySymbol="far fa-star fa-2x" fullSymbol="fas fa-star fa-2x"/>
                                         <p> Lorem fistrum por la gloria de mi madre esse jarl aliqua llevame al sircoo. De la pradera ullamco qué dise usteer está la cosa muy malar.Lorem fistrum por la gloria de mi madre esse jarl aliqua llevame al sircoo. De la pradera ullamco qué dise usteer está la cosa muy malar.Lorem fistrum por la gloria de mi madre esse jarl aliqua llevame al sircoo. De la pradera ullamco qué dise usteer está la cosa muy malar.</p>
+                                        <button onClick={()=>window.location.href='http://localhost:8080/contenido/download/62bbd3690e541c67f2654ec41658812807645etesech.jpg'}>Descarga</button>
                                         <p> #Tags</p>
                                         <p> Dejanos tu Comentario</p>
                                         <p> <input type="text" value="" /> <button >Subir</button></p>
-                                        <p>
-                                            <button  onClick={()=>this.descarga(this.state.arrayContenidos[0].link)} data-fancybox="dialog" data-src="#dialog-content">Launch Dialog</button>
-                                        </p>
                                         <h4> Comentarios </h4>
                                         {[...Array(4)].map((e, i) => {
                                             return(
@@ -118,9 +115,8 @@ class Contenido extends React.Component{
 
                                             )
                                         })}
-                                    </div>
-                                </div>
-                            </Fancybox>
+                                    </Popup>
+                            </div>
                 } 
                 return(
                     array2
