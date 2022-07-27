@@ -19,11 +19,13 @@ class Contenido extends React.Component{
         this.state={
             arrayContenidos:[],
             estadoSubirContenido:false,
-            posSeleccionado:0
+            posSeleccionado:0,
+            estadoTrigger: false
         }
         this.handleClickSubirContenido=this.handleClickSubirContenido.bind(this);
         this.descarga=this.descarga.bind(this);
         this.handleClickEditar = this.handleClickEditar.bind(this);
+        this.handleClickEditara = this.handleClickEditara.bind(this);
 
     }
     handleClickSubirContenido(){
@@ -74,14 +76,18 @@ class Contenido extends React.Component{
     }
 
     handleClickEditar(posicion){
-        this.setState({posSeleccionado: posicion});
+        this.setState({posSeleccionado: posicion,estadoTrigger: true});
+        console.log(this.state.posSeleccionado);
+      }
+
+      handleClickEditara(){
+        this.setState({estadoTrigger: false});
         console.log(this.state.posSeleccionado);
       }
 
     render(){
 
         const MostrarContenido=(props)=>{
-            const [buttonPopup, setButtonPopup] = useState(false);
             const array2=[];
             if(!this.state.estadoSubirContenido){ 
                         //aqui va el contenido
@@ -97,16 +103,16 @@ class Contenido extends React.Component{
                                                 fullSymbol="fas fa-star fa-2x" /></CardText>
                                                 <CardText className='content-card'>{this.state.arrayContenidos[i].resumen}</CardText>
                                                 <CardText className='content-card'> {this.state.arrayContenidos[i].tags} </CardText>
-                                                </CardBody>
-                                                <button
+                                                </CardBody>  
+                                                <button 
                                                     onClick={() => {
-                                                        this.handleClickEditar(i);
-                                                        setButtonPopup(true);
+                                                        this.handleClickEditar(i)   
                                                     }}
-                                                >Mas informacion</button>
-                                            </Card>      
+                                                >Mas informacion</button> 
+                                            </Card>     
+                                           
                                     </Col> 
-                                    <Popup trigger={buttonPopup} setTrigger={setButtonPopup}>
+                                    <Popup trigger={this.state.estadoTrigger} setTrigger={this.handleClickEditara}>
                                         <h3> Titulo contenido</h3>
                                         <h4> Autor contenido</h4>
                                         <h5> Fecha de subida</h5>
