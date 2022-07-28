@@ -126,12 +126,13 @@ $color-tittle: black;
 }
 
 .card-change{
-    margin: 2%;
+    margin: 10px;
 }
 
 .title-card{
     text-align: $posicion-text;
     $color-text: $color-tittle;
+    
 }
 
 .subtittle-card{
@@ -147,4 +148,13 @@ $color-tittle: black;
 .content-card{
     text-align: $posicion-text;
     $color-text: $color-text;
+}
+
+.titulo-Modal{
+    margin-top: 10px;
+    text-align: $posicion-text;
+}
+
+.Modal-Title{
+    background-color: #1E86C0;
 }

@@ -9,7 +9,7 @@ import { Card, CardText, CardBody} from 'reactstrap';
 import Rating from 'react-rating'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
-import Popup from './popUp';
+import Modal from 'react-bootstrap/Modal';
 
 
 class Contenido extends React.Component{
@@ -19,12 +19,13 @@ class Contenido extends React.Component{
             arrayContenidos:[],
             estadoSubirContenido:false,
             posSeleccionado:0,
-            estadoTrigger: false
+            estadoTrigger: false,
         }
         this.handleClickSubirContenido=this.handleClickSubirContenido.bind(this);
         this.descarga=this.descarga.bind(this);
-        this.handleClickEditar = this.handleClickEditar.bind(this);
-        this.handleClickEditara = this.handleClickEditara.bind(this);
+        this.handleClickEstadoTrue=this.handleClickEstadoTrue.bind(this);
+        this.handleClickEstadoFalse=this.handleClickEstadoFalse.bind(this);
+        this.CambiarRate=this.CambiarRate.bind(this);
 
     }
     handleClickSubirContenido(){
@@ -74,24 +75,19 @@ class Contenido extends React.Component{
         });
     }
 
-    handleClickEditar(posicion){
+    handleClickEstadoTrue(posicion){
         this.setState({posSeleccionado: posicion,estadoTrigger: true});
-        console.log(this.state.posSeleccionado);
       }
-
-      handleClickEditara(){
+    
+      handleClickEstadoFalse(){
         this.setState({estadoTrigger: false});
-        console.log(this.state.posSeleccionado);
       }
 
-    convertirFecha(String){
-        let date = new Date("2018-01-01T00:00:00");
-        let dateMDY = `${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()}`;
-        return dateMDY;
+    CambiarRate(rate){
+        this.valoracion_usuario = rate;
     }
-
+    valoracion_usuario = 0.0;
     render(){
-
         const MostrarContenido=(props)=>{
             const array2=[];
             if(!this.state.estadoSubirContenido){ 
@@ -100,33 +96,39 @@ class Contenido extends React.Component{
                             array2[i]=
                             <div>
                                     <Col>
-                                            <Card className='card-change' style={{ cursor: "pointer" }}>
+                                            <Card className='card-change'>
                                                 <CardBody>
-                                                <CardText className='title-card'> {this.state.arrayContenidos[i].id_contenido} </CardText>
+                                                <CardText className='title-card'> {this.state.arrayContenidos[i].titulo} </CardText>
                                                 <CardText className='subtittle-card'>{this.state.arrayContenidos[i].id_autor.nombres}</CardText>
-                                                <CardText className='stars-card'><Rating initialRating={this.state.arrayContenidos[i].valoracion_general} readonly fractions={4}  emptySymbol="far fa-star fa-2x"
+                                                <CardText className='stars-card'><Rating initialRating={this.state.arrayContenidos[i].valoracion_general} readonly fractions={2}  emptySymbol="far fa-star fa-2x"
                                                 fullSymbol="fas fa-star fa-2x" /></CardText>
                                                 <CardText className='content-card'>{this.state.arrayContenidos[i].resumen}</CardText>
                                                 <CardText className='content-card'> {this.state.arrayContenidos[i].tags} </CardText>
                                                 </CardBody>  
-                                                <button 
-                                                    onClick={() => {
-                                                        this.handleClickEditar(i)   
-                                                    }}
+                                                <button onClick={() => {
+                                                            this.handleClickEstadoTrue(i)   
+                                                        }}
                                                 >Mas informacion</button> 
                                             </Card>     
                                            
                                     </Col> 
-                                    <Popup trigger={this.state.estadoTrigger} setTrigger={this.handleClickEditara}>
-                                        <h3> Titulo contenido</h3>
-                                        <h4> Autor contenido</h4>
-                                        <h5> Fecha de subida</h5>
-                                        <Rating initialRating={2.5} fractions={2}  emptySymbol="far fa-star fa-2x" fullSymbol="fas fa-star fa-2x"/>
+                                    <Modal show={this.state.estadoTrigger} onHide={this.handleClickEstadoFalse} size="lg" aria-labelledby="example-modal-sizes-title-lg">
+                                        <Modal.Title id="example-modal-sizes-title-lg" className='Modal-Title'> 
+                                        <h3 className='titulo-Modal'>Titulo contenido </h3> 
+                                        <h4 className='titulo-Modal'> Autor contenido</h4>
+                                        <h5 className='titulo-Modal'> Fecha de subida</h5>
+                                        <h5 className='titulo-Modal'> <Rating initialRating={0} fractions={2}  emptySymbol="far fa-star fa-2x" fullSymbol="fas fa-star fa-2x" onChange={(rate) => this.CambiarRate(rate)}/> </h5>
+                                        </Modal.Title>
+                                        <Modal.Body>
                                         <p> Lorem fistrum por la gloria de mi madre esse jarl aliqua llevame al sircoo. De la pradera ullamco qué dise usteer está la cosa muy malar.Lorem fistrum por la gloria de mi madre esse jarl aliqua llevame al sircoo. De la pradera ullamco qué dise usteer está la cosa muy malar.Lorem fistrum por la gloria de mi madre esse jarl aliqua llevame al sircoo. De la pradera ullamco qué dise usteer está la cosa muy malar.</p>
                                         <button onClick={()=>this.descarga(this.state.arrayContenidos[this.state.posSeleccionado].link)}>Descarga</button>
                                         <p> #Tags</p>
+                                        <p> Rate = {this.valoracion_usuario}</p>
                                         <p> Dejanos tu Comentario</p>
                                         <p> <input type="text" value="" /> <button >Subir</button></p>
+                                        <Button variant="secondary" onClick={this.handleClickEstadoFalse}>
+                                            Close
+                                        </Button>
                                         <h4> Comentarios </h4>
                                         {[...Array(this.state.arrayContenidos[this.state.posSeleccionado].comentarios.length)].map((e, i) => {
                                             return(
@@ -137,10 +139,11 @@ class Contenido extends React.Component{
                                                     <CardText className='content-card'> {this.state.arrayContenidos[this.state.posSeleccionado].comentarios[i].fecha_calificacion} </CardText>
                                                     <CardText className='content-card'> {this.state.arrayContenidos[this.state.posSeleccionado].comentarios[i].comentarios}</CardText>
                                                 </Card>
-
+    
                                             )
                                         })}
-                                    </Popup>
+                                    </Modal.Body>
+                                    </Modal>
                             </div>
                 } 
                 return(
