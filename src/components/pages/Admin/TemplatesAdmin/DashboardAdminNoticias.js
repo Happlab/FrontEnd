@@ -1,5 +1,21 @@
 import React, { Component } from 'react'
 import {PeticionEnvio, PeticionEnvioDataFrom, PeticionGet} from '../PeticionesAdmin.js'
+import * as Yup from 'yup';
+import { Formik} from 'formik';
+import Form from 'react-bootstrap/Form';
+
+const validationSchema=Yup.object().shape({
+  Titulo: Yup.string()
+  .required("Campo Requerido")
+  .lowercase("caracteres minuscula")
+  .max(50, "Maximo 50 caracteres")
+  .min(5, "Minimo 5 caracteres"),
+  LinkNoticia: Yup.string()
+  .required("Campo requerido")
+  .url("URL no valida"),
+  ImgNoticia: Yup.string()
+  .required("Campo Requerido")
+});
 
 export default class DashboardAdminInicio extends Component {
   constructor (props){
@@ -19,11 +35,14 @@ export default class DashboardAdminInicio extends Component {
       this.handleClickEditar=this.handleClickEditar.bind(this);
       this.handleChange=this.handleChange.bind(this);
   }
+  
+  urlServicio='http://localhost:8080/noticia/';
+
   componentDidMount(){
     this.ListarNoticias();
   }
   handleEliminar(id){
-    const url='http://localhost:8080/noticia/delete/'+id;
+    const url=this.urlServicio+'delete/'+id;
     const mensajeError='no fue posible eliminar noticia';
     const metodo='DELETE';
     const peticion=PeticionEnvio(' ', url, mensajeError, metodo);
@@ -34,10 +53,9 @@ export default class DashboardAdminInicio extends Component {
     });
   }
   handleOcultar(i,posicion){
-    
     const user=this.state.noticias[posicion];
     user.visible=!this.state.noticias[posicion].visible;
-    const url='http://localhost:8080/noticia/Update';
+    const url=this.urlServicio+'Update';
     const mensajeError='no fue posible ocultar noticia';
     const metodo='PUT';
     const peticion=PeticionEnvio(user, url, mensajeError, metodo);
@@ -56,7 +74,7 @@ export default class DashboardAdminInicio extends Component {
                 'url_noticia': url_noticia,
                 'imagen': link_contenido,
                 'visible': this.state.noticias[this.state.posSeleccionado].visible};
-    const url='http://localhost:8080/noticia/Update';
+    const url=this.urlServicio+'Update';
     const mensajeError='no fue posible actualizar noticia';
     const metodo='PUT';
     const peticion=PeticionEnvio(user, url, mensajeError, metodo);
@@ -76,7 +94,9 @@ export default class DashboardAdminInicio extends Component {
     }
     this.setState((state)=>({[name]: value}));
   }
-  handleSubmitAgregar(){
+  handleSubmitAgregar(datos){
+    console.log("hola");
+    /*
     var formdata = new FormData();
         const coordenadas=[
           0
@@ -95,25 +115,22 @@ export default class DashboardAdminInicio extends Component {
 
             }
         });
-    /*
-    var formdata = new FormData();
-    const titulo_noticia=document.getElementById('inputName').value;
-    const url_noticia=document.getElementById('inputClientCompany').value;
-    const imagen=document.getElementById('inputFileAdd').files[0];
-    formdata.append("titulo_noticia", titulo_noticia);
-    formdata.append("url_noticia", url_noticia);
-    formdata.append("imagen", imagen);
-    formdata.append("visible", true);
-    console.log(formdata);
-    const url='http://localhost:8080/noticia/create';
-    const mensajeError='no fue posible agregar noticia';
-    const metodo='POST';
-    const peticion=PeticionEnvioDataFrom(formdata, url, mensajeError, metodo);
-    peticion.then(data =>{
-        if(data){
-            this.ListarNoticias();
-        }
-    });*/
+        var formdata = new FormData();
+        formdata.append("titulo_noticia", datos.Titulo);
+        formdata.append("url_noticia", datos.LinkNoticia);
+        formdata.append("imagen", document.getElementById('inputFileAdd').files[0]);
+        formdata.append("visible", true);
+        console.log(formdata);
+        const url=this.urlServicio+'create';
+        const mensajeError='no fue posible agregar noticia';
+        const metodo='POST';
+        const peticion=PeticionEnvioDataFrom(formdata, url, mensajeError, metodo);
+        peticion.then(data =>{
+            if(data){
+                this.ListarNoticias();
+            }
+        });*/
+    
   }
   handleClickEditar(i,posicion){
     this.setState({posSeleccionado: posicion});
@@ -122,7 +139,7 @@ export default class DashboardAdminInicio extends Component {
     document.getElementById('inputClientCompanyEdit').value=this.state.noticias[posicion].url_noticia;
   }
   ListarNoticias() {
-    const url='http://localhost:8080/noticia/';
+    const url=this.urlServicio;
         const mensajeError='no hay noticias';
         const datos=PeticionGet(url, mensajeError);
         datos.then(data =>{
@@ -151,26 +168,51 @@ export default class DashboardAdminInicio extends Component {
                   </div>
                 </div>
                 <div className="card-body">
-                  <div className="form-group">
-                    <label htmlFor="inputName">Título</label>
-                    <input name='titulo_noticia' type="text" id="inputName" className="form-control" onChange={this.handleChange} required/>
-                  </div>
-                  <div className="form-group">
-                    <label htmlFor="inputClientCompany">Link de la noticia</label>
-                    <input name='url_noticia' type="text" id="inputClientCompany" className="form-control" onChange={this.handleChange} required/>
-                  </div>
-                  <div className="form-group">
-                    <label htmlFor="inputProjectLeader">Imagén de la noticia</label>
-                    <div className="input-group">
-                      <div className="custom-file">
-                        <input name='link_contenido'  type="file" className="custom-file-input" id="inputFileAdd" accept='image/*' onChange={this.handleChange} required/>
-                        <label className="custom-file-label" htmlFor="exampleInputFile">Subir imagen</label>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="card-footer">
-                    <button type="submit" formMethod='post' onClick={this.handleSubmitAgregar} className="btn btn-primary">Crear noticia</button>
-                  </div>
+                  <Formik initialValues={{
+                    Titulo: '',
+                    LinkNoticia: '',
+                    ImgNoticia: ''
+                  }} 
+                  validationSchema={validationSchema}
+                  onSubmit={values=> {
+                    var formdata = new FormData();
+                    formdata.append("titulo_noticia", values.Titulo);
+                    formdata.append("url_noticia", values.LinkNoticia);
+                    formdata.append("imagen", document.getElementById('inputFileAdd').files[0]);
+                    formdata.append("visible", true);
+                    console.log(formdata);
+                    const url=this.urlServicio+'create';
+                    const mensajeError='no fue posible agregar noticia';
+                    const metodo='POST';
+                    const peticion=PeticionEnvioDataFrom(formdata, url, mensajeError, metodo);
+                    peticion.then(data =>{
+                        alert(data);
+                    });
+                    }}
+                  >
+                      <Form>
+                          <div className="form-group">
+                            <label htmlFor="inputName">Título</label>
+                            <input name='Titulo' type="text" id="inputName" className="form-control" onChange={this.handleChange} required/>
+                          </div>
+                          <div className="form-group">
+                            <label htmlFor="inputClientCompany">Link de la noticia</label>
+                            <input name='LinkNoticia' type="text" id="inputClientCompany" className="form-control" onChange={this.handleChange} required/>
+                          </div>
+                          <div className="form-group">
+                            <label htmlFor="inputProjectLeader">Imagén de la noticia</label>
+                            <div className="input-group">
+                              <div className="custom-file">
+                                <input name='ImgNoticia'  type="file" className="custom-file-input" id="inputFileAdd" accept='image/*' onChange={this.handleChange} required/>
+                                <label className="custom-file-label" htmlFor="exampleInputFile">Subir imagen</label>
+                              </div>
+                            </div>
+                          </div>
+                          <div className="card-footer">
+                            <button type="submit" onSubmit={this.handleSubmitAgregar} className="btn btn-primary">Crear noticia</button>
+                          </div>
+                      </Form>
+                    </Formik>
                 </div>
               </div>
             </div>

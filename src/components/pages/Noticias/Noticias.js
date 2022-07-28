@@ -17,14 +17,12 @@ class Noticias extends React.Component {
         this.handleClick=this.handleCambioEnNoticias.bind(this);
     }
 
-    //variable que contiene todas las noticias y
-    //contiene la peticion get 
-    arrayNoticias=[]; 
+    urlServicio='http://localhost:8080/noticia/';
     componentDidMount(){
         this.ListarNoticias();
     }
     ListarNoticias(){
-        const url='http://localhost:8080/noticia/';
+        const url=this.urlServicio;
         const mensajeError='no hay noticias';
         const datos=PeticionGet(url, mensajeError);
         datos.then(data =>{
@@ -63,7 +61,7 @@ class Noticias extends React.Component {
                 arrayContendor.push(
                         <ContenidoNoticias 
                             titulo={this.state.arrayNoticias[i].titulo_noticia}
-                            srcImg={'http://localhost:8080/noticia/img/'+this.state.arrayNoticias[i].link_contenido}
+                            srcImg={this.urlServicio+'img/'+this.state.arrayNoticias[i].link_contenido}
                             LinkPage={this.state.arrayNoticias[i].url_noticia}
                         />
                     )

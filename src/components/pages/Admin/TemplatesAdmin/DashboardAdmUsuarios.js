@@ -5,61 +5,69 @@ export default class Dashboard extends Component {
         super();
         this.state={
             usuarios: [],
-            pendientes: []
+            conteo: 0
         }
+        var conteo=0;
         this.Actualizar=this.Actualizar.bind(this);
         this.Eliminar=this.Eliminar.bind(this);
         this.Inactivar=this.Inactivar.bind(this);
     }
+    urlServicio='http://localhost:8080/persona/';
+    
     componentDidMount(){
         this.ListarUsuarios();
     }
-
     Inactivar(user){
-        const url='http://localhost:8080/persona/desactivar/'+user.email;
+        const url=this.urlServicio+'desactivar/'+user.email;
         const mensajeError='no fue posible inactivar el usuario';
         const metodo='DELETE';
         const peticion=PeticionEnvio(' ', url, mensajeError, metodo);
         peticion.then(data =>{
             if(data){
                 this.ListarUsuarios();
+                console.log('usuarios: '+this.state.conteo);
             }
         });
         
     }
     Eliminar(user){
-        const url='http://localhost:8080/persona/delete/'+user.email;
+        const url=this.urlServicio+'delete/'+user.email;
         const mensajeError='no fue posible eliminar el usuario';
         const metodo='DELETE';
         const peticion=PeticionEnvio(' ', url, mensajeError, metodo);
         peticion.then(data =>{
             if(data){
-                this.UsuariosPendientes();
+                this.ListarUsuarios();
             }
         });  
     }
     Actualizar(user){
         user.pendiente=false;
         user.activo=true;
-        const url='http://localhost:8080/persona/update';
+        const url=this.urlServicio+'update';
         const mensajeError='no fue posible actualizar estado del usuario';
         const metodo='PUT';
         const peticion=PeticionEnvio(user, url, mensajeError, metodo);
         peticion.then(data =>{
             if(data){
-                this.UsuariosPendientes();
                 this.ListarUsuarios();
             }
         });
             
-    }     
+    }   
     ListarUsuarios() {
-        const url='http://localhost:8080/persona/';
+        let cont=0;
+        const url=this.urlServicio;
         const mensajeError='no hay usuarios';
         const datos=PeticionGet(url, mensajeError);
         datos.then(data =>{
             if(data!==null){
-                this.setState({usuarios: Array.from(data)});
+                for (let i = 0; i < data.length; i++) {
+                    if(data[i].activo && !data[i].pendiente){
+                        cont=cont+1;
+                    }
+                } 
+                this.setState({usuarios: Array.from(data), conteo: cont});
             }
         });  
     }
@@ -78,7 +86,7 @@ export default class Dashboard extends Component {
                             <div className="col-lg-3 col-6">
                                 <div className="small-box bg-warning">
                                     <div className="inner">
-                                        <h3>44</h3>
+                                        <h3>{this.state.conteo}</h3>
                                         <p>Usuarios registrados</p>
                                     </div>
                                     <div className="icon">
@@ -154,6 +162,7 @@ export default class Dashboard extends Component {
                                                         </td>
                                                     </tr>
                                                     )}
+                                                    
                                                 })}
                                                 </tbody>
                                             </table>
@@ -206,7 +215,9 @@ export default class Dashboard extends Component {
                                                             </tr>
                                                     )
                                                     }
+                                                    
                                                 })}
+                                                
                                                 </tbody>
                                             </table>
                                         </div>

@@ -5,19 +5,23 @@ export default class DashboardAdminContenido extends Component {
     constructor(props){
         super();
         this.state={
-            contenidos:[]
+            contenidos:[],
+            conteo: 0
         }
         this.Eliminar=this.Eliminar.bind(this);
         this.MostrarOcultar=this.MostrarOcultar.bind(this);
         this.Aceptar=this.Aceptar.bind(this);
         this.Descargar=this.Descargar.bind(this);
     }
+
+    urlServicio='http://localhost:8080/contenido/';
+
     componentDidMount(){
         this.ListarContenido();
         
     }
     Descargar(contenido_link){
-        window.location.href='http://localhost:8080/contenido/download/'+contenido_link;
+        window.location.href=this.urlServicio+'download/'+contenido_link;
     }
     MostrarOcultar(contenido){
         if (contenido.visible) {
@@ -25,7 +29,7 @@ export default class DashboardAdminContenido extends Component {
         } else {
             contenido.visible=true;
         }
-        const url='http://localhost:8080/contenido/Update';
+        const url=this.urlServicio+'Update';
         const mensajeError='no fue posible actualizar estado del contenido';
         const metodo='PUT';
         const peticion=PeticionEnvio(contenido, url, mensajeError, metodo);
@@ -38,7 +42,8 @@ export default class DashboardAdminContenido extends Component {
     Aceptar(contenido){
         contenido.pendiente=false;
         contenido.visible=true;
-        const url='http://localhost:8080/contenido/update';
+        contenido.titulo='titulo contenido 1'
+        const url=this.urlServicio+'update';
         const mensajeError='no fue posible actualizar estado del contenido';
         const metodo='PUT';
         const peticion=PeticionEnvio(contenido, url, mensajeError, metodo);
@@ -48,22 +53,8 @@ export default class DashboardAdminContenido extends Component {
             }
         });
     }
-    Eliminar(contenido){
-        /*
-        contenido.pendiente=true;
-        contenido.visible=true;
-        const url='http://localhost:8080/contenido/update';
-        const mensajeError='no fue posible actualizar estado del contenido';
-        const metodo='PUT';
-        const peticion=PeticionEnvio(contenido, url, mensajeError, metodo);
-        peticion.then(data =>{
-            if(data){
-                this.ListarContenido();
-            }
-        });*/
-        
-        const url='http://localhost:8080/contenido/delete/'+contenido.link;
-        
+    Eliminar(contenido){ 
+        const url=this.urlServicio+'delete/'+contenido.link;
         const mensajeError='no fue posible eliminar el contenido';
         const metodo='DELETE';
         const peticion=PeticionEnvio(contenido, url, mensajeError, metodo);
@@ -74,12 +65,18 @@ export default class DashboardAdminContenido extends Component {
         });  
     }
     ListarContenido() {
-        const url='http://localhost:8080/contenido/';
+        let cont=0;
+        const url=this.urlServicio;
             const mensajeError='no hay contenidos';
             const datos=PeticionGet(url, mensajeError);
             datos.then(data =>{
                 if(data!==null){
-                    this.setState({contenidos: Array.from(data)});
+                    for (let i = 0; i < data.length; i++) {
+                        if(data[i].visible && !data[i].pendiente){
+                            cont=cont+1;
+                        }
+                    } 
+                    this.setState({contenidos: Array.from(data), conteo: cont});
                 }
             });
     }
@@ -99,7 +96,7 @@ export default class DashboardAdminContenido extends Component {
                             <div className="col-lg-3 col-6">
                                 <div className="small-box bg-danger">
                                     <div className="inner">
-                                        <h3>100</h3>
+                                        <h3>{this.state.conteo}</h3>
                                         <p>Número de contenidos</p>
                                     </div>
                                     <div className="icon">
@@ -144,7 +141,7 @@ export default class DashboardAdminContenido extends Component {
                                                     if(this.state.contenidos[i].pendiente){
                                                     return(
                                                     <tr>
-                                                        <td>Contenido 1</td>
+                                                        <td>{this.state.contenidos[i].titulo}</td>
                                                         <td>
                                                             <textarea id="inputDescription" className="form-control" rows={4} defaultValue={this.state.contenidos[i].resumen} />
                                                         </td>

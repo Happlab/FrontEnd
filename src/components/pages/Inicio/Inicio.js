@@ -14,11 +14,13 @@ class Inicio extends React.Component {
       inicio:[]
     }
   }
+  urlServicio='http://localhost:8080/seccion/';
+
   componentDidMount(){
     this.ListarInicio();
   }
   ListarInicio(){
-    const url='http://localhost:8080/seccion/';
+    const url=this.urlServicio;
     const mensajeError='no hay informacion de inicio';
     const datos=PeticionGet(url, mensajeError);
     datos.then(data =>{
@@ -28,22 +30,6 @@ class Inicio extends React.Component {
     });
   }
   render(){
-    const video=(props)=>{
-                  return(
-                  <ReactPlayer
-                    url={props.url}
-                    width='100%'
-                    height='100%'
-                    controls
-                    loop
-                  />)};
-    const imagen=(props)=>{
-                  return(<img 
-                    style={{width:'100%'}}
-                    className="images-carousel"
-                    src={props.img} width={400} height={150}
-                    alt="Third slide"
-                  />)};
     return(
     <div className='main-inicio'>
       <Navbar1 />
@@ -63,13 +49,7 @@ class Inicio extends React.Component {
                         </p>
                       </div>
                       <div className='columna-inicio-video'>
-                      <img 
-                        style={{width:'100%'}}
-                        className="images-carousel"
-                        src={"http://localhost:8080/seccion/contenido/"+this.state.inicio[i].nombre_contenido} width={400} height={150}
-                        alt="Third slide"
-                      />
-                        {/*this.state.inicio[i].url!=='' ? <video url={"http://localhost:8080/seccion/contenido/"+this.state.inicio[i].contenido}/> : <imagen img={this.state.inicio[i].url} />*/} 
+                        {this.state.inicio[i].url!=='' ? <ReactPlayer url={this.state.inicio[i].url} width='100%' height='100%' controls loop/> :<img style={{width:'100%'}} className="images-carousel"src={this.urlServicio+"contenido/"+this.state.inicio[i].nombre_contenido} width={400} height={150} alt="Third slide"/>} 
                       </div>
                   </div> 
                 </div>
