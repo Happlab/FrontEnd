@@ -129,6 +129,7 @@ class Contenido extends React.Component{
                                         <Button variant="secondary" onClick={this.handleClickEstadoFalse}>
                                             Close
                                         </Button>
+
                                         <h4> Comentarios </h4>
                                         {[...Array(this.state.arrayContenidos[this.state.posSeleccionado].comentarios.length)].map((e, i) => {
                                             return(
