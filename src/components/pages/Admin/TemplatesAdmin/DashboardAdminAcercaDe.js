@@ -5,6 +5,8 @@ export default class DashboardAdminAcercaDe extends Component {
     return (
       <div>
         <div className="content-wrapper" style={{ minHeight: '2080.12px' }}>
+        <h1 align="center">Módulo Administrador - Página de Acerca De</h1>
+        <br></br>
           {/* Añadir Noticias*/}
           <section className="content">
             <div className="container-fluid">

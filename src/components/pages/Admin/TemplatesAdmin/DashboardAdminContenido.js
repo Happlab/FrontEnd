@@ -1,11 +1,93 @@
 import React, { Component } from 'react'
+import {PeticionEnvio, PeticionGet} from '../PeticionesAdmin.js'
 
 export default class DashboardAdminContenido extends Component {
+    constructor(props){
+        super();
+        this.state={
+            contenidos:[],
+            conteo: 0
+        }
+        this.Eliminar=this.Eliminar.bind(this);
+        this.MostrarOcultar=this.MostrarOcultar.bind(this);
+        this.Aceptar=this.Aceptar.bind(this);
+        this.Descargar=this.Descargar.bind(this);
+    }
+
+    urlServicio='http://localhost:8080/contenido/';
+
+    componentDidMount(){
+        this.ListarContenido();
+        
+    }
+    Descargar(contenido_link){
+        window.location.href=this.urlServicio+'download/'+contenido_link;
+    }
+    MostrarOcultar(contenido){
+        if (contenido.visible) {
+            contenido.visible=false;
+        } else {
+            contenido.visible=true;
+        }
+        const url=this.urlServicio+'Update';
+        const mensajeError='no fue posible actualizar estado del contenido';
+        const metodo='PUT';
+        const peticion=PeticionEnvio(contenido, url, mensajeError, metodo);
+        peticion.then(data =>{
+            if(data){
+                this.ListarContenido();
+            }
+        });
+    }
+    Aceptar(contenido){
+        contenido.pendiente=false;
+        contenido.visible=true;
+        contenido.titulo='titulo contenido 1'
+        const url=this.urlServicio+'update';
+        const mensajeError='no fue posible actualizar estado del contenido';
+        const metodo='PUT';
+        const peticion=PeticionEnvio(contenido, url, mensajeError, metodo);
+        peticion.then(data =>{
+            if(data){
+                this.ListarContenido();
+            }
+        });
+    }
+    Eliminar(contenido){ 
+        const url=this.urlServicio+'delete/'+contenido.link;
+        const mensajeError='no fue posible eliminar el contenido';
+        const metodo='DELETE';
+        const peticion=PeticionEnvio(contenido, url, mensajeError, metodo);
+        peticion.then(data =>{
+            if(data){
+                this.ListarContenido();
+            }
+        });  
+    }
+    ListarContenido() {
+        let cont=0;
+        const url=this.urlServicio;
+            const mensajeError='no hay contenidos';
+            const datos=PeticionGet(url, mensajeError);
+            datos.then(data =>{
+                if(data!==null){
+                    for (let i = 0; i < data.length; i++) {
+                        if(data[i].visible && !data[i].pendiente){
+                            cont=cont+1;
+                        }
+                    } 
+                    this.setState({contenidos: Array.from(data), conteo: cont});
+                }
+            });
+    }
+
     render() {
         return (
             <div>
                 {/*Lista d solicitudes*/}
                 <div className="content-wrapper" style={{ minHeight: '2080.12px' }}>
+                <h1 align="center">Módulo Administrador - Página de Contenidos</h1>
+                <br></br>
                     {/* Estádisticas de Contenidos */}
                     <div class="container-fluid">
                         <br />
@@ -14,7 +96,7 @@ export default class DashboardAdminContenido extends Component {
                             <div className="col-lg-3 col-6">
                                 <div className="small-box bg-danger">
                                     <div className="inner">
-                                        <h3>100</h3>
+                                        <h3>{this.state.conteo}</h3>
                                         <p>Número de contenidos</p>
                                     </div>
                                     <div className="icon">
@@ -40,16 +122,6 @@ export default class DashboardAdminContenido extends Component {
                                     <div className="card">
                                         <div className="card-header">
                                             <h3 className="card-title">Solicitudes de contenido</h3>
-                                            <div className="card-tools">
-                                                <div className="input-group input-group-sm" style={{ width: 150 }}>
-                                                    <input type="text" name="table_search" className="form-control float-right" placeholder="Search" />
-                                                    <div className="input-group-append">
-                                                        <button type="submit" className="btn btn-default">
-                                                            <i className="fas fa-search" />
-                                                        </button>
-                                                    </div>
-                                                </div>
-                                            </div>
                                         </div>
                                         <div className="card-body table-responsive p-0" style={{ height: 300 }}>
                                             <table className="table table-head-fixed text-nowrap">
@@ -60,104 +132,44 @@ export default class DashboardAdminContenido extends Component {
                                                         <th>Usuario</th>
                                                         <th>Documentación</th>
                                                         <th>Etiquetas</th>
-
                                                         <th>Fecha de cargue</th>
-
                                                         <th>Acción</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
+                                                {[...Array(this.state.contenidos.length)].map((e, i) => {
+                                                    if(this.state.contenidos[i].pendiente){
+                                                    return(
                                                     <tr>
-                                                        <td>Contenido 1</td>
+                                                        <td>{this.state.contenidos[i].titulo}</td>
                                                         <td>
-                                                            <textarea id="inputDescription" className="form-control" rows={4} defaultValue={"Lorem ipsum dolor sit amet consectetur adipiscing elit tristique in, penatibus id rhoncus sodales inceptos torquent dis."} />
+                                                            <textarea id="inputDescription" className="form-control" rows={4} defaultValue={this.state.contenidos[i].resumen} />
                                                         </td>
-                                                        <td>lmarango@unicauca.edu.co</td>
+                                                        <td>{this.state.contenidos[i].id_autor.email}</td>
                                                         <div className="btn-group btn-group-sm">
                                                             <a href="#" className="btn btn-info"><i className="fas fa-eye" /></a>
-                                                            <button type="button" className="btn btn-primary float-right" style={{ marginRight: 5 }}>
+                                                            <button type="button" onClick={()=>this.Descargar(this.state.contenidos[i].contenido_link)} className="btn btn-primary float-right" style={{ marginRight: 5 }}>
                                                                 <i className="fas fa-download" /> Descargar
                                                             </button>
                                                         </div>
                                                         <td>
-                                                            <textarea id="inputDescription" className="form-control" rows={4} defaultValue={'"Etiq. 1", "Etiq. 2", "Etiq. 3", "Etiq. 4", "Etiq. 5"'} />
+                                                            <textarea id="inputDescription" className="form-control" rows={4} defaultValue={this.state.contenidos[i].tags} />
                                                         </td>
-                                                        <td>02-07-2022</td>
-
+                                                        <td>{this.state.contenidos[i].fecha_subida}</td>
                                                         <td>
                                                             <div className="input-group-prepend">
                                                                 <button type="button" className="btn btn-warning dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
                                                                     Acción
                                                                 </button>
                                                                 <ul className="dropdown-menu" style={{}}>
-                                                                    <li className="dropdown-item">Aprobar</li>
-                                                                    <li className="dropdown-item">Rechazar</li>
+                                                                    <li className="dropdown-item" onClick={()=>this.Aceptar(this.state.contenidos[i])}>Aprobar</li>
+                                                                    <li className="dropdown-item" onClick={()=>this.Eliminar(this.state.contenidos[i])}>Rechazar</li>
                                                                 </ul>
                                                             </div>
                                                         </td>
                                                     </tr>
-                                                    <tr>
-                                                        <td>Contenido 1</td>
-                                                        <td>
-                                                            <textarea id="inputDescription" className="form-control" rows={4} defaultValue={"Lorem ipsum dolor sit amet consectetur adipiscing elit tristique in, penatibus id rhoncus sodales inceptos torquent dis."} />
-                                                        </td>
-                                                        <td>lmarango@unicauca.edu.co</td>
-                                                        <div className="btn-group btn-group-sm">
-                                                            <a href="#" className="btn btn-info"><i className="fas fa-eye" /></a>
-                                                            <button type="button" className="btn btn-primary float-right" style={{ marginRight: 5 }}>
-                                                                <i className="fas fa-download" /> Descargar
-                                                            </button>
-                                                        </div>
-                                                        <td>
-                                                            <textarea id="inputDescription" className="form-control" rows={4} defaultValue={'"Etiq. 1", "Etiq. 2", "Etiq. 3", "Etiq. 4", "Etiq. 5"'} />
-                                                        </td>
-
-                                                        <td>01-05-2022</td>
-
-                                                        <td>
-                                                            <div className="input-group-prepend">
-                                                                <button type="button" className="btn btn-warning dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                                                                    Acción
-                                                                </button>
-                                                                <ul className="dropdown-menu" style={{}}>
-                                                                    <li className="dropdown-item">Aprobar</li>
-                                                                    <li className="dropdown-item">Rechazar</li>
-                                                                </ul>
-                                                            </div>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Contenido 1</td>
-                                                        <td>
-                                                            <textarea id="inputDescription" className="form-control" rows={4} defaultValue={"Lorem ipsum dolor sit amet consectetur adipiscing elit tristique in, penatibus id rhoncus sodales inceptos torquent dis."} />
-                                                        </td>
-                                                        <td>lmarango@unicauca.edu.co</td>
-                                                        <td>
-                                                            <div className="btn-group btn-group-sm">
-                                                                <a href="#" className="btn btn-info"><i className="fas fa-eye" /></a>
-                                                                <button type="button" className="btn btn-primary float-right" style={{ marginRight: 5 }}>
-                                                                    <i className="fas fa-download" /> Descargar
-                                                                </button>
-                                                            </div>
-                                                        </td>
-                                                        <td>
-                                                            <textarea id="inputDescription" className="form-control" rows={4} defaultValue={'"Etiq. 1", "Etiq. 2", "Etiq. 3", "Etiq. 4", "Etiq. 5"'} />
-                                                        </td>
-
-                                                        <td>01-05-2022</td>
-
-                                                        <td>
-                                                            <div className="input-group-prepend">
-                                                                <button type="button" className="btn btn-warning dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                                                                    Acción
-                                                                </button>
-                                                                <ul className="dropdown-menu" style={{}}>
-                                                                    <li className="dropdown-item">Aprobar</li>
-                                                                    <li className="dropdown-item">Rechazar</li>
-                                                                </ul>
-                                                            </div>
-                                                        </td>
-                                                    </tr>
+                                                    )}
+                                                    })}
                                                 </tbody>
                                             </table>
                                         </div>
@@ -176,16 +188,6 @@ export default class DashboardAdminContenido extends Component {
                                     <div className="card">
                                         <div className="card-header">
                                             <h3 className="card-title">Lista de Contenidos</h3>
-                                            <div className="card-tools">
-                                                <div className="input-group input-group-sm" style={{ width: 150 }}>
-                                                    <input type="text" name="table_search" className="form-control float-right" placeholder="Search" />
-                                                    <div className="input-group-append">
-                                                        <button type="submit" className="btn btn-default">
-                                                            <i className="fas fa-search" />
-                                                        </button>
-                                                    </div>
-                                                </div>
-                                            </div>
                                         </div>
                                         <div className="card-body table-responsive p-0" style={{ height: 300 }}>
                                             <table className="table table-head-fixed text-nowrap">
@@ -198,49 +200,47 @@ export default class DashboardAdminContenido extends Component {
                                                         <th>Documentación</th>
                                                         <th>Valoración</th>
                                                         <th>Etiquetas</th>
-
                                                         <th>Fecha de cargue</th>
-
                                                         <th>Acciones</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
+                                                {[...Array(this.state.contenidos.length)].map((e, i) => {
+                                                    if(!this.state.contenidos[i].pendiente){
+                                                    return(
                                                     <tr>
-                                                        <td>1</td>
+                                                        <td>{i}</td>
                                                         <td>Título 1</td>
                                                         <td>
-                                                            <textarea id="inputDescription" className="form-control" rows={4} defaultValue={"Lorem ipsum dolor sit amet consectetur adipiscing elit tristique in, penatibus id rhoncus sodales inceptos torquent dis."} />
+                                                            <textarea id="inputDescription" className="form-control" rows={4} defaultValue={this.state.contenidos[i].resumen} />
                                                         </td>
-                                                        <td>lmarango@unicauca.edu.co</td>
+                                                        <td>{this.state.contenidos[i].id_autor.email}</td>
                                                         <td>
                                                             <div className="btn-group btn-group-sm">
-                                                                <a href="#" className="btn btn-info"><i className="fas fa-eye" /></a>
-                                                                <button type="button" className="btn btn-primary float-right" style={{ marginRight: 5 }}>
+                                                                <a  onClick={()=>this.Eliminar(this,this.state.contenidos[i])} href="#" className="btn btn-info"><i className="fas fa-eye" /></a>
+                                                                <button type="button" onClick={()=>this.Descargar(this.state.contenidos[i].link)} className="btn btn-primary float-right" style={{ marginRight: 5 }}>
                                                                     <i className="fas fa-download" /> Descargar
                                                                 </button>
                                                             </div>
                                                         </td>
-                                                        <td>3,8</td>
+                                                        <td>{this.state.contenidos[i].valoracion_general}</td>
                                                         <td>
-                                                            <textarea id="inputDescription" className="form-control" rows={4} defaultValue={'"Etiq. 1", "Etiq. 2", "Etiq. 3", "Etiq. 4", "Etiq. 5"'} />
+                                                            <textarea id="inputDescription" className="form-control" rows={4} defaultValue={this.state.contenidos[i].tags} />
                                                         </td>
-
-                                                        <td>30-04-2022</td>
-
+                                                        <td>{new Date(this.state.contenidos[i].fecha_subida).toLocaleDateString()+ ' A las: ' + new Date(this.state.contenidos[i].fecha_subida).toLocaleTimeString()}</td>
                                                         <td>
                                                             <div className="input-group-prepend">
-                                                                <button type="button" className="btn btn-warning dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                                                                    Acción
+                                                                <button type="button" className="btn btn-warning" onClick={()=>this.MostrarOcultar(this.state.contenidos[i])} aria-expanded="false">
+                                                                    {this.state.contenidos[i].visible ? 'Ocultar contenido' : 'Mostrar contenido'}
                                                                 </button>
-                                                                <ul className="dropdown-menu" style={{}}>
-
-                                                                    <li className="dropdown-item">Ocultar</li>
-
-                                                                    <li className="dropdown-item">Eliminar</li>
-                                                                </ul>
                                                             </div>
                                                         </td>
                                                     </tr>
+                                                    )
+                                                    
+                                                }
+
+                                                })}
                                                 </tbody>
                                             </table>
                                         </div>

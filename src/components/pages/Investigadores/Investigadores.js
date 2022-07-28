@@ -16,7 +16,7 @@ const Investigadores = () => {
           />
           <h2>Putos</h2>
         </div>
-        <div id="dialog-content" style={{ display: "none", maxWidth: "500px" }}>
+        <div id="dialog-content" style={{ display: "none", maxWidth: "900px" }}>
           <h2>Hello, world!</h2>
           <p>
             <input type="text" value="" />
