@@ -3,7 +3,7 @@ import { useLocation, Navigate } from 'react-router-dom';
 import Navbar1 from '../../navegation/navbar/Navbar1';
 import Footer from '../../navegation/footer/Footer';
 import './Perfil.scss'
-import { disabledUser, updateUser } from '../../services/UserServices';
+import user_service from '../../services/UserServices';
 
 class Perfil extends React.Component {
     constructor(props) {
@@ -50,9 +50,13 @@ class Perfil extends React.Component {
     }
 
     onChangedStatusAccount(email) {
-        let disable = disabledUser(email);
+        this.setState(values => ({ ...values, isStatus: !this.state.isStatus}));
+        let disable = user_service.disabledUser(email);
         disable.then(response => {
-            if(response === 200) alert("Cuenta Desactivada");
+            if(response === 200) {
+                user_service.deleteToken();
+                alert("Cuenta Desactivada");
+            }
             else alert("No se pudo desactivar la cuenta");
         });
     }
@@ -65,20 +69,20 @@ class Perfil extends React.Component {
 
     saveChange(data) {
         this.setState(values => ({ ...values, updateVerified: !this.state.updateVerified, isCargo: !this.state.isCargo}));
-        let update = updateUser(data);
+        let update = user_service.updateUser(data);
         update.then(data_user => {
             if (data_user !== null) {
                 this.setState(values => ({ ...values, data_user: data_user}));
+                user_service.deleteToken();
                 alert("Cargo modificado");
-
             } else alert("No se pudo modificar el cargo");
         })
     }
 
     render() {
         let data = this.state.data_user;
-        data = JSON.parse(data);
         data.rol = (this.state.cargo !== "") ? this.state.cargo : data.rol;
+        if (user_service.getToken() === null) return (<Navigate to="/Login" />)
         return (
             <div className="row">
                 {this.state.isPassword && (
@@ -155,7 +159,7 @@ class Perfil extends React.Component {
                                                 <p className="mb-0">Rol</p>
                                             </div>
                                             <div className="col-sm-8">
-                                                <p className="text-muted mb-0">{data.rol}</p>
+                                                <p className="text-muted mb-0">{data.tipo_docente}</p>
                                             </div>
                                         </div>
                                         <hr />

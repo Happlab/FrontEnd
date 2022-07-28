@@ -2,7 +2,7 @@ import React from 'react';
 import { useLocation, Navigate } from 'react-router-dom';
 import Navbar1 from '../../navegation/navbar/Navbar1';
 import Footer from '../../navegation/footer/Footer';
-import { onLogin, updateUser } from '../../services/UserServices';
+import user_service from '../../services/UserServices';
 
 class Password extends React.Component {
     constructor(props) {
@@ -32,7 +32,7 @@ class Password extends React.Component {
         event.preventDefault();
         if(this.state.inputPasswordNew === this.state.inputPasswordVerified) {
             let email = JSON.parse(this.state.data_user).email;
-            let passNew = onLogin(email, this.state.inputPasswordOld);
+            let passNew = user_service.onLogin(email, this.state.inputPasswordOld);
             passNew.then(data => {
                     if(data !== null) this.setState(values => ({ ...values, userVerified: !this.state.userVerified }));
                     else alert("La contraseña actual ingresada no es correcta");
@@ -42,7 +42,7 @@ class Password extends React.Component {
 
     onSendUpdateRequest(data){
         data.password = this.state.inputPasswordNew;
-        let update = updateUser(data);
+        let update = user_service.updateUser(data);
         update.then(data => {
                 if(data !== null) this.setState(values => ({ ...values, updateVerified: !this.state.updateVerified, data_user: data}))
             })
@@ -50,7 +50,6 @@ class Password extends React.Component {
 
     render() {
         let data = this.state.data_user;
-        data = JSON.parse(data);
         return (
             <div className="row">
                 {this.state.userVerified && (

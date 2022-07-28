@@ -5,7 +5,7 @@ import Footer from '../../navegation/footer/Footer'
 import '../Login/Login.scss'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {faEye,faEyeLowVision} from '@fortawesome/free-solid-svg-icons';
-import { onLogin } from '../../services/UserServices';
+import user_service from '../../services/UserServices';
 
 class Login extends React.Component {
 	constructor(props) {
@@ -43,10 +43,16 @@ class Login extends React.Component {
 
 	handleSubmit(event) {
 		event.preventDefault();
-		let login = onLogin(this.state.email, this.state.password);
+		let data_user = null;
+		let login = user_service.onLogin(this.state.email, this.state.password);
 		login.then(data => {
-			if(data !== null) this.setState(values => ({ ...values, valid_user: true, data_user: data }));
+			if(data !== null) {
+				data_user = user_service.getDataToken(data);
+				user_service.setToken(data);
+				this.setState(values => ({ ...values, valid_user: true, data_user: data_user }));
+			} 
 			else alert("El correo o la contraseña son incorrectas");
+			this.setState(values => ({...values, email: "", password: ""}));
 		})
 	}
 
@@ -57,7 +63,6 @@ class Login extends React.Component {
 	}
 	let valid_user = this.state.valid_user;
 	let data = this.state.data_user;
-		console.log("token: "+data);
     return(
         <div className='main-login'>
 			{valid_user && (
@@ -103,13 +108,13 @@ class Login extends React.Component {
 														<form className="eael-login-form eael-lr-form" id="eael-login-form" onSubmit={this.handleSubmit} >
 								                            <div className="eael-lr-form-group">
 									                            <label htmlFor="eael-user-login" className="eael-field-label">Nombre de usuario o dirección de correo electrónico</label>                                    
-                                                                <input type="email" name="email" id="eael-user-login" className="eael-lr-form-control" aria-describedby="emailHelp" placeholder="Nombre de usuario o dirección de correo electrónico" onChange={this.handleChange} required/>
+                                                                <input type="email" name="email" id="eael-user-login" className="eael-lr-form-control" aria-describedby="emailHelp" value={this.state.email} placeholder="Nombre de usuario o dirección de correo electrónico" onChange={this.handleChange} required/>
 									                        </div>
                                                             <div className="eael-lr-form-group">
 									                            <label htmlFor="eael-user-password" className="eael-field-label">Contraseña</label>                                    
                                                                 <div className="eael-lr-password-wrapper">
 
-                                                                    <input type="password" name="password" className="eael-lr-form-control" id="eael-user-password" placeholder="Contraseña" onChange={this.handleChange} required/>
+                                                                    <input type="password" name="password" className="eael-lr-form-control" id="eael-user-password" placeholder="Contraseña" value={this.state.password} onChange={this.handleChange} required/>
 										                            <button type="button" id="wp-hide-pw" onClick={(e)=>this.handleClickOcultar()} className="wp-hide-pw hide-if-no-js" aria-label="Show password">
                                                                         <span id='ocultar' className="dashicons dashicons-visibility" aria-hidden="true">{icono}</span>
                                                                     </button>
