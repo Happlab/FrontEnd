@@ -1,26 +1,38 @@
-import ReactDOM from 'react-dom/client';
-import React, { createElement, useState} from 'react'
+import React, {useState} from 'react'
 import Navbar1 from '../../navegation/navbar/Navbar1'
 import Footer from '../../navegation/footer/Footer'
 import './Noticias.scss'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faLink, faSearch} from '@fortawesome/free-solid-svg-icons';
-import {Collapse, Fade} from 'react-bootstrap'
-import { createPortal } from 'react-dom';
-import { hover } from '@testing-library/user-event/dist/hover';
+import {Fade} from 'react-bootstrap'
+import {PeticionEnvio, PeticionGet} from '../Admin/PeticionesAdmin.js'
+
 
 
 class Noticias extends React.Component {
     constructor(props){
         super(props);
         this.state={
-            cantidadNoticias: 3
+            arrayNoticias: [],
+            cambioEnNoticias: false
         };
-        this.handleClick=this.handleClick.bind(this);
+        this.handleClick=this.handleCambioEnNoticias.bind(this);
     }
 
-    handleClick(cant, e){
-       this.setState(state=>({cantidadNoticias:cant}));
+    urlServicio='http://localhost:8080/noticia/';
+    componentDidMount(){
+        this.ListarNoticias();
+    }
+    ListarNoticias(){
+        const url=this.urlServicio;
+        const mensajeError='no hay noticias';
+        const datos=PeticionGet(url, mensajeError);
+        datos.then(data =>{
+            if(data!==null){
+                this.setState({arrayNoticias: Array.from(data)});
+            }
+        });
+    }
+    handleCambioEnNoticias(cant, e){
+       this.setState(state=>({cantidadNoticias:true}));
     }
     
     render(){
@@ -29,41 +41,33 @@ class Noticias extends React.Component {
             const [open,setOpen]=useState(false);
             return(
             <div className="col-md-4 col-sm-6 mix mix-082e3a1 portfolio-item business-082e3a1 onepage-082e3a1" >
-                
                 <span className='span-img' style={{backgrounColor:'black'}}>
-                <Fade in={!open}>
+                    <a className='vinculo-noticia' href={props.LinkPage} target="_blank" onMouseOut={()=>setOpen(false)}>
+                    <Fade in={!open}>
                         <img src={props.srcImg} alt="Switch Pro" onMouseEnter={()=>setOpen(true)} onMouseOut={()=>setOpen(false)}/>
-                </Fade>
+                    </Fade>
+                    <Fade in={open} className='titulo-noticia' onMouseOver={()=>setOpen(true)}>
+                        <h4>{props.titulo}</h4> 
+                    </Fade>
+                    </a>  
                 </span>
-                
-                <Fade className="portfolio-buttons" in={open}>
-                <span onMouseOver={()=>setOpen(true)} onMouseLeave={()=>setOpen(false)}>
-                    <a className='test-popup-link' href={props.LinkPage}  onMouseOver={()=>setOpen(true)}>
-                        <FontAwesomeIcon className='fa fa-search' icon={faLink} size='2x' fixedWidth/>
-                    </a>
-                    <a className='test-popup-link' href={props.linkImg} target="_blank" onMouseOver={()=>setOpen(true)}>
-                        <FontAwesomeIcon className='fa fa-search' icon={faSearch} size='2x' fixedWidth/>
-                    </a>
-                </span>
-                </Fade>
             </div>
             );
         }
-        /*Formar Array de noticias dependiendo de la cantidad(props.len) de noticias y las rutas de las imagenes*/
+        /*Formar y llenar Array de noticias listas para ser mostradas*/
         const MostrarNoticias=(props)=>{
-            const array=[];
-            for (let i = 0; i < props.len; i++) {
-                array.push(
+            const arrayContendor=[];
+            for (let i = 0; i < this.state.arrayNoticias.length; i++) {
+                arrayContendor.push(
                         <ContenidoNoticias 
-                            key={i}
-                            srcImg="https://thumbs.dreamstime.com/b/ilustraci%C3%B3n-de-vectores-fondo-live-breaking-news-im%C3%A1genes-noticias-%C3%BAltima-hora-en-directo-eps-170013711.jpg" 
-                            linkImg="https://james.amigos4all.com/wp-content/plugins/widgetkit-for-elementor/dist/images/placeholder.jpg" 
-                            LinkPage="https://www.unicauca.edu.co/versionP/acerca-de-unicauca/centros/cecav"
+                            titulo={this.state.arrayNoticias[i].titulo_noticia}
+                            srcImg={this.urlServicio+'img/'+this.state.arrayNoticias[i].link_contenido}
+                            LinkPage={this.state.arrayNoticias[i].url_noticia}
                         />
                     )
             }
             return(
-                array 
+                arrayContendor 
             );
         }
 
@@ -100,20 +104,11 @@ class Noticias extends React.Component {
 						<div className="elementor-element elementor-element-082e3a1 elementor-widget elementor-widget-widgetkit-for-elementor-portfolio" data-id="082e3a1" data-element_type="widget" data-widget_type="widgetkit-for-elementor-portfolio.default">
 				            <div className="elementor-widget-container">
 			                    <div className="tgx-portfolio">
-                                    <ul className="portfolio-filter round text-center">
-
-                                        {/*Cantidad de noticias dependiendo del tag(tamaño del array de noticias)*/}
-                                        <li><a onClick={(e)=>this.handleClick(3,e)} className="" href="#" data-filter="*" >Todas</a></li>       
-                                        <li><a onClick={(e)=>this.handleClick(4,e)} href="#" data-filter=".noticas-082e3a1" >Noticas</a></li>    
-                                        <li><a onClick={(e)=>this.handleClick(5,e)} href="#" data-filter=".cursosdisponibles-082e3a1" >Cursos disponibles</a></li>          
-                                        <li><a onClick={(e)=>this.handleClick(6,e)} href="#" data-filter=".próximoseventos-082e3a1" >Próximos eventos</a></li>
-                                    </ul>
                                     <div id="hover-1" className="hover-1">
                                         <div id='news' className="row">
-                                            <MostrarNoticias len={this.state.cantidadNoticias}/>
+                                            <MostrarNoticias/>
                                         </div>
                                     </div>
-
                                 </div>		
                             </div>
                          
