@@ -54,10 +54,14 @@ $tam-2: 100px;
 }
 
 .col-map{
-    margin: 5px;
-    height: 300px;
+    @include formacion_imagen($tam,$posicion-izq);
+}
+
+.col-text{
+    @include formacion_texto($tam,$posicion-izq);
+    margin-top: 10%;
 }
 
 .leaflet-container{
-    height: 250px;
+    height: 180px;
 }

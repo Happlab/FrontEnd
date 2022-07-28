@@ -4,98 +4,149 @@ import Footer from '../../navegation/footer/Footer'
 import './Contenido.scss'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch, faUpload} from '@fortawesome/free-solid-svg-icons';
-import {ListGroupItem, ListGroup, InputGroup, Button, FormControl, Dropdown, DropdownButton, ButtonGroup, Form, CardGroup} from 'react-bootstrap'
-import imagenes from '../../../assets/imagenes'
-import { Card, CardText, CardBody,
-  CardTitle} from 'reactstrap';
+import {ListGroup, InputGroup, Button, FormControl, Dropdown, DropdownButton, Form} from 'react-bootstrap'
+import { Card, CardText, CardBody} from 'reactstrap';
 import Rating from 'react-rating'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
-  
-var titulo,user,rate,resumen,etiqueta;
+import Modal from 'react-bootstrap/Modal';
 
-  function handleClick() {
-    alert('Hello!');
-  } 
-
-  var settings = {
-    dots: false,
-    infinite: false,
-    speed: 500,
-    slidesToShow: 3,
-    slidesToScroll: 1
-  };
 
 class Contenido extends React.Component{
     constructor(props){
         super(props);
         this.state={
-            arrayContenidos:[
-                {
-                    "tittle":"Hola",
-                    "user":"Juan",
-                    "rating":1.5,
-                    "resume":"Nos preocupamos por tu salud",
-                    "etiqueta1":"#JamesPuto"
-                },
-                {
-                    "tittle":"Holiwis",
-                    "user":"JuanA",
-                    "rating":3.5,
-                    "resume":"Nos preocupamos por tu salud y tu dinero",
-                    "etiqueta1":"#JamesPuto"
-                },
-                {
-                    "img":imagenes.img2,
-                },
-                {
-                    "img":imagenes.img2
-                }
-
-            ],
-            estadoSubirContenido:false
+            arrayContenidos:[],
+            estadoSubirContenido:false,
+            posSeleccionado:0,
+            estadoTrigger: false,
         }
-        this.handleClick=this.handleClick.bind(this);
         this.handleClickSubirContenido=this.handleClickSubirContenido.bind(this);
+        this.descarga=this.descarga.bind(this);
+        this.handleClickEstadoTrue=this.handleClickEstadoTrue.bind(this);
+        this.handleClickEstadoFalse=this.handleClickEstadoFalse.bind(this);
+        this.CambiarRate=this.CambiarRate.bind(this);
+
     }
     handleClickSubirContenido(){
         this.setState({estadoSubirContenido: !this.state.estadoSubirContenido});
     }
-    handleClick(e, patronBusqueda){
-        
-        //aqui va arreglo con resultado de metodo GET ya sea del filtro o la busqueda por palabra clave
-        this.setState({arrayContenidos:[
-            {
-                "img":imagenes.imgSam
-            },
-            {
-                "img":imagenes.imgUni
+
+    PeticionGet(url, mensajeError) {
+        let status = 0;
+        let content;
+        const request_options = {
+            method: 'GET',
+            mode: 'cors',
+            ContentType: 'application/json',
+            headers:{
+                'Access-Control-Allow-Origin': '*'
             }
-        ],
-        estadoSubirContenido: false
-    });
+        }
+        return fetch(url, request_options)
+            .then(response => {
+                content = response.json(); 
+                status = response.status;
+                return content;
+            })
+            .then(data => { 
+                if( status === 200 && data !== "" ){
+                    return data;
+                }else{
+                    alert(mensajeError);
+                    return null;
+                }
+            })
+            .catch(error => console.log("Error", error));
     }
+
+    descarga(contenido_link){
+        window.location.href='http://localhost:8080/contenido/download/'+contenido_link;
+    }
+
+    componentDidMount(){
+        const url='http://localhost:8080/contenido/';
+        const mensajeError='no hay contenidos';
+        const datos=this.PeticionGet(url, mensajeError);
+        datos.then(data =>{
+            if(data!==null){
+                this.setState({arrayContenidos: Array.from(data)});
+            }
+        });
+    }
+
+    handleClickEstadoTrue(posicion){
+        this.setState({posSeleccionado: posicion,estadoTrigger: true});
+      }
+    
+      handleClickEstadoFalse(){
+        this.setState({estadoTrigger: false});
+      }
+
+    CambiarRate(rate){
+        this.valoracion_usuario = rate;
+    }
+    valoracion_usuario = 0.0;
     render(){
         const MostrarContenido=(props)=>{
             const array2=[];
             if(!this.state.estadoSubirContenido){ 
                         //aqui va el contenido
-                titulo = this.state.arrayContenidos[0].tittle;
-                user = this.state.arrayContenidos[0].user;
-                rate = this.state.arrayContenidos[0].rating;
-                resumen = this.state.arrayContenidos[0].resume;
-                etiqueta = this.state.arrayContenidos[0].etiqueta1;
-                        array2[1]=
-                                <Card className='card-change' onClick={handleClick} style={{ cursor: "pointer" }}>
-                                    <CardBody>
-                                    <CardTitle className='title-card'> {titulo} </CardTitle>
-                                    <CardText className='subtittle-card'>{user}</CardText>
-                                    <CardText className='stars-card'><Rating initialRating={rate} fractions={2} readonly emptySymbol="far fa-star fa-2x"
-                                    fullSymbol="fas fa-star fa-2x" /></CardText>
-                                    <CardText className='content-card'>{resumen}</CardText>
-                                    <CardText className='content-card'> {etiqueta} #Etiqueta2</CardText>
-                                    </CardBody>
-                                </Card>   
+                        for(let i=0;i<this.state.arrayContenidos.length;i++){
+                            array2[i]=
+                            <div>
+                                    <Col>
+                                            <Card className='card-change'>
+                                                <CardBody>
+                                                <CardText className='title-card'> {this.state.arrayContenidos[i].titulo} </CardText>
+                                                <CardText className='subtittle-card'>{this.state.arrayContenidos[i].id_autor.nombres}</CardText>
+                                                <CardText className='stars-card'><Rating initialRating={this.state.arrayContenidos[i].valoracion_general} readonly fractions={2}  emptySymbol="far fa-star fa-2x"
+                                                fullSymbol="fas fa-star fa-2x" /></CardText>
+                                                <CardText className='content-card'>{this.state.arrayContenidos[i].resumen}</CardText>
+                                                <CardText className='content-card'> {this.state.arrayContenidos[i].tags} </CardText>
+                                                </CardBody>  
+                                                <button onClick={() => {
+                                                            this.handleClickEstadoTrue(i)   
+                                                        }}
+                                                >Mas informacion</button> 
+                                            </Card>     
+                                           
+                                    </Col> 
+                                    <Modal show={this.state.estadoTrigger} onHide={this.handleClickEstadoFalse} size="lg" aria-labelledby="example-modal-sizes-title-lg">
+                                        <Modal.Title id="example-modal-sizes-title-lg" className='Modal-Title'> 
+                                        <h3 className='titulo-Modal'>Titulo contenido </h3> 
+                                        <h4 className='titulo-Modal'> Autor contenido</h4>
+                                        <h5 className='titulo-Modal'> Fecha de subida</h5>
+                                        <h5 className='titulo-Modal'> <Rating initialRating={0} fractions={2}  emptySymbol="far fa-star fa-2x" fullSymbol="fas fa-star fa-2x" onChange={(rate) => this.CambiarRate(rate)}/> </h5>
+                                        </Modal.Title>
+                                        <Modal.Body>
+                                        <p> Lorem fistrum por la gloria de mi madre esse jarl aliqua llevame al sircoo. De la pradera ullamco qué dise usteer está la cosa muy malar.Lorem fistrum por la gloria de mi madre esse jarl aliqua llevame al sircoo. De la pradera ullamco qué dise usteer está la cosa muy malar.Lorem fistrum por la gloria de mi madre esse jarl aliqua llevame al sircoo. De la pradera ullamco qué dise usteer está la cosa muy malar.</p>
+                                        <button onClick={()=>this.descarga(this.state.arrayContenidos[this.state.posSeleccionado].link)}>Descarga</button>
+                                        <p> #Tags</p>
+                                        <p> Rate = {this.valoracion_usuario}</p>
+                                        <p> Dejanos tu Comentario</p>
+                                        <p> <input type="text" value="" /> <button >Subir</button></p>
+                                        <Button variant="secondary" onClick={this.handleClickEstadoFalse}>
+                                            Close
+                                        </Button>
+
+                                        <h4> Comentarios </h4>
+                                        {[...Array(this.state.arrayContenidos[this.state.posSeleccionado].comentarios.length)].map((e, i) => {
+                                            return(
+                                                <Card>
+                                                    <CardText className='stars-card'> <Rating initialRating={this.state.arrayContenidos[this.state.posSeleccionado].comentarios[i].valoracion} readonly fractions={2}  emptySymbol="far fa-star fa-2x" fullSymbol="fas fa-star fa-2x"/> </CardText>
+                                                    <CardText className='content-card'> {this.state.arrayContenidos[this.state.posSeleccionado].comentarios[i].id_persona.nombres + " " 
+                                                    + this.state.arrayContenidos[this.state.posSeleccionado].comentarios[i].id_persona.apellidos } </CardText>
+                                                    <CardText className='content-card'> {this.state.arrayContenidos[this.state.posSeleccionado].comentarios[i].fecha_calificacion} </CardText>
+                                                    <CardText className='content-card'> {this.state.arrayContenidos[this.state.posSeleccionado].comentarios[i].comentarios}</CardText>
+                                                </Card>
+    
+                                            )
+                                        })}
+                                    </Modal.Body>
+                                    </Modal>
+                            </div>
+                } 
                 return(
                     array2
                 )
@@ -205,14 +256,8 @@ class Contenido extends React.Component{
                 </section>
                 <section>
                 <Row xs={3}>
-            {[...Array(this.state.arrayContenidos.length)].map((e, i) => {
-                return (
-                  <Col>
                       <MostrarContenido/>
-                  </Col>
-                )
-            })}
-            </Row>
+                </Row>
                 </section>
         <Footer/>
     </div>

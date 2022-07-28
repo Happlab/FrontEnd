@@ -8,9 +8,10 @@ $color-words: white;
 }
 
 .columnas{
-    column-count: 3;
-    column-gap: 50px;
-    position: relative;
+   column-count: 3;
+   column-width: 300px;
+   background-color: $color-background;
+   column-gap: 4em;
 }
 
 .pos1{
@@ -22,7 +23,7 @@ $color-words: white;
 }
 
 .pos3{
-    @include lineamientos_columnas($color-background);
+    text-align: center;
 }
 
 
