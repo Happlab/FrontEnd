@@ -1,12 +1,11 @@
-import React, { useState } from 'react'
+import React from 'react'
 import Navbar1 from '../../navegation/navbar/Navbar1'
 import Footer from '../../navegation/footer/Footer'
 import './Contenido.scss'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch, faUpload} from '@fortawesome/free-solid-svg-icons';
 import {ListGroup, InputGroup, Button, FormControl, Dropdown, DropdownButton, Form} from 'react-bootstrap'
-import { Card, CardText, CardBody,
-  CardTitle} from 'reactstrap';
+import { Card, CardText, CardBody} from 'reactstrap';
 import Rating from 'react-rating'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
@@ -85,6 +84,12 @@ class Contenido extends React.Component{
         console.log(this.state.posSeleccionado);
       }
 
+    convertirFecha(String){
+        let date = new Date("2018-01-01T00:00:00");
+        let dateMDY = `${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()}`;
+        return dateMDY;
+    }
+
     render(){
 
         const MostrarContenido=(props)=>{
@@ -123,11 +128,14 @@ class Contenido extends React.Component{
                                         <p> Dejanos tu Comentario</p>
                                         <p> <input type="text" value="" /> <button >Subir</button></p>
                                         <h4> Comentarios </h4>
-                                        {[...Array(4)].map((e, i) => {
+                                        {[...Array(this.state.arrayContenidos[this.state.posSeleccionado].comentarios.length)].map((e, i) => {
                                             return(
                                                 <Card>
-                                                    <CardTitle> {this.state.arrayContenidos[1].user} </CardTitle>
-                                                    <CardText> {this.state.arrayContenidos[1].resume} </CardText>
+                                                    <CardText className='stars-card'> <Rating initialRating={this.state.arrayContenidos[this.state.posSeleccionado].comentarios[i].valoracion} readonly fractions={2}  emptySymbol="far fa-star fa-2x" fullSymbol="fas fa-star fa-2x"/> </CardText>
+                                                    <CardText className='content-card'> {this.state.arrayContenidos[this.state.posSeleccionado].comentarios[i].id_persona.nombres + " " 
+                                                    + this.state.arrayContenidos[this.state.posSeleccionado].comentarios[i].id_persona.apellidos } </CardText>
+                                                    <CardText className='content-card'> {this.state.arrayContenidos[this.state.posSeleccionado].comentarios[i].fecha_calificacion} </CardText>
+                                                    <CardText className='content-card'> {this.state.arrayContenidos[this.state.posSeleccionado].comentarios[i].comentarios}</CardText>
                                                 </Card>
 
                                             )
