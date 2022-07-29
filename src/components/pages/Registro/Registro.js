@@ -66,7 +66,7 @@ const Registro = () => {
                                 },
                                 body: JSON.stringify(data)
                             }
-                            fetch('http://api-happlab.herokuapp.com/persona/registro', requestOptions)
+                            fetch('http://localhost:8080/persona/registro', requestOptions)
                                 .then(response => {
                                     console.log("Response", response)
                                     if (response.status === 200) setSuccess(true)

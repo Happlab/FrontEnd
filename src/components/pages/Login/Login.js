@@ -48,7 +48,7 @@ class Login extends React.Component {
 			method: 'GET',
 			mode: 'cors',
 		}
-		fetch('https://api-happlab.herokuapp.com/persona/Login/'+this.state.email+"&"+this.state.password, request_options)
+		fetch('http://localhost:8080/persona/Login/'+this.state.email+"&"+this.state.password, request_options)
 			.then(response => {
 				let text = response.text();
 				status = response.status;
