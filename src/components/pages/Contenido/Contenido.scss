@@ -33,7 +33,10 @@ $color-tittle: black;
         }
     }
 }
-
+.busqueda{
+    margin-left: 5px;
+    margin-right: 5px;
+}
 .sec-filtros{
     margin-left: 5px;
     margin-right: 5px;
@@ -95,7 +98,6 @@ $color-tittle: black;
         text-align: center;
         padding: 10px;
         width: 50%;
-        min-width: 300px;
     }
 }
 @media (min-width: 992px){
@@ -124,12 +126,13 @@ $color-tittle: black;
 }
 
 .card-change{
-    margin: 2%;
+    margin: 10px;
 }
 
 .title-card{
     text-align: $posicion-text;
     $color-text: $color-tittle;
+    
 }
 
 .subtittle-card{
@@ -145,4 +148,13 @@ $color-tittle: black;
 .content-card{
     text-align: $posicion-text;
     $color-text: $color-text;
+}
+
+.titulo-Modal{
+    margin-top: 10px;
+    text-align: $posicion-text;
+}
+
+.Modal-Title{
+    background-color: #1E86C0;
 }

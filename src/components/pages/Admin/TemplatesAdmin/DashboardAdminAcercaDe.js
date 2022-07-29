@@ -1,60 +1,85 @@
 import React, { Component } from 'react'
+import { PeticionEnvioDataFrom, PeticionGet } from '../PeticionesAdmin.js'
 
 export default class DashboardAdminAcercaDe extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      inicio: [],
+      posicion: 0
+    };
+    this.editar = this.editar.bind(this);
+    this.funcioneditar = this.funcioneditar.bind(this);
+  }
+
+  componentDidMount() {
+    this.listarInformacion();
+  }
+
+  listarInformacion() {
+    const url = 'https://api-happlab.herokuapp.com/seccion/';
+    const mensajeError = 'No hay informacion en acerca de';
+    const datos = PeticionGet(url, mensajeError);
+    datos.then(data => {
+      if (data !== null) {
+        this.setState({
+          inicio: Array.from(data)
+        });
+      }
+    });
+  }
+
+  editar(entrada, indice) {
+    console.log("Entro a editar acerca de");
+    console.log("Indice", indice);
+    this.setState({posicion : indice});
+    console.log(this.state.posicion);
+    document.getElementById('inputTitulo').value = entrada.titulo_seccion;
+    document.getElementById('inputURL').value = entrada.url;
+    document.getElementById('inputContenido').value = entrada.nombre_contenido;
+    document.getElementById('inputDescripcion').value = entrada.descripcion;
+    if (entrada.coordenadas !== null) {
+      document.getElementById('inputLongitud').value = entrada.coordenadas[0];
+      document.getElementById('inputLatitud').value = entrada.coordenadas[1];
+    } else {
+      document.getElementById('inputLongitud').value = ' ';
+      document.getElementById('inputLatitud').value = ' ';
+    }
+
+  }
+
+  funcioneditar(titulo, url_seccion, contenido, descripcion, longitud, latitud) {
+    const dataform = new FormData();
+    dataform.append('id', this.state.inicio[this.state.posicion].id);
+    dataform.append('titulo_seccion', titulo);
+    dataform.append('url', url_seccion);
+    dataform.append('nombre_contenido', contenido);
+    dataform.append('descripcion', descripcion);
+    dataform.append('coordenadas', [longitud, latitud]);
+
+    const url = 'https://api-happlab.herokuapp.com/seccion/update/' + this.state.inicio[this.state.posicion].id;
+    const mensajeError = 'No fue posible agregar informacion';
+    const metodo = 'PUT';
+    const peticion = PeticionEnvioDataFrom(dataform, url, mensajeError, metodo);
+    peticion.then(data => {
+      if (data) {
+        this.listarInformacion();
+      }
+    });
+  }
+
   render() {
     return (
       <div>
+
         <div className="content-wrapper" style={{ minHeight: '2080.12px' }}>
-        <h1 align="center">Módulo Administrador - Página de Acerca De</h1>
-        <br></br>
-          {/* Añadir Noticias*/}
-          <section className="content">
-            <div className="container-fluid">
-              <div className="card card-primary">
-                <div className="card-header">
-                  <h3 className="card-title">Añadir informacion</h3>
-                  <div className="card-tools">
-                    <button type="button" className="btn btn-tool" data-card-widget="collapse" title="Collapse">
-                      <i className="fas fa-minus" />
-                    </button>
-                  </div>
-                </div>
-                <div className="card-body">
-                  <div className="form-group">
-                    <label htmlFor="inputName">Título</label>
-                    <input type="text" id="inputName" className="form-control" />
-                  </div>
-                  <div className="form-group">
-                    <label htmlFor="inputDescription">Descripción</label>
-                    <textarea id="inputDescription" className="form-control" rows={4} defaultValue={""} />
-                  </div>
-                 
-                  <div className="form-group">
-                    <label htmlFor="inputClientCompany">Link video</label>
-                    <input type="text" id="inputClientCompany" className="form-control" />
-                  </div>
-                  <div className="form-group">
-                    <label htmlFor="inputProjectLeader">Subir archivo multimedia</label>
-                    <div className="input-group">
-                      <div className="custom-file">
-                        <input type="file" className="custom-file-input" id="exampleInputFile" />
-                        <label className="custom-file-label" htmlFor="exampleInputFile">Subir archivo multimedia</label>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="card-footer">
-                    <button type="submit" className="btn btn-primary">Agregar informacion</button>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </section>
-          {/*Lista de noticias*/}
+          {/*Lista de contenido inicio*/}
           <section className="content-header">
+
             <div className="container-fluid">
               <div className="row mb-2">
                 <div className="col-sm-12">
-                  <h1 text-align="center">Gestion de Informacion</h1>
+                  <h1 text-align="center">Gestion de seccion (Acerca de)</h1>
                 </div>
               </div>
             </div>
@@ -65,50 +90,35 @@ export default class DashboardAdminAcercaDe extends Component {
                 <div className="col-12">
                   <div className="card">
                     <div className="card-header border-0">
-                      <h3 className="card-title">Listado de elementos About</h3>
+                      <h3 className="card-title">Listado de secciones (Acerca de)</h3>
                     </div>
                     <div className="card-body table-responsive p-0">
                       <table className="table table-striped table-valign-middle">
                         <thead>
                           <tr>
-                            <th>ID Info</th>
+                            <th>ID Seccion</th>
                             <th>Título</th>
                             <th>Acción</th>
                           </tr>
                         </thead>
                         <tbody>
-                          <tr>
-                            <td>1</td>
-                            <td>Bienvenido a Happlab</td>
-                            <td>
-                              <div className="input-group-prepend">
-                                <button type="button" className="btn btn-warning dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                                  Acción
-                                </button>
-                                <ul className="dropdown-menu" style={{}}>
-                                  <li className="dropdown-item">Editar</li>
-                                  <li className="dropdown-item">Eliminar</li>
-                                  <li className="dropdown-item">Ocultar</li>
-                                </ul>
-                              </div>
-                            </td>
-                          </tr>
-                          <tr>
-                          <td>2</td>
-                            <td>Mas informacion de Happlab</td>
-                            <td>
-                              <div className="input-group-prepend">
-                                <button type="button" className="btn btn-warning dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                                  Acción
-                                </button>
-                                <ul className="dropdown-menu" style={{}}>
-                                  <li className="dropdown-item">Editar</li>
-                                  <li className="dropdown-item">Eliminar</li>
-                                  <li className="dropdown-item">Ocultar</li>
-                                </ul>
-                              </div>
-                            </td>
-                          </tr>
+                          {[...Array(this.state.inicio.length)].map((e, i) => {
+                            if (i > 1) {
+                              return (
+                                <tr>
+                                  <td>{i}</td>
+                                  <td>{this.state.inicio[i].titulo_seccion}</td>
+                                  <td>
+                                    <div className="input-group-prepend">
+                                      <button onClick={() => this.editar(this.state.inicio[i], i)} className="btn btn-warning"  >
+                                        Editar
+                                      </button>
+                                    </div>
+                                  </td>
+                                </tr>
+                              )
+                            }
+                          })}
                         </tbody>
                       </table>
                     </div>
@@ -117,138 +127,71 @@ export default class DashboardAdminAcercaDe extends Component {
               </div>
             </div>
           </section>
-          <section className="content-header">
-            <div className="container-fluid">
-              <div className="row mb-2">
-                <div className="col-sm-12">
-                  <h1 text-align="center">Gestion de Ubicacion</h1>
-                </div>
-              </div>
-            </div>
-          </section>
-          <section className="content">
-            <div className="container-fluid">
-              <div className="row">
-                <div className="col-12">
-                  <div className="card">
-                    <div className="card-header border-0">
-                      <h3 className="card-title">Ubicacion</h3>
-                    </div>
-                    <div className="card-body table-responsive p-0">
-                      <table className="table table-striped table-valign-middle">
-                        <thead>
-                          <tr>
-                            <th>Título</th>
-                            <th>Acción</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          <tr>
-                            <td>¿Donde nos encuentras?</td>
-                            <td>
-                              <div className="input-group-prepend">
-                                <button type="button" className="btn btn-warning dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                                  Acción
-                                </button>
-                                <ul className="dropdown-menu" style={{}}>
-                                  <li className="dropdown-item">Editar</li>
-                                  <li className="dropdown-item">Ocultar</li>
-                                </ul>
-                              </div>
-                            </td>
-                          </tr>
-                        </tbody>
-                      </table>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </section>
-          
+          {/*Editor de Contenido Inicio*/}
+
           <section className="content">
             <div className="container-fluid">
               <div className="card card-primary">
                 <div className="card-header">
-                  <h3 className="card-title">Editar ubicacion</h3>
+                  <h3 className="card-title">Editar Contenido (Inicio)</h3>
                   <div className="card-tools">
                     <button type="button" className="btn btn-tool" data-card-widget="collapse" title="Collapse">
                       <i className="fas fa-minus" />
                     </button>
                   </div>
                 </div>
-                <div className="card-body">
-                  <div className="form-group">
-                    <label htmlFor="inputName">Título</label>
-                    <input type="text" id="inputName" className="form-control" />
-                  </div>
-                  <div className="form-group">
-                    <label htmlFor="inputDescription">Descripción</label>
-                    <textarea id="inputDescription" className="form-control" rows={4} defaultValue={""} />
-                  </div>
-                 
-                  <div className="form-group">
-                    <label htmlFor="inputName">Latitud</label>
-                    <input type="text" id="inputName" className="form-control" />
-                  </div>
-                  <div className="form-group">
-                    <label htmlFor="inputName">Longitud</label>
-                    <input type="text" id="inputName" className="form-control" />
-                  </div>
-                  
-                  <div className="card-footer">
-                    <button type="submit" className="btn btn-primary">Actualizar ubicacion</button>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </section>
-
-
-          {/*Editor de Noticias*/}
-          <section className="content">
-            <div className="container-fluid">
-              <div className="card card-primary">
-                <div className="card-header">
-                  <h3 className="card-title">Editar informacion</h3>
-                  <div className="card-tools">
-                    <button type="button" className="btn btn-tool" data-card-widget="collapse" title="Collapse">
-                      <i className="fas fa-minus" />
-                    </button>
-                  </div>
-                </div>
-                <div className="card-body">
-                  <div className="form-group">
-                    <label htmlFor="inputName">Título</label>
-                    <input type="text" id="inputName" className="form-control" />
-                  </div>
-                  <div className="form-group">
-                    <label htmlFor="inputDescription">Descripción</label>
-                    <textarea id="inputDescription" className="form-control" rows={4} defaultValue={""} />
-                  </div>
-                 
-                  <div className="form-group">
-                    <label htmlFor="inputClientCompany">Link video</label>
-                    <input type="text" id="inputClientCompany" className="form-control" />
-                  </div>
-                  <div className="form-group">
-                    <label htmlFor="inputProjectLeader">Cargar multimedia</label>
-                    <div className="input-group">
-                      <div className="custom-file">
-                        <input type="file" className="custom-file-input" id="exampleInputFile" />
-                        <label className="custom-file-label" htmlFor="exampleInputFile">Subir archivo multimedia</label>
+                <div className='card-body'>
+                  <form onSubmit={ev => {
+                    ev.preventDefault();
+                    const titulo = ev.target.titulo_seccion.value;
+                    const url = ev.target.url_seccion.value;
+                    const contenido = ev.target.nombre_contenido.value;
+                    const descripcion = ev.target.descripcion.value;
+                    const longitud = ev.target.longitud.value;
+                    const latitud = ev.target.latitud.value;
+                    this.funcioneditar(titulo, url, contenido, descripcion, longitud, latitud);
+                  }}>
+                    <div className="card-body">
+                      <div className="form-group">
+                        <label htmlFor="inputTitulo">Titulo</label>
+                        <input name='titulo_seccion' type="text" id="inputTitulo" className="form-control" autoComplete='off' defaultValue="" />
+                      </div>
+                      <div className="form-group">
+                        <label htmlFor="inputURL">URL</label>
+                        <input name='url_seccion' type="text" id="inputURL" className="form-control" autoComplete='off' defaultValue="" />
+                      </div>
+                      <div className="form-group">
+                        <label htmlFor="inputContenido">Nombre contenido</label>
+                        <textarea name='nombre_contenido' id="inputContenido" className="form-control" autoComplete="off" defaultValue="" />
+                      </div>
+                      <div className="form-group">
+                        <label htmlFor="inputDescripcion">Descripción</label>
+                        <textarea name='descripcion' id="inputDescripcion" className="form-control" rows={4} autoComplete="off" defaultValue="" />
+                      </div>
+                      <div className="form-group">
+                        <label htmlFor="labelCoordenada">Coordenada</label>
+                      </div>
+                      <div className="form-group">
+                        <label htmlFor="inputLongitud">Longitud</label>
+                        <input name='longitud' type="text" id="inputLongitud" className="form-control" autoComplete="off" defaultValue="" />
+                      </div>
+                      <div className="form-group">
+                        <label htmlFor="inputLatitud">Longitud</label>
+                        <input name='latitud' type="text" id="inputLatitud" className="form-control" autoComplete="off" defaultValue="" />
+                      </div>
+                      <div className="card-footer">
+                        <button type='submit' className="btn btn-primary">Editar contenido</button>
+                        <p> </p>
                       </div>
                     </div>
-                  </div>
-                  <div className="card-footer">
-                    <button type="submit" className="btn btn-primary">Actualizar informacion</button>
-                  </div>
+                  </form>
                 </div>
               </div>
             </div>
           </section>
         </div>
       </div>
+
     )
   }
 }

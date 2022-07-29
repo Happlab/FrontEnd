@@ -39,21 +39,24 @@ class Inicio extends React.Component {
               <hr className='hr-line-white'/>       
               </div>
               {[...Array(this.state.inicio.length)].map((e, i) => {
-                return(
-                <div className='content-video'>
-                  <div className='columna-inicio'>
-                      <h3 className='title-dest'>{this.state.inicio[i].titulo_seccion}</h3>
-                      <div className='columna-inicio-texto'>
-                        <p className='text-lore'>
-                          {this.state.inicio[i].descripcion}                      
-                        </p>
-                      </div>
-                      <div className='columna-inicio-video'>
-                        {this.state.inicio[i].url!=='' ? <ReactPlayer url={this.state.inicio[i].url} width='100%' height='100%' controls loop/> :<img style={{width:'100%'}} className="images-carousel"src={this.urlServicio+"contenido/"+this.state.inicio[i].nombre_contenido} width={400} height={150} alt="Third slide"/>} 
-                      </div>
-                  </div> 
-                </div>
-                )
+                if(i<2){
+                  return(
+                    <div className='content-video'>
+                      <div className='columna-inicio'>
+                          <h3 className='title-dest'>{this.state.inicio[i].titulo_seccion}</h3>
+                          <div className='columna-inicio-texto'>
+                            <p className='text-lore'>
+                              {this.state.inicio[i].descripcion}                      
+                            </p>
+                          </div>
+                          <div className='columna-inicio-video'>
+                            {this.state.inicio[i].url!=='' ? <ReactPlayer url={this.state.inicio[i].url} width='100%' height='100%' controls loop/> :<img style={{width:'100%'}} className="images-carousel"src={this.urlServicio+"contenido/"+this.state.inicio[i].nombre_contenido} width={400} height={150} alt="Third slide"/>} 
+                          </div>
+                      </div> 
+                    </div>
+                    )
+                }
+                
               })}
             <hr className='hr-line-white'/>  
             
