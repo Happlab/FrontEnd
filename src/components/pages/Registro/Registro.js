@@ -54,7 +54,7 @@ const Registro = () => {
                         }}
                         validationSchema={SignupSchema}
                         onSubmit={values => {
-                            const data = { 'email': values.email, 'password': values.password, 'cedula': values.documentId, 'nombres': values.name, 'apellidos': values.lastName, 'rol': values.teacherType, 'tokens': 0 };
+                            const data = { 'email': values.email, 'password': values.password, 'cedula': values.documentId, 'nombres': values.name, 'apellidos': values.lastName, 'tipoDocente': values.teacherType, 'tokens': 0 };
                             alert(JSON.stringify(data))
                             const requestOptions = {
                                 method: 'POST',

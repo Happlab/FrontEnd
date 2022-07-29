@@ -3,8 +3,8 @@ import Navbar1 from '../../navegation/navbar/Navbar1'
 import Footer from '../../navegation/footer/Footer'
 import './Contenido.scss'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSearch, faUpload} from '@fortawesome/free-solid-svg-icons';
-import {ListGroup, InputGroup, Button, FormControl, Dropdown, DropdownButton, Form} from 'react-bootstrap'
+import { faUpload} from '@fortawesome/free-solid-svg-icons';
+import {ListGroup, Button, Form} from 'react-bootstrap'
 import { Card, CardText, CardBody} from 'reactstrap';
 import Rating from 'react-rating'
 import Row from 'react-bootstrap/Row'
@@ -20,17 +20,37 @@ class Contenido extends React.Component{
             estadoSubirContenido:false,
             posSeleccionado:0,
             estadoTrigger: false,
+            contenido:{
+            "titulo":"",
+            "nombre":"",
+            "fecha":"",
+            "resumen":"",
+            "tags":""
+            },
+            comentarios:[],
+            
+
+            comentario:""
         }
         this.handleClickSubirContenido=this.handleClickSubirContenido.bind(this);
         this.descarga=this.descarga.bind(this);
         this.handleClickEstadoTrue=this.handleClickEstadoTrue.bind(this);
         this.handleClickEstadoFalse=this.handleClickEstadoFalse.bind(this);
         this.CambiarRate=this.CambiarRate.bind(this);
+        this.handleChange = this.handleChange.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
+        this.subirContenido = this.subirContenido.bind(this);
 
     }
     handleClickSubirContenido(){
         this.setState({estadoSubirContenido: !this.state.estadoSubirContenido});
     }
+
+    handleChange(event) {
+		let name = event.target.name;
+		let value = event.target.value;
+		this.setState(values => ({ ...values, [name]: value }));
+	}
 
     PeticionGet(url, mensajeError) {
         let status = 0;
@@ -60,6 +80,42 @@ class Contenido extends React.Component{
             .catch(error => console.log("Error", error));
     }
 
+    listarContenido(){
+        const url='http://localhost:8080/contenido/';
+        const mensajeError='no hay contenidos';
+        const datos=this.PeticionGet(url, mensajeError);
+        datos.then(data =>{
+            if(data!==null){
+                this.setState({arrayContenidos: Array.from(data)});
+            }
+        });  
+    }
+
+    subirContenido(){
+        var formdata = new FormData();
+        formdata.append("email_autor", "jfsilva@unicauca.edu.co");
+        formdata.append("titulo", document.getElementById("idTitulo").value);
+        formdata.append("archivo", document.getElementById("idFile").files[0]);
+        formdata.append("resumen", document.getElementById("idResumen").value);
+        formdata.append("autores", document.getElementById("idAutores").value);
+        formdata.append("tags", document.getElementById("idTags").value);
+        
+
+        var requestOptions = {
+        method: 'POST',
+        mode: 'cors',
+        headers: {
+            'Access-Control-Allow-Origin': '*',
+        },
+        body: formdata,
+        };
+
+        fetch("http://localhost:8080/contenido/create", requestOptions)
+        .then(response => response.text())
+        .then(result => console.log(result))
+        .catch(error => console.log('error', error));
+    }
+
     descarga(contenido_link){
         window.location.href='http://localhost:8080/contenido/download/'+contenido_link;
     }
@@ -75,8 +131,47 @@ class Contenido extends React.Component{
         });
     }
 
-    handleClickEstadoTrue(posicion){
-        this.setState({posSeleccionado: posicion,estadoTrigger: true});
+    handleSubmit() {
+        const comentarioUsuario = {
+            "email_persona": "jfsilva@unicauca.edu.co",
+            "valoracion": this.valoracion_usuario,
+            "comentario": this.state.comentario
+          }
+        const url = "http://localhost:8080/contenido/comentar/" + this.state.arrayContenidos[this.state.posSeleccionado].link
+		const requestOptions = {
+            method: 'POST',
+            mode: 'cors',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Access-Control-Allow-Origin': '*'
+            },
+            body: JSON.stringify(comentarioUsuario)
+        }
+        return fetch(url, requestOptions)
+            .then(response => {
+                console.log("Response", response)
+                if (response.status === 200) return true
+                else{
+                    alert("Comentario no subido");
+                    return false;
+                } 
+                
+            })
+            .catch(error => console.log("Error", error))
+	}
+
+    handleClickEstadoTrue(posicion,arreglo,titulo,nombreAutor,fecha,resumen,tags){
+        this.setState({posSeleccionado: posicion,
+            estadoTrigger: true,
+            comentarios: arreglo,
+            titulo:titulo,
+            nombre:nombreAutor,
+            fecha:fecha,
+            resumen:resumen,
+            tag:tags
+        });
+
       }
     
       handleClickEstadoFalse(){
@@ -102,49 +197,23 @@ class Contenido extends React.Component{
                                                 <CardText className='subtittle-card'>{this.state.arrayContenidos[i].id_autor.nombres}</CardText>
                                                 <CardText className='stars-card'><Rating initialRating={this.state.arrayContenidos[i].valoracion_general} readonly fractions={2}  emptySymbol="far fa-star fa-2x"
                                                 fullSymbol="fas fa-star fa-2x" /></CardText>
-                                                <CardText className='content-card'>{this.state.arrayContenidos[i].resumen}</CardText>
                                                 <CardText className='content-card'> {this.state.arrayContenidos[i].tags} </CardText>
                                                 </CardBody>  
-                                                <button onClick={() => {
-                                                            this.handleClickEstadoTrue(i)   
-                                                        }}
-                                                >Mas informacion</button> 
+                                                <Button
+                                                color="secondary"
+                                                onClick={() => this.handleClickEstadoTrue(i,
+                                                    this.state.arrayContenidos[i].comentarios,
+                                                    this.state.arrayContenidos[i].titulo,
+                                                    this.state.arrayContenidos[i].id_autor.nombres + this.state.arrayContenidos[i].id_autor.apellidos,
+                                                    this.state.arrayContenidos[i].fecha_subida,
+                                                    this.state.arrayContenidos[i].resumen,
+                                                    this.state.arrayContenidos[i].tags
+                                                    )}
+                                                >
+                                                Editar
+                                                </Button>{" "}
                                             </Card>     
-                                           
                                     </Col> 
-                                    <Modal show={this.state.estadoTrigger} onHide={this.handleClickEstadoFalse} size="lg" aria-labelledby="example-modal-sizes-title-lg">
-                                        <Modal.Title id="example-modal-sizes-title-lg" className='Modal-Title'> 
-                                        <h3 className='titulo-Modal'>Titulo contenido </h3> 
-                                        <h4 className='titulo-Modal'> Autor contenido</h4>
-                                        <h5 className='titulo-Modal'> Fecha de subida</h5>
-                                        <h5 className='titulo-Modal'> <Rating initialRating={0} fractions={2}  emptySymbol="far fa-star fa-2x" fullSymbol="fas fa-star fa-2x" onChange={(rate) => this.CambiarRate(rate)}/> </h5>
-                                        </Modal.Title>
-                                        <Modal.Body>
-                                        <p> Lorem fistrum por la gloria de mi madre esse jarl aliqua llevame al sircoo. De la pradera ullamco qué dise usteer está la cosa muy malar.Lorem fistrum por la gloria de mi madre esse jarl aliqua llevame al sircoo. De la pradera ullamco qué dise usteer está la cosa muy malar.Lorem fistrum por la gloria de mi madre esse jarl aliqua llevame al sircoo. De la pradera ullamco qué dise usteer está la cosa muy malar.</p>
-                                        <button onClick={()=>this.descarga(this.state.arrayContenidos[this.state.posSeleccionado].link)}>Descarga</button>
-                                        <p> #Tags</p>
-                                        <p> Rate = {this.valoracion_usuario}</p>
-                                        <p> Dejanos tu Comentario</p>
-                                        <p> <input type="text" value="" /> <button >Subir</button></p>
-                                        <Button variant="secondary" onClick={this.handleClickEstadoFalse}>
-                                            Close
-                                        </Button>
-
-                                        <h4> Comentarios </h4>
-                                        {[...Array(this.state.arrayContenidos[this.state.posSeleccionado].comentarios.length)].map((e, i) => {
-                                            return(
-                                                <Card>
-                                                    <CardText className='stars-card'> <Rating initialRating={this.state.arrayContenidos[this.state.posSeleccionado].comentarios[i].valoracion} readonly fractions={2}  emptySymbol="far fa-star fa-2x" fullSymbol="fas fa-star fa-2x"/> </CardText>
-                                                    <CardText className='content-card'> {this.state.arrayContenidos[this.state.posSeleccionado].comentarios[i].id_persona.nombres + " " 
-                                                    + this.state.arrayContenidos[this.state.posSeleccionado].comentarios[i].id_persona.apellidos } </CardText>
-                                                    <CardText className='content-card'> {this.state.arrayContenidos[this.state.posSeleccionado].comentarios[i].fecha_calificacion} </CardText>
-                                                    <CardText className='content-card'> {this.state.arrayContenidos[this.state.posSeleccionado].comentarios[i].comentarios}</CardText>
-                                                </Card>
-    
-                                            )
-                                        })}
-                                    </Modal.Body>
-                                    </Modal>
                             </div>
                 } 
                 return(
@@ -154,28 +223,39 @@ class Contenido extends React.Component{
                 return null;
             }
             
-        }
+        }   
+        
         const FormularioSubirContenido=(props)=>{
             if(this.state.estadoSubirContenido){
                 return(
-                <Form className='form-contenido'>
-                    <Form.Group className="mb-3" >
-                        <Form.Label>Autores</Form.Label>
-                        <Form.Control type="text" placeholder="Autores que participaron en la elaboracion" />
-                    </Form.Group>
-                    <Form.Group controlId="formFile" className="mb-3">
-                        <Form.Label>Seleccione el archivo</Form.Label>
-                        <Form.Control type="file" />
-                        <Form.Control type="text" placeholder="En su defecto ingrese el link" />
-                    </Form.Group>
-                    <Form.Group className="mb-3">
-                        <Form.Label>Resumen</Form.Label>
-                        <textarea className="form-control" placeholder="Ingrese un resumen del material que desea subir" id="exampleFormControlTextarea1" rows="5"></textarea>
-                    </Form.Group>
-                    <Button variant="primary" type="submit">
-                        Submit
-                    </Button>
-                </Form>)
+                            <Form className='form-contenido'>
+                                <Form.Group className="mb-3" controlId="formName">
+                                    <Form.Label>Titulo</Form.Label>
+                                    <Form.Control
+                                        name="titulo"
+                                        placeholder="Ingresa el titulo"
+                                        id="idTitulo"
+                                    />
+                                </Form.Group>
+                                <Form.Group className="mb-3">
+                                    <Form.Label>Seleccione el archivo</Form.Label>
+                                    <Form.Control name="archivo" id="idFile" type="file" required/>
+                                </Form.Group>
+                                <Form.Group className="mb-3">
+                                    <Form.Label>Resumen</Form.Label>
+                                    <textarea className="form-control" id="idResumen" name='resumen' placeholder="Ingrese un resumen del material que desea subir" rows="5" required></textarea>
+                                </Form.Group>
+                                <Form.Group className="mb-3" >
+                                    <Form.Label>Autores</Form.Label>
+                                    <Form.Control name="autores" type="text" id="idAutores"  placeholder="Autores que participaron en la elaboracion" required/>
+                                </Form.Group>
+                                <Form.Group className="mb-3">
+                                    <Form.Label>Tags</Form.Label>
+                                    <Form.Control name='tags' type="text" id="idTags" placeholder="Ingrese los tags separados por comas" required/>
+                                </Form.Group>
+                                <Button onClick={()=>this.subirContenido()}>Subir</Button>
+                            </Form>
+                        )
             }else{
                 return null;
             }
@@ -206,18 +286,6 @@ class Contenido extends React.Component{
                         </div>
                     </div>
                 </section>
-                <section className='busqueda'>
-                        <InputGroup className="form-busqueda" size='lg'>
-                            <FormControl id='busqueda' className='input-busqueda'
-                                placeholder="Buscar por palabra clave"
-                                aria-label="Buscar por palabra clave"
-                                aria-describedby="input para ingresar una palabra clave de busqueda"
-                            />
-                            <Button className='btn-busqueda' onClick={(e)=>this.handleClick(e,document.getElementById('busqueda').value)} variant="outline-secondary" id="button-addon2">
-                                <FontAwesomeIcon className='fa fa-search' icon={faSearch} fixedWidth/>
-                            </Button>
-                        </InputGroup>
-                </section>
                 <hr/>
                 <section className='sec-filtros'>
                     <div  className='filtros'>
@@ -229,15 +297,6 @@ class Contenido extends React.Component{
                             <ListGroup.Item onClick={(e)=>this.handleClick(e,'Secundaria')} action className='item-filtro'>Secundaria</ListGroup.Item>
                             <ListGroup.Item onClick={(e)=>this.handleClick(e,'Educacion Superior')} action className='item-filtro'>Educacion Superior</ListGroup.Item>
                             <ListGroup.Item onClick={(e)=>this.handleClick(e,'Articulos')} action className='item-filtro'>Articulos</ListGroup.Item>
-                            <ListGroup.Item id='btn-materias' as={DropdownButton}  title='Materias'  action className='item-filtro'>
-                                Mas filtros
-                                    <Dropdown.Item onClick={(e)=>this.handleClick(e,'')} eventKey="1">Dropdown link</Dropdown.Item>
-                                    <Dropdown.Item onClick={(e)=>this.handleClick(e,'')} eventKey="2">Dropdown link</Dropdown.Item>
-                                    <Dropdown.Item onClick={(e)=>this.handleClick(e,'')} eventKey="1">Dropdown link</Dropdown.Item>
-                                    <Dropdown.Item onClick={(e)=>this.handleClick(e,'')} eventKey="2">Dropdown link</Dropdown.Item>
-                                    <Dropdown.Item onClick={(e)=>this.handleClick(e,'')} eventKey="1">Dropdown link</Dropdown.Item>
-                                    <Dropdown.Item onClick={(e)=>this.handleClick(e,'')} eventKey="2">Dropdown link</Dropdown.Item>
-                            </ListGroup.Item>
                             <ListGroup.Item id='boton-busqueda' className='item-filtro'>
                                 <Button  className='btn-busqueda' onClick={this.handleClickSubirContenido} variant="outline-secondary" size='md'>
                                     <FontAwesomeIcon className='fa fa-upload' icon={faUpload} fixedWidth/>
@@ -258,6 +317,40 @@ class Contenido extends React.Component{
                 <Row xs={3}>
                       <MostrarContenido/>
                 </Row>
+                
+                <Modal show={this.state.estadoTrigger} size="lg" aria-labelledby="example-modal-sizes-title-lg" animation={false}>
+                <Modal.Title id="example-modal-sizes-title-lg" className='Modal-Title'> 
+                <h3 className='titulo-Modal'>{this.state.titulo} </h3> 
+                <h4 className='titulo-Modal'>Autor: {this.state.nombre}</h4>
+                <h5 className='titulo-Modal'> Fecha de subida: {this.state.fecha}</h5>
+                </Modal.Title>
+                <Modal.Body>
+                <p>{this.state.resumen}</p>
+                <Button variant="info" className='btn-Descarga'  onClick={()=>this.descarga(this.state.arrayContenidos[this.state.posSeleccionado].link)}>Descarga</Button>
+                <p>{this.state.tag}</p>
+                <p> Dejanos tu Comentario</p>
+                <p className='estrellitas'> <Rating initialRating={0} fractions={2}  emptySymbol="far fa-star fa-2x" fullSymbol="fas fa-star fa-2x" onChange={(rate) => this.CambiarRate(rate)}/> </p>
+                <p> <input type="text" name="comentario" onChange={this.handleChange} required/> </p>
+                <Button variant="dark" className='btn-Subir'onClick={this.handleSubmit}>
+                    Subir
+                </Button>
+                <Button variant="dark" className='btn-Salir'onClick={this.handleClickEstadoFalse}>
+                    Salir
+                </Button>
+                <h4> Comentarios </h4>
+                {[...Array(this.state.comentarios.length)].map((e, i) => {
+                    return(
+                        <Card>
+                            <CardText className='stars-card'> <Rating initialRating={this.state.comentarios[i]?.valoracion} readonly fractions={2}  emptySymbol="far fa-star fa-2x" fullSymbol="fas fa-star fa-2x"/> </CardText>
+                            <CardText className='content-card'> {this.state.comentarios[i]?.id_persona.nombres + " " 
+                            + this.state.comentarios[i]?.id_persona.apellidos } </CardText>
+                            <CardText className='content-card'> {this.state.comentarios[i]?.fecha_calificacion} </CardText>
+                            <CardText className='content-card'> {this.state.comentarios[i]?.comentarios}</CardText>
+                        </Card>
+                    )
+                })}
+            </Modal.Body>
+            </Modal>
                 </section>
         <Footer/>
     </div>

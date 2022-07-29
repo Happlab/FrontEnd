@@ -6,19 +6,19 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFacebookSquare, faInstagram, faLinkedin, faTwitter } from '@fortawesome/free-brands-svg-icons';
 
 const redireccionF = () => {
-    window.open('https://www.facebook.com/JuanCMesa1293', '_blank');
+    window.open('https://www.facebook.com/AInteligentePop', '_blank');
   }
 
 const redireccionT = () => {
-    window.open('https://twitter.com/JuanCMesa1', '_blank');
+    window.open('https://twitter.com/jorgeadrianmu', '_blank');
   }
 
 const redireccionI = () => {
-    window.open('https://www.instagram.com/juanmesa129311/', '_blank');
+    window.open('https://www.instagram.com/explore/tags/happlab/?hl=es', '_blank');
   }
 
 const redireccionL = () => {
-    window.open('https://www.linkedin.com/in/juan-carlos-mesa-ceballos-a90308231/', '_blank');
+    window.open('https://www.linkedin.com/company/happlabs/about/', '_blank');
   }
 
 const redireccionUni = () => {
