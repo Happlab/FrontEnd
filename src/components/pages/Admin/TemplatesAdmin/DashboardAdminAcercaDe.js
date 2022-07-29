@@ -6,7 +6,7 @@ export default class DashboardAdminAcercaDe extends Component {
     super(props);
     this.state = {
       inicio: [],
-      posicion: 0
+      posicion: -1
     };
     this.editar = this.editar.bind(this);
     this.funcioneditar = this.funcioneditar.bind(this);
@@ -45,7 +45,6 @@ export default class DashboardAdminAcercaDe extends Component {
       document.getElementById('inputLongitud').value = ' ';
       document.getElementById('inputLatitud').value = ' ';
     }
-
   }
 
   funcioneditar(titulo, url_seccion, contenido, descripcion, longitud, latitud) {
@@ -60,12 +59,16 @@ export default class DashboardAdminAcercaDe extends Component {
     const url = 'https://api-happlab.herokuapp.com/seccion/update/' + this.state.inicio[this.state.posicion].id;
     const mensajeError = 'No fue posible agregar informacion';
     const metodo = 'PUT';
-    const peticion = PeticionEnvioDataFrom(dataform, url, mensajeError, metodo);
-    peticion.then(data => {
-      if (data) {
-        this.listarInformacion();
-      }
-    });
+    if(this.state.posicion!==-1){
+      const peticion = PeticionEnvioDataFrom(dataform, url, mensajeError, metodo);
+      peticion.then(data => {
+        if (data) {
+          this.listarInformacion();
+        }
+      });
+    }else{
+      alert("seleccione un elemento a editar");
+    }
   }
 
   render() {
@@ -145,7 +148,7 @@ export default class DashboardAdminAcercaDe extends Component {
                     ev.preventDefault();
                     const titulo = ev.target.titulo_seccion.value;
                     const url = ev.target.url_seccion.value;
-                    const contenido = ev.target.nombre_contenido.value;
+                    const contenido = ev.target.nombre_contenido.files[0];
                     const descripcion = ev.target.descripcion.value;
                     const longitud = ev.target.longitud.value;
                     const latitud = ev.target.latitud.value;
@@ -154,30 +157,30 @@ export default class DashboardAdminAcercaDe extends Component {
                     <div className="card-body">
                       <div className="form-group">
                         <label htmlFor="inputTitulo">Titulo</label>
-                        <input name='titulo_seccion' type="text" id="inputTitulo" className="form-control" autoComplete='off' defaultValue="" />
+                        <input name='titulo_seccion' type="text" id="inputTitulo" className="form-control" autoComplete='off' defaultValue="" required/>
+                      </div>
+                      <div className="form-group">
+                        <label htmlFor="inputContenido">Imagen</label>
+                        <input type='file' name='nombre_contenido' id="inputContenido" className="form-control" autoComplete="off" defaultValue="" required />
                       </div>
                       <div className="form-group">
                         <label htmlFor="inputURL">URL</label>
-                        <input name='url_seccion' type="text" id="inputURL" className="form-control" autoComplete='off' defaultValue="" />
-                      </div>
-                      <div className="form-group">
-                        <label htmlFor="inputContenido">Nombre contenido</label>
-                        <textarea name='nombre_contenido' id="inputContenido" className="form-control" autoComplete="off" defaultValue="" />
+                        <input name='url_seccion' type="text" id="inputURL" className="form-control" autoComplete='off' defaultValue="" required  />
                       </div>
                       <div className="form-group">
                         <label htmlFor="inputDescripcion">Descripción</label>
-                        <textarea name='descripcion' id="inputDescripcion" className="form-control" rows={4} autoComplete="off" defaultValue="" />
+                        <textarea name='descripcion' id="inputDescripcion" className="form-control" rows={4} autoComplete="off" defaultValue="" required/>
                       </div>
                       <div className="form-group">
                         <label htmlFor="labelCoordenada">Coordenada</label>
                       </div>
                       <div className="form-group">
-                        <label htmlFor="inputLongitud">Longitud</label>
-                        <input name='longitud' type="text" id="inputLongitud" className="form-control" autoComplete="off" defaultValue="" />
+                        <label htmlFor="inputLongitud">Latitud</label>
+                        <input name='longitud' type="text" id="inputLatitud" className="form-control" autoComplete="off" defaultValue="" required/>
                       </div>
                       <div className="form-group">
                         <label htmlFor="inputLatitud">Longitud</label>
-                        <input name='latitud' type="text" id="inputLatitud" className="form-control" autoComplete="off" defaultValue="" />
+                        <input name='latitud' type="text" id="inputLongitud" className="form-control" autoComplete="off" defaultValue="" required/>
                       </div>
                       <div className="card-footer">
                         <button type='submit' className="btn btn-primary">Editar contenido</button>

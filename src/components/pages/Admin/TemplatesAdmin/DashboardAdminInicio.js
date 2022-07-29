@@ -8,7 +8,7 @@ export default class DashboardAdminInicio extends Component {
     super(props);
     this.state = {
       inicio: [],
-      posicion: 0
+      posicion: -1
     };
     this.editar = this.editar.bind(this);
     this.funcioneditar = this.funcioneditar.bind(this);
@@ -62,12 +62,17 @@ export default class DashboardAdminInicio extends Component {
     const url = 'https://api-happlab.herokuapp.com/seccion/update/' + this.state.inicio[this.state.posicion].id;
     const mensajeError = 'No fue posible agregar informacion';
     const metodo = 'PUT';
-    const peticion = PeticionEnvioDataFrom(dataform, url, mensajeError, metodo);
-    peticion.then(data => {
-      if (data) {
-        this.listarInformacion();
-      }
-    });
+    if(this.state.posicion!==-1){
+      const peticion = PeticionEnvioDataFrom(dataform, url, mensajeError, metodo);
+      peticion.then(data => {
+        if (data) {
+          this.listarInformacion();
+        }
+      });
+    }else{
+      alert("seleccione elemento a editar");
+    }
+    
   }
 
   render() {
@@ -154,19 +159,19 @@ export default class DashboardAdminInicio extends Component {
                     <div className="card-body">
                       <div className="form-group">
                         <label htmlFor="inputTitulo">Titulo</label>
-                        <input name='titulo_seccion' type="text" id="inputTitulo" className="form-control" autoComplete='off' defaultValue="" />
+                        <input name='titulo_seccion' type="text" id="inputTitulo" className="form-control" autoComplete='off' defaultValue="" required/>
                       </div>
                       <div className="form-group">
                         <label htmlFor="inputURL">URL</label>
-                        <input name='url_seccion' type="text" id="inputURL" className="form-control" autoComplete='off' defaultValue="" />
+                        <input name='url_seccion' type="text" id="inputURL" className="form-control" autoComplete='off' defaultValue="" required/>
                       </div>
                       <div className="form-group">
                         <label htmlFor="inputContenido">Nombre contenido</label>
-                        <textarea name='nombre_contenido' id="inputContenido" className="form-control" autoComplete="off" defaultValue="" />
+                        <textarea name='nombre_contenido' id="inputContenido" className="form-control" autoComplete="off" defaultValue="" required/>
                       </div>
                       <div className="form-group">
                         <label htmlFor="inputDescripcion">Descripción</label>
-                        <textarea name='descripcion' id="inputDescripcion" className="form-control" rows={4} autoComplete="off" defaultValue="" />
+                        <textarea name='descripcion' id="inputDescripcion" className="form-control" rows={4} autoComplete="off" defaultValue="" required/>
                       </div>
                       <div className="card-footer">
                         <button type='submit' className="btn btn-primary">Editar contenido</button>
