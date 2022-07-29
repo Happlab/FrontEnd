@@ -4,6 +4,32 @@ import "../colores.scss"
 import logo from "../../../../src/assets/images/logo3.jpg"; 
 import user_service from "../../services/UserServices";
 
+const RenderSesion = ()=> {
+  return (
+      <Nav className='login'>
+        <Nav.Link href="/Registro">Registro</Nav.Link>
+        <Nav.Link href="/Login">Iniciar Sesion</Nav.Link>
+      </Nav>
+  )
+}
+
+const RenderCloseSesion = () => {
+  return (
+      <Nav className='login'>
+        <Nav.Link href="/perfil">Perfil</Nav.Link>
+        <RenderBtnClose></RenderBtnClose>
+      </Nav>
+  )
+}
+
+const RenderBtnClose = () => {
+  user_service.deleteToken();
+  return (
+      <Nav.Link href="/">Cerrar Sesion</Nav.Link>
+  )
+}
+
+
 const Navbar1 = () => {
   return (
     <>
@@ -24,10 +50,12 @@ const Navbar1 = () => {
               </NavDropdown>
               <Nav.Link as={Link} to="/Acerca">Acerca de </Nav.Link>
             </Nav>
-            <Nav className='login'>
-            <Nav.Link href="/Registro">Registro</Nav.Link>
-            <Nav.Link href="/Login">Iniciar Sesion</Nav.Link>
-          </Nav>
+              {user_service.getToken() && (
+                <RenderCloseSesion></RenderCloseSesion>
+              )}
+              {!user_service.getToken() && (
+                <RenderSesion></RenderSesion>
+              )}
         </Navbar.Collapse>
         </Container>
         </Navbar>

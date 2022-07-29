@@ -10,17 +10,16 @@ const getDataToken = inputToken => {
 }
 
 const setToken = newtoken => {
-    window.sessionStorage.setItem("token", newtoken);
+    window.sessionStorage.setItem("Token", newtoken);
     token = `Bearer ${newtoken}`;
 }
 
 const getToken = () => {
-    return window.sessionStorage.getItem("token");
+    return window.sessionStorage.getItem("Token");
 }
 
 const deleteToken = () => {
-    token = null;
-    window.sessionStorage.removeItem("token");
+    window.sessionStorage.removeItem("Token");
 }
 
 const disabledUser = async (email) => {

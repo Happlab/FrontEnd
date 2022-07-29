@@ -62,11 +62,11 @@ class Login extends React.Component {
 		icono=<FontAwesomeIcon icon={faEyeLowVision} size='1x' fixedWidth/>;
 	}
 	let valid_user = this.state.valid_user;
-	let data = this.state.data_user;
     return(
         <div className='main-login'>
 			{valid_user && (
-				<Navigate to='/perfil' state={{ data }} />
+				console.log("data login: ",user_service.getDataToken(user_service.getToken()).rol[0]),
+				<Navigate to='/perfil' />
 			)}
             <Navbar1/>
             <section id='contenedor' className="elementor-section elementor-top-section elementor-element elementor-element-2bd9dc1 elementor-section-full_width elementor-section-height-full elementor-section-height-default elementor-section-items-middle" data-id="2bd9dc1" data-element_type="section" style={{backgroundColor : '#fff'}}>

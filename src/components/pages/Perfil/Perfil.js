@@ -9,7 +9,7 @@ class Perfil extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            data_user: this.props.location.state.data,
+            data_user: user_service.getDataToken(user_service.getToken()),
             isPassword: false,
             isCargo: false,
             isStatus: false,
@@ -82,7 +82,7 @@ class Perfil extends React.Component {
     render() {
         let data = this.state.data_user;
         data.rol = (this.state.cargo !== "") ? this.state.cargo : data.rol;
-        if (user_service.getToken() === null) return (<Navigate to="/Login" />)
+        // if (user_service.getToken() === null) return (<Navigate to="/Login" />)
         return (
             <div className="row">
                 {this.state.isPassword && (

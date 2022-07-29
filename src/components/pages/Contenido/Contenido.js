@@ -10,7 +10,19 @@ import Rating from 'react-rating'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import Modal from 'react-bootstrap/Modal';
+import user_service from '../../services/UserServices';
 
+const RenderBtnUploadContent = () => {
+    return (
+        
+                            <ListGroup.Item id='boton-busqueda' className='item-filtro'>
+                                <Button  className='btn-busqueda' onClick={this.handleClickSubirContenido} variant="outline-secondary" size='md'>
+                                    <FontAwesomeIcon className='fa fa-upload' icon={faUpload} fixedWidth/>
+                                    Subir Contenido
+                                </Button>
+                            </ListGroup.Item>
+    );
+}
 
 class Contenido extends React.Component{
     constructor(props){
@@ -238,13 +250,9 @@ class Contenido extends React.Component{
                                     <Dropdown.Item onClick={(e)=>this.handleClick(e,'')} eventKey="1">Dropdown link</Dropdown.Item>
                                     <Dropdown.Item onClick={(e)=>this.handleClick(e,'')} eventKey="2">Dropdown link</Dropdown.Item>
                             </ListGroup.Item>
-                            <ListGroup.Item id='boton-busqueda' className='item-filtro'>
-                                <Button  className='btn-busqueda' onClick={this.handleClickSubirContenido} variant="outline-secondary" size='md'>
-                                    <FontAwesomeIcon className='fa fa-upload' icon={faUpload} fixedWidth/>
-                                    Subir Contenido
-                                </Button>
-                            </ListGroup.Item>
-                            
+                            {user_service.getToken() && (
+                                <RenderBtnUploadContent></RenderBtnUploadContent>
+                            )}
                         </ListGroup>
                     </div>
                 </section>
