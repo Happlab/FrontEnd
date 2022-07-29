@@ -50,6 +50,7 @@ $tam-2: 100px;
     @include formacion_texto($tam,$posicion-izq);
     margin-top: 3%;
     margin-left: 20%;
+    min-height: 300px;
 }
 
 .columna-inicio-video{
