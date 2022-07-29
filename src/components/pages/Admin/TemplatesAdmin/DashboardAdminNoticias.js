@@ -88,6 +88,7 @@ export default class DashboardAdminInicio extends Component {
     }
     this.setState((state)=>({[name]: value}));
   }
+
   handleClickEditar(i,posicion){
     this.setState({posSeleccionado: posicion});
     document.getElementById('inputNameEdit').value=this.state.noticias[posicion].titulo_noticia;
