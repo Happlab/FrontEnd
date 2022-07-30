@@ -81,13 +81,12 @@ class Perfil extends React.Component {
         }).finally(() => {
             alert(message);
             this.setState(values => ({ ...values, updateVerified: !this.state.updateVerified, isCargo: !this.state.isCargo}));
-            user_service.deleteToken();
         })
     }
 
     render() {
         let data = this.state.data_user;
-        data.rol = (this.state.cargo !== "") ? this.state.cargo : data.rol;
+        data.tipo_docente = (this.state.cargo !== "") ? this.state.cargo : data.tipo_docente;
         // if (user_service.getToken() === null) return (<Navigate to="/Login" />)
         return (
             <div className="row">
