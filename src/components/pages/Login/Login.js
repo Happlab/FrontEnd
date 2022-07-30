@@ -134,12 +134,6 @@ class Login extends React.Component {
                                                             <div className="eael-lr-footer">
                                                                 <input type="submit" name="eael-login-submit" id="eael-login-submit" className="g-recaptcha eael-lr-btn eael-lr-btn-block " value="Submit"/>
                                                             </div>
-								                            <div className="eael-form-validation-container">
-									                        </div>
-								                            <input type="hidden" id="eael-login-nonce" name="eael-login-nonce" value="ed1c1c15f5"/>
-                                                            <input type="hidden" name="_wp_http_referer" value="/?page_id=875"/>        
-                                                            <input type="hidden" name="page_id" value="875"/>
-                                                            <input type="hidden" name="widget_id" value="ddf06f2"/>
 		                                                </form>
 							                        </div>
 						                        </div>

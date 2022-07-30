@@ -78,4 +78,5 @@ const onLogin = async (email, password) => {
 		.catch(error => console.log("Error en el login", error))
 }
 
+// eslint-disable-next-line import/no-anonymous-default-export
 export default { onLogin, updateUser, disabledUser, setToken, getToken, getDataToken, deleteToken };

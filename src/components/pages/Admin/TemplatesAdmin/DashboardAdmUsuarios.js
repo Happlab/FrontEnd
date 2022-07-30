@@ -25,7 +25,6 @@ export default class Dashboard extends Component {
         peticion.then(data =>{
             if(data){
                 this.ListarUsuarios();
-                console.log('usuarios: '+this.state.conteo);
             }
         });
         
@@ -162,7 +161,7 @@ export default class Dashboard extends Component {
                                                         </td>
                                                     </tr>
                                                     )}
-                                                    
+
                                                 })}
                                                 </tbody>
                                             </table>

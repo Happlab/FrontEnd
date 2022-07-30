@@ -2,20 +2,9 @@ import React, { Component } from 'react'
 import {PeticionEnvio, PeticionEnvioDataFrom, PeticionGet} from '../PeticionesAdmin.js'
 import * as Yup from 'yup';
 import { Formik} from 'formik';
-import Form from 'react-bootstrap/Form';
+import {Form,Button} from 'react-bootstrap';
 
-const validationSchema=Yup.object().shape({
-  Titulo: Yup.string()
-  .required("Campo Requerido")
-  .lowercase("caracteres minuscula")
-  .max(50, "Maximo 50 caracteres")
-  .min(5, "Minimo 5 caracteres"),
-  LinkNoticia: Yup.string()
-  .required("Campo requerido")
-  .url("URL no valida"),
-  ImgNoticia: Yup.string()
-  .required("Campo Requerido")
-});
+
 
 export default class DashboardAdminInicio extends Component {
   constructor (props){
@@ -26,9 +15,8 @@ export default class DashboardAdminInicio extends Component {
         url_noticia: '',
         link_contenido: '',
         visible: true,
-        posSeleccionado: 0
+        posSeleccionado: -1
       }
-      this.handleSubmitAgregar=this.handleSubmitAgregar.bind(this);
       this.handleSubmitEditar=this.handleSubmitEditar.bind(this);
       this.handleEliminar=this.handleEliminar.bind(this);
       this.handleOcultar=this.handleOcultar.bind(this);
@@ -37,6 +25,11 @@ export default class DashboardAdminInicio extends Component {
   }
   
   urlServicio='http://localhost:8080/noticia/';
+
+  validationSchema=Yup.object().shape({
+    Titulo: Yup.string().required("Campo Requerido").min(5, "Minimo 5 caracteres").max(50, "Maximo 50 caracteres"),
+    LinkNoticia: Yup.string().required("Campo requerido").url("URL no valida")
+  });
 
   componentDidMount(){
     this.ListarNoticias();
@@ -72,17 +65,18 @@ export default class DashboardAdminInicio extends Component {
     const user={'id_noticia': this.state.noticias[this.state.posSeleccionado].id_noticia,
                 'titulo_noticia': titulo,
                 'url_noticia': url_noticia,
-                'imagen': link_contenido,
-                'visible': this.state.noticias[this.state.posSeleccionado].visible};
+                'link_contenido': this.state.noticias[this.state.posSeleccionado].link_contenido,
+                'visible': this.state.noticias[this.state.posSeleccionado].visible,
+                'fecha_creacion': this.state.noticias[this.state.posSeleccionado].fecha_creacion};
     const url=this.urlServicio+'Update';
-    const mensajeError='no fue posible actualizar noticia';
+    const mensajeError='no fue posible editar noticia';
     const metodo='PUT';
-    const peticion=PeticionEnvio(user, url, mensajeError, metodo);
-    peticion.then(data =>{
-        if(data){
-          this.ListarNoticias();
-        }
-    });
+    if(this.state.posSeleccionado!==-1){
+      const peticion=PeticionEnvio(user, url, mensajeError, metodo);
+      peticion.then(data =>{
+          alert(data);
+       });
+    }
   }
   handleChange(event){
     let name=event.target.name;
@@ -94,44 +88,7 @@ export default class DashboardAdminInicio extends Component {
     }
     this.setState((state)=>({[name]: value}));
   }
-  handleSubmitAgregar(datos){
-    console.log("hola");
-    /*
-    var formdata = new FormData();
-        const coordenadas=[
-          0
-        ];
-        formdata.append("titulo_seccion", "Nuevas tecnologías clave para mejorar la eficiencia logística");
-        formdata.append("url", "https://www.youtube.com/watch?v=OBA1EJWhpxA");
-        formdata.append("contenido", document.getElementById('inputFileAdd').files[0]);
-        formdata.append("descripcion", "En esta nueva entrada sobre la Guía Práctica del Borrador de nueva Constitución te contamos cómo la propuesta constitucional reconoce los desafíos que traen los avances de la ciencia y la tecnología para el Chile del presente y futuro. Ineditamente, se incorporan normas como el derecho a la participación política digital, a la información, al conocimiento, a la educación y conectividad digital, y a la protección de los datos personales, para contribuir al desarrollo de las comunidades, sin ser vulnerar de sus derechos.");
-        formdata.append("coordenadas", coordenadas);
-        const url='http://localhost:8080/seccion/update/0';
-        const mensajeError='no fue posible actualizar estado del contenido';
-        const metodo='PUT';
-        const peticion=PeticionEnvioDataFrom(formdata, url, mensajeError, metodo);
-        peticion.then(data =>{
-            if(data){
 
-            }
-        });
-        var formdata = new FormData();
-        formdata.append("titulo_noticia", datos.Titulo);
-        formdata.append("url_noticia", datos.LinkNoticia);
-        formdata.append("imagen", document.getElementById('inputFileAdd').files[0]);
-        formdata.append("visible", true);
-        console.log(formdata);
-        const url=this.urlServicio+'create';
-        const mensajeError='no fue posible agregar noticia';
-        const metodo='POST';
-        const peticion=PeticionEnvioDataFrom(formdata, url, mensajeError, metodo);
-        peticion.then(data =>{
-            if(data){
-                this.ListarNoticias();
-            }
-        });*/
-    
-  }
   handleClickEditar(i,posicion){
     this.setState({posSeleccionado: posicion});
     document.getElementById('inputNameEdit').value=this.state.noticias[posicion].titulo_noticia;
@@ -173,7 +130,7 @@ export default class DashboardAdminInicio extends Component {
                     LinkNoticia: '',
                     ImgNoticia: ''
                   }} 
-                  validationSchema={validationSchema}
+                  validationSchema={this.validationSchema}
                   onSubmit={values=> {
                     var formdata = new FormData();
                     formdata.append("titulo_noticia", values.Titulo);
@@ -190,29 +147,56 @@ export default class DashboardAdminInicio extends Component {
                     });
                     }}
                   >
-                      <Form>
-                          <div className="form-group">
-                            <label htmlFor="inputName">Título</label>
-                            <input name='Titulo' type="text" id="inputName" className="form-control" onChange={this.handleChange} required/>
-                          </div>
-                          <div className="form-group">
-                            <label htmlFor="inputClientCompany">Link de la noticia</label>
-                            <input name='LinkNoticia' type="text" id="inputClientCompany" className="form-control" onChange={this.handleChange} required/>
-                          </div>
-                          <div className="form-group">
-                            <label htmlFor="inputProjectLeader">Imagén de la noticia</label>
-                            <div className="input-group">
-                              <div className="custom-file">
-                                <input name='ImgNoticia'  type="file" className="custom-file-input" id="inputFileAdd" accept='image/*' onChange={this.handleChange} required/>
-                                <label className="custom-file-label" htmlFor="exampleInputFile">Subir imagen</label>
-                              </div>
-                            </div>
-                          </div>
-                          <div className="card-footer">
-                            <button type="submit" onSubmit={this.handleSubmitAgregar} className="btn btn-primary">Crear noticia</button>
-                          </div>
-                      </Form>
+                        {props => (
+                            <Form onSubmit={props.handleSubmit}>
+                                <Form.Group className="mb-3" controlId="formName">
+                                    <Form.Label>Titulo</Form.Label>
+                                    <Form.Control
+                                        name="Titulo"
+                                        type="text"
+                                        required
+                                        placeholder="Ingresa el titulo de la noticia"
+                                        isInvalid={props.touched.Titulo && !!props.errors.Titulo}
+                                        value={props.values.Titulo} onChange={props.handleChange}
+                                    />
+                                    <Form.Control.Feedback type="invalid">
+                                        {props.errors.Titulo}
+                                    </Form.Control.Feedback>
+                                </Form.Group>
+                                <Form.Group className="mb-3" controlId="formLastName">
+                                    <Form.Label>Url noticia</Form.Label>
+                                    <Form.Control
+                                        name="LinkNoticia"
+                                        type="text"
+                                        required
+                                        placeholder="Ingresa el link de la noticia"
+                                        isInvalid={props.touched.LinkNoticia && !!props.errors.LinkNoticia}
+                                        value={props.values.LinkNoticia} onChange={props.handleChange}
+                                    />
+                                    <Form.Control.Feedback type="invalid">
+                                        {props.errors.LinkNoticia}
+                                    </Form.Control.Feedback>
+                                </Form.Group>
+                                <Form.Group className="mb-3" controlId="inputFileAdd">
+                                    <Form.Label>Imagen</Form.Label>
+                                    <Form.Control
+                                        name="ImgNoticia"
+                                        type="file"
+                                        required
+                                        placeholder="Inserta una imagen"
+                                        isInvalid={props.touched.ImgNoticia && !!props.errors.ImgNoticia}
+                                        value={props.values.ImgNoticia} onChange={props.handleChange}
+                                    />
+                                    <Form.Control.Feedback type="invalid">
+                                        {props.errors.ImgNoticia}
+                                    </Form.Control.Feedback>
+                                </Form.Group>
+                                <Button type="submit">Enviar</Button>
+                            </Form>
+                        )}
                     </Formik>
+                      
+                    
                 </div>
               </div>
             </div>
@@ -291,25 +275,25 @@ export default class DashboardAdminInicio extends Component {
                 </div>
                 <div className="card-body">
                   <div className="form-group">
-                    <label htmlFor="inputName">Título</label>
-                    <input type="text" id="inputNameEdit" className="form-control" required />
-                  </div>
-                  <div className="form-group">
-                    <label htmlFor="inputClientCompany">Link de la noticia</label>
-                    <input type="text" id="inputClientCompanyEdit" className="form-control" required />
-                  </div>
-                  <div className="form-group">
-                    <label htmlFor="inputProjectLeader">Imagén de la noticia</label>
-                    <div className="input-group">
-                      <div className="custom-file">
-                        <input type="file" className="custom-file-input" id="inputFileEdit" required/>
-                        <label className="custom-file-label" htmlFor="exampleInputFile">Subir imagen</label>
+                      <label htmlFor="inputName">Título</label>
+                      <input type="text" id="inputNameEdit" className="form-control" required />
+                    </div>
+                    <div className="form-group">
+                      <label htmlFor="inputClientCompany">Link de la noticia</label>
+                      <input type="text" id="inputClientCompanyEdit" className="form-control" required />
+                    </div>
+                    <div className="form-group">
+                      <label htmlFor="inputProjectLeader">Imagén de la noticia</label>
+                      <div className="input-group">
+                        <div className="custom-file">
+                          <input type="file" className="custom-file-input" id="inputFileEdit" required/>
+                          <label className="custom-file-label" htmlFor="exampleInputFile">Subir imagen</label>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                  <div className="card-footer">
-                    <button type="submit" onClick={this.handleSubmitEditar} className="btn btn-primary">Actualizar noticia</button>
-                  </div>
+                    <div className="card-footer">
+                      <button type="submit" onClick={this.handleSubmitEditar} className="btn btn-primary">Actualizar noticia</button>
+                    </div>
                 </div>
               </div>
             </div>
