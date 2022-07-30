@@ -169,14 +169,6 @@ class Perfil extends React.Component {
                                             </div>
                                         </div>
                                         <hr />
-                                        <div className="row">
-                                            <div className="col-sm-4">
-                                                <p className="mb-0">Tokens</p>
-                                            </div>
-                                            <div className="col-sm-8">
-                                                <p className="text-muted mb-0">{data.tokens}</p>
-                                            </div>
-                                        </div>
                                     </div>
                                 </div>
                             </div>
