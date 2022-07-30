@@ -2,24 +2,26 @@ import jwtDecode from "jwt-decode";
 
 let status = 0;
 let request_options = {};
-const base_url = "http://localhost:8080";
 let token = null;
+const base_url = "http://localhost:8080";
+const key = "token";
 
 const getDataToken = inputToken => {
-    return jwtDecode(inputToken);
+    let data = jwtDecode(inputToken);
+    return data;
 }
 
 const setToken = newtoken => {
-    window.sessionStorage.setItem("Token", newtoken);
+    localStorage.setItem(key, newtoken);
     token = `Bearer ${newtoken}`;
 }
 
 const getToken = () => {
-    return window.sessionStorage.getItem("Token");
+    return localStorage.getItem(key);
 }
 
 const deleteToken = () => {
-    window.sessionStorage.removeItem("Token");
+    localStorage.removeItem(key);
 }
 
 const disabledUser = async (email) => {

@@ -31,6 +31,8 @@ const RenderBtnClose = () => {
 
 
 const Navbar1 = () => {
+  let token = user_service.getToken();
+  console.log("navbar "+token);
   return (
     <>
         <Navbar className="navBg" variant="dark" sticky='top' expand="lg">
@@ -50,10 +52,10 @@ const Navbar1 = () => {
               </NavDropdown>
               <Nav.Link as={Link} to="/Acerca">Acerca de </Nav.Link>
             </Nav>
-              {user_service.getToken() && (
+              {token !== null && (
                 <RenderCloseSesion></RenderCloseSesion>
               )}
-              {!user_service.getToken() && (
+              {token === null && (
                 <RenderSesion></RenderSesion>
               )}
         </Navbar.Collapse>
@@ -62,9 +64,9 @@ const Navbar1 = () => {
 
         <section>
           <div className='Logo'>
-            <img  className = "logo2"
-                              src = {logo} alt=""
-                          /> 
+            <img className = "logo2"
+                 src = {logo} alt=""
+            /> 
           </div>  
           <Outlet></Outlet>
         </section>
