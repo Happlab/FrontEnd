@@ -41,22 +41,6 @@
             outline: none;
         }
     }
-    .eael-forever-forget {
-        display: flex;
-        font-size: .9em;
-        .forget-menot,.forget-pass{
-            flex: 1 1;
-            margin: 0;
-        }
-        .forget-menot{
-            display: flex;
-            align-items: center;
-        }
-        .forget-pass{
-            text-align: right;
-        }
-        
-    }
     .eael-lr-form-group {
         margin-bottom: 1rem;
     }
@@ -64,6 +48,7 @@
         display: flex;
         justify-content: center;
         align-items: center;
+        margin-top: 50px;
     }
     .eael-lr-form-group label {
         display: inline-block;

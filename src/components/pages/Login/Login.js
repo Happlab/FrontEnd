@@ -1,11 +1,11 @@
 import React from 'react'
-import { Navigate } from "react-router-dom";
 import Navbar1 from '../../navegation/navbar/Navbar1'
 import Footer from '../../navegation/footer/Footer'
 import '../Login/Login.scss'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {faEye,faEyeLowVision} from '@fortawesome/free-solid-svg-icons';
 import user_service from '../../services/UserServices';
+import { Navigate } from "react-router-dom";
 
 class Login extends React.Component {
 	constructor(props) {
@@ -16,10 +16,12 @@ class Login extends React.Component {
 			valid_user: null,
 			press: false,
 			data_user: "",
+			token: ""
 		};
 		this.handleChange = this.handleChange.bind(this);
 		this.handleSubmit = this.handleSubmit.bind(this);
 		this.handleClickOcultar=this.handleClickOcultar.bind(this);
+		this.onRoute =  this.onRoute.bind(this);
 	}
 
 	handleChange(event) {
@@ -32,11 +34,11 @@ class Login extends React.Component {
 		var tipo = document.getElementById('eael-user-password');
 		if(tipo.type === 'password'){
 			tipo.type = 'text';
-			this.setState(state => ({press: true}));
+			this.setState(() => ({press: true}));
 		}else{
 			if(tipo.type === 'text'){
 				tipo.type = 'password';
-				this.setState(state => ({press: false}))
+				this.setState(() => ({press: false}))
 			}
 		}
 	}
@@ -45,15 +47,27 @@ class Login extends React.Component {
 		event.preventDefault();
 		let data_user = null;
 		let login = user_service.onLogin(this.state.email, this.state.password);
+		let token = null;
 		login.then(data => {
 			if(data !== null) {
-				data_user = user_service.getDataToken(data);
 				user_service.setToken(data);
-				this.setState(values => ({ ...values, valid_user: true, data_user: data_user }));
+				token = user_service.getToken();
+				console.log("token login:"+token);
+				data_user = user_service.getDataToken(token);
+				this.setState(values => ({ ...values, valid_user: true, data_user: data_user, token: token }));
 			} 
 			else alert("El correo o la contraseña son incorrectas");
+		}).finally(() => {
 			this.setState(values => ({...values, email: "", password: ""}));
 		})
+	}
+
+	onRoute() {
+		let data = this.state.data_user;
+		let index = 0
+		// alert("rol: "+data.rol[index]+" nombres: "+data.nombres+" token: "+this.state.token);
+		if(data.rol[index] === "ADMIN") return <Navigate to="/adminInicio" state={{ data }} />
+		else if (data.rol[index] === "USER") return <Navigate to='/perfil' state={{ data }} />
 	}
 
 	render() {
@@ -64,10 +78,7 @@ class Login extends React.Component {
 	let valid_user = this.state.valid_user;
     return(
         <div className='main-login'>
-			{valid_user && (
-				console.log("data login: ",user_service.getDataToken(user_service.getToken()).rol[0]),
-				<Navigate to='/perfil' />
-			)}
+			{ valid_user && this.onRoute() }
             <Navbar1/>
             <section id='contenedor' className="elementor-section elementor-top-section elementor-element elementor-element-2bd9dc1 elementor-section-full_width elementor-section-height-full elementor-section-height-default elementor-section-items-middle" data-id="2bd9dc1" data-element_type="section" style={{backgroundColor : '#fff'}}>
 					<div id='svg-top' className="elementor-shape elementor-shape-top" data-negative="false">
@@ -120,24 +131,9 @@ class Login extends React.Component {
                                                                     </button>
 															    </div>
                                                             </div>
-                                                            <div className="eael-forever-forget eael-lr-form-group">
-									                            <p className="forget-menot">
-                                                                    <input name="eael-rememberme" type="checkbox" id="rememberme" className="remember-me " value="forever"/>
-                                                                    <label htmlFor="rememberme" className="eael-checkbox-label rememberme">Recuérdame</label>
-                                                                </p>
-									                            <p className="forget-pass">
-                                                                    <a href="https://james.amigos4all.com/wp-login.php?action=lostpassword">¿Has olvidado tu contraseña?</a>
-                                                                </p>
-                                                            </div>
                                                             <div className="eael-lr-footer">
                                                                 <input type="submit" name="eael-login-submit" id="eael-login-submit" className="g-recaptcha eael-lr-btn eael-lr-btn-block " value="Submit"/>
                                                             </div>
-								                            <div className="eael-form-validation-container">
-									                        </div>
-								                            <input type="hidden" id="eael-login-nonce" name="eael-login-nonce" value="ed1c1c15f5"/>
-                                                            <input type="hidden" name="_wp_http_referer" value="/?page_id=875"/>        
-                                                            <input type="hidden" name="page_id" value="875"/>
-                                                            <input type="hidden" name="widget_id" value="ddf06f2"/>
 		                                                </form>
 							                        </div>
 						                        </div>

@@ -9,7 +9,7 @@ class Perfil extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            data_user: user_service.getDataToken(user_service.getToken()),
+            data_user: props.location.state.data,
             isPassword: false,
             isCargo: false,
             isStatus: false,
@@ -50,15 +50,18 @@ class Perfil extends React.Component {
     }
 
     onChangedStatusAccount(email) {
-        this.setState(values => ({ ...values, isStatus: !this.state.isStatus}));
+        let message = "";
         let disable = user_service.disabledUser(email);
         disable.then(response => {
             if(response === 200) {
                 user_service.deleteToken();
-                alert("Cuenta Desactivada");
+                message = "Cuenta Desactivada";
             }
-            else alert("No se pudo desactivar la cuenta");
-        });
+            else message ="No se pudo desactivar la cuenta";
+        }).finally(()=> {
+            alert(message);
+            this.setState(values => ({ ...values, isStatus: !this.state.isStatus}));
+        })
     }
 
     handleChange(event) {
@@ -68,20 +71,22 @@ class Perfil extends React.Component {
     }
 
     saveChange(data) {
-        this.setState(values => ({ ...values, updateVerified: !this.state.updateVerified, isCargo: !this.state.isCargo}));
         let update = user_service.updateUser(data);
+        let message = "";
         update.then(data_user => {
             if (data_user !== null) {
                 this.setState(values => ({ ...values, data_user: data_user}));
-                user_service.deleteToken();
-                alert("Cargo modificado");
-            } else alert("No se pudo modificar el cargo");
+                message = "Cargo modificado";
+            } else message = "No se pudo modificar el cargo";
+        }).finally(() => {
+            alert(message);
+            this.setState(values => ({ ...values, updateVerified: !this.state.updateVerified, isCargo: !this.state.isCargo}));
         })
     }
 
     render() {
         let data = this.state.data_user;
-        data.rol = (this.state.cargo !== "") ? this.state.cargo : data.rol;
+        data.tipo_docente = (this.state.cargo !== "") ? this.state.cargo : data.tipo_docente;
         // if (user_service.getToken() === null) return (<Navigate to="/Login" />)
         return (
             <div className="row">
@@ -163,14 +168,6 @@ class Perfil extends React.Component {
                                             </div>
                                         </div>
                                         <hr />
-                                        <div className="row">
-                                            <div className="col-sm-4">
-                                                <p className="mb-0">Tokens</p>
-                                            </div>
-                                            <div className="col-sm-8">
-                                                <p className="text-muted mb-0">{data.tokens}</p>
-                                            </div>
-                                        </div>
                                     </div>
                                 </div>
                             </div>
