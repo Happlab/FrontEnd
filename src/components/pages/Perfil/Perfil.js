@@ -9,7 +9,7 @@ class Perfil extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            data_user: props.location.state.data,
+            data_user: props.location.state ? props.location.state.data: null,
             isPassword: false,
             isCargo: false,
             isStatus: false,
@@ -86,6 +86,11 @@ class Perfil extends React.Component {
 
     render() {
         let data = this.state.data_user;
+        if(data === null) {
+            return (
+                <Navigate to="/login" state={{ data }} />
+            )
+        }
         data.tipo_docente = (this.state.cargo !== "") ? this.state.cargo : data.tipo_docente;
         // if (user_service.getToken() === null) return (<Navigate to="/Login" />)
         return (
@@ -101,7 +106,7 @@ class Perfil extends React.Component {
                     this.saveChange(data)
                 )}
                 <Navbar1 />
-                <div className="container m-0">
+                <div className="container m-0 content-perfil">
                     <div className="d-flex flex-column align-items-center text-center p-4 py-3">
                         <h1 className="titulo-estandar">Perfil de usuario</h1>
                     </div>

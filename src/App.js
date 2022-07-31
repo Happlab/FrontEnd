@@ -15,6 +15,7 @@ import AdminAcercaDe from './components/pages/Admin/AdminAcercaDe';
 import Contenido from './components/pages/Contenido/Contenido'
 import Perfil from './components/pages/Perfil/Perfil';
 import Password from './components/pages/Perfil/Password';
+import SobreNosotros from './components/pages/About/SobreNosotros';
 
 function App() {
     return (
@@ -33,6 +34,7 @@ function App() {
             <Route path='Noticias' element={<Noticias />}/>
             <Route path='Tecnologias' element={<Tecnologias />}/>
             <Route path='Investigadores' element={<Investigadores />}/>
+            <Route path='AboutUs' element={<SobreNosotros />}/>
             <Route path='Login' element={<Login/>}/>
             <Route path='Contenido' element={<Contenido/>}/>
             <Route path='Registro' element={<Registro/>}/>

@@ -40,6 +40,7 @@ $tam-2: 100px;
 .columna-inicio{
     @include formacion_columnas($color-page);
     margin: 1%;
+    padding: 2% 0% 1% 0%;
     border-radius: 35px 35px 35px 35px;
     -moz-border-radius: 35px 35px 35px 35px;
     -webkit-border-radius: 35px 35px 35px 35px;
@@ -49,7 +50,7 @@ $tam-2: 100px;
 .columna-inicio-texto{
     @include formacion_texto($tam,$posicion-izq);
     margin-top: 3%;
-    margin-left: 20%;
+    margin-left: 18%;
 }
 
 .columna-inicio-video{
@@ -60,12 +61,20 @@ $tam-2: 100px;
 }
 
 .title-dest{
-    margin-left: 20%;
+    margin-left: 18%;
     color: $colr-titulos;
-    
 }
 
 .carousel{
+    margin: 1%;
+    padding: 0.1px 0;
     background-color: $color-page;
     text-align: center;
-  }
+    border-radius: 20px;
+    img {
+        width: 300px;
+        height: 150px;
+        object-fit: inherit;
+        border-radius: 20px;
+    }
+ }

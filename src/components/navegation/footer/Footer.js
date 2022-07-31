@@ -37,10 +37,10 @@ const Footer = () => {
                     {/* Redes sociales */}
                     <div className='pos1'>
                         <h4>¡Aqui puedes encontar nuestras redes sociales!</h4>
-                        <FontAwesomeIcon icon={faFacebookSquare} size='2x' onClick={redireccionF} style={{ cursor: "pointer" }} fixedWidth/>
-                        <FontAwesomeIcon icon={faTwitter} size='2x' onClick={redireccionT} style={{ cursor: "pointer" }} fixedWidth />
-                        <FontAwesomeIcon icon={faInstagram} size='2x' onClick={redireccionI} style={{ cursor: "pointer" }} fixedWidth />
-                        <FontAwesomeIcon icon={faLinkedin} size='2x' onClick={redireccionL} style={{ cursor: "pointer" }} fixedWidth />
+                        <FontAwesomeIcon className="icons" icon={faFacebookSquare} size='2x' onClick={redireccionF} fixedWidth/>
+                        <FontAwesomeIcon className="icons" icon={faTwitter} size='2x' onClick={redireccionT} fixedWidth />
+                        <FontAwesomeIcon className="icons" icon={faInstagram} size='2x' onClick={redireccionI} fixedWidth />
+                        <FontAwesomeIcon className="icons" icon={faLinkedin} size='2x' onClick={redireccionL} fixedWidth />
                     </div>
                     {/* Escudo */}
                     <div className='pos2'>

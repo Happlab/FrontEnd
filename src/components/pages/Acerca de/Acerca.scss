@@ -5,6 +5,7 @@ $posicion-izq: left;
 $posicion-rig: right;
 $tam: 150px;
 $tam-2: 100px;
+$color-text: rgb(255, 255, 255);
 
 .titulo-estandar{
     text-align: right;
@@ -12,6 +13,7 @@ $tam-2: 100px;
     font-size: 50px;
     font-weight: bold;
     margin: 1%;
+    padding: 0 6% 0 0%;
 }
 
 .title-map{
@@ -20,11 +22,13 @@ $tam-2: 100px;
     font-size: 50px;
     font-weight: bold;
     margin: 1%;
+    padding: 0 0 0 6%;
 }
 
 .columna-acerca{
     @include formacion_columnas($color-background);
-    padding: 1%;
+    padding: 1% 0 0 0;
+    margin: 2%;
     border-radius: 35px 35px 35px 35px;
     -moz-border-radius: 35px 35px 35px 35px;
     -webkit-border-radius: 35px 35px 35px 35px;
@@ -33,9 +37,11 @@ $tam-2: 100px;
 
 .columna-acerca-text{
     @include formacion_texto($tam,$posicion-izq);
-    margin-top: 3%;
-    margin-left: 20%;
+    margin-top: 8%;
+    margin-left: 16%;
     text-align: justify;
+    color: $color-text;
+    font-size: 18px;
 }
 
 .columna-acerca-video{
@@ -47,7 +53,7 @@ $tam-2: 100px;
 
 .row-map{
     @include formacion_columnas(#779C43);
-    padding: 1%;
+    margin: 2%;
     border-radius: 35px 35px 35px 35px;
     -moz-border-radius: 35px 35px 35px 35px;
     -webkit-border-radius: 35px 35px 35px 35px;
@@ -60,13 +66,17 @@ $tam-2: 100px;
 
 .col-map{
     @include formacion_imagen($tam,$posicion-izq);
+    padding: 3% 0 0 11.5%;
 }
 
 .col-text{
     @include formacion_texto($tam,$posicion-izq);
     text-align: justify;
+    padding: 10% 15% 10% 3%;
+    color: $color-text;
+    font-size: 18px;
 }
 
 .leaflet-container{
-    height: 180px;
+    height: 300px;
 }

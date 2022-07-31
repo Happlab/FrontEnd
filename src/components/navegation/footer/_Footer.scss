@@ -12,6 +12,7 @@ $color-words: white;
    column-width: 300px;
    background-color: $color-background;
    column-gap: 4em;
+   padding: 2% 8.5%;
 }
 
 .pos1{
@@ -33,3 +34,12 @@ $color-words: white;
     color: $color-words;
 }
 
+.images-footer {
+    object-fit: contain;
+    height: 20vh;
+}
+
+.icons {
+    cursor: pointer;
+    margin: 0 3%;
+}

@@ -11,8 +11,9 @@ const getDataToken = inputToken => {
     return data;
 }
 
-const setToken = newtoken => {
-    localStorage.setItem(key, newtoken);
+const setToken = (newtoken, context) => {
+    window.localStorage.setItem(key, newtoken);
+    // context.close();
     token = `Bearer ${newtoken}`;
 }
 
