@@ -1,21 +1,29 @@
+import Modal from 'react-bootstrap/Modal';
 import React, { Component , useState} from 'react'
 import {PeticionEnvio, PeticionGet} from '../PeticionesAdmin.js'
+import Notificacion from './modal.js'
+import { Button } from 'react-bootstrap';
 export default class Dashboard extends Component {
     constructor (props){
         super();
         this.state={
             usuarios: [],
-            conteo: 0
+            conteo: 0,
+            notificacion: true
         }
         var conteo=0;
         this.Actualizar=this.Actualizar.bind(this);
         this.Eliminar=this.Eliminar.bind(this);
         this.Inactivar=this.Inactivar.bind(this);
+        this.handleClickCerrarModal=this.handleClickCerrarModal.bind(this);
     }
     urlServicio='http://localhost:8080/persona/';
     
     componentDidMount(){
         this.ListarUsuarios();
+    }
+    handleClickCerrarModal(){
+        this.setState({notificacion: false});
     }
     Inactivar(user){
         const url=this.urlServicio+'desactivar/'+user.email;
@@ -75,6 +83,7 @@ export default class Dashboard extends Component {
     render() {
         return (
             <div>
+                <Notificacion show={this.state.notificacion} titulo="Gestion de usuarios" mensaje="Usuario actualizad correctamente" onclick={this.handleClickCerrarModal}/>
                 {/*Lista d solicitudes*/}
                 <div className="content-wrapper" style={{ minHeight: '2080.12px' }}>
                 <h1 align="center">Módulo Administrador - Usuarios</h1>
