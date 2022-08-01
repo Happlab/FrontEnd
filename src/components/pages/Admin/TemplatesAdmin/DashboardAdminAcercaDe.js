@@ -1,25 +1,35 @@
 import React, { Component } from 'react'
 import { PeticionEnvioDataFrom, PeticionGet } from '../PeticionesAdmin.js'
+import Notificacion from './modal.js'
 
 export default class DashboardAdminAcercaDe extends Component {
   constructor(props) {
     super(props);
     this.state = {
       inicio: [],
-      posicion: -1
+      posicion: -1,
+      notificacion: false,
+      tituloNotificacion: "",
+      mensajeNotificacion: ""
     };
     this.editar = this.editar.bind(this);
     this.funcioneditar = this.funcioneditar.bind(this);
+    this.handleClickCerrarModal=this.handleClickCerrarModal.bind(this);
   }
+
+  urlServicio='http://localhost:8080/seccion/'
 
   componentDidMount() {
     this.listarInformacion();
   }
+  
+  handleClickCerrarModal(){
+    this.setState({notificacion: false});
+  }
 
   listarInformacion() {
-    const url = 'http://localhost:8080/seccion/';
-    const mensajeError = 'No hay informacion en acerca de';
-    const datos = PeticionGet(url, mensajeError);
+    const url = this.urlServicio;
+    const datos = PeticionGet(url);
     datos.then(data => {
       if (data !== null) {
         this.setState({
@@ -37,6 +47,7 @@ export default class DashboardAdminAcercaDe extends Component {
 
   funcioneditar(titulo, url_seccion, contenido, descripcion, longitud, latitud) {
     const dataform = new FormData();
+
     dataform.append('id', this.state.inicio[this.state.posicion].id);
     dataform.append('titulo_seccion', titulo);
     dataform.append('descripcion', descripcion);
@@ -56,28 +67,26 @@ export default class DashboardAdminAcercaDe extends Component {
     }else{
       dataform.append('coordenadas', [0, 0]);
     }
-    
-    
 
-    const url = 'http://localhost:8080/seccion/update/' + this.state.inicio[this.state.posicion].id;
-    const mensajeError = 'No fue posible agregar informacion';
+    const url = this.urlServicio+'update/' + this.state.inicio[this.state.posicion].id;
     const metodo = 'PUT';
     if(this.state.posicion!==-1){
-      const peticion = PeticionEnvioDataFrom(dataform, url, mensajeError, metodo);
+      const peticion = PeticionEnvioDataFrom(dataform, url, metodo);
       peticion.then(data => {
-        if (data) {
+        if(data){
+          this.setState({notificacion: true, tituloNotificacion: "Gestion de informacion de Acerca de", mensajeNotificacion:"La informacion del apartado acerca de fue actualizada exitosamente"});
           this.listarInformacion();
+        }else{
+            this.setState({notificacion: true, tituloNotificacion: "Gestion de informacion de Acerca de", mensajeNotificacion:"No fue posible editar la informacion de acerca de, verifique su conexion con el servidor o a internet"});
         }
       });
-    }else{
-      alert("seleccione un elemento a editar");
     }
   }
 
   render() {
     return (
       <div>
-
+        <Notificacion show={this.state.notificacion} titulo={this.state.tituloNotificacion} mensaje={this.state.mensajeNotificacion} onclick={this.handleClickCerrarModal}/>
         <div className="content-wrapper" style={{ minHeight: '2080.12px' }}>
           {/*Lista de contenido inicio*/}
           <section className="content-header">

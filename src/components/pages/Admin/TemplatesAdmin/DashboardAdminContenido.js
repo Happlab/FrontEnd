@@ -1,24 +1,31 @@
 import React, { Component } from 'react'
 import {PeticionEnvio, PeticionGet} from '../PeticionesAdmin.js'
+import Notificacion from './modal.js'
 
 export default class DashboardAdminContenido extends Component {
     constructor(props){
         super();
         this.state={
             contenidos:[],
-            conteo: 0
+            conteo: 0,
+            notificacion: false,
+            tituloNotificacion: "",
+            mensajeNotificacion: ""
         }
         this.Eliminar=this.Eliminar.bind(this);
         this.MostrarOcultar=this.MostrarOcultar.bind(this);
         this.Aceptar=this.Aceptar.bind(this);
         this.Descargar=this.Descargar.bind(this);
+        this.handleClickCerrarModal=this.handleClickCerrarModal.bind(this);
     }
 
     urlServicio='http://localhost:8080/contenido/';
 
     componentDidMount(){
-        this.ListarContenido();
-        
+        this.ListarContenido();   
+    }
+    handleClickCerrarModal(){
+        this.setState({notificacion: false});
     }
     Descargar(contenido_link){
         window.location.href=this.urlServicio+'download/'+contenido_link;
@@ -29,46 +36,50 @@ export default class DashboardAdminContenido extends Component {
         } else {
             contenido.visible=true;
         }
-        const url=this.urlServicio+'Update';
-        const mensajeError='no fue posible actualizar estado del contenido';
+        const url=this.urlServicio+'changeVisible/'+contenido.link;
         const metodo='PUT';
-        const peticion=PeticionEnvio(contenido, url, mensajeError, metodo);
+        const peticion=PeticionEnvio('', url, metodo);
         peticion.then(data =>{
             if(data){
+                this.setState({notificacion: true, tituloNotificacion: "Gestion de contenidos", mensajeNotificacion:"El estado de visibilidad del contenido se ha actualizado correctamente"});
                 this.ListarContenido();
+            }else{
+                this.setState({notificacion: true, tituloNotificacion: "Gestion de contenidos", mensajeNotificacion:"No fue posible cambiar estado de visibilidad del contenido, verifique su conexion con el servidor o a internet"});
             }
         });
     }
     Aceptar(contenido){
         contenido.pendiente=false;
         contenido.visible=true;
-        contenido.titulo='titulo contenido 1'
-        const url=this.urlServicio+'update';
-        const mensajeError='no fue posible actualizar estado del contenido';
+        const url=this.urlServicio+'changePendiente/'+contenido.link;
         const metodo='PUT';
-        const peticion=PeticionEnvio(contenido, url, mensajeError, metodo);
+        const peticion=PeticionEnvio('', url, metodo);
         peticion.then(data =>{
             if(data){
+                this.setState({notificacion: true, tituloNotificacion: "Gestion de contenidos", mensajeNotificacion:"La solicitud para publicar el contenido fue aceptada"});
                 this.ListarContenido();
+            }else{
+                this.setState({notificacion: true, tituloNotificacion: "Gestion de contenidos", mensajeNotificacion:"No fue posible aceptar la solicitud de publicar contenido, verifique su conexion con el servidor o a internet"});
             }
         });
     }
     Eliminar(contenido){ 
         const url=this.urlServicio+'delete/'+contenido.link;
-        const mensajeError='no fue posible eliminar el contenido';
         const metodo='DELETE';
-        const peticion=PeticionEnvio(contenido, url, mensajeError, metodo);
+        const peticion=PeticionEnvio('', url, metodo);
         peticion.then(data =>{
             if(data){
+                this.setState({notificacion: true, tituloNotificacion: "Gestion de contenidos", mensajeNotificacion:"La solicitud para publicar el contenido fue rechazada"});
                 this.ListarContenido();
+            }else{
+                this.setState({notificacion: true, tituloNotificacion: "Gestion de contenidos", mensajeNotificacion:"No fue posible rechazar la solicitud de contenido, verifique su conexion con el servidor o a internet"});
             }
         });  
     }
     ListarContenido() {
         let cont=0;
         const url=this.urlServicio;
-            const mensajeError='no hay contenidos';
-            const datos=PeticionGet(url, mensajeError);
+            const datos=PeticionGet(url);
             datos.then(data =>{
                 if(data!==null){
                     for (let i = 0; i < data.length; i++) {
@@ -84,6 +95,7 @@ export default class DashboardAdminContenido extends Component {
     render() {
         return (
             <div>
+                <Notificacion show={this.state.notificacion} titulo={this.state.tituloNotificacion} mensaje={this.state.mensajeNotificacion} onclick={this.handleClickCerrarModal}/>
                 {/*Lista d solicitudes*/}
                 <div className="content-wrapper" style={{ minHeight: '2080.12px' }}>
                 <h1 align="center">Módulo Administrador - Página de Contenidos</h1>
@@ -162,8 +174,8 @@ export default class DashboardAdminContenido extends Component {
                                                                     Acción
                                                                 </button>
                                                                 <ul className="dropdown-menu" style={{}}>
-                                                                    <li className="dropdown-item" onClick={()=>this.Aceptar(this.state.contenidos[i])}>Aprobar</li>
-                                                                    <li className="dropdown-item" onClick={()=>this.Eliminar(this.state.contenidos[i])}>Rechazar</li>
+                                                                    <li className="dropdown-item" style={{cursor: 'pointer'}} onClick={()=>this.Aceptar(this.state.contenidos[i])}>Aprobar</li>
+                                                                    <li className="dropdown-item" style={{cursor: 'pointer'}} onClick={()=>this.Eliminar(this.state.contenidos[i])}>Rechazar</li>
                                                                 </ul>
                                                             </div>
                                                         </td>

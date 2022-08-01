@@ -1,42 +1,46 @@
 import React, { Component } from 'react'
 import { PeticionEnvio, PeticionEnvioDataFrom, PeticionGet } from '../PeticionesAdmin.js'
+import Notificacion from './modal.js'
 
 export default class DashboardAdminInicio extends Component {
-
-
   constructor(props) {
     super(props);
     this.state = {
       inicio: [],
-      posicion: -1
+      posicion: -1,
+      notificacion: false,
+      tituloNotificacion: "",
+      mensajeNotificacion: ""
     };
+    this.handleClickCerrarModal=this.handleClickCerrarModal.bind(this);
     this.editar = this.editar.bind(this);
     this.funcioneditar = this.funcioneditar.bind(this);
   }
-
+  urlServicio="http://localhost:8080/seccion/"
   componentDidMount() {
     this.listarInformacion();
   }
 
   listarInformacion() {
-    const url = 'http://localhost:8080/seccion/';
-    const mensajeError = 'No hay informacion de inicio';
-    const datos = PeticionGet(url, mensajeError);
+    const url = this.urlServicio;
+    const datos = PeticionGet(url);
     datos.then(data => {
       if (data !== null) {
-        this.setState({
-          inicio: Array.from(data)
+        this.setState({inicio: Array.from(data)
         });
       }
     });
   }
-
+  handleClickCerrarModal(){
+    this.setState({notificacion: false});
+  }
   editar(entrada, indice) {
     this.setState({posicion : indice});
   }
 
-  funcioneditar(titulo, url_seccion, contenido, descripcion, longitud, latitud) {
+  funcioneditar(titulo, url_seccion, contenido, descripcion) {
     const dataform = new FormData();
+
     dataform.append('id', this.state.inicio[this.state.posicion].id);
     dataform.append('titulo_seccion', titulo);
     dataform.append('url', url_seccion);
@@ -48,14 +52,16 @@ export default class DashboardAdminInicio extends Component {
     dataform.append('descripcion', descripcion);
     dataform.append('coordenadas', [0, 0]);
 
-    const url = 'http://localhost:8080/seccion/update/' + this.state.inicio[this.state.posicion].id;
-    const mensajeError = 'No fue posible agregar informacion';
+    const url =this.urlServicio+'update/' + this.state.inicio[this.state.posicion].id;
     const metodo = 'PUT';
     if(this.state.posicion!==-1){
-      const peticion = PeticionEnvioDataFrom(dataform, url, mensajeError, metodo);
+      const peticion = PeticionEnvioDataFrom(dataform, url, metodo);
       peticion.then(data => {
-        if (data) {
+        if(data){
+          this.setState({notificacion: true, tituloNotificacion: "Gestion de informacion de inicio", mensajeNotificacion:"La informacion de inicio fue actualizada exitosamente"});
           this.listarInformacion();
+        }else{
+            this.setState({notificacion: true, tituloNotificacion: "Gestion de informacion de inicio", mensajeNotificacion:"No fue posible editar la informacion de inicio, verifique su conexion con el servidor o a internet"});
         }
       });
     }else{
@@ -67,7 +73,7 @@ export default class DashboardAdminInicio extends Component {
   render() {
     return (
       <div>
-
+        <Notificacion show={this.state.notificacion} titulo={this.state.tituloNotificacion} mensaje={this.state.mensajeNotificacion} onclick={this.handleClickCerrarModal}/>
         <div className="content-wrapper" style={{ minHeight: '2080.12px' }}>
           {/*Lista de contenido inicio*/}
           <section className="content-header">

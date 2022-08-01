@@ -9,10 +9,13 @@ export default class Dashboard extends Component {
         this.state={
             usuarios: [],
             conteo: 0,
-            notificacion: true
+            notificacion: false,
+            tituloNotificacion: "",
+            mensajeNotificacion: ""
         }
         var conteo=0;
         this.Actualizar=this.Actualizar.bind(this);
+        this.Aceptar=this.Aceptar.bind(this);
         this.Eliminar=this.Eliminar.bind(this);
         this.Inactivar=this.Inactivar.bind(this);
         this.handleClickCerrarModal=this.handleClickCerrarModal.bind(this);
@@ -27,48 +30,66 @@ export default class Dashboard extends Component {
     }
     Inactivar(user){
         const url=this.urlServicio+'desactivar/'+user.email;
-        const mensajeError='no fue posible inactivar el usuario';
         const metodo='DELETE';
-        const peticion=PeticionEnvio(' ', url, mensajeError, metodo);
+        const peticion=PeticionEnvio(' ', url, metodo);
         peticion.then(data =>{
             if(data){
+                this.setState({notificacion: true, tituloNotificacion: "Gestion de usuarios", mensajeNotificacion:"El estado del usuario fue actualizado correctamente a inactivo"});
                 this.ListarUsuarios();
-                console.log('usuarios: '+this.state.conteo);
+            }else{
+                this.setState({notificacion: true, tituloNotificacion: "Gestion de usuarios", mensajeNotificacion:"El estado del usuario no fue posible actualizarlo, verifique su conexion con el servidor o a internet"});
             }
         });
         
     }
     Eliminar(user){
         const url=this.urlServicio+'delete/'+user.email;
-        const mensajeError='no fue posible eliminar el usuario';
         const metodo='DELETE';
-        const peticion=PeticionEnvio(' ', url, mensajeError, metodo);
+        const peticion=PeticionEnvio(' ', url, metodo);
         peticion.then(data =>{
             if(data){
+                this.setState({notificacion: true, tituloNotificacion: "Gestion de usuarios", mensajeNotificacion:"La solicitud del usuario fue rechazada correctamente"});
                 this.ListarUsuarios();
+            }else{
+                this.setState({notificacion: true, tituloNotificacion: "Gestion de usuarios", mensajeNotificacion:"No fue posible rechazar la solicitud de este usuario, verifique su conexion con el servidor o a internet"});
             }
         });  
     }
-    Actualizar(user){
+    Aceptar(user){
         user.pendiente=false;
         user.activo=true;
         user.tipoDocente=user.tipo_docente;
         const url=this.urlServicio+'update';
-        const mensajeError='no fue posible actualizar estado del usuario';
         const metodo='PUT';
-        const peticion=PeticionEnvio(user, url, mensajeError, metodo);
+        const peticion=PeticionEnvio(user, url, metodo);
         peticion.then(data =>{
             if(data){
+                this.setState({notificacion: true, tituloNotificacion: "Gestion de usuarios", mensajeNotificacion:"La solicitud del usuario fue aceptada correctamente"});
                 this.ListarUsuarios();
+            }else{
+                this.setState({notificacion: true, tituloNotificacion: "Gestion de usuarios", mensajeNotificacion:"No fue posible aceptar la solicitud de este usuario, verifique su conexion con el servidor o a internet"});
             }
-        });
-            
+        }); 
+    }
+    Actualizar(user){
+        user.activo=true;
+        user.tipoDocente=user.tipo_docente;
+        const url=this.urlServicio+'update';
+        const metodo='PUT';
+        const peticion=PeticionEnvio(user, url, metodo);
+        peticion.then(data =>{
+            if(data){
+                this.setState({notificacion: true, tituloNotificacion: "Gestion de usuarios", mensajeNotificacion:"La estado del usuario cambió a activo correctamente"});
+                this.ListarUsuarios();
+            }else{
+                this.setState({notificacion: true, tituloNotificacion: "Gestion de usuarios", mensajeNotificacion:"No fue posible cambiar el estado del usuario, verifique su conexion con el servidor o a internet"});
+            }
+        });      
     }   
     ListarUsuarios() {
         let cont=0;
         const url=this.urlServicio;
-        const mensajeError='no hay usuarios';
-        const datos=PeticionGet(url, mensajeError);
+        const datos=PeticionGet(url);
         datos.then(data =>{
             if(data!==null){
                 for (let i = 0; i < data.length; i++) {
@@ -77,13 +98,15 @@ export default class Dashboard extends Component {
                     }
                 } 
                 this.setState({usuarios: Array.from(data), conteo: cont});
+            }else{
+                this.setState({notificacion: true, tituloNotificacion: "Gestion de usuarios", mensajeNotificacion:"No hay usuarios registrados"});
             }
         });  
     }
     render() {
         return (
             <div>
-                <Notificacion show={this.state.notificacion} titulo="Gestion de usuarios" mensaje="Usuario actualizad correctamente" onclick={this.handleClickCerrarModal}/>
+                <Notificacion show={this.state.notificacion} titulo={this.state.tituloNotificacion} mensaje={this.state.mensajeNotificacion} onclick={this.handleClickCerrarModal}/>
                 {/*Lista d solicitudes*/}
                 <div className="content-wrapper" style={{ minHeight: '2080.12px' }}>
                 <h1 align="center">Módulo Administrador - Usuarios</h1>
@@ -164,8 +187,8 @@ export default class Dashboard extends Component {
                                                                     <span className="sr-only">Desplegar menú</span>
                                                                 </button>
                                                                 <ul className="dropdown-menu" role="menu">
-                                                                    <li><a href="#" onClick={()=>this.Actualizar(this.state.usuarios[i])}>Aprobar</a></li>
-                                                                    <li><a href="#" onClick={()=>this.Eliminar(this.state.usuarios[i])}>Rechazar</a></li>
+                                                                    <li className="dropdown-item" onClick={()=>this.Aceptar(this.state.usuarios[i])} style={{cursor: 'pointer'}}>Aprobar</li>
+                                                                    <li className="dropdown-item" onClick={()=>this.Eliminar(this.state.usuarios[i])} style={{cursor: 'pointer'}}>Rechazar</li>
                                                                     <li className="divider" />
                                                                 </ul>
                                                             </div>
@@ -216,8 +239,8 @@ export default class Dashboard extends Component {
                                                                         <span className="sr-only">Desplegar menú</span>
                                                                     </button>
                                                                     <ul className="dropdown-menu" role="menu">
-                                                                        <li><a href="#" onClick={()=>this.Actualizar(this.state.usuarios[i])}>Activar</a></li>
-                                                                        <li><a href="#" onClick={()=>this.Inactivar(this.state.usuarios[i])}>Inactivar</a></li>
+                                                                        <li className="dropdown-item" style={{cursor: 'pointer'}} onClick={()=>this.Actualizar(this.state.usuarios[i])}>Activar</li>
+                                                                        <li className="dropdown-item" style={{cursor: 'pointer'}} onClick={()=>this.Inactivar(this.state.usuarios[i])}>Inactivar</li>
                                                                         <li className="divider" />
                                                                     </ul>
                                                                 </div>

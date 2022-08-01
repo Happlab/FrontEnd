@@ -3,7 +3,7 @@ import {PeticionEnvio, PeticionEnvioDataFrom, PeticionGet} from '../PeticionesAd
 import * as Yup from 'yup';
 import { Formik} from 'formik';
 import {Form,Button} from 'react-bootstrap';
-
+import Notificacion from './modal.js'
 
 
 export default class DashboardAdminInicio extends Component {
@@ -16,14 +16,17 @@ export default class DashboardAdminInicio extends Component {
         link_contenido: '',
         visible: true,
         posSeleccionado: -1,
-        estadoEditar: false        
+        estadoEditar: false,
+        notificacion: false,
+        tituloNotificacion: "",
+        mensajeNotificacion: ""      
       }
-      this.handleSubmitEditar=this.handleSubmitEditar.bind(this);
       this.handleEliminar=this.handleEliminar.bind(this);
       this.handleOcultar=this.handleOcultar.bind(this);
       this.handleClickEditar=this.handleClickEditar.bind(this);
       this.handleChange=this.handleChange.bind(this);
       this.handleClickCerrar=this.handleClickCerrar.bind(this);
+      this.handleClickCerrarModal=this.handleClickCerrarModal.bind(this);
   }
   
   urlServicio='http://localhost:8080/noticia/';
@@ -36,53 +39,39 @@ export default class DashboardAdminInicio extends Component {
   componentDidMount(){
     this.ListarNoticias();
   }
+  handleClickCerrarModal(){
+    this.setState({notificacion: false});
+  }
   handleClickCerrar(){
     this.setState({estadoEditar: false});
   }
   handleEliminar(id){
     const url=this.urlServicio+'delete/'+id;
-    const mensajeError='no fue posible eliminar noticia';
     const metodo='DELETE';
-    const peticion=PeticionEnvio(' ', url, mensajeError, metodo);
+    const peticion=PeticionEnvio(' ', url, metodo);
     peticion.then(data =>{
         if(data){
+          this.setState({notificacion: true, tituloNotificacion: "Gestion de noticias", mensajeNotificacion:"La noticia se ha eliminado correctamente"});
           this.ListarNoticias();
+        }else{
+            this.setState({notificacion: true, tituloNotificacion: "Gestion de noticias", mensajeNotificacion:"No fue posible eliminar esta noticia, verifique su conexion con el servidor o a internet"});
         }
     });
   }
   handleOcultar(i,posicion){
     const url=this.urlServicio+'changeVisible/'+this.state.noticias[posicion].link_contenido;
-    const mensajeError='no fue posible ocultar noticia';
     const metodo='PUT';
-    const peticion=PeticionEnvio(' ', url, mensajeError, metodo);
+    const peticion=PeticionEnvio(' ', url, metodo);
     peticion.then(data =>{
         if(data){
+          this.setState({notificacion: true, tituloNotificacion: "Gestion de noticias", mensajeNotificacion:"El estado que controla si una noticia es visible o no, se ha alternado correctamente"});
           this.ListarNoticias();
+        }else{
+            this.setState({notificacion: true, tituloNotificacion: "Gestion de noticias", mensajeNotificacion:"No fue posible actualizar el estado que controla la visibilidad de la noticia, verifique su conexion con el servidor o a internet"});
         }
     });
   }
-  handleSubmitEditar(){
-    var dataform= new FormData();
 
-    const titulo=document.getElementById('inputNameEdit').value;
-    const url_noticia=document.getElementById('inputClientCompanyEdit').value
-    const link_contenido=document.getElementById('inputFileEdit').files[0];
-    
-    dataform.append('titulo_noticia', titulo);
-    dataform.append('url_noticia',url_noticia);
-    dataform.append('imagen', link_contenido);
-    dataform.append('visible',this.state.noticias[this.state.posSeleccionado].visible);
-    
-    const url=this.urlServicio+'Update/'+this.state.noticias[this.state.posSeleccionado].link_contenido;
-    const mensajeError='no fue posible editar noticia';
-    const metodo='PUT';
-    if(this.state.posSeleccionado!==-1){
-      const peticion=PeticionEnvioDataFrom(dataform, url, mensajeError, metodo);
-      peticion.then(data =>{
-          this.ListarNoticias();
-       });
-    }
-  }
   handleChange(event){
     let name=event.target.name;
     let value;
@@ -110,7 +99,7 @@ export default class DashboardAdminInicio extends Component {
   render() {
     return (
       <div>
-        
+        <Notificacion show={this.state.notificacion} titulo={this.state.tituloNotificacion} mensaje={this.state.mensajeNotificacion} onclick={this.handleClickCerrarModal}/>
         <div className="content-wrapper" style={{ minHeight: '2080.12px' }}>
         <h1 align="center">Módulo Administrador - Página de Noticias</h1>
         <br></br>
@@ -142,12 +131,15 @@ export default class DashboardAdminInicio extends Component {
                     formdata.append("visible", true);
                     console.log(formdata);
                     const url=this.urlServicio+'create';
-                    const mensajeError='no fue posible agregar noticia';
                     const metodo='POST';
-                    const peticion=PeticionEnvioDataFrom(formdata, url, mensajeError, metodo);
+                    const peticion=PeticionEnvioDataFrom(formdata, url, metodo);
                     peticion.then(data =>{
-                        alert(data);
+                      if(data){
+                        this.setState({notificacion: true, tituloNotificacion: "Gestion de noticias", mensajeNotificacion:"La noticia fue creada exitosamente"});
                         this.ListarNoticias();
+                      }else{
+                          this.setState({notificacion: true, tituloNotificacion: "Gestion de noticias", mensajeNotificacion:"No fue posible crear la noticia, verifique su conexion con el servidor o a internet"});
+                      }
                     });
                     }}
                   >
@@ -248,9 +240,9 @@ export default class DashboardAdminInicio extends Component {
                                     Acción
                                   </button>
                                   <ul className="dropdown-menu" style={{}}>
-                                    <li className="dropdown-item"><a href='#' onClick={()=>this.handleClickEditar(this, i)}> Editar</a></li>
-                                    <li className="dropdown-item"><a href='#' onClick={()=>this.handleEliminar(this.state.noticias[i].link_contenido)}>Eliminar</a></li>
-                                    <li className="dropdown-item"><a href='#'onClick={()=>this.handleOcultar(this, i)} >{this.state.noticias[i].visible ? 'Ocultar' : 'Mostrar'}</a></li>
+                                    <li className="dropdown-item" style={{cursor: 'pointer'}} onClick={()=>this.handleClickEditar(this, i)}> Editar</li>
+                                    <li className="dropdown-item" style={{cursor: 'pointer'}} onClick={()=>this.handleEliminar(this.state.noticias[i].link_contenido)}>Eliminar</li>
+                                    <li className="dropdown-item" style={{cursor: 'pointer'}} onClick={()=>this.handleOcultar(this, i)} >{this.state.noticias[i].visible ? 'Ocultar' : 'Mostrar'}</li>
                                   </ul>
                                 </div>
                               </td>
@@ -300,12 +292,16 @@ export default class DashboardAdminInicio extends Component {
                           dataform.append('visible',this.state.noticias[this.state.posSeleccionado].visible);
                           
                           const url=this.urlServicio+'Update/'+this.state.noticias[this.state.posSeleccionado].link_contenido;
-                          const mensajeError='no fue posible editar noticia';
                           const metodo='PUT';
                           if(this.state.posSeleccionado!==-1){
-                            const peticion=PeticionEnvioDataFrom(dataform, url, mensajeError, metodo);
+                            const peticion=PeticionEnvioDataFrom(dataform, url, metodo);
                             peticion.then(data =>{
+                              if(data){
+                                this.setState({notificacion: true, tituloNotificacion: "Gestion de noticias", mensajeNotificacion:"La noticia fue editada exitosamente"});
                                 this.ListarNoticias();
+                              }else{
+                                  this.setState({notificacion: true, tituloNotificacion: "Gestion de noticias", mensajeNotificacion:"No fue posible editar la noticia, verifique su conexion con el servidor o a internet"});
+                              }
                             });
                           }
                         }}

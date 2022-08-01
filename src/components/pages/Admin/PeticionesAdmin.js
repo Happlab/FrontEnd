@@ -1,4 +1,4 @@
-export function PeticionGet(url, mensajeError) {
+export function PeticionGet(url) {
     let status = 0;
     let content;
     var auxUsuarios = new Array();
@@ -21,14 +21,13 @@ export function PeticionGet(url, mensajeError) {
             if( status && data !== "" ){
                 return data;
             }else{
-                alert(mensajeError);
                 return null;
             }
         })
         .catch(error => console.log("Error", error));
 }
 
-export function PeticionEnvio(objetoAModificar, url, mensajeError, metodo){
+export function PeticionEnvio(objetoAModificar, url, metodo){
     const requestOptions = {
         method: metodo,
         mode: 'cors',
@@ -44,7 +43,6 @@ export function PeticionEnvio(objetoAModificar, url, mensajeError, metodo){
             console.log("Response", response)
             if (response.status === 200) return true
             else{
-                alert(mensajeError);
                 return false;
             } 
             
@@ -52,7 +50,7 @@ export function PeticionEnvio(objetoAModificar, url, mensajeError, metodo){
         .catch(error => console.log("Error", error))
 }
 
-export function PeticionEnvioDataFrom(objetoAModificar, url, mensajeError, metodo){
+export function PeticionEnvioDataFrom(objetoAModificar, url, metodo){
     const requestOptions = {
         method: metodo,
         mode: 'cors',
@@ -66,7 +64,6 @@ export function PeticionEnvioDataFrom(objetoAModificar, url, mensajeError, metod
             console.log("Response", response)
             if (response.ok) return true
             else{
-                alert(mensajeError);
                 return false;
             } 
             
