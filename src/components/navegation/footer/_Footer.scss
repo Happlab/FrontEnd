@@ -12,7 +12,7 @@ $color-words: white;
    column-width: 300px;
    background-color: $color-background;
    column-gap: 4em;
-   padding: 2% 8.5%;
+   padding: 2% 8%;
 }
 
 .pos1{
@@ -41,5 +41,16 @@ $color-words: white;
 
 .icons {
     cursor: pointer;
-    // margin: 0 3%;
+}
+
+@media screen and (max-width: 1210px) {
+    .columnas {
+        padding: 1%;
+    }
+}
+@media screen and (max-width: 1045px) {
+    .columnas {
+        text-align: center;
+        padding: 1% 30%;
+    }
 }
