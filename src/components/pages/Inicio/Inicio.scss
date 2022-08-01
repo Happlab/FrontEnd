@@ -44,11 +44,12 @@ $tam-2: 100px;
     border-radius: 35px 35px 35px 35px;
     -moz-border-radius: 35px 35px 35px 35px;
     -webkit-border-radius: 35px 35px 35px 35px;
-    border: 0px solid #000000;
 }
 
 .columna-inicio-texto{
-    @include formacion_texto($tam,$posicion-izq);
+    // width: 90%;
+    @include formacion_texto($tam-2,$posicion-izq);
+    margin:0;
     margin-top: 3%;
     margin-left: 18%;
     text-align: justify;

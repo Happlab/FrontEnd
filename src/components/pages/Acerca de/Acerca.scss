@@ -27,7 +27,7 @@ $color-text: rgb(255, 255, 255);
 
 .columna-acerca{
     @include formacion_columnas($color-background);
-    padding: 1% 0 0 0;
+    padding: 1.5% 0 1% 0;
     margin: 2%;
     border-radius: 35px 35px 35px 35px;
     -moz-border-radius: 35px 35px 35px 35px;
