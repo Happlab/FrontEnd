@@ -7,7 +7,7 @@ export default class AdminAcercaDe extends Component {
     return (
       <div>
         <Header/>
-        <Menu/>
+        <Menu opcion="acercaDe"/>
         <DashboardAdmAcercaDe/>
       </div>
     )

@@ -17,7 +17,7 @@ export default class DashboardAdminAcercaDe extends Component {
   }
 
   listarInformacion() {
-    const url = 'https://api-happlab.herokuapp.com/seccion/';
+    const url = 'http://localhost:8080/seccion/';
     const mensajeError = 'No hay informacion en acerca de';
     const datos = PeticionGet(url, mensajeError);
     datos.then(data => {
@@ -30,33 +30,36 @@ export default class DashboardAdminAcercaDe extends Component {
   }
 
   editar(entrada, indice) {
-    console.log("Entro a editar acerca de");
-    console.log("Indice", indice);
     this.setState({posicion : indice});
-    console.log(this.state.posicion);
     document.getElementById('inputTitulo').value = entrada.titulo_seccion;
-    document.getElementById('inputURL').value = entrada.url;
-    document.getElementById('inputContenido').value = entrada.nombre_contenido;
     document.getElementById('inputDescripcion').value = entrada.descripcion;
-    if (entrada.coordenadas !== null) {
-      document.getElementById('inputLongitud').value = entrada.coordenadas[0];
-      document.getElementById('inputLatitud').value = entrada.coordenadas[1];
-    } else {
-      document.getElementById('inputLongitud').value = ' ';
-      document.getElementById('inputLatitud').value = ' ';
-    }
   }
 
   funcioneditar(titulo, url_seccion, contenido, descripcion, longitud, latitud) {
     const dataform = new FormData();
     dataform.append('id', this.state.inicio[this.state.posicion].id);
     dataform.append('titulo_seccion', titulo);
-    dataform.append('url', url_seccion);
-    dataform.append('nombre_contenido', contenido);
     dataform.append('descripcion', descripcion);
-    dataform.append('coordenadas', [longitud, latitud]);
+    if(contenido!==null && url_seccion!==null ){
+      dataform.append('url', url_seccion);
+      if(contenido!==undefined){
+        dataform.append('contenido', contenido);
+      }else{
+        dataform.append('contenido', new File([''],''));
+      }
+    }else{
+      dataform.append('url', '');
+      dataform.append('contenido', new File([''],''));
+    }
+    if(longitud!==null && latitud!==null){
+      dataform.append('coordenadas', [longitud, latitud]);
+    }else{
+      dataform.append('coordenadas', [0, 0]);
+    }
+    
+    
 
-    const url = 'https://api-happlab.herokuapp.com/seccion/update/' + this.state.inicio[this.state.posicion].id;
+    const url = 'http://localhost:8080/seccion/update/' + this.state.inicio[this.state.posicion].id;
     const mensajeError = 'No fue posible agregar informacion';
     const metodo = 'PUT';
     if(this.state.posicion!==-1){
@@ -144,50 +147,75 @@ export default class DashboardAdminAcercaDe extends Component {
                   </div>
                 </div>
                 <div className='card-body'>
-                  <form onSubmit={ev => {
-                    ev.preventDefault();
-                    const titulo = ev.target.titulo_seccion.value;
-                    const url = ev.target.url_seccion.value;
-                    const contenido = ev.target.nombre_contenido.files[0];
-                    const descripcion = ev.target.descripcion.value;
-                    const longitud = ev.target.longitud.value;
-                    const latitud = ev.target.latitud.value;
-                    this.funcioneditar(titulo, url, contenido, descripcion, longitud, latitud);
-                  }}>
-                    <div className="card-body">
-                      <div className="form-group">
-                        <label htmlFor="inputTitulo">Titulo</label>
-                        <input name='titulo_seccion' type="text" id="inputTitulo" className="form-control" autoComplete='off' defaultValue="" required/>
-                      </div>
-                      <div className="form-group">
-                        <label htmlFor="inputContenido">Imagen</label>
-                        <input type='file' name='nombre_contenido' id="inputContenido" className="form-control" autoComplete="off" defaultValue="" required />
-                      </div>
-                      <div className="form-group">
-                        <label htmlFor="inputURL">URL</label>
-                        <input name='url_seccion' type="text" id="inputURL" className="form-control" autoComplete='off' defaultValue="" required  />
-                      </div>
-                      <div className="form-group">
-                        <label htmlFor="inputDescripcion">Descripción</label>
-                        <textarea name='descripcion' id="inputDescripcion" className="form-control" rows={4} autoComplete="off" defaultValue="" required/>
-                      </div>
-                      <div className="form-group">
-                        <label htmlFor="labelCoordenada">Coordenada</label>
-                      </div>
-                      <div className="form-group">
-                        <label htmlFor="inputLongitud">Latitud</label>
-                        <input name='longitud' type="text" id="inputLatitud" className="form-control" autoComplete="off" defaultValue="" required/>
-                      </div>
-                      <div className="form-group">
-                        <label htmlFor="inputLatitud">Longitud</label>
-                        <input name='latitud' type="text" id="inputLongitud" className="form-control" autoComplete="off" defaultValue="" required/>
-                      </div>
-                      <div className="card-footer">
-                        <button type='submit' className="btn btn-primary">Editar contenido</button>
-                        <p> </p>
-                      </div>
-                    </div>
-                  </form>
+                  {this.state.posicion!==-1 ?
+                      <form  onSubmit={ev => {
+                        ev.preventDefault();
+                        const titulo = ev.target.titulo_seccion.value;
+                        const descripcion = ev.target.descripcion.value;
+                        var url=null;
+                        var contenido=null;
+                        var longitud=null;
+                        var latitud=null;
+                        if(this.state.posicion===2){
+                          url = ev.target.url_seccion.value;
+                          contenido = ev.target.nombre_contenido.files[0];
+                        }
+                        if(this.state.posicion===3){
+                          longitud = ev.target.longitud.value;
+                          latitud = ev.target.latitud.value;
+                        }
+                        
+                        this.funcioneditar(titulo, url, contenido, descripcion, longitud, latitud);
+                      }}>
+                        <div className="card-body">
+                          <div className="form-group">
+                            <label htmlFor="inputTitulo">Titulo</label>
+                            <input name='titulo_seccion' type="text" id="inputTitulo" className="form-control" autoComplete='off' defaultValue={this.state.inicio[this.state.posicion].titulo_seccion} required/>
+                          </div>
+                          {this.state.posicion===2 ?
+                          <div>
+                            <div className="form-group">
+                              <label htmlFor="inputContenido">Imagen</label>
+                              <input type='file' name='nombre_contenido' id="inputContenido" className="form-control" autoComplete="off" defaultValue=""  />
+                            </div>
+                            <div className="form-group">
+                              <label htmlFor="inputURL">URL</label>
+                              <input name='url_seccion' type="text" id="inputURL" className="form-control" autoComplete='off' defaultValue={this.state.inicio[this.state.posicion].url} required  />
+                            </div>
+                            </div>
+                          : null
+                          }
+                          <div className="form-group">
+                            <label htmlFor="inputDescripcion">Descripción</label>
+                            <textarea name='descripcion' id="inputDescripcion" className="form-control" rows={4} autoComplete="off" defaultValue={this.state.inicio[this.state.posicion].descripcion} required/>
+                          </div>
+                          
+                          {this.state.posicion===3 ?
+                            <div>
+                              <div className="form-group">
+                                <label htmlFor="labelCoordenada">Coordenada</label>
+                              </div>
+                              <div className="form-group">
+                                <label htmlFor="inputLongitud">Latitud</label>
+                                <input name='longitud' type="text" id="inputLatitud" className="form-control" autoComplete="off" defaultValue={this.state.inicio[this.state.posicion].coordenadas[0]} required/>
+                              </div>
+                              <div className="form-group">
+                                <label htmlFor="inputLatitud">Longitud</label>
+                                <input name='latitud' type="text" id="inputLongitud" className="form-control" autoComplete="off" defaultValue={this.state.inicio[this.state.posicion].coordenadas[1]} required/>
+                              </div>
+                              
+                            </div>
+                            : null
+                          }
+                        </div>
+                        <div className="card-footer">
+                          <button type='submit' className="btn btn-primary">Editar contenido</button>
+                          <p> </p>
+                        </div>
+                      </form>
+                      : null
+                      }
+                  
                 </div>
               </div>
             </div>

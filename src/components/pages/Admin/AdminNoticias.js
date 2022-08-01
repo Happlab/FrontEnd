@@ -7,7 +7,7 @@ export default class AdminNoticias extends Component {
     return (
       <div>
         <Header/>
-        <Menu/>
+        <Menu opcion="noticia"/>
         <DashboardAdmNoticias/>
       </div>
     )

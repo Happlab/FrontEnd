@@ -8,7 +8,7 @@ export default class AdminContenido extends Component {
     return (
         <div>
             <Header/>
-            <Menu/>
+            <Menu opcion="contenido"/>
             <DashboardAdminContenido/>
         </div>
     )

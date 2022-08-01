@@ -19,7 +19,7 @@ export default class DashboardAdminInicio extends Component {
   }
 
   listarInformacion() {
-    const url = 'https://api-happlab.herokuapp.com/seccion/';
+    const url = 'http://localhost:8080/seccion/';
     const mensajeError = 'No hay informacion de inicio';
     const datos = PeticionGet(url, mensajeError);
     datos.then(data => {
@@ -32,22 +32,7 @@ export default class DashboardAdminInicio extends Component {
   }
 
   editar(entrada, indice) {
-    console.log("Entro a editar inicio");
-    console.log("Indice", indice);
     this.setState({posicion : indice});
-    console.log(this.state.posicion);
-    document.getElementById('inputTitulo').value = entrada.titulo_seccion;
-    document.getElementById('inputURL').value = entrada.url;
-    document.getElementById('inputContenido').value = entrada.nombre_contenido;
-    document.getElementById('inputDescripcion').value = entrada.descripcion;
-    if (entrada.coordenadas !== null) {
-      document.getElementById('inputLongitud').value = entrada.coordenadas[0];
-      document.getElementById('inputLatitud').value = entrada.coordenadas[1];
-    } else {
-      document.getElementById('inputLongitud').value = ' ';
-      document.getElementById('inputLatitud').value = ' ';
-    }
-
   }
 
   funcioneditar(titulo, url_seccion, contenido, descripcion, longitud, latitud) {
@@ -55,11 +40,15 @@ export default class DashboardAdminInicio extends Component {
     dataform.append('id', this.state.inicio[this.state.posicion].id);
     dataform.append('titulo_seccion', titulo);
     dataform.append('url', url_seccion);
-    dataform.append('nombre_contenido', contenido);
+    if(contenido===undefined){
+      dataform.append('contenido', new File([''],''));
+    }else{
+      dataform.append('contenido', contenido);
+    }
     dataform.append('descripcion', descripcion);
-    dataform.append('coordenadas', [' ', ' ']);
+    dataform.append('coordenadas', [0, 0]);
 
-    const url = 'https://api-happlab.herokuapp.com/seccion/update/' + this.state.inicio[this.state.posicion].id;
+    const url = 'http://localhost:8080/seccion/update/' + this.state.inicio[this.state.posicion].id;
     const mensajeError = 'No fue posible agregar informacion';
     const metodo = 'PUT';
     if(this.state.posicion!==-1){
@@ -148,30 +137,31 @@ export default class DashboardAdminInicio extends Component {
                   </div>
                 </div>
                 <div className='card-body'>
+                  {(this.state.posicion===0) ?
                   <form onSubmit={ev => {
                     ev.preventDefault();
                     const titulo = ev.target.titulo_seccion.value;
                     const url = ev.target.url_seccion.value;
-                    const contenido = ev.target.nombre_contenido.value;
+                    const contenido = ev.target.nombre_contenido.files[0];
                     const descripcion = ev.target.descripcion.value;
                     this.funcioneditar(titulo, url, contenido, descripcion);
                   }}>
                     <div className="card-body">
                       <div className="form-group">
                         <label htmlFor="inputTitulo">Titulo</label>
-                        <input name='titulo_seccion' type="text" id="inputTitulo" className="form-control" autoComplete='off' defaultValue="" required/>
+                        <input name='titulo_seccion' type="text" id="inputTitulo" className="form-control" autoComplete='off' defaultValue={this.state.inicio[this.state.posicion].titulo_seccion} required/>
                       </div>
                       <div className="form-group">
                         <label htmlFor="inputURL">URL</label>
-                        <input name='url_seccion' type="text" id="inputURL" className="form-control" autoComplete='off' defaultValue="" required/>
+                        <input name='url_seccion' type="text" id="inputURL" className="form-control" autoComplete='off' defaultValue={this.state.inicio[this.state.posicion].url} required/>
                       </div>
                       <div className="form-group">
                         <label htmlFor="inputContenido">Nombre contenido</label>
-                        <textarea name='nombre_contenido' id="inputContenido" className="form-control" autoComplete="off" defaultValue="" required/>
+                        <input name='nombre_contenido' type='file' id="inputContenido" className="form-control" autoComplete="off" />
                       </div>
                       <div className="form-group">
                         <label htmlFor="inputDescripcion">Descripción</label>
-                        <textarea name='descripcion' id="inputDescripcion" className="form-control" rows={4} autoComplete="off" defaultValue="" required/>
+                        <textarea name='descripcion' id="inputDescripcion" className="form-control" rows={4} autoComplete="off" defaultValue={this.state.inicio[this.state.posicion].descripcion} required/>
                       </div>
                       <div className="card-footer">
                         <button type='submit' className="btn btn-primary">Editar contenido</button>
@@ -179,6 +169,43 @@ export default class DashboardAdminInicio extends Component {
                       </div>
                     </div>
                   </form>
+                  : null
+                  }
+
+                  {(this.state.posicion===1) ?
+                  <form onSubmit={ev => {
+                    ev.preventDefault();
+                    const titulo = ev.target.titulo_seccion.value;
+                    const url = ev.target.url_seccion.value;
+                    const contenido = ev.target.nombre_contenido.files[0];
+                    const descripcion = ev.target.descripcion.value;
+                    this.funcioneditar(titulo, url, contenido, descripcion);
+                  }}>
+                    <div className="card-body">
+                      <div className="form-group">
+                        <label htmlFor="inputTitulo">Titulo</label>
+                        <input name='titulo_seccion' type="text" id="inputTitulo" className="form-control" autoComplete='off' defaultValue={this.state.inicio[this.state.posicion].titulo_seccion} required/>
+                      </div>
+                      <div className="form-group">
+                        <label htmlFor="inputURL">URL</label>
+                        <input name='url_seccion' type="text" id="inputURL" className="form-control" autoComplete='off' defaultValue={this.state.inicio[this.state.posicion].url} required/>
+                      </div>
+                      <div className="form-group">
+                        <label htmlFor="inputContenido">Nombre contenido</label>
+                        <input name='nombre_contenido' type='file' id="inputContenido" className="form-control" autoComplete="off" />
+                      </div>
+                      <div className="form-group">
+                        <label htmlFor="inputDescripcion">Descripción</label>
+                        <textarea name='descripcion' id="inputDescripcion" className="form-control" rows={4} autoComplete="off" defaultValue={this.state.inicio[this.state.posicion].descripcion} required/>
+                      </div>
+                      <div className="card-footer">
+                        <button type='submit' className="btn btn-primary">Editar contenido</button>
+                        <p> </p>
+                      </div>
+                    </div>
+                  </form>
+                  : null
+                  }
                 </div>
               </div>
             </div>

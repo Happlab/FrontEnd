@@ -7,7 +7,7 @@ export default class AdminInicio extends Component {
     return (
       <div>
         <Header/>
-        <Menu/>
+        <Menu opcion="inicio"/>
         <DashboardAdmInicio/>
       </div>
     )
