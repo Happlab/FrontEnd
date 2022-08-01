@@ -51,6 +51,7 @@ $tam-2: 100px;
     @include formacion_texto($tam,$posicion-izq);
     margin-top: 3%;
     margin-left: 18%;
+    text-align: justify;
 }
 
 .columna-inicio-video{
@@ -63,6 +64,7 @@ $tam-2: 100px;
 .title-dest{
     margin-left: 18%;
     color: $colr-titulos;
+    text-align: justify;
 }
 
 .carousel{

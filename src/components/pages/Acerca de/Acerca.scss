@@ -66,7 +66,7 @@ $color-text: rgb(255, 255, 255);
 
 .col-map{
     @include formacion_imagen($tam,$posicion-izq);
-    padding: 3% 0 0 11.5%;
+    padding: 3% 0 4% 11.5%;
 }
 
 .col-text{

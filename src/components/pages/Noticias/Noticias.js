@@ -58,6 +58,7 @@ class Noticias extends React.Component {
         const MostrarNoticias=(props)=>{
             const arrayContendor=[];
             for (let i = 0; i < this.state.arrayNoticias.length; i++) {
+                if(this.state.arrayNoticias[i].visible){
                 arrayContendor.push(
                         <ContenidoNoticias 
                             titulo={this.state.arrayNoticias[i].titulo_noticia}
@@ -65,6 +66,7 @@ class Noticias extends React.Component {
                             LinkPage={this.state.arrayNoticias[i].url_noticia}
                         />
                     )
+                }
             }
             return(
                 arrayContendor 

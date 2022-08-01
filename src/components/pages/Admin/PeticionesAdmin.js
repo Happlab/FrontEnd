@@ -58,7 +58,6 @@ export function PeticionEnvioDataFrom(objetoAModificar, url, mensajeError, metod
         mode: 'cors',
         headers: {
             'Access-Control-Allow-Origin': '*',
-
         },
         body: objetoAModificar
     }

@@ -43,6 +43,7 @@ export default class Dashboard extends Component {
     Actualizar(user){
         user.pendiente=false;
         user.activo=true;
+        user.tipoDocente='Universitario';
         const url=this.urlServicio+'update';
         const mensajeError='no fue posible actualizar estado del usuario';
         const metodo='PUT';
@@ -161,7 +162,6 @@ export default class Dashboard extends Component {
                                                         </td>
                                                     </tr>
                                                     )}
-
                                                 })}
                                                 </tbody>
                                             </table>

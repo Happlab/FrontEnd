@@ -33,7 +33,10 @@ $color-tittle: black;
         }
     }
 }
-
+.busqueda{
+    margin-left: 5px;
+    margin-right: 5px;
+}
 .sec-filtros{
     margin-left: 5px;
     margin-right: 5px;
@@ -95,7 +98,6 @@ $color-tittle: black;
         text-align: center;
         padding: 10px;
         width: 50%;
-        min-width: 300px;
     }
 }
 @media (min-width: 992px){
@@ -156,3 +158,10 @@ $color-tittle: black;
 .Modal-Title{
     background-color: #1E86C0;
 }
+
+.btn-Descarga{
+    position: absolute;
+    top: -50px;
+    right: 16px;
+}
+

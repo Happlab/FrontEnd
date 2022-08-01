@@ -148,7 +148,7 @@ export default class DashboardAdminContenido extends Component {
                                                         <td>{this.state.contenidos[i].id_autor.email}</td>
                                                         <div className="btn-group btn-group-sm">
                                                             <a href="#" className="btn btn-info"><i className="fas fa-eye" /></a>
-                                                            <button type="button" onClick={()=>this.Descargar(this.state.contenidos[i].contenido_link)} className="btn btn-primary float-right" style={{ marginRight: 5 }}>
+                                                            <button type="button" onClick={()=>this.Descargar(this.state.contenidos[i].link)} className="btn btn-primary float-right" style={{ marginRight: 5 }}>
                                                                 <i className="fas fa-download" /> Descargar
                                                             </button>
                                                         </div>

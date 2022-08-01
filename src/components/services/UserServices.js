@@ -23,6 +23,7 @@ const getToken = () => {
 
 const deleteToken = () => {
     localStorage.removeItem(key);
+    return window.sessionStorage.getItem("Token");
 }
 
 const disabledUser = async (email) => {

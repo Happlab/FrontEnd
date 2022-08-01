@@ -6,19 +6,19 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFacebookSquare, faInstagram, faLinkedin, faTwitter } from '@fortawesome/free-brands-svg-icons';
 
 const redireccionF = () => {
-    window.open('https://www.facebook.com/JuanCMesa1293', '_blank');
+    window.open('https://www.facebook.com/AInteligentePop', '_blank');
   }
 
 const redireccionT = () => {
-    window.open('https://twitter.com/JuanCMesa1', '_blank');
+    window.open('https://twitter.com/jorgeadrianmu', '_blank');
   }
 
 const redireccionI = () => {
-    window.open('https://www.instagram.com/juanmesa129311/', '_blank');
+    window.open('https://www.instagram.com/explore/tags/happlab/?hl=es', '_blank');
   }
 
 const redireccionL = () => {
-    window.open('https://www.linkedin.com/in/juan-carlos-mesa-ceballos-a90308231/', '_blank');
+    window.open('https://www.linkedin.com/company/happlabs/about/', '_blank');
   }
 
 const redireccionUni = () => {
@@ -37,10 +37,10 @@ const Footer = () => {
                     {/* Redes sociales */}
                     <div className='pos1'>
                         <h4>¡Aqui puedes encontar nuestras redes sociales!</h4>
-                        <FontAwesomeIcon className="icons" icon={faFacebookSquare} size='2x' onClick={redireccionF} fixedWidth/>
-                        <FontAwesomeIcon className="icons" icon={faTwitter} size='2x' onClick={redireccionT} fixedWidth />
-                        <FontAwesomeIcon className="icons" icon={faInstagram} size='2x' onClick={redireccionI} fixedWidth />
-                        <FontAwesomeIcon className="icons" icon={faLinkedin} size='2x' onClick={redireccionL} fixedWidth />
+                        <FontAwesomeIcon className="icons" icon={faFacebookSquare} size='3x' onClick={redireccionF} fixedWidth/>
+                        <FontAwesomeIcon className="icons" icon={faTwitter} size='3x' onClick={redireccionT} fixedWidth />
+                        <FontAwesomeIcon className="icons" icon={faInstagram} size='3x' onClick={redireccionI} fixedWidth />
+                        <FontAwesomeIcon className="icons" icon={faLinkedin} size='3x' onClick={redireccionL} fixedWidth />
                     </div>
                     {/* Escudo */}
                     <div className='pos2'>

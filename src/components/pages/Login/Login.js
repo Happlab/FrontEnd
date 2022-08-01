@@ -46,13 +46,14 @@ class Login extends React.Component {
 	handleSubmit(event) {
 		event.preventDefault();
 		let data_user = null;
-		let token = null;
 		let login = user_service.onLogin(this.state.email, this.state.password);
+		let token = null;
 		login.then(data => {
 			if(data !== null) {
-				user_service.setToken(data, this);
-				console.log("tokenlogin "+ user_service.getToken());
-				data_user = user_service.getDataToken(user_service.getToken());
+				user_service.setToken(data);
+				token = user_service.getToken();
+				console.log("token login:"+token);
+				data_user = user_service.getDataToken(token);
 				this.setState(values => ({ ...values, valid_user: true, data_user: data_user, token: token }));
 			} 
 			else alert("El correo o la contraseña son incorrectas");
@@ -64,6 +65,7 @@ class Login extends React.Component {
 	onRoute() {
 		let data = this.state.data_user;
 		let index = 0
+		// alert("rol: "+data.rol[index]+" nombres: "+data.nombres+" token: "+this.state.token);
 		if(data.rol[index] === "ADMIN") return <Navigate to="/adminInicio" state={{ data }} />
 		else if (data.rol[index] === "USER") return <Navigate to='/perfil' state={{ data }} />
 	}
