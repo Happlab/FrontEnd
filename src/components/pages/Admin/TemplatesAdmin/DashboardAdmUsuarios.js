@@ -1,8 +1,7 @@
-import Modal from 'react-bootstrap/Modal';
-import React, { Component , useState} from 'react'
+import React, { Component} from 'react'
 import {PeticionEnvio, PeticionGet} from '../PeticionesAdmin.js'
 import Notificacion from './modal.js'
-import { Button } from 'react-bootstrap';
+
 export default class Dashboard extends Component {
     constructor (props){
         super();
@@ -13,7 +12,6 @@ export default class Dashboard extends Component {
             tituloNotificacion: "",
             mensajeNotificacion: ""
         }
-        var conteo=0;
         this.Actualizar=this.Actualizar.bind(this);
         this.Aceptar=this.Aceptar.bind(this);
         this.Eliminar=this.Eliminar.bind(this);

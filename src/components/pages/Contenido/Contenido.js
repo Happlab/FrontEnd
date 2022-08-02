@@ -10,7 +10,8 @@ import Rating from 'react-rating'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import Modal from 'react-bootstrap/Modal';
-
+import NotificacionContenido from '../../navegation/modal_contenido/modal_contenido'
+import Notificacion from '../Admin/TemplatesAdmin/modal'
 
 class Contenido extends React.Component{
     constructor(props){
@@ -28,9 +29,12 @@ class Contenido extends React.Component{
             "tags":""
             },
             comentarios:[],
-            
-
-            comentario:""
+            notificacion: false,
+            notificacionContenido: false,
+            tituloNotificacion: "",
+            mensajeNotificacion: "",
+            comentario:"",
+            link:""
         }
         this.handleClickSubirContenido=this.handleClickSubirContenido.bind(this);
         this.descarga=this.descarga.bind(this);
@@ -40,8 +44,12 @@ class Contenido extends React.Component{
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.subirContenido = this.subirContenido.bind(this);
-
+        this.cancelar = this.cancelar.bind(this);
+        this.aceptar = this.aceptar.bind(this);
     }
+
+    peticion=0;
+
     handleClickSubirContenido(){
         this.setState({estadoSubirContenido: !this.state.estadoSubirContenido});
     }
@@ -92,15 +100,14 @@ class Contenido extends React.Component{
     }
 
     subirContenido(){
+        this.peticion=1;
         var formdata = new FormData();
-        formdata.append("email_autor", "jfsilva@unicauca.edu.co");
+        formdata.append("email_autor", "andrescd@hotmail");
         formdata.append("titulo", document.getElementById("idTitulo").value);
         formdata.append("archivo", document.getElementById("idFile").files[0]);
         formdata.append("resumen", document.getElementById("idResumen").value);
         formdata.append("autores", document.getElementById("idAutores").value);
         formdata.append("tags", document.getElementById("idTags").value);
-        
-
         var requestOptions = {
         method: 'POST',
         mode: 'cors',
@@ -109,15 +116,20 @@ class Contenido extends React.Component{
         },
         body: formdata,
         };
-
         fetch("http://localhost:8080/contenido/create", requestOptions)
-        .then(response => response.text())
-        .then(result => console.log(result))
-        .catch(error => console.log('error', error));
+        .then(data =>{
+            if(data){
+                this.setState({notificacionContenido: true, tituloNotificacion: "Contenido", mensajeNotificacion:"Contenido subido exitosamente"});
+            }else{
+                this.setState({notificacionContenido: true, tituloNotificacion: "Contenido", mensajeNotificacion:"No se pudo subir el contenido"});
+            }
+        })
     }
 
     descarga(contenido_link){
-        window.location.href='http://localhost:8080/contenido/download/'+contenido_link;
+        this.peticion=0;
+        this.setState({notificacion: true, tituloNotificacion: "Descarga de contenido", mensajeNotificacion:"¿Esta seguro que desea usar un credito para descargar este contenido?"});
+        this.setState({link: contenido_link})
     }
 
     componentDidMount(){
@@ -131,9 +143,27 @@ class Contenido extends React.Component{
         });
     }
 
+    aceptar(){     
+        if(this.peticion===0){
+            window.location.href='http://localhost:8080/contenido/download/'+this.state.link;
+            this.setState({link: ""})
+            this.setState({notificacion: false})
+        }
+        else if(this.peticion === 1){
+            this.setState({estadoSubirContenido: !this.state.estadoSubirContenido});
+            this.setState({notificacionContenido:false})
+            this.listarContenido();
+        }
+    }
+
+    cancelar(){
+        this.setState({notificacion: false});
+        this.setState({link: ""})
+    }
+
     handleSubmit() {
         const comentarioUsuario = {
-            "email_persona": "jfsilva@unicauca.edu.co",
+            "email_persona": "andrescd@hotmail",
             "valoracion": this.valoracion_usuario,
             "comentario": this.state.comentario
           }
@@ -151,10 +181,11 @@ class Contenido extends React.Component{
         return fetch(url, requestOptions)
             .then(response => {
                 console.log("Response", response)
-                if (response.status === 200) return true
+                if (response.status === 200){
+                    this.setState({notificacion: true, tituloNotificacion: "Comentario", mensajeNotificacion:"Comentario subido exitosamente"});
+                }
                 else{
-                    alert("Comentario no subido");
-                    return false;
+                    this.setState({notificacion: true, tituloNotificacion: "Comentario", mensajeNotificacion:"No se pudo subir el comentario"});
                 } 
                 
             })
@@ -264,6 +295,8 @@ class Contenido extends React.Component{
         return(
             <div className='main-contenido'>
                 <Navbar1/>
+                <Notificacion show={this.state.notificacionContenido} titulo={this.state.tituloNotificacion} mensaje={this.state.mensajeNotificacion} onclick={this.aceptar}/>
+                <NotificacionContenido show={this.state.notificacion} titulo={this.state.tituloNotificacion} mensaje={this.state.mensajeNotificacion} onclick={this.aceptar} cancelar={this.cancelar}/>
                 <section className='titulo'>
                     <div className='contenedor-titulo'>
                         <div className='forma' data-negative='false'>
