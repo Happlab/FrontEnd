@@ -63,6 +63,8 @@ class Contenido extends React.Component{
     PeticionGet(url, mensajeError) {
         let status = 0;
         let content;
+        let contenido;
+        let contenidoNoPendiente=[];
         const request_options = {
             method: 'GET',
             mode: 'cors',
@@ -79,7 +81,14 @@ class Contenido extends React.Component{
             })
             .then(data => { 
                 if( status === 200 && data !== "" ){
-                    return data;
+                    contenido = Array.from(data);
+                    for(let i=0;i<contenido.length;i++){
+                        if(!contenido[i].pendiente){
+                            contenidoNoPendiente[i] = contenido[i];
+                        }
+                    }
+                    return contenidoNoPendiente;
+                    
                 }else{
                     alert(mensajeError);
                     return null;
@@ -154,14 +163,25 @@ class Contenido extends React.Component{
             this.setState({notificacionContenido:false})
             this.listarContenido();
         }
+        else{
+            this.setState({notificacionContenido: false})
+            this.listarContenido();
+        }
     }
 
     cancelar(){
-        this.setState({notificacion: false});
-        this.setState({link: ""})
+        if(this.peticion===0){
+            this.setState({notificacion: false});
+            this.setState({link: ""})
+        }
+        else{
+            this.setState({notificacionContenido:false})
+        }
+        
     }
 
     handleSubmit() {
+        this.peticion=2;
         const comentarioUsuario = {
             "email_persona": "andrescd@hotmail",
             "valoracion": this.valoracion_usuario,
@@ -182,10 +202,10 @@ class Contenido extends React.Component{
             .then(response => {
                 console.log("Response", response)
                 if (response.status === 200){
-                    this.setState({notificacion: true, tituloNotificacion: "Comentario", mensajeNotificacion:"Comentario subido exitosamente"});
+                    this.setState({notificacionContenido: true, tituloNotificacion: "Comentario", mensajeNotificacion:"Comentario subido exitosamente"});
                 }
                 else{
-                    this.setState({notificacion: true, tituloNotificacion: "Comentario", mensajeNotificacion:"No se pudo subir el comentario"});
+                    this.setState({notificacionContenido: true, tituloNotificacion: "Comentario", mensajeNotificacion:"No se pudo subir el comentario"});
                 } 
                 
             })
@@ -202,7 +222,7 @@ class Contenido extends React.Component{
             resumen:resumen,
             tag:tags
         });
-
+        this.valoracion_usuario=0;
       }
     
       handleClickEstadoFalse(){
@@ -218,6 +238,7 @@ class Contenido extends React.Component{
             const array2=[];
             if(!this.state.estadoSubirContenido){ 
                         //aqui va el contenido
+                    
                         for(let i=0;i<this.state.arrayContenidos.length;i++){
                             array2[i]=
                             <div>
@@ -241,15 +262,15 @@ class Contenido extends React.Component{
                                                     this.state.arrayContenidos[i].tags
                                                     )}
                                                 >
-                                                Editar
+                                                Ver mas
                                                 </Button>{" "}
                                             </Card>     
                                     </Col> 
                             </div>
-                } 
-                return(
-                    array2
-                )
+                      }
+                    return(
+                        array2
+                    )
             }else{
                 return null;
             }
@@ -350,7 +371,6 @@ class Contenido extends React.Component{
                 <Row xs={3}>
                       <MostrarContenido/>
                 </Row>
-                
                 <Modal show={this.state.estadoTrigger} size="lg" aria-labelledby="example-modal-sizes-title-lg" animation={false}>
                 <Modal.Title id="example-modal-sizes-title-lg" className='Modal-Title'> 
                 <h3 className='titulo-Modal'>{this.state.titulo} </h3> 
@@ -362,7 +382,7 @@ class Contenido extends React.Component{
                 <Button variant="info" className='btn-Descarga'  onClick={()=>this.descarga(this.state.arrayContenidos[this.state.posSeleccionado].link)}>Descarga</Button>
                 <p>{this.state.tag}</p>
                 <p> Dejanos tu Comentario</p>
-                <p className='estrellitas'> <Rating initialRating={0} fractions={2}  emptySymbol="far fa-star fa-2x" fullSymbol="fas fa-star fa-2x" onChange={(rate) => this.CambiarRate(rate)}/> </p>
+                <p className='estrellitas'> <Rating initialRating={this.valoracion_usuario} fractions={2}  emptySymbol="far fa-star fa-2x" fullSymbol="fas fa-star fa-2x" onChange={(rate) => this.CambiarRate(rate)}/> </p>
                 <p> <input type="text" name="comentario" onChange={this.handleChange} required/> </p>
                 <Button variant="dark" className='btn-Subir'onClick={this.handleSubmit}>
                     Subir
