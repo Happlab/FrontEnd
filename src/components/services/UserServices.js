@@ -2,24 +2,28 @@ import jwtDecode from "jwt-decode";
 
 let status = 0;
 let request_options = {};
-const base_url = "http://localhost:8080";
 let token = null;
+const base_url = "http://localhost:8080";
+const key = "token";
 
 const getDataToken = inputToken => {
-    return jwtDecode(inputToken);
+    let data = jwtDecode(inputToken);
+    return data;
 }
 
-const setToken = newtoken => {
-    window.sessionStorage.setItem("Token", newtoken);
+const setToken = (newtoken, context) => {
+    window.localStorage.setItem(key, newtoken);
+    // context.close();
     token = `Bearer ${newtoken}`;
 }
 
 const getToken = () => {
-    return window.sessionStorage.getItem("Token");
+    return localStorage.getItem(key);
 }
 
 const deleteToken = () => {
-    window.sessionStorage.removeItem("Token");
+    localStorage.removeItem(key);
+    return window.sessionStorage.getItem("Token");
 }
 
 const disabledUser = async (email) => {
@@ -76,4 +80,5 @@ const onLogin = async (email, password) => {
 		.catch(error => console.log("Error en el login", error))
 }
 
+// eslint-disable-next-line import/no-anonymous-default-export
 export default { onLogin, updateUser, disabledUser, setToken, getToken, getDataToken, deleteToken };

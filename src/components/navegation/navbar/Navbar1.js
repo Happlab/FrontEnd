@@ -78,6 +78,8 @@ const RenderBtnClose = () => {
 
 
 const Navbar1 = () => {
+  let token = localStorage.getItem("token");
+  console.log("navbar "+token);
   return (
     <>
         <Navbar className="navBg" variant="dark" sticky='top' expand="lg">
@@ -86,16 +88,16 @@ const Navbar1 = () => {
             <Navbar.Toggle aria-controls="basic-navbar-nav" />
             <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="me-auto" justify={true}>
-              <Nav.Link as={Link} to="/">Inicio </Nav.Link>
-              <Nav.Link as={Link} to="/Noticias">Noticias </Nav.Link>
-              <Nav.Link as={Link} to="/Contenido">Contenidos </Nav.Link>
-              <Nav.Link as={Link} to="/CommigSoon">CommigSoon </Nav.Link>
-              <Nav.Link as={Link} to="/Acerca">Acerca de </Nav.Link>
+              <Nav.Link as={Link} to="/">Inicio</Nav.Link>
+              <Nav.Link as={Link} to="/AboutUs">Sobre Nosotros</Nav.Link>
+              <Nav.Link as={Link} to="/Noticias">Noticias</Nav.Link>
+              <Nav.Link as={Link} to="/Contenido">Contenidos</Nav.Link>
+              <Nav.Link as={Link} to="/Acerca">Acerca de</Nav.Link>
             </Nav>
-              {user_service.getToken() && (
+              {token !== null && (
                 <RenderCloseSesion></RenderCloseSesion>
               )}
-              {!user_service.getToken() && (
+              {token === null && (
                 <RenderSesion></RenderSesion>
               )}
         </Navbar.Collapse>
@@ -104,9 +106,9 @@ const Navbar1 = () => {
 
         <section>
           <div className='Logo'>
-            <img  className = "logo2"
-                              src = {logo} alt=""
-                          /> 
+            <img className = "logo2"
+                 src = {logo} alt=""
+            /> 
           </div>  
           <Outlet></Outlet>
         </section>

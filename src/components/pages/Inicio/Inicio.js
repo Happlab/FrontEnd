@@ -66,14 +66,14 @@ class Inicio extends React.Component {
               <Carousel.Item interval={1000}>
                 <img
                   className="images-carousel"
-                  src= {imagenes.imgUni} width={400} height={150}
+                  src= {imagenes.imgUni}
                   alt="First slide" 
                 />
               </Carousel.Item>
               <Carousel.Item interval={1000}>
                 <img
                   className="images-carousel"
-                  src= {imagenes.imgSam} width={400} height={150}
+                  src= {imagenes.imgSam} 
                   alt="Second slide"
                 />
 
@@ -81,7 +81,7 @@ class Inicio extends React.Component {
               <Carousel.Item interval={1000}>
                 <img
                   className="images-carousel"
-                  src={imagenes.imgAESS} width={400} height={150}
+                  src={imagenes.imgAESS} 
                   alt="Third slide"
                 />
               </Carousel.Item>

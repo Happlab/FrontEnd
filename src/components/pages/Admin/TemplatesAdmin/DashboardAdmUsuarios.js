@@ -193,7 +193,6 @@ export default class Dashboard extends Component {
                                                         </td>
                                                     </tr>
                                                     )}
-                                                    
                                                 })}
                                                 </tbody>
                                             </table>

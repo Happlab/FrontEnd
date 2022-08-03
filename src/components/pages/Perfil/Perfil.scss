@@ -1,11 +1,3 @@
-@import "/src/components/navegation/footer/mixins";
-
-$color-background: #1E86C0;
-$posicion-izq: left;
-$posicion-rig: right;
-$tam: 150px;
-$tam-2: 100px;
-
 .titulo-estandar{
     text-align: right;
     color: #011254;
@@ -14,54 +6,3 @@ $tam-2: 100px;
     margin: 1%;
 }
 
-.titulo-form{
-    text-align: center;
-    color: #000000;
-    font-size: 30px;
-    font-weight: bold;
-    margin: 1%;
-}
-
-.header-tarjeta{
-    background-color: #56bdf5;
-}
-
-.columna-acerca{
-    @include formacion_columnas($color-background);
-    margin: 1%;
-    border-radius: 35px 35px 35px 35px;
-    -moz-border-radius: 35px 35px 35px 35px;
-    -webkit-border-radius: 35px 35px 35px 35px;
-    border: 0px solid #000000;
-}
-
-.columna-acerca-text{
-    @include formacion_texto($tam,$posicion-izq);
-    margin-top: 3%;
-    margin-left: 20%;
-}
-
-.columna-acerca-video{
-    @include formacion_imagen($tam-2,$posicion-izq);
-    margin-left: 20%;
-    margin-right: 20%;
-    height: 300px;
-}
-
-.row-map{
-    @include formacion_columnas(#779C43);
-    margin: 1%;
-    border-radius: 35px 35px 35px 35px;
-    -moz-border-radius: 35px 35px 35px 35px;
-    -webkit-border-radius: 35px 35px 35px 35px;
-    border: 0px solid #000000;
-}
-
-.col-map{
-    margin: 5px;
-    height: 300px;
-}
-
-.leaflet-container{
-    height: 250px;
-}

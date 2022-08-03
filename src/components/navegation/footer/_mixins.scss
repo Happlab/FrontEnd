@@ -14,7 +14,7 @@
 @mixin formacion_texto($min_width, $position){
     text-align: $position;
     min-width: $min_width;
-    margin: 3%;
+    // margin: 3%;
 }
 
 @mixin formacion_imagen($min_width, $position){
