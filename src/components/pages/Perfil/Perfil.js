@@ -4,17 +4,21 @@ import Navbar1 from '../../navegation/navbar/Navbar1';
 import Footer from '../../navegation/footer/Footer';
 import './Perfil.scss'
 import user_service from '../../services/UserServices';
+import Notificacion from '../Admin/TemplatesAdmin/Modal';
 
 class Perfil extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            data_user: user_service.getDataToken(user_service.getToken()),
+            data_user: props.location.state.data,
             isPassword: false,
             isCargo: false,
             isStatus: false,
             cargo: "",
-            updateVerified: false
+            updateVerified: false,
+            notificacion: false,
+            tituloNotificacion: "",
+            mensajeNotificacion: ""
         };
         this.onChangedPassword = this.onChangedPassword.bind(this);
         this.onChangedCargo = this.onChangedCargo.bind(this);
@@ -23,6 +27,7 @@ class Perfil extends React.Component {
         this.onChangedUpdate = this.onChangedUpdate.bind(this);
         this.handleChange = this.handleChange.bind(this);
         this.saveChange = this.saveChange.bind(this);
+        this.handleClickCerrarModal=this.handleClickCerrarModal.bind(this);
     }
 
     onChangedPassword() {
@@ -50,15 +55,22 @@ class Perfil extends React.Component {
     }
 
     onChangedStatusAccount(email) {
-        this.setState(values => ({ ...values, isStatus: !this.state.isStatus}));
         let disable = user_service.disabledUser(email);
         disable.then(response => {
-            if(response === 200) {
+            if (response === 200) {
+                this.setState({
+                    notificacion: true, tituloNotificacion: "Perfil del usuario",
+                    mensajeNotificacion: "La cuenta ha sido desactivada exitosamente"
+                });
                 user_service.deleteToken();
-                alert("Cuenta Desactivada");
             }
-            else alert("No se pudo desactivar la cuenta");
-        });
+            else this.setState({
+                notificacion: true, tituloNotificacion: "Perfil del usuario",
+                mensajeNotificacion: "La cuenta no pudo ser desactivada"
+            });
+        }).finally(() => {
+            this.setState(values => ({ ...values, isStatus: !this.state.isStatus }));
+        })
     }
 
     handleChange(event) {
@@ -68,23 +80,34 @@ class Perfil extends React.Component {
     }
 
     saveChange(data) {
-        this.setState(values => ({ ...values, updateVerified: !this.state.updateVerified, isCargo: !this.state.isCargo}));
         let update = user_service.updateUser(data);
         update.then(data_user => {
             if (data_user !== null) {
-                this.setState(values => ({ ...values, data_user: data_user}));
+                //this.setState(values => ({ ...values, data_user: JSON.parse(data_user) }));
+                this.setState({
+                    notificacion: true, tituloNotificacion: "Perfil del usuario",
+                    mensajeNotificacion: "Cargo modificado exitosamente"
+                });
                 user_service.deleteToken();
-                alert("Cargo modificado");
-            } else alert("No se pudo modificar el cargo");
+
+            } else this.setState({
+                notificacion: true, tituloNotificacion: "Perfil del usuario",
+                mensajeNotificacion: "El cargo no pudo ser modificado"
+            });
         })
+    }
+
+    handleClickCerrarModal() {
+        this.setState({ notificacion: false });
     }
 
     render() {
         let data = this.state.data_user;
-        data.rol = (this.state.cargo !== "") ? this.state.cargo : data.rol;
-        // if (user_service.getToken() === null) return (<Navigate to="/Login" />)
+        console.log("DATA", data);
+        data.tipo_docente = (this.state.cargo !== "") ? this.state.cargo : data.tipo_docente;
         return (
             <div className="row">
+                <Notificacion show={this.state.notificacion} titulo={this.state.tituloNotificacion} mensaje={this.state.mensajeNotificacion} onclick={this.handleClickCerrarModal} />
                 {this.state.isPassword && (
                     data = JSON.stringify(data),
                     <Navigate to="/Password" state={{ data }} />
@@ -93,6 +116,7 @@ class Perfil extends React.Component {
                     this.onChangedStatusAccount(data.email)
                 )}
                 {this.state.updateVerified && (
+                    this.setState(values => ({ ...values, updateVerified: !this.state.updateVerified, isCargo : !this.state.isCargo})),
                     this.saveChange(data)
                 )}
                 <Navbar1 />
@@ -163,14 +187,6 @@ class Perfil extends React.Component {
                                             </div>
                                         </div>
                                         <hr />
-                                        <div className="row">
-                                            <div className="col-sm-4">
-                                                <p className="mb-0">Tokens</p>
-                                            </div>
-                                            <div className="col-sm-8">
-                                                <p className="text-muted mb-0">{data.tokens}</p>
-                                            </div>
-                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -181,7 +197,7 @@ class Perfil extends React.Component {
                                     <div className="card-body">
                                         <div class="d-flex justify-content-between align-items-center cargo"><h4>Cargo Actual</h4></div><br />
                                         <label for="selectCargo">Usted es docente de</label>
-                                        <select class="form-control" id="selectCargo" disabled={!this.state.isCargo} value={data.rol} onChange={this.handleChange}>
+                                        <select class="form-control" id="selectCargo" disabled={!this.state.isCargo} value={data.tipo_docente} onChange={this.handleChange}>
                                             <option value="Docente de Primaria">Primaria</option>
                                             <option value="Docente de Secundaria">Secundaria</option>
                                             <option value="Docente Universitario">Universidad</option>
@@ -203,7 +219,7 @@ class Perfil extends React.Component {
                             </div>
                         </div>
                     </div>
-                    <br/>
+                    <br />
                 </div>
                 <Footer />
             </div>
@@ -213,5 +229,5 @@ class Perfil extends React.Component {
 
 export default function WithRoutePerfil(props) {
     let location = useLocation();
-    return <Perfil {...props} location={location}/>
+    return <Perfil {...props} location={location} />
 }
