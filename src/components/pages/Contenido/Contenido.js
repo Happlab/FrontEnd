@@ -256,7 +256,7 @@ class Contenido extends React.Component{
                                                 onClick={() => this.handleClickEstadoTrue(i,
                                                     this.state.arrayContenidos[i].comentarios,
                                                     this.state.arrayContenidos[i].titulo,
-                                                    this.state.arrayContenidos[i].id_autor.nombres + this.state.arrayContenidos[i].id_autor.apellidos,
+                                                    this.state.arrayContenidos[i].id_autor.nombres + " " +this.state.arrayContenidos[i].id_autor.apellidos,
                                                     this.state.arrayContenidos[i].fecha_subida,
                                                     this.state.arrayContenidos[i].resumen,
                                                     this.state.arrayContenidos[i].tags
