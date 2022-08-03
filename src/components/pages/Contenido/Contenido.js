@@ -82,9 +82,13 @@ class Contenido extends React.Component{
             .then(data => { 
                 if( status === 200 && data !== "" ){
                     contenido = Array.from(data);
+                    let j=0;
                     for(let i=0;i<contenido.length;i++){
                         if(!contenido[i].pendiente){
-                            contenidoNoPendiente[i] = contenido[i];
+                            if(contenido[i].visible){ 
+                                contenidoNoPendiente[j] = contenido[i];
+                                j++;
+                            }
                         }
                     }
                     return contenidoNoPendiente;
