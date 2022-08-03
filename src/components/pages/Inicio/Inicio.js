@@ -6,6 +6,7 @@ import Navbar1 from '../../navegation/navbar/Navbar1'
 import Footer from '../../navegation/footer/Footer'
 import { Carousel } from 'react-bootstrap'
 import {PeticionGet} from '../Admin/PeticionesAdmin'
+import Cookie from 'universal-cookie'
 
 class Inicio extends React.Component {
   constructor(props){
@@ -15,8 +16,9 @@ class Inicio extends React.Component {
     }
   }
   urlServicio='http://localhost:8080/seccion/';
-
+  cookie=new Cookie();
   componentDidMount(){
+    console.log('toooooken'+this.cookie.get('token'));
     this.ListarInicio();
   }
   ListarInicio(){

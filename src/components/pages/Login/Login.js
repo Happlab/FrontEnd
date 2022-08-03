@@ -6,6 +6,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {faEye,faEyeLowVision} from '@fortawesome/free-solid-svg-icons';
 import user_service from '../../services/UserServices';
 import { Navigate } from "react-router-dom";
+import Cookies from 'universal-cookie';
 
 class Login extends React.Component {
 	constructor(props) {
@@ -24,6 +25,7 @@ class Login extends React.Component {
 		this.onRoute =  this.onRoute.bind(this);
 	}
 
+	cookies= new Cookies();
 	handleChange(event) {
 		let name = event.target.name;
 		let value = event.target.value;
@@ -52,7 +54,7 @@ class Login extends React.Component {
 			if(data !== null) {
 				user_service.setToken(data);
 				token = user_service.getToken();
-				console.log("token login:"+token);
+				this.cookies.set('token', token, {path: '/'});
 				data_user = user_service.getDataToken(token);
 				this.setState(values => ({ ...values, valid_user: true, data_user: data_user, token: token }));
 			} 
