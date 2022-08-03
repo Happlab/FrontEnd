@@ -3,6 +3,7 @@ import { useLocation, Navigate } from 'react-router-dom';
 import Navbar1 from '../../navegation/navbar/Navbar1';
 import Footer from '../../navegation/footer/Footer';
 import user_service from '../../services/UserServices';
+import Notificacion from '../Admin/TemplatesAdmin/Modal';
 
 class Password extends React.Component {
     constructor(props) {
@@ -18,6 +19,7 @@ class Password extends React.Component {
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.onSendUpdateRequest = this.onSendUpdateRequest.bind(this);
+        this.handleClickCerrarModal = this.handleClickCerrarModal.bind(this);
     }
 
     handleChange(event) {
@@ -30,34 +32,55 @@ class Password extends React.Component {
 
     handleSubmit(event) {
         event.preventDefault();
-        if(this.state.inputPasswordNew === this.state.inputPasswordVerified) {
+        if (this.state.inputPasswordNew === this.state.inputPasswordVerified) {
             let email = JSON.parse(this.state.data_user).email;
             let passNew = user_service.onLogin(email, this.state.inputPasswordOld);
             passNew.then(data => {
-                    if(data !== null) this.setState(values => ({ ...values, userVerified: !this.state.userVerified }));
-                    else alert("La contraseña actual ingresada no es correcta");
-                })
+                if (data !== null) {
+                    this.setState(values => ({ ...values, userVerified: !this.state.userVerified }));
+                    this.setState({
+                        notificacion: true, tituloNotificacion: "Cambio de contraseña",
+                        mensajeNotificacion: "Contraseña cambiada exitosamente"
+                    });
+                } else alert("La contraseña actual ingresada no es correcta");
+            })
         } else alert("La contraseña nueva no coinciden, verifique nuevamente");
     }
 
-    onSendUpdateRequest(data){
+    onSendUpdateRequest(data) {
+        data = JSON.parse(data);
         data.password = this.state.inputPasswordNew;
         let update = user_service.updateUser(data);
         update.then(data => {
-                if(data !== null) this.setState(values => ({ ...values, updateVerified: !this.state.updateVerified, data_user: data}))
-            })
+            if (data !== null) {
+                this.setState(values => ({ ...values, updateVerified: !this.state.updateVerified, data_user: data }));
+                this.setState({
+                    notificacion: true, tituloNotificacion: "Cambio de contraseña",
+                    mensajeNotificacion: "Contraseña cambiada exitosamente"
+                });
+            } else this.setState({
+                notificacion: true, tituloNotificacion: "Cambio de contraseña",
+                mensajeNotificacion: "No se pudo cambiar la contraseña"
+            });
+        })
+    }
+
+    handleClickCerrarModal() {
+        this.setState({ notificacion: false });
     }
 
     render() {
         let data = this.state.data_user;
         return (
             <div className="row">
+                <Notificacion show={this.state.notificacion} titulo={this.state.tituloNotificacion} mensaje={this.state.mensajeNotificacion} onclick={this.handleClickCerrarModal} />
                 {this.state.userVerified && (
-                    this.onSendUpdateRequest(data)
+                    this.onSendUpdateRequest(data),
+                    user_service.deleteToken(),
+                    <Navigate to='/Login' state={{ data }} />
                 )}
                 {this.state.updateVerified && (
-                    data = JSON.stringify(data),
-                    <Navigate to='/Perfil' state={{ data }}/>
+                    data = JSON.stringify(data)
                 )}
                 <Navbar1 />
                 <div className="col-md-6 offset-md-3">
@@ -93,7 +116,7 @@ class Password extends React.Component {
                             </form>
                         </div>
                     </div>
-                    <hr className="mb-5"/>
+                    <hr className="mb-5" />
                 </div>
                 <Footer />
             </div>
