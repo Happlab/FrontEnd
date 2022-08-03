@@ -4,7 +4,7 @@ import Navbar1 from '../../navegation/navbar/Navbar1';
 import Footer from '../../navegation/footer/Footer';
 import './Perfil.scss'
 import user_service from '../../services/UserServices';
-import Notificacion from '../Admin/TemplatesAdmin/Modal';
+import Notificacion from '../Admin/TemplatesAdmin/modal';
 
 class Perfil extends React.Component {
     constructor(props) {

@@ -3,7 +3,7 @@ import { useLocation, Navigate } from 'react-router-dom';
 import Navbar1 from '../../navegation/navbar/Navbar1';
 import Footer from '../../navegation/footer/Footer';
 import user_service from '../../services/UserServices';
-import Notificacion from '../Admin/TemplatesAdmin/Modal';
+import Notificacion from '../Admin/TemplatesAdmin/modal';
 
 class Password extends React.Component {
     constructor(props) {
