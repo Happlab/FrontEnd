@@ -92,12 +92,12 @@ class Navbar1 extends React.Component{
               </Nav>
             )}
             {this.token !== null && (
-              <div>
-                <Nav className='login'>
+              
+                <Nav className='logout' >
                   <Nav.Link href="/perfil">Perfil</Nav.Link>
-                  <Nav.Link href="/" ><button onClick={()=>this.eliminarCookie()}>Cerrar Sesion</button></Nav.Link>
+                  <Nav.Link href="/" ><button className='button' onClick={this.eliminarCookie} style={{width: '100%', border:'none',color:'rgba(255,255,255,.55)'}}>Cerrar Sesion</button></Nav.Link>
                 </Nav>
-              </div>
+              
               
               
             )}

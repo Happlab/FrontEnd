@@ -1,8 +1,15 @@
 /* eslint-disable jsx-a11y/img-redundant-alt */
 import React, { Component } from 'react'
+import { Button } from 'react-bootstrap'
+import user_service from '../../../services/UserServices';
+
 export default class Menu extends Component {
     constructor(props){
         super();
+        this.handleClickCerrarSesion=this.handleClickCerrarSesion.bind(this);
+    }
+    handleClickCerrarSesion(){
+        user_service.deleteToken();
     }
     render() {
         return (
@@ -60,6 +67,11 @@ export default class Menu extends Component {
                                                 <i className="far fa-circle nav-icon" />
                                                 <p>Administrar Acerca de</p>
                                             </a>
+                                        </li>
+                                        <li className="nav-item" style={{display: 'flex', justifyContent: 'center', marginTop: '30px'}}>
+                                            
+                                                <a href='/'><Button onClick={this.handleClickCerrarSesion}>Cerrar Sesion</Button></a>
+                                         
                                         </li>
                                     </ul>
                                 </li>

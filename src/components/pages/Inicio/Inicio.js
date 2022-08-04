@@ -51,7 +51,7 @@ class Inicio extends React.Component {
                             </p>
                           </div>
                           <div className='columna-inicio-video'>
-                            {this.state.inicio[i].url!=='' ? <ReactPlayer url={this.state.inicio[i].url} width='100%' height='100%' controls loop/> :<img style={{width:'100%'}} className="images-carousel"src={this.urlServicio+"contenido/"+this.state.inicio[i].nombre_contenido} width={400} height={150} alt="Third slide"/>} 
+                            {this.state.inicio[i].url!=='' ? <ReactPlayer url={this.state.inicio[i].url} width='100%' height='100%' controls loop/> :<img style={{width:'100%',height:'100%'}} className="images-carousel"src={this.urlServicio+"contenido/"+this.state.inicio[i].nombre_contenido} width={400} height={150} alt="Third slide"/>} 
                           </div>
                       </div> 
                     </div>

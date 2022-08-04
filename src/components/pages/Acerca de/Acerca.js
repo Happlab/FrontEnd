@@ -49,13 +49,14 @@ class Acerca extends React.Component {
                         return (
                             <div className='columna-acerca'>
                                 <div className='columna-acerca-text'>
+                                    <h3 className='title-dest' style={{color: 'black'}}>{this.state.acerca[i].titulo_seccion}</h3>
                                     <p className='text-lore'>
                                         {this.state.acerca[i].descripcion}
                                     </p>
                                 </div>
                                 <div className='columna-acerca-video'>
                                     {this.state.acerca[i].url !== '' ? <ReactPlayer url={this.state.acerca[i].url} width='100%' height='100%' controls loop />
-                                        : <img style={{ width: '100%' }} className="images-carousel"
+                                        : <img style={{ width: '100%', height:'100%' }} className="images-carousel"
                                             src={this.urlServicio + "contenido/" + this.state.acerca[i].nombre_contenido} width={400} height={150} alt="Third slide" />}
                                 </div>
                             </div>
@@ -79,7 +80,7 @@ class Acerca extends React.Component {
                                         />
                                         <Marker position={[this.state.acerca[i].coordenadas[0], this.state.acerca[i].coordenadas[1]]} icon={new Icon({ iconUrl: markerIconPng, iconSize: [25, 41], iconAnchor: [12, 41] })}>
                                             <Popup>
-                                                Claustro De Santo Domingo
+                                                HappLab
                                             </Popup>
                                         </Marker>
                                     </MapContainer>
@@ -87,6 +88,7 @@ class Acerca extends React.Component {
 
                                 <div className='col-text'>
                                     <p className='text-lore'>
+                                        <h3 className='title-dest' style={{color: 'black'}}>{this.state.acerca[i].titulo_seccion}</h3>
                                         {this.state.acerca[i].descripcion}
                                     </p>
                                 </div>

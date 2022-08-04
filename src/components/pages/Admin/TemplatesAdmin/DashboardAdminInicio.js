@@ -7,7 +7,7 @@ import {Form,Button} from 'react-bootstrap';
 
 const validationSchema=Yup.object().shape({
   titulo_seccion: Yup.string().required("Campo Requerido").min(10, "Minimo 10 caracteres").max(100, "Maximo 100 caracteres"),
-  url_seccion: Yup.string().required("Campo requerido").url("URL no valida"),
+  url_seccion: Yup.string().url("URL no valida"),
   descripcion: Yup.string().required("Campo Requerido").min(50, "Minimo 50 caracteres").max(250, "Maximo 250 caracteres")
 });
 
@@ -157,13 +157,29 @@ export default class DashboardAdminInicio extends Component {
                     descripcion: this.state.inicio[0].descripcion
                   }} 
                   validationSchema={validationSchema}
-                    onSubmit={values => {
+                    onSubmit={(values, errors) => {
                     
                     const titulo = values.titulo_seccion;
                     const url = values.url_seccion;
-                    const contenido = document.getElementById('inputContenido').files[0];
+                    var contenido;
+                    if(values.nombre_contenido!==''){
+                      contenido= document.getElementById('inputContenido').files[0];
+                    }else{
+                      contenido=new File([''],'');
+                    }
                     const descripcion = values.descripcion;
-                    this.funcioneditar(titulo, url, contenido, descripcion);
+
+                    if(values.url_seccion==='' || document.getElementById('inputContenido').files[0]===undefined){
+                      if(values.url_seccion==='' && document.getElementById('inputContenido').files[0]===undefined){
+                        errors.setFieldError('url_seccion', "Ingrese una url o un archivo");
+                      }else{
+                        this.funcioneditar(titulo, url, contenido, descripcion);
+                      }
+                      
+                    }else{
+                      errors.setFieldError('url_seccion', "No es posible ingresar una url y un archivo, escoja solo uno");
+                    }
+                    
                   }}>
                     { props=>(
                         <Form onSubmit={props.handleSubmit}>
@@ -186,7 +202,6 @@ export default class DashboardAdminInicio extends Component {
                               <Form.Control
                                   name="url_seccion"
                                   type="text"
-                                  required
                                   placeholder="Ingresa la url de un video para el apartado Inicio"
                                   isInvalid={props.touched.url_seccion && !!props.errors.url_seccion}
                                   value={props.values.url_seccion} onChange={props.handleChange}
@@ -200,7 +215,6 @@ export default class DashboardAdminInicio extends Component {
                               <Form.Control
                                   name="nombre_contenido"
                                   type="file"
-                                  required
                                   placeholder="Ingresa el archivo del apartado Inicio"
                                   isInvalid={props.touched.nombre_contenido && !!props.errors.nombre_contenido}
                                   value={props.values.nombre_contenido} onChange={props.handleChange}
@@ -241,13 +255,29 @@ export default class DashboardAdminInicio extends Component {
                     descripcion: this.state.inicio[1].descripcion
                   }} 
                   validationSchema={validationSchema}
-                  onSubmit={values => {
+                  onSubmit={(values, errors) => {
                     
                     const titulo = values.titulo_seccion;
                     const url = values.url_seccion;
-                    const contenido = document.getElementById('inputContenido').files[0];
+                    var contenido;
+                    if(values.nombre_contenido!==''){
+                      contenido= document.getElementById('inputContenido').files[0];
+                    }else{
+                      contenido=new File([''],'');
+                    }
                     const descripcion = values.descripcion;
-                    this.funcioneditar(titulo, url, contenido, descripcion);
+
+                    if(values.url_seccion==='' || document.getElementById('inputContenido').files[0]===undefined){
+                      if(values.url_seccion==='' && document.getElementById('inputContenido').files[0]===undefined){
+                        errors.setFieldError('url_seccion', "Ingrese una url o un archivo");
+                      }else{
+                        this.funcioneditar(titulo, url, contenido, descripcion);
+                      }
+                      
+                    }else{
+                      errors.setFieldError('url_seccion', "No es posible ingresar una url y un archivo, escoja solo uno");
+                    }
+                    
                   }}>
                     { props=>(
                         <Form onSubmit={props.handleSubmit}>
@@ -270,7 +300,6 @@ export default class DashboardAdminInicio extends Component {
                               <Form.Control
                                   name="url_seccion"
                                   type="text"
-                                  required
                                   placeholder="Ingresa la url de un video para el apartado Inicio"
                                   isInvalid={props.touched.url_seccion && !!props.errors.url_seccion}
                                   value={props.values.url_seccion} onChange={props.handleChange}
@@ -284,7 +313,6 @@ export default class DashboardAdminInicio extends Component {
                               <Form.Control
                                   name="nombre_contenido"
                                   type="file"
-                                  required
                                   placeholder="Ingresa el archivo del apartado Inicio"
                                   
                                   isInvalid={props.touched.nombre_contenido && !!props.errors.nombre_contenido}

@@ -126,18 +126,7 @@ export default class Dashboard extends Component {
                                     <a href="#" className="small-box-footer">More info <i className="fas fa-arrow-circle-right" /></a>
                                 </div>
                             </div>
-                            <div className="col-lg-3 col-6">
-                                <div className="small-box bg-danger">
-                                    <div className="inner">
-                                        <h3>65</h3>
-                                        <p>Número de visitas</p>
-                                    </div>
-                                    <div className="icon">
-                                        <i className="ion ion-pie-graph" />
-                                    </div>
-                                    <a href="./AdminUsuarios" className="small-box-footer">More info <i className="fas fa-arrow-circle-right" /></a>
-                                </div>
-                            </div>
+                            
                         </div>
                     </div>
                     <section className="content-header">

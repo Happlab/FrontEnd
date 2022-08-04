@@ -18,6 +18,19 @@ $separacion-letras: 1px;
     letter-spacing: $separacion-letras;
     text-align: $alineacion;
 }
+.logout{
+    a{
+        background: #EA5356;
+        .button{
+            background: #EA5356;
+        }
+        
+    }
+    transition: color .15s ease-in-out;
+    width: 20%;
+    letter-spacing: $separacion-letras;
+    text-align: $alineacion;
+}
 
 .me-auto{
     background-color: $color-background;

@@ -7,7 +7,7 @@ import {Form,Button} from 'react-bootstrap';
 
 const validationSchema=Yup.object().shape({
   titulo_seccion: Yup.string().required("Campo Requerido").min(5, "Minimo 5 caracteres").max(50, "Maximo 50 caracteres"),
-  url_seccion: Yup.string().required("Campo requerido").url("URL no valida"),
+  url_seccion: Yup.string().url("URL no valida"),
   descripcion: Yup.string().required("Campo Requerido").min(50, "Minimo 50 caracteres").max(250, "Maximo 250 caracteres")
 });
 
@@ -178,15 +178,30 @@ export default class DashboardAdminAcercaDe extends Component {
                   }} 
                   validationSchema={validationSchema}
                   
-                    onSubmit={values => {
-
+                  onSubmit={(values, errors) => {
+                    
                     const titulo = values.titulo_seccion;
-                    const url_seccion = values.url_seccion;
-                    const latitud=null;
-                    const longitud=null;
-                    const contenido = document.getElementById('inputContenido').files[0];
+                    const url = values.url_seccion;
+                    var contenido;
+                    if(values.nombre_contenido!==''){
+                      contenido= document.getElementById('inputContenido').files[0];
+                    }else{
+                      contenido=new File([''],'');
+                    }
                     const descripcion = values.descripcion;
-                    this.funcioneditar(titulo, url_seccion, contenido, descripcion, longitud, latitud);
+                    const longitud=0;
+                    const latitud=0
+                    if(values.url_seccion==='' || document.getElementById('inputContenido').files[0]===undefined){
+                      if(values.url_seccion==='' && document.getElementById('inputContenido').files[0]===undefined){
+                        errors.setFieldError('url_seccion', "Ingrese una url o un archivo");
+                      }else{
+                        this.funcioneditar(titulo, url, contenido, descripcion, longitud, latitud);
+                      }
+                      
+                    }else{
+                      errors.setFieldError('url_seccion', "No es posible ingresar una url y un archivo, escoja solo uno");
+                    }
+                    
                   }}>
                     { props=>(
                         <Form onSubmit={props.handleSubmit}>
@@ -209,7 +224,6 @@ export default class DashboardAdminAcercaDe extends Component {
                               <Form.Control
                                   name="url_seccion"
                                   type="text"
-                                  required
                                   placeholder="Ingresa la url de un video para el apartado Acerca De"
                                   isInvalid={props.touched.url_seccion && !!props.errors.url_seccion}
                                   value={props.values.url_seccion} onChange={props.handleChange}
@@ -223,7 +237,6 @@ export default class DashboardAdminAcercaDe extends Component {
                               <Form.Control
                                   name="nombre_contenido"
                                   type="file"
-                                  required
                                   placeholder="Ingresa el archivo del apartado Acerca De"
                                   isInvalid={props.touched.nombre_contenido && !!props.errors.nombre_contenido}
                                   value={props.values.nombre_contenido} onChange={props.handleChange}
@@ -270,6 +283,9 @@ export default class DashboardAdminAcercaDe extends Component {
                       const longitud=values.longitud;
                       const descripcion = values.descripcion;
                       this.funcioneditar(titulo, url_seccion, contenido, descripcion, longitud, latitud);
+
+
+                      
                     }}>
                       { props=>(
                           <Form onSubmit={props.handleSubmit}>
