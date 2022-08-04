@@ -25,7 +25,6 @@ class Login extends React.Component {
 		this.handleClickOcultar = this.handleClickOcultar.bind(this);
 		this.onRoute = this.onRoute.bind(this);
 		this.handleClickCerrarModal = this.handleClickCerrarModal.bind(this);
-		this.eliminarCookie = this.eliminarCookie.bind(this);
 	}
 
 	cookies = new Cookies();

@@ -38,8 +38,7 @@ class Contenido extends React.Component{
             mensajeNotificacion: "",
             comentario:"",
             link:"",
-            email:"",
-            tokens:0
+            email:""
         }
         this.handleClickSubirContenido=this.handleClickSubirContenido.bind(this);
         this.descarga=this.descarga.bind(this);
@@ -51,10 +50,11 @@ class Contenido extends React.Component{
         this.subirContenido = this.subirContenido.bind(this);
         this.cancelar = this.cancelar.bind(this);
         this.aceptar = this.aceptar.bind(this);
+        this.actualizarCredito = this.actualizarCredito.bind(this);
     }
 
     peticion=0;
-    
+    credito=0;
     
     handleClickSubirContenido(){
         this.setState({estadoSubirContenido: !this.state.estadoSubirContenido});
@@ -149,9 +149,33 @@ class Contenido extends React.Component{
         })
     }
 
-    descarga(contenido_link,tokens){
+    actualizarCredito(){
+        const peticion = "http://localhost:8080/persona/modToken/"+this.state.email+"&"+this.credito;
+        const request_options = {
+            method: 'PUT',
+            mode: 'cors',
+            ContentType: 'application/json',
+            headers:{
+                'Access-Control-Allow-Origin': '*'
+            }
+        }
+        return fetch(peticion, request_options)
+            .then(response => {
+                console.log("Response", response)
+                if (response.status === 200) {
+                    console.log(this.credito);
+                }
+                else{
+                    console.log(this.credito);
+                } 
+                
+            })
+            .catch(error => console.log("Error", error))
+    }
+
+    descarga(contenido_link){
         this.peticion=0;
-        this.setState({notificacion: true, tituloNotificacion: "Descarga de contenido", mensajeNotificacion:("¿Esta seguro que desea usar un credito para descargar este contenido? Usted posee: "+ {tokens} +" Creditos para usar")});
+        this.setState({notificacion: true, tituloNotificacion: "Descarga de contenido", mensajeNotificacion:("¿Esta seguro que desea usar un credito para descargar este contenido? Usted posee: "+ this.credito  +" Creditos para usar")});
         this.setState({link: contenido_link})
     }
 
@@ -168,9 +192,9 @@ class Contenido extends React.Component{
         const token = cookies.get('token');
         if(token){
             const usuarios = user_services.getDataToken(token)
-            this.setState({email: usuarios.email, tokens: usuarios.tokens,logeado: true})
+            this.setState({email: usuarios.email,logeado: true})
+            this.credito = usuarios.tokens;
         }
-        console.log(token)
     }
 
     aceptar(){     
@@ -178,6 +202,9 @@ class Contenido extends React.Component{
             window.location.href='http://localhost:8080/contenido/download/'+this.state.link;
             this.setState({link: ""})
             this.setState({notificacion: false})
+            this.credito = this.credito-1;
+            this.actualizarCredito();
+            
         }
         else if(this.peticion === 1){
             this.setState({estadoSubirContenido: !this.state.estadoSubirContenido});
@@ -280,7 +307,7 @@ class Contenido extends React.Component{
                                                     this.state.arrayContenidos[i].id_autor.nombres + " " +this.state.arrayContenidos[i].id_autor.apellidos,
                                                     this.state.arrayContenidos[i].fecha_subida,
                                                     this.state.arrayContenidos[i].resumen,
-                                                    this.state.arrayContenidos[i].tags
+                                                    this.state.arrayContenidos[i].tags[0]
                                                     )}
                                                 >
                                                 Ver mas
