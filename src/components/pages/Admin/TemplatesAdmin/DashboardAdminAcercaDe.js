@@ -1,6 +1,22 @@
 import React, { Component } from 'react'
 import { PeticionEnvioDataFrom, PeticionGet } from '../PeticionesAdmin.js'
 import Notificacion from './modal.js'
+import * as Yup from 'yup';
+import { Formik} from 'formik';
+import {Form,Button} from 'react-bootstrap';
+
+const validationSchema=Yup.object().shape({
+  titulo_seccion: Yup.string().required("Campo Requerido").min(5, "Minimo 5 caracteres").max(50, "Maximo 50 caracteres"),
+  url_seccion: Yup.string().required("Campo requerido").url("URL no valida"),
+  descripcion: Yup.string().required("Campo Requerido").min(50, "Minimo 50 caracteres").max(250, "Maximo 250 caracteres")
+});
+
+const validationSchema2=Yup.object().shape({
+  titulo_seccion: Yup.string().required("Campo Requerido").min(10, "Minimo 10 caracteres").max(50, "Maximo 50 caracteres"),
+  descripcion: Yup.string().required("Campo Requerido").min(50, "Minimo 50 caracteres").max(250, "Maximo 250 caracteres"),
+  latitud : Yup.number().required("Campo Requerido"),
+  longitud : Yup.number().required("Campo Requerido")
+});
 
 export default class DashboardAdminAcercaDe extends Component {
   constructor(props) {
@@ -41,8 +57,6 @@ export default class DashboardAdminAcercaDe extends Component {
 
   editar(entrada, indice) {
     this.setState({posicion : indice});
-    document.getElementById('inputTitulo').value = entrada.titulo_seccion;
-    document.getElementById('inputDescripcion').value = entrada.descripcion;
   }
 
   funcioneditar(titulo, url_seccion, contenido, descripcion, longitud, latitud) {
@@ -156,75 +170,175 @@ export default class DashboardAdminAcercaDe extends Component {
                   </div>
                 </div>
                 <div className='card-body'>
-                  {this.state.posicion!==-1 ?
-                      <form  onSubmit={ev => {
-                        ev.preventDefault();
-                        const titulo = ev.target.titulo_seccion.value;
-                        const descripcion = ev.target.descripcion.value;
-                        var url=null;
-                        var contenido=null;
-                        var longitud=null;
-                        var latitud=null;
-                        if(this.state.posicion===2){
-                          url = ev.target.url_seccion.value;
-                          contenido = ev.target.nombre_contenido.files[0];
-                        }
-                        if(this.state.posicion===3){
-                          longitud = ev.target.longitud.value;
-                          latitud = ev.target.latitud.value;
-                        }
-                        
-                        this.funcioneditar(titulo, url, contenido, descripcion, longitud, latitud);
-                      }}>
-                        <div className="card-body">
-                          <div className="form-group">
-                            <label htmlFor="inputTitulo">Titulo</label>
-                            <input name='titulo_seccion' type="text" id="inputTitulo" className="form-control" autoComplete='off' defaultValue={this.state.inicio[this.state.posicion].titulo_seccion} required/>
-                          </div>
-                          {this.state.posicion===2 ?
-                          <div>
-                            <div className="form-group">
-                              <label htmlFor="inputContenido">Imagen</label>
-                              <input type='file' name='nombre_contenido' id="inputContenido" className="form-control" autoComplete="off" defaultValue=""  />
-                            </div>
-                            <div className="form-group">
-                              <label htmlFor="inputURL">URL</label>
-                              <input name='url_seccion' type="text" id="inputURL" className="form-control" autoComplete='off' defaultValue={this.state.inicio[this.state.posicion].url} required  />
-                            </div>
-                            </div>
-                          : null
-                          }
-                          <div className="form-group">
-                            <label htmlFor="inputDescripcion">Descripción</label>
-                            <textarea name='descripcion' id="inputDescripcion" className="form-control" rows={4} autoComplete="off" defaultValue={this.state.inicio[this.state.posicion].descripcion} required/>
-                          </div>
-                          
-                          {this.state.posicion===3 ?
-                            <div>
-                              <div className="form-group">
-                                <label htmlFor="labelCoordenada">Coordenada</label>
-                              </div>
-                              <div className="form-group">
-                                <label htmlFor="inputLongitud">Latitud</label>
-                                <input name='longitud' type="text" id="inputLatitud" className="form-control" autoComplete="off" defaultValue={this.state.inicio[this.state.posicion].coordenadas[0]} required/>
-                              </div>
-                              <div className="form-group">
-                                <label htmlFor="inputLatitud">Longitud</label>
-                                <input name='latitud' type="text" id="inputLongitud" className="form-control" autoComplete="off" defaultValue={this.state.inicio[this.state.posicion].coordenadas[1]} required/>
-                              </div>
-                              
-                            </div>
-                            : null
-                          }
-                        </div>
-                        <div className="card-footer">
-                          <button type='submit' className="btn btn-primary">Editar contenido</button>
-                          <p> </p>
-                        </div>
-                      </form>
+                  {this.state.posicion===2 ?
+                  <Formik initialValues={{
+                    titulo_seccion: this.state.inicio[2].titulo_seccion,
+                    url_seccion: this.state.inicio[2].url,
+                    descripcion: this.state.inicio[2].descripcion
+                  }} 
+                  validationSchema={validationSchema}
+                  
+                    onSubmit={values => {
+
+                    const titulo = values.titulo_seccion;
+                    const url_seccion = values.url_seccion;
+                    const latitud=null;
+                    const longitud=null;
+                    const contenido = document.getElementById('inputContenido').files[0];
+                    const descripcion = values.descripcion;
+                    this.funcioneditar(titulo, url_seccion, contenido, descripcion, longitud, latitud);
+                  }}>
+                    { props=>(
+                        <Form onSubmit={props.handleSubmit}>
+                          <Form.Group className="mb-3" controlId="inpuTitulo">
+                              <Form.Label>Titulo</Form.Label>
+                              <Form.Control
+                                  name="titulo_seccion"
+                                  type="text"
+                                  required
+                                  placeholder="Ingresa el titulo del apartado Acerca De"
+                                  isInvalid={props.touched.titulo_seccion && !!props.errors.titulo_seccion}
+                                  value={props.values.titulo_seccion} onChange={props.handleChange}
+                              />
+                              <Form.Control.Feedback type="invalid">
+                                  {props.errors.titulo_seccion}
+                              </Form.Control.Feedback>
+                          </Form.Group>
+                          <Form.Group className="mb-3" controlId="inputURL">
+                              <Form.Label>URL</Form.Label>
+                              <Form.Control
+                                  name="url_seccion"
+                                  type="text"
+                                  required
+                                  placeholder="Ingresa la url de un video para el apartado Acerca De"
+                                  isInvalid={props.touched.url_seccion && !!props.errors.url_seccion}
+                                  value={props.values.url_seccion} onChange={props.handleChange}
+                              />
+                              <Form.Control.Feedback type="invalid">
+                                  {props.errors.url_seccion}
+                              </Form.Control.Feedback>
+                          </Form.Group>
+                          <Form.Group className="mb-3" controlId="inputContenido">
+                              <Form.Label>Archivo</Form.Label>
+                              <Form.Control
+                                  name="nombre_contenido"
+                                  type="file"
+                                  required
+                                  placeholder="Ingresa el archivo del apartado Acerca De"
+                                  isInvalid={props.touched.nombre_contenido && !!props.errors.nombre_contenido}
+                                  value={props.values.nombre_contenido} onChange={props.handleChange}
+                              />
+                              <Form.Control.Feedback type="invalid">
+                                  {props.errors.nombre_contenido}
+                              </Form.Control.Feedback>
+                          </Form.Group>
+                          <Form.Group className="mb-3" controlId="inputDescripcion">
+                              <Form.Label>Descripción</Form.Label>
+                              <Form.Control
+                                  name="descripcion"
+                                  type="text"
+                                  required
+                                  placeholder="Ingresa la descripcion del apartado Acerca De"
+                                  isInvalid={props.touched.descripcion && !!props.errors.descripcion}
+                                  value={props.values.descripcion} onChange={props.handleChange}
+                              />
+                              <Form.Control.Feedback type="invalid">
+                                  {props.errors.descripcion}
+                              </Form.Control.Feedback>
+                          </Form.Group>
+                          <Button type="submit">Enviar</Button>
+                        </Form>
+                      )
+                    }         
+                  </Formik>    
                       : null
                       }
-                  
+                  {this.state.posicion===3 ?
+                    <Formik initialValues={{
+                      titulo_seccion: this.state.inicio[3].titulo_seccion,
+                      descripcion: this.state.inicio[3].descripcion,
+                      latitud: this.state.inicio[3].coordenadas[0],
+                      longitud: this.state.inicio[3].coordenadas[1]
+                    }} 
+                    validationSchema={validationSchema2}
+                      onSubmit={values => {
+                      console.log(values);
+                      const titulo = values.titulo_seccion;
+                      const url_seccion=' ';
+                      const contenido= new File([''],'');
+                      const latitud= values.latitud;
+                      const longitud=values.longitud;
+                      const descripcion = values.descripcion;
+                      this.funcioneditar(titulo, url_seccion, contenido, descripcion, longitud, latitud);
+                    }}>
+                      { props=>(
+                          <Form onSubmit={props.handleSubmit}>
+                            <Form.Group className="mb-3" controlId="inpuTitulo">
+                                <Form.Label>Titulo</Form.Label>
+                                <Form.Control
+                                    name="titulo_seccion"
+                                    type="text"
+                                    required
+                                    placeholder="Ingresa el titulo del apartado Acerca De"
+                                    isInvalid={props.touched.titulo_seccion && !!props.errors.titulo_seccion}
+                                    value={props.values.titulo_seccion} onChange={props.handleChange}
+                                />
+                                <Form.Control.Feedback type="invalid">
+                                    {props.errors.titulo_seccion}
+                                </Form.Control.Feedback>
+                            </Form.Group>
+                            <Form.Group className="mb-3" controlId="inputDescripcion">
+                                <Form.Label>Descripción</Form.Label>
+                                <Form.Control
+                                    name="descripcion"
+                                    type="text"
+                                    required
+                                    placeholder="Ingresa la descripcion del apartado AcercaDe"
+                                    isInvalid={props.touched.descripcion && !!props.errors.descripcion}
+                                    value={props.values.descripcion} onChange={props.handleChange}
+                                />
+                                <Form.Control.Feedback type="invalid">
+                                    {props.errors.descripcion}
+                                </Form.Control.Feedback>
+                            </Form.Group>
+                            
+                            <Form.Group className="mb-3" controlId="inputLatitud">
+                                <Form.Label>Latitud</Form.Label>
+                                <Form.Control
+                                    name="latitud"
+                                    type="number"
+                                    required
+                                    placeholder="Ingresa la coordenada latitud del mapa en Acerca De"
+                                    isInvalid={props.touched.latitud && !!props.errors.latitud}
+                                    value={props.values.latitud} onChange={props.handleChange}
+                                />
+                                <Form.Control.Feedback type="invalid">
+                                    {props.errors.latitud}
+                                </Form.Control.Feedback>
+                            </Form.Group>
+                            <Form.Group className="mb-3" controlId="inputLongitud">
+                                <Form.Label>Longitud</Form.Label>
+                                <Form.Control
+                                    name="longitud"
+                                    type="number"
+                                    required
+                                    placeholder="Ingresa la coordenada longitud del mapa en Acerca De"
+                                    isInvalid={props.touched.longitud && !!props.errors.longitud}
+                                    value={props.values.longitud} onChange={props.handleChange}
+                                />
+                                <Form.Control.Feedback type="invalid">
+                                    {props.errors.longitud}
+                                </Form.Control.Feedback>
+                            </Form.Group>
+                            <Button type="submit">Enviar</Button>
+                            
+                          </Form>
+                        )
+                      }         
+                    </Formik> 
+                  :
+                      null
+                  }
                 </div>
               </div>
             </div>

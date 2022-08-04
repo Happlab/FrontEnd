@@ -1,6 +1,15 @@
 import React, { Component } from 'react'
 import { PeticionEnvio, PeticionEnvioDataFrom, PeticionGet } from '../PeticionesAdmin.js'
 import Notificacion from './modal.js'
+import * as Yup from 'yup';
+import { Formik} from 'formik';
+import {Form,Button} from 'react-bootstrap';
+
+const validationSchema=Yup.object().shape({
+  titulo_seccion: Yup.string().required("Campo Requerido").min(10, "Minimo 10 caracteres").max(100, "Maximo 100 caracteres"),
+  url_seccion: Yup.string().required("Campo requerido").url("URL no valida"),
+  descripcion: Yup.string().required("Campo Requerido").min(50, "Minimo 50 caracteres").max(250, "Maximo 250 caracteres")
+});
 
 export default class DashboardAdminInicio extends Component {
   constructor(props) {
@@ -54,7 +63,7 @@ export default class DashboardAdminInicio extends Component {
 
     const url =this.urlServicio+'update/' + this.state.inicio[this.state.posicion].id;
     const metodo = 'PUT';
-    if(this.state.posicion!==-1){
+
       const peticion = PeticionEnvioDataFrom(dataform, url, metodo);
       peticion.then(data => {
         if(data){
@@ -64,9 +73,7 @@ export default class DashboardAdminInicio extends Component {
             this.setState({notificacion: true, tituloNotificacion: "Gestion de informacion de inicio", mensajeNotificacion:"No fue posible editar la informacion de inicio, verifique su conexion con el servidor o a internet"});
         }
       });
-    }else{
-      alert("seleccione elemento a editar");
-    }
+    
     
   }
 
@@ -144,72 +151,168 @@ export default class DashboardAdminInicio extends Component {
                 </div>
                 <div className='card-body'>
                   {(this.state.posicion===0) ?
-                  <form onSubmit={ev => {
-                    ev.preventDefault();
-                    const titulo = ev.target.titulo_seccion.value;
-                    const url = ev.target.url_seccion.value;
-                    const contenido = ev.target.nombre_contenido.files[0];
-                    const descripcion = ev.target.descripcion.value;
+                  <Formik initialValues={{
+                    titulo_seccion: this.state.inicio[0].titulo_seccion,
+                    url_seccion: this.state.inicio[0].url,
+                    descripcion: this.state.inicio[0].descripcion
+                  }} 
+                  validationSchema={validationSchema}
+                    onSubmit={values => {
+                    
+                    const titulo = values.titulo_seccion;
+                    const url = values.url_seccion;
+                    const contenido = document.getElementById('inputContenido').files[0];
+                    const descripcion = values.descripcion;
                     this.funcioneditar(titulo, url, contenido, descripcion);
                   }}>
-                    <div className="card-body">
-                      <div className="form-group">
-                        <label htmlFor="inputTitulo">Titulo</label>
-                        <input name='titulo_seccion' type="text" id="inputTitulo" className="form-control" autoComplete='off' defaultValue={this.state.inicio[this.state.posicion].titulo_seccion} required/>
-                      </div>
-                      <div className="form-group">
-                        <label htmlFor="inputURL">URL</label>
-                        <input name='url_seccion' type="text" id="inputURL" className="form-control" autoComplete='off' defaultValue={this.state.inicio[this.state.posicion].url} required/>
-                      </div>
-                      <div className="form-group">
-                        <label htmlFor="inputContenido">Nombre contenido</label>
-                        <input name='nombre_contenido' type='file' id="inputContenido" className="form-control" autoComplete="off" />
-                      </div>
-                      <div className="form-group">
-                        <label htmlFor="inputDescripcion">Descripción</label>
-                        <textarea name='descripcion' id="inputDescripcion" className="form-control" rows={4} autoComplete="off" defaultValue={this.state.inicio[this.state.posicion].descripcion} required/>
-                      </div>
-                      <div className="card-footer">
-                        <button type='submit' className="btn btn-primary">Editar contenido</button>
-                        <p> </p>
-                      </div>
-                    </div>
-                  </form>
+                    { props=>(
+                        <Form onSubmit={props.handleSubmit}>
+                          <Form.Group className="mb-3" controlId="inpuTitulo">
+                              <Form.Label>Titulo</Form.Label>
+                              <Form.Control
+                                  name="titulo_seccion"
+                                  type="text"
+                                  required
+                                  placeholder="Ingresa el titulo del apartado Inicio"
+                                  isInvalid={props.touched.titulo_seccion && !!props.errors.titulo_seccion}
+                                  value={props.values.titulo_seccion} onChange={props.handleChange}
+                              />
+                              <Form.Control.Feedback type="invalid">
+                                  {props.errors.titulo_seccion}
+                              </Form.Control.Feedback>
+                          </Form.Group>
+                          <Form.Group className="mb-3" controlId="inputURL">
+                              <Form.Label>URL</Form.Label>
+                              <Form.Control
+                                  name="url_seccion"
+                                  type="text"
+                                  required
+                                  placeholder="Ingresa la url de un video para el apartado Inicio"
+                                  isInvalid={props.touched.url_seccion && !!props.errors.url_seccion}
+                                  value={props.values.url_seccion} onChange={props.handleChange}
+                              />
+                              <Form.Control.Feedback type="invalid">
+                                  {props.errors.url_seccion}
+                              </Form.Control.Feedback>
+                          </Form.Group>
+                          <Form.Group className="mb-3" controlId="inputContenido">
+                              <Form.Label>Archivo</Form.Label>
+                              <Form.Control
+                                  name="nombre_contenido"
+                                  type="file"
+                                  required
+                                  placeholder="Ingresa el archivo del apartado Inicio"
+                                  isInvalid={props.touched.nombre_contenido && !!props.errors.nombre_contenido}
+                                  value={props.values.nombre_contenido} onChange={props.handleChange}
+                              />
+                              <Form.Control.Feedback type="invalid">
+                                  {props.errors.nombre_contenido}
+                              </Form.Control.Feedback>
+                          </Form.Group>
+                          <Form.Group className="mb-3" controlId="inputDescripcion">
+                              <Form.Label>Descripción</Form.Label>
+                              <Form.Control
+                                  name="descripcion"
+                                  type="text"
+                                  required
+                                  placeholder="Ingresa la descripcion del apartado Inicio"
+                                  isInvalid={props.touched.descripcion && !!props.errors.descripcion}
+                                  value={props.values.descripcion} onChange={props.handleChange}
+                              />
+                              <Form.Control.Feedback type="invalid">
+                                  {props.errors.descripcion}
+                              </Form.Control.Feedback>
+                          </Form.Group>
+                          <Button type="submit">Enviar</Button>
+                        </Form>
+                      )
+                    }
+                    
+                    
+                  </Formik>
+                  
                   : null
                   }
 
                   {(this.state.posicion===1) ?
-                  <form onSubmit={ev => {
-                    ev.preventDefault();
-                    const titulo = ev.target.titulo_seccion.value;
-                    const url = ev.target.url_seccion.value;
-                    const contenido = ev.target.nombre_contenido.files[0];
-                    const descripcion = ev.target.descripcion.value;
+                  <Formik initialValues={{
+                    titulo_seccion: this.state.inicio[1].titulo_seccion,
+                    url_seccion: this.state.inicio[1].url,
+                    descripcion: this.state.inicio[1].descripcion
+                  }} 
+                  validationSchema={validationSchema}
+                  onSubmit={values => {
+                    
+                    const titulo = values.titulo_seccion;
+                    const url = values.url_seccion;
+                    const contenido = document.getElementById('inputContenido').files[0];
+                    const descripcion = values.descripcion;
                     this.funcioneditar(titulo, url, contenido, descripcion);
                   }}>
-                    <div className="card-body">
-                      <div className="form-group">
-                        <label htmlFor="inputTitulo">Titulo</label>
-                        <input name='titulo_seccion' type="text" id="inputTitulo" className="form-control" autoComplete='off' defaultValue={this.state.inicio[this.state.posicion].titulo_seccion} required/>
-                      </div>
-                      <div className="form-group">
-                        <label htmlFor="inputURL">URL</label>
-                        <input name='url_seccion' type="text" id="inputURL" className="form-control" autoComplete='off' defaultValue={this.state.inicio[this.state.posicion].url} required/>
-                      </div>
-                      <div className="form-group">
-                        <label htmlFor="inputContenido">Nombre contenido</label>
-                        <input name='nombre_contenido' type='file' id="inputContenido" className="form-control" autoComplete="off" />
-                      </div>
-                      <div className="form-group">
-                        <label htmlFor="inputDescripcion">Descripción</label>
-                        <textarea name='descripcion' id="inputDescripcion" className="form-control" rows={4} autoComplete="off" defaultValue={this.state.inicio[this.state.posicion].descripcion} required/>
-                      </div>
-                      <div className="card-footer">
-                        <button type='submit' className="btn btn-primary">Editar contenido</button>
-                        <p> </p>
-                      </div>
-                    </div>
-                  </form>
+                    { props=>(
+                        <Form onSubmit={props.handleSubmit}>
+                          <Form.Group className="mb-3" controlId="inpuTitulo">
+                              <Form.Label>Titulo</Form.Label>
+                              <Form.Control
+                                  name="titulo_seccion"
+                                  type="text"
+                                  required
+                                  placeholder="Ingresa el titulo del apartado Inicio"
+                                  isInvalid={props.touched.titulo_seccion && !!props.errors.titulo_seccion}
+                                  value={props.values.titulo_seccion} onChange={props.handleChange}
+                              />
+                              <Form.Control.Feedback type="invalid">
+                                  {props.errors.titulo_seccion}
+                              </Form.Control.Feedback>
+                          </Form.Group>
+                          <Form.Group className="mb-3" controlId="inputURL">
+                              <Form.Label>URL</Form.Label>
+                              <Form.Control
+                                  name="url_seccion"
+                                  type="text"
+                                  required
+                                  placeholder="Ingresa la url de un video para el apartado Inicio"
+                                  isInvalid={props.touched.url_seccion && !!props.errors.url_seccion}
+                                  value={props.values.url_seccion} onChange={props.handleChange}
+                              />
+                              <Form.Control.Feedback type="invalid">
+                                  {props.errors.url_seccion}
+                              </Form.Control.Feedback>
+                          </Form.Group>
+                          <Form.Group className="mb-3" controlId="inputContenido">
+                              <Form.Label>Archivo</Form.Label>
+                              <Form.Control
+                                  name="nombre_contenido"
+                                  type="file"
+                                  required
+                                  placeholder="Ingresa el archivo del apartado Inicio"
+                                  
+                                  isInvalid={props.touched.nombre_contenido && !!props.errors.nombre_contenido}
+                                  value={props.values.nombre_contenido} onChange={props.handleChange}
+                              />
+                              <Form.Control.Feedback type="invalid">
+                                  {props.errors.nombre_contenido}
+                              </Form.Control.Feedback>
+                          </Form.Group>
+                          <Form.Group className="mb-3" controlId="inputDescripcion">
+                              <Form.Label>Descripción</Form.Label>
+                              <Form.Control
+                                  name="descripcion"
+                                  type="text"
+                                  required
+                                  placeholder="Ingresa la descripcion del apartado Acerca De"
+                                  isInvalid={props.touched.descripcion && !!props.errors.descripcion}
+                                  value={props.values.descripcion} onChange={props.handleChange}
+                              />
+                              <Form.Control.Feedback type="invalid">
+                                  {props.errors.descripcion}
+                              </Form.Control.Feedback>
+                          </Form.Group>
+                          <Button type="submit">Enviar</Button>
+                        </Form>
+                      )
+                    }
+                  </Formik>
                   : null
                   }
                 </div>

@@ -18,7 +18,6 @@ class Inicio extends React.Component {
   urlServicio='http://localhost:8080/seccion/';
   cookie=new Cookie();
   componentDidMount(){
-    console.log('toooooken'+this.cookie.get('token'));
     this.ListarInicio();
   }
   ListarInicio(){

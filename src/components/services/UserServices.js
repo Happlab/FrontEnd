@@ -1,5 +1,7 @@
 import jwtDecode from "jwt-decode";
+import Cookies from "universal-cookie"
 
+var cookies= new Cookies();
 let status = 0;
 let request_options = {};
 let token = null;
@@ -12,18 +14,20 @@ const getDataToken = inputToken => {
 }
 
 const setToken = (newtoken, context) => {
-    window.localStorage.setItem(key, newtoken);
-    // context.close();
-    token = `Bearer ${newtoken}`;
+    cookies.set(key, newtoken);
 }
 
 const getToken = () => {
-    return localStorage.getItem(key);
+    let token=cookies.get(key);
+    if(token === undefined){
+        token=null;
+    }
+    return token;
 }
 
 const deleteToken = () => {
-    localStorage.removeItem(key);
-    return window.sessionStorage.getItem("Token");
+    cookies.remove(key);
+    return null;
 }
 
 const disabledUser = async (email) => {
