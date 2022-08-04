@@ -61,10 +61,10 @@ class Navbar1 extends React.Component{
     this.eliminarCookie=this.eliminarCookie.bind(this);
   }
   cookie= new Cookie();
-  token = this.cookie.get('token');
+  token = user_service.getToken();
 
   eliminarCookie(){
-    this.cookie.remove('token');
+    user_service.deleteToken();
   }
   componentDidMount(){
     console.log(this.token);
@@ -85,13 +85,13 @@ class Navbar1 extends React.Component{
             <Nav.Link as={Link} to="/Contenido">Contenidos</Nav.Link>
             <Nav.Link as={Link} to="/Acerca">Acerca de</Nav.Link>
           </Nav>
-            {this.token === undefined && (
+            {this.token === null && (
               <Nav className='login'>
               <Nav.Link href="/Registro">Registro</Nav.Link>
               <Nav.Link href="/Login">Iniciar Sesion</Nav.Link>
               </Nav>
             )}
-            {this.token !== undefined && (
+            {this.token !== null && (
               <div>
                 <Nav className='login'>
                   <Nav.Link href="/perfil">Perfil</Nav.Link>
