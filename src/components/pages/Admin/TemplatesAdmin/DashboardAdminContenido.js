@@ -21,6 +21,8 @@ export default class DashboardAdminContenido extends Component {
 
     urlServicio='http://localhost:8080/contenido/';
 
+
+    
     componentDidMount(){
         this.ListarContenido();   
     }
@@ -30,6 +32,7 @@ export default class DashboardAdminContenido extends Component {
     Descargar(contenido_link){
         window.location.href=this.urlServicio+'download/'+contenido_link;
     }
+
     MostrarOcultar(contenido){
         if (contenido.visible) {
             contenido.visible=false;
@@ -62,6 +65,28 @@ export default class DashboardAdminContenido extends Component {
                 this.setState({notificacion: true, tituloNotificacion: "Gestion de contenidos", mensajeNotificacion:"No fue posible aceptar la solicitud de publicar contenido, verifique su conexion con el servidor o a internet"});
             }
         });
+
+        const petUsuario = "http://localhost:8080/persona/modToken/"+contenido.id_autor.email+"&"+(contenido.id_autor.tokens+1);
+        const request_options = {
+            method: 'PUT',
+            mode: 'cors',
+            ContentType: 'application/json',
+            headers:{
+                'Access-Control-Allow-Origin': '*'
+            }
+        }
+        return fetch(petUsuario, request_options)
+            .then(response => {
+                console.log("Response", response)
+                if (response.status === 200) {
+                    console.log(this.credito);
+                }
+                else{
+                    console.log(this.credito);
+                } 
+                
+            })
+            .catch(error => console.log("Error", error))
     }
     Eliminar(contenido){ 
         const url=this.urlServicio+'delete/'+contenido.link;

@@ -1,7 +1,6 @@
 export function PeticionGet(url) {
     let status = 0;
     let content;
-    var auxUsuarios = new Array();
     const request_options = {
         method: 'GET',
         mode: 'cors',
