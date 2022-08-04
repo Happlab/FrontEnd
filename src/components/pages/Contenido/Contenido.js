@@ -12,6 +12,8 @@ import Col from 'react-bootstrap/Col'
 import Modal from 'react-bootstrap/Modal';
 import NotificacionContenido from '../../navegation/modal_contenido/modal_contenido'
 import Notificacion from '../Admin/TemplatesAdmin/modal'
+import Cookies from 'universal-cookie';
+import user_services from '../../services/UserServices'
 
 class Contenido extends React.Component{
     constructor(props){
@@ -21,6 +23,7 @@ class Contenido extends React.Component{
             estadoSubirContenido:false,
             posSeleccionado:0,
             estadoTrigger: false,
+            logeado:false,
             contenido:{
             "titulo":"",
             "nombre":"",
@@ -34,7 +37,9 @@ class Contenido extends React.Component{
             tituloNotificacion: "",
             mensajeNotificacion: "",
             comentario:"",
-            link:""
+            link:"",
+            email:"",
+            tokens:0
         }
         this.handleClickSubirContenido=this.handleClickSubirContenido.bind(this);
         this.descarga=this.descarga.bind(this);
@@ -49,7 +54,8 @@ class Contenido extends React.Component{
     }
 
     peticion=0;
-
+    
+    
     handleClickSubirContenido(){
         this.setState({estadoSubirContenido: !this.state.estadoSubirContenido});
     }
@@ -94,7 +100,6 @@ class Contenido extends React.Component{
                     return contenidoNoPendiente;
                     
                 }else{
-                    this.setState({notificacionContenido: true, tituloNotificacion: "Contenido", mensajeNotificacion:"No se pudo subir el contenido"});
                     return null;
                 }
             })
@@ -114,8 +119,10 @@ class Contenido extends React.Component{
 
     subirContenido(){
         this.peticion=1;
+        let status = 0;
         var formdata = new FormData();
-        formdata.append("email_autor", "andrescd@hotmail");
+        formdata.append("email_autor", this.state.email);
+        console.log(this.state.email);
         formdata.append("titulo", document.getElementById("idTitulo").value);
         formdata.append("archivo", document.getElementById("idFile").files[0]);
         formdata.append("resumen", document.getElementById("idResumen").value);
@@ -130,18 +137,21 @@ class Contenido extends React.Component{
         body: formdata,
         };
         fetch("http://localhost:8080/contenido/create", requestOptions)
+        .then(response => {
+            status = response.status;
+        })
         .then(data =>{
-            if(data){
+            if( status === 200 && data !== "" ){
                 this.setState({notificacionContenido: true, tituloNotificacion: "Contenido", mensajeNotificacion:"Contenido subido exitosamente"});
             }else{
-                
+                this.setState({notificacionContenido: true, tituloNotificacion: "Contenido", mensajeNotificacion:"No se pudo subir el contenido"});
             }
         })
     }
 
-    descarga(contenido_link){
+    descarga(contenido_link,tokens){
         this.peticion=0;
-        this.setState({notificacion: true, tituloNotificacion: "Descarga de contenido", mensajeNotificacion:"¿Esta seguro que desea usar un credito para descargar este contenido?"});
+        this.setState({notificacion: true, tituloNotificacion: "Descarga de contenido", mensajeNotificacion:("¿Esta seguro que desea usar un credito para descargar este contenido? Usted posee: "+ {tokens} +" Creditos para usar")});
         this.setState({link: contenido_link})
     }
 
@@ -154,6 +164,13 @@ class Contenido extends React.Component{
                 this.setState({arrayContenidos: Array.from(data)});
             }
         });
+        const cookies= new Cookies();
+        const token = cookies.get('token');
+        if(token){
+            const usuarios = user_services.getDataToken(token)
+            this.setState({email: usuarios.email, tokens: usuarios.tokens,logeado: true})
+        }
+        console.log(token)
     }
 
     aceptar(){     
@@ -187,7 +204,7 @@ class Contenido extends React.Component{
     handleSubmit() {
         this.peticion=2;
         const comentarioUsuario = {
-            "email_persona": "andrescd@hotmail",
+            "email_persona": this.state.email,
             "valoracion": this.valoracion_usuario,
             "comentario": this.state.comentario
           }
@@ -356,12 +373,15 @@ class Contenido extends React.Component{
                             <ListGroup.Item onClick={(e)=>this.handleClick(e,'Educacion Superior')} action className='item-filtro'>Educacion Superior</ListGroup.Item>
                             <ListGroup.Item onClick={(e)=>this.handleClick(e,'Articulos')} action className='item-filtro'>Articulos</ListGroup.Item>
                             <ListGroup.Item id='boton-busqueda' className='item-filtro'>
-                                <Button  className='btn-busqueda' onClick={this.handleClickSubirContenido} variant="outline-secondary" size='md'>
-                                    <FontAwesomeIcon className='fa fa-upload' icon={faUpload} fixedWidth/>
-                                    Subir Contenido
-                                </Button>
-                            </ListGroup.Item>
-                            
+                            {this.state.logeado ? (
+                            <Button  className='btn-busqueda' onClick={this.handleClickSubirContenido} variant="outline-secondary" size='md'>
+                            <FontAwesomeIcon className='fa fa-upload' icon={faUpload} fixedWidth/>
+                            Subir Contenido
+                            </Button>
+                            ) : (
+                                <div /* Este es el div 2 */ className="red2" />
+                            )}
+                            </ListGroup.Item> 
                         </ListGroup>
                     </div>
                 </section>
@@ -383,17 +403,24 @@ class Contenido extends React.Component{
                 </Modal.Title>
                 <Modal.Body>
                 <p>{this.state.resumen}</p>
-                <Button variant="info" className='btn-Descarga'  onClick={()=>this.descarga(this.state.arrayContenidos[this.state.posSeleccionado].link)}>Descarga</Button>
+                {this.state.logeado ? (<Button variant="info" className='btn-Descarga'  onClick={()=>this.descarga(this.state.arrayContenidos[this.state.posSeleccionado].link, this.state.tokens)}>Descarga</Button>) : (<></>)}
                 <p>{this.state.tag}</p>
-                <p> Dejanos tu Comentario</p>
-                <p className='estrellitas'> <Rating initialRating={this.valoracion_usuario} fractions={2}  emptySymbol="far fa-star fa-2x" fullSymbol="fas fa-star fa-2x" onChange={(rate) => this.CambiarRate(rate)}/> </p>
-                <p> <input type="text" name="comentario" onChange={this.handleChange} required/> </p>
-                <Button variant="dark" className='btn-Subir'onClick={this.handleSubmit}>
-                    Subir
-                </Button>
                 <Button variant="dark" className='btn-Salir'onClick={this.handleClickEstadoFalse}>
-                    Salir
-                </Button>
+                        Salir
+                    </Button>
+                {this.state.logeado ? (
+                    <div>
+                    <p> Dejanos tu Comentario</p>
+                    <p className='estrellitas'> <Rating initialRating={this.valoracion_usuario} fractions={2}  emptySymbol="far fa-star fa-2x" fullSymbol="fas fa-star fa-2x" onChange={(rate) => this.CambiarRate(rate)}/> </p>
+                    <p> <input type="text" name="comentario" onChange={this.handleChange} required/> </p>
+                    <Button variant="dark" className='btn-Subir'onClick={this.handleSubmit}>
+                        Subir
+                    </Button>
+
+                    </div>
+                ) : (
+                    <div /* Este es el div 2 */ className="red2" />
+                )}
                 <h4> Comentarios </h4>
                 {[...Array(this.state.comentarios.length)].map((e, i) => {
                     return(
