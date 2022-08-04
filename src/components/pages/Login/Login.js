@@ -56,9 +56,8 @@ class Login extends React.Component {
 			if (data !== null) {
 				user_service.setToken(data);
 				token = user_service.getToken();
-				this.cookies.set('token', token, { path: '/' });
 				data_user = user_service.getDataToken(token);
-				this.setState(values => ({ ...values, valid_user: true, data_user: data_user, token: token }));
+				this.setState(values => ({ ...values, valid_user: data_user.activo, data_user: data_user, token: token }));
 			}
 			else this.setState({
 				notificacion: true, tituloNotificacion: "Inicio de sesion",

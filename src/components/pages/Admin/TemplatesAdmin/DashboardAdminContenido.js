@@ -161,7 +161,7 @@ export default class DashboardAdminContenido extends Component {
                                             <h3 className="card-title">Solicitudes de contenido</h3>
                                         </div>
                                         <div className="card-body table-responsive p-0" style={{ height: 300 }}>
-                                            <table className="table table-head-fixed text-nowrap">
+                                        <table className="table table-head-fixed text-nowrap">
                                                 <thead>
                                                     <tr>
                                                         <th>Título</th>
@@ -180,7 +180,7 @@ export default class DashboardAdminContenido extends Component {
                                                     <tr>
                                                         <td>{this.state.contenidos[i].titulo}</td>
                                                         <td>
-                                                            <textarea id="inputDescription" className="form-control" rows={4} defaultValue={this.state.contenidos[i].resumen} />
+                                                            <textarea id="inputDescription" className="form-control" style={{width: '300px'}} rows={4} defaultValue={this.state.contenidos[i].resumen} />
                                                         </td>
                                                         <td>{this.state.contenidos[i].id_autor.email}</td>
                                                         <div className="btn-group btn-group-sm">
@@ -190,7 +190,7 @@ export default class DashboardAdminContenido extends Component {
                                                             </button>
                                                         </div>
                                                         <td>
-                                                            <textarea id="inputDescription" className="form-control" rows={4} defaultValue={this.state.contenidos[i].tags} />
+                                                            <textarea id="inputDescription" className="form-control" style={{width: '150px'}} rows={4} defaultValue={this.state.contenidos[i].tags} />
                                                         </td>
                                                         <td>{this.state.contenidos[i].fecha_subida}</td>
                                                         <td>
@@ -227,7 +227,7 @@ export default class DashboardAdminContenido extends Component {
                                             <h3 className="card-title">Lista de Contenidos</h3>
                                         </div>
                                         <div className="card-body table-responsive p-0" style={{ height: 300 }}>
-                                            <table className="table table-head-fixed text-nowrap">
+                                        <table className="table table-head-fixed text-nowrap">
                                                 <thead>
                                                     <tr>
                                                         <th>ID</th>
@@ -238,6 +238,7 @@ export default class DashboardAdminContenido extends Component {
                                                         <th>Valoración</th>
                                                         <th>Etiquetas</th>
                                                         <th>Fecha de cargue</th>
+                                                        <th>Visible</th>
                                                         <th>Acciones</th>
                                                     </tr>
                                                 </thead>
@@ -247,28 +248,28 @@ export default class DashboardAdminContenido extends Component {
                                                     return(
                                                     <tr>
                                                         <td>{i}</td>
-                                                        <td>Título 1</td>
+                                                        <td>{this.state.contenidos[i].titulo}</td>
                                                         <td>
-                                                            <textarea id="inputDescription" className="form-control" rows={4} defaultValue={this.state.contenidos[i].resumen} />
+                                                            <textarea id="inputDescription"  style={{width: '300px'}} className="form-control" cols={10} rows={4} defaultValue={this.state.contenidos[i].resumen} />
                                                         </td>
                                                         <td>{this.state.contenidos[i].id_autor.email}</td>
                                                         <td>
                                                             <div className="btn-group btn-group-sm">
-                                                                <a  onClick={()=>this.Eliminar(this,this.state.contenidos[i])} href="#" className="btn btn-info"><i className="fas fa-eye" /></a>
                                                                 <button type="button" onClick={()=>this.Descargar(this.state.contenidos[i].link)} className="btn btn-primary float-right" style={{ marginRight: 5 }}>
                                                                     <i className="fas fa-download" /> Descargar
                                                                 </button>
                                                             </div>
                                                         </td>
-                                                        <td>{this.state.contenidos[i].valoracion_general}</td>
+                                                        <td>{this.state.contenidos[i].valoracion_general.toFixed(3)}</td>
                                                         <td>
-                                                            <textarea id="inputDescription" className="form-control" rows={4} defaultValue={this.state.contenidos[i].tags} />
+                                                            <textarea id="inputDescription" className="form-control" style={{width: '150px'}} rows={4} defaultValue={this.state.contenidos[i].tags} />
                                                         </td>
-                                                        <td>{new Date(this.state.contenidos[i].fecha_subida).toLocaleDateString()+ ' A las: ' + new Date(this.state.contenidos[i].fecha_subida).toLocaleTimeString()}</td>
+                                                        <td>{new Date(this.state.contenidos[i].fecha_subida).toLocaleDateString()}</td>
+                                                        <td>{this.state.contenidos[i].visible ? 'Si' : 'No'}</td>
                                                         <td>
                                                             <div className="input-group-prepend">
                                                                 <button type="button" className="btn btn-warning" onClick={()=>this.MostrarOcultar(this.state.contenidos[i])} aria-expanded="false">
-                                                                    {this.state.contenidos[i].visible ? 'Ocultar contenido' : 'Mostrar contenido'}
+                                                                    {this.state.contenidos[i].visible ? 'Ocultar' : 'Mostrar'}
                                                                 </button>
                                                             </div>
                                                         </td>
