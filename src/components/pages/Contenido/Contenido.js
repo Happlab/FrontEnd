@@ -84,13 +84,15 @@ class Contenido extends React.Component{
                     contenido = Array.from(data);
                     for(let i=0;i<contenido.length;i++){
                         if(!contenido[i].pendiente){
-                            contenidoNoPendiente[i] = contenido[i];
+                            if(contenido[i].visible){
+                                contenidoNoPendiente[i] = contenido[i];
+                            }
                         }
                     }
                     return contenidoNoPendiente;
                     
                 }else{
-                    alert(mensajeError);
+                    this.setState({notificacionContenido: true, tituloNotificacion: "Contenido", mensajeNotificacion:"No se pudo subir el contenido"});
                     return null;
                 }
             })
@@ -130,7 +132,7 @@ class Contenido extends React.Component{
             if(data){
                 this.setState({notificacionContenido: true, tituloNotificacion: "Contenido", mensajeNotificacion:"Contenido subido exitosamente"});
             }else{
-                this.setState({notificacionContenido: true, tituloNotificacion: "Contenido", mensajeNotificacion:"No se pudo subir el contenido"});
+                
             }
         })
     }
