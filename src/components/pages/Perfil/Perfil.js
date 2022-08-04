@@ -5,6 +5,7 @@ import Footer from '../../navegation/footer/Footer';
 import './Perfil.scss'
 import user_service from '../../services/UserServices';
 import Notificacion from '../Admin/TemplatesAdmin/modal';
+import Cookie from 'universal-cookie'
 
 class Perfil extends React.Component {
     constructor(props) {
@@ -28,7 +29,11 @@ class Perfil extends React.Component {
         this.handleChange = this.handleChange.bind(this);
         this.saveChange = this.saveChange.bind(this);
         this.handleClickCerrarModal=this.handleClickCerrarModal.bind(this);
+        this.eliminarCookie = this.eliminarCookie.bind(this);
     }
+
+    cookie = new Cookie();
+    token = this.cookie.get('token');
 
     onChangedPassword() {
         this.setState(previousState => ({
@@ -63,13 +68,12 @@ class Perfil extends React.Component {
                     mensajeNotificacion: "La cuenta ha sido desactivada exitosamente"
                 });
                 user_service.deleteToken();
+                this.eliminarCookie();
             }
             else this.setState({
                 notificacion: true, tituloNotificacion: "Perfil del usuario",
                 mensajeNotificacion: "La cuenta no pudo ser desactivada"
             });
-        }).finally(() => {
-            this.setState(values => ({ ...values, isStatus: !this.state.isStatus }));
         })
     }
 
@@ -83,13 +87,12 @@ class Perfil extends React.Component {
         let update = user_service.updateUser(data);
         update.then(data_user => {
             if (data_user !== null) {
-                //this.setState(values => ({ ...values, data_user: JSON.parse(data_user) }));
                 this.setState({
                     notificacion: true, tituloNotificacion: "Perfil del usuario",
                     mensajeNotificacion: "Cargo modificado exitosamente"
                 });
                 user_service.deleteToken();
-
+                this.eliminarCookie();
             } else this.setState({
                 notificacion: true, tituloNotificacion: "Perfil del usuario",
                 mensajeNotificacion: "El cargo no pudo ser modificado"
@@ -98,14 +101,19 @@ class Perfil extends React.Component {
     }
 
     handleClickCerrarModal() {
+        window.location.href = "/Login"
         this.setState({ notificacion: false });
+    }
+
+    eliminarCookie(){
+        this.cookie.remove('token');
     }
 
     render() {
         let data = this.state.data_user;
         if(data === null) {
             return (
-                <Navigate to="/login" state={{ data }} />
+                <Navigate to="/Login" state={{ data }} />
             )
         }
         data.tipo_docente = (this.state.cargo !== "") ? this.state.cargo : data.tipo_docente;

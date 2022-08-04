@@ -4,6 +4,7 @@ import Navbar1 from '../../navegation/navbar/Navbar1';
 import Footer from '../../navegation/footer/Footer';
 import user_service from '../../services/UserServices';
 import Notificacion from '../Admin/TemplatesAdmin/modal';
+import Cookie from 'universal-cookie'
 
 class Password extends React.Component {
     constructor(props) {
@@ -20,7 +21,11 @@ class Password extends React.Component {
         this.handleSubmit = this.handleSubmit.bind(this);
         this.onSendUpdateRequest = this.onSendUpdateRequest.bind(this);
         this.handleClickCerrarModal = this.handleClickCerrarModal.bind(this);
+        this.eliminarCookie = this.eliminarCookie.bind(this);
     }
+
+    cookie = new Cookie();
+    token = this.cookie.get('token');
 
     handleChange(event) {
         let name = event.target.name;
@@ -42,9 +47,15 @@ class Password extends React.Component {
                         notificacion: true, tituloNotificacion: "Cambio de contraseña",
                         mensajeNotificacion: "Contraseña cambiada exitosamente"
                     });
-                } else alert("La contraseña actual ingresada no es correcta");
+                } else this.setState({
+                    notificacion: true, tituloNotificacion: "Cambio de contraseña",
+                    mensajeNotificacion: "La contraseña actual ingresada no es correcta"
+                });
             })
-        } else alert("La contraseña nueva no coinciden, verifique nuevamente");
+        } else this.setState({
+            notificacion: true, tituloNotificacion: "Cambio de contraseña",
+            mensajeNotificacion: "La contraseña nueva no coincide, verifique nuevamente"
+        });
     }
 
     onSendUpdateRequest(data) {
@@ -58,6 +69,8 @@ class Password extends React.Component {
                     notificacion: true, tituloNotificacion: "Cambio de contraseña",
                     mensajeNotificacion: "Contraseña cambiada exitosamente"
                 });
+                user_service.deleteToken()
+                this.eliminarCookie();
             } else this.setState({
                 notificacion: true, tituloNotificacion: "Cambio de contraseña",
                 mensajeNotificacion: "No se pudo cambiar la contraseña"
@@ -66,7 +79,14 @@ class Password extends React.Component {
     }
 
     handleClickCerrarModal() {
+        if (this.state.userVerified) {
+            window.location.href = "/Login"
+        }
         this.setState({ notificacion: false });
+    }
+
+    eliminarCookie(){
+        this.cookie.remove('token');
     }
 
     render() {
@@ -75,9 +95,7 @@ class Password extends React.Component {
             <div className="row">
                 <Notificacion show={this.state.notificacion} titulo={this.state.tituloNotificacion} mensaje={this.state.mensajeNotificacion} onclick={this.handleClickCerrarModal} />
                 {this.state.userVerified && (
-                    this.onSendUpdateRequest(data),
-                    user_service.deleteToken(),
-                    <Navigate to='/Login' state={{ data }} />
+                    this.onSendUpdateRequest(data)
                 )}
                 {this.state.updateVerified && (
                     data = JSON.stringify(data)
