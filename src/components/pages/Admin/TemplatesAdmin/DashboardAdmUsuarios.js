@@ -165,7 +165,7 @@ export default class Dashboard extends Component {
                                                         <td>{this.state.usuarios[i].nombres+' '+this.state.usuarios[i].apellidos}</td>
                                                         <td>{this.state.usuarios[i].email}</td>
                                                         <td>{this.state.usuarios[i].cedula}</td>
-                                                        <td>{this.state.usuarios[i].rol}</td>
+                                                        <td>{this.state.usuarios[i].tipo_docente}</td>
                                                         <td>
                                                             <div className="btn-group">
                                                                 <button type="button" className="btn btn-danger">Aprobar/Rechazar</button>

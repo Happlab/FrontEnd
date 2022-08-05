@@ -174,15 +174,9 @@ class Contenido extends React.Component{
     }
 
     descarga(contenido_link){
-        if(this.credito!==0){
-            this.peticion=0;
-            this.setState({notificacion: true, tituloNotificacion: "Descarga de contenido", mensajeNotificacion:("¿Esta seguro que desea usar un credito para descargar este contenido? Usted posee: "+ this.credito  +" Creditos para usar")});
-            this.setState({link: contenido_link})
-        }
-        else{
-            this.setState({notificacionContenido: true, tituloNotificacion: "Descarga de contenido", mensajeNotificacion:("No tiene creditos para esta accion")});
-            this.peticion=2;
-        }
+        this.peticion=0;
+        this.setState({notificacion: true, tituloNotificacion: "Descarga de contenido", mensajeNotificacion:("¿Esta seguro que desea usar un credito para descargar este contenido? Usted posee: "+ this.credito  +" Creditos para usar")});
+        this.setState({link: contenido_link})
     }
 
     componentDidMount(){
@@ -208,7 +202,6 @@ class Contenido extends React.Component{
             window.location.href='http://localhost:8080/contenido/download/'+this.state.link;
             this.setState({link: ""})
             this.setState({notificacion: false})
-            this.setState({estadoTrigger: false});
             this.credito = this.credito-1;
             this.actualizarCredito();
             
@@ -216,12 +209,10 @@ class Contenido extends React.Component{
         else if(this.peticion === 1){
             this.setState({estadoSubirContenido: !this.state.estadoSubirContenido});
             this.setState({notificacionContenido:false})
-            this.setState({estadoTrigger: false});
             this.listarContenido();
         }
         else{
             this.setState({notificacionContenido: false})
-            this.setState({estadoTrigger: false});
             this.listarContenido();
         }
     }
@@ -229,12 +220,10 @@ class Contenido extends React.Component{
     cancelar(){
         if(this.peticion===0){
             this.setState({notificacion: false});
-            this.setState({estadoTrigger: false});
             this.setState({link: ""})
         }
         else{
             this.setState({notificacionContenido:false})
-            this.setState({estadoTrigger: false});
         }
         
     }
