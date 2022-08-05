@@ -77,7 +77,7 @@ export default class DashboardAdminAcercaDe extends Component {
       dataform.append('contenido', new File([''],''));
     }
     if(longitud!==null && latitud!==null){
-      dataform.append('coordenadas', [longitud, latitud]);
+      dataform.append('coordenadas', [latitud, longitud]);
     }else{
       dataform.append('coordenadas', [0, 0]);
     }

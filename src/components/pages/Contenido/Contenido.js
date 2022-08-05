@@ -14,12 +14,15 @@ import NotificacionContenido from '../../navegation/modal_contenido/modal_conten
 import Notificacion from '../Admin/TemplatesAdmin/modal'
 import Cookies from 'universal-cookie';
 import user_services from '../../services/UserServices'
+import {PeticionEnvio, PeticionGet} from '../Admin/PeticionesAdmin.js'
 
 class Contenido extends React.Component{
     constructor(props){
         super(props);
         this.state={
             arrayContenidos:[],
+            contenidosPorTag:[],
+            ListarPorTag:false,
             estadoSubirContenido:false,
             posSeleccionado:0,
             estadoTrigger: false,
@@ -51,6 +54,7 @@ class Contenido extends React.Component{
         this.cancelar = this.cancelar.bind(this);
         this.aceptar = this.aceptar.bind(this);
         this.actualizarCredito = this.actualizarCredito.bind(this);
+        this.handleClick=this.handleClick.bind(this);
     }
 
     peticion=0;
@@ -59,7 +63,16 @@ class Contenido extends React.Component{
     handleClickSubirContenido(){
         this.setState({estadoSubirContenido: !this.state.estadoSubirContenido});
     }
-
+    handleClick(e,tags){
+        const url='http://localhost:8080/contenido/buscar/'+tags;
+        const mensajeError='no hay contenidos';
+        const datos=PeticionGet(url, mensajeError);
+        datos.then(data =>{
+            if(data!==null){
+                this.setState(()=>({contenidosPorTag: Array.from(data), ListarPorTag: !this.state.ListarPorTag}));
+            }
+        }); 
+    }
     handleChange(event) {
 		let name = event.target.name;
 		let value = event.target.value;
@@ -286,36 +299,68 @@ class Contenido extends React.Component{
             const array2=[];
             if(!this.state.estadoSubirContenido){ 
                         //aqui va el contenido
-                    
-                        for(let i=0;i<this.state.arrayContenidos.length;i++){
-                            array2[i]=
-                            <div>
-                                    <Col>
-                                            <Card className='card-change'>
-                                                <CardBody>
-                                                <CardText className='title-card'> {this.state.arrayContenidos[i].titulo} </CardText>
-                                                <CardText className='subtittle-card'>{this.state.arrayContenidos[i].id_autor.nombres}</CardText>
-                                                <CardText className='stars-card'><Rating initialRating={this.state.arrayContenidos[i].valoracion_general} readonly fractions={2}  emptySymbol="far fa-star fa-2x"
-                                                fullSymbol="fas fa-star fa-2x" /></CardText>
-                                                <CardText className='content-card'> {this.state.arrayContenidos[i].tags} </CardText>
-                                                </CardBody>  
-                                                <Button
-                                                color="secondary"
-                                                onClick={() => this.handleClickEstadoTrue(i,
-                                                    this.state.arrayContenidos[i].comentarios,
-                                                    this.state.arrayContenidos[i].titulo,
-                                                    this.state.arrayContenidos[i].id_autor.nombres + " " +this.state.arrayContenidos[i].id_autor.apellidos,
-                                                    this.state.arrayContenidos[i].fecha_subida,
-                                                    this.state.arrayContenidos[i].resumen,
-                                                    this.state.arrayContenidos[i].tags[0]
-                                                    )}
-                                                >
-                                                Ver mas
-                                                </Button>{" "}
-                                            </Card>     
-                                    </Col> 
-                            </div>
-                      }
+                        if(this.state.ListarPorTag){
+                            for(let i=0;i<this.state.contenidosPorTag.length;i++){
+                                array2[i]=
+                                <div>
+                                        <Col>
+                                                <Card className='card-change'>
+                                                    <CardBody>
+                                                    <CardText className='title-card'> {this.state.contenidosPorTag[i].titulo} </CardText>
+                                                    <CardText className='subtittle-card'>{this.state.contenidosPorTag[i].id_autor.nombres}</CardText>
+                                                    <CardText className='stars-card'><Rating initialRating={this.state.contenidosPorTag[i].valoracion_general} readonly fractions={2}  emptySymbol="far fa-star fa-2x"
+                                                    fullSymbol="fas fa-star fa-2x" /></CardText>
+                                                    <CardText className='content-card'> {this.state.contenidosPorTag[i].tags} </CardText>
+                                                    </CardBody>  
+                                                    <Button
+                                                    color="secondary"
+                                                    onClick={() => this.handleClickEstadoTrue(i,
+                                                        this.state.contenidosPorTag[i].comentarios,
+                                                        this.state.contenidosPorTag[i].titulo,
+                                                        this.state.contenidosPorTag[i].id_autor.nombres + " " +this.state.contenidosPorTag[i].id_autor.apellidos,
+                                                        this.state.contenidosPorTag[i].fecha_subida,
+                                                        this.state.contenidosPorTag[i].resumen,
+                                                        this.state.contenidosPorTag[i].tags[0]
+                                                        )}
+                                                    >
+                                                    Ver mas
+                                                    </Button>{" "}
+                                                </Card>     
+                                        </Col> 
+                                </div>
+                          }
+                        }else{
+                            for(let i=0;i<this.state.arrayContenidos.length;i++){
+                                array2[i]=
+                                <div>
+                                        <Col>
+                                                <Card className='card-change'>
+                                                    <CardBody>
+                                                    <CardText className='title-card'> {this.state.arrayContenidos[i].titulo} </CardText>
+                                                    <CardText className='subtittle-card'>{this.state.arrayContenidos[i].id_autor.nombres}</CardText>
+                                                    <CardText className='stars-card'><Rating initialRating={this.state.arrayContenidos[i].valoracion_general} readonly fractions={2}  emptySymbol="far fa-star fa-2x"
+                                                    fullSymbol="fas fa-star fa-2x" /></CardText>
+                                                    <CardText className='content-card'> {this.state.arrayContenidos[i].tags} </CardText>
+                                                    </CardBody>  
+                                                    <Button
+                                                    color="secondary"
+                                                    onClick={() => this.handleClickEstadoTrue(i,
+                                                        this.state.arrayContenidos[i].comentarios,
+                                                        this.state.arrayContenidos[i].titulo,
+                                                        this.state.arrayContenidos[i].id_autor.nombres + " " +this.state.arrayContenidos[i].id_autor.apellidos,
+                                                        this.state.arrayContenidos[i].fecha_subida,
+                                                        this.state.arrayContenidos[i].resumen,
+                                                        this.state.arrayContenidos[i].tags[0]
+                                                        )}
+                                                    >
+                                                    Ver mas
+                                                    </Button>{" "}
+                                                </Card>     
+                                        </Col> 
+                                </div>
+                          }
+                        }
+                        
                     return(
                         array2
                     )
@@ -395,10 +440,10 @@ class Contenido extends React.Component{
                             <ListGroup.Item as={'li'} className='item-filtro'>
                                 <h2 id='texto-filtro'>Filtros</h2>
                             </ListGroup.Item>
-                            <ListGroup.Item onClick={(e)=>this.handleClick(e,'Primaria')} action className='item-filtro'>Primaria</ListGroup.Item>
-                            <ListGroup.Item onClick={(e)=>this.handleClick(e,'Secundaria')} action className='item-filtro'>Secundaria</ListGroup.Item>
-                            <ListGroup.Item onClick={(e)=>this.handleClick(e,'Educacion Superior')} action className='item-filtro'>Educacion Superior</ListGroup.Item>
-                            <ListGroup.Item onClick={(e)=>this.handleClick(e,'Articulos')} action className='item-filtro'>Articulos</ListGroup.Item>
+                            <ListGroup.Item onClick={(e)=>this.handleClick(e,'matematicas')} action className='item-filtro'>Matematicas</ListGroup.Item>
+                            <ListGroup.Item onClick={(e)=>this.handleClick(e,'religion')} action className='item-filtro'>Religion</ListGroup.Item>
+                            <ListGroup.Item onClick={(e)=>this.handleClick(e,'ingles')} action className='item-filtro'>Ingles</ListGroup.Item>
+                            <ListGroup.Item onClick={(e)=>this.handleClick(e,'sociales')} action className='item-filtro'>Sociales</ListGroup.Item>
                             <ListGroup.Item id='boton-busqueda' className='item-filtro'>
                             {this.state.logeado ? (
                             <Button  className='btn-busqueda' onClick={this.handleClickSubirContenido} variant="outline-secondary" size='md'>
