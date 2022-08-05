@@ -106,11 +106,11 @@ class Perfil extends React.Component {
     }
 
     eliminarCookie(){
-        this.cookie.remove('token');
+        user_service.deleteToken();
     }
 
     render() {
-        let data = this.state.data_user;
+        let data = this.state.data_user === null ? user_service.getDataToken(this.token):this.state.data_user
         if(data === null) {
             return (
                 <Navigate to="/Login" state={{ data }} />
