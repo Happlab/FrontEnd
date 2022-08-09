@@ -1,0 +1,40 @@
+$color-background: #1E86C0;
+$alineacion: center;
+$separacion-letras: 1px;
+
+.navBg{
+    width: 100%;
+    background-color: $color-background; 
+}
+
+.Logo{
+    background-color: white;
+    text-align: $alineacion;
+}
+
+.login{
+    background: #EA5356;
+    width: 20%;
+    letter-spacing: $separacion-letras;
+    text-align: $alineacion;
+}
+.logout{
+    a{
+        background: #EA5356;
+        .button{
+            background: #EA5356;
+        }
+        
+    }
+    transition: color .15s ease-in-out;
+    width: 20%;
+    letter-spacing: $separacion-letras;
+    text-align: $alineacion;
+}
+
+.me-auto{
+    background-color: $color-background;
+    width: 80%;
+    letter-spacing: $separacion-letras;
+
+}

@@ -1,0 +1,173 @@
+@import './mixinNoticias.scss';
+#contenedor  {
+    position: relative;
+    background-color: white;
+}
+#formulario{
+    display: flex;
+}
+
+.main-noticias{ 
+    .elementor-section{
+        position: relative;
+        background-color: #fff;
+        text-shadow: none;
+        color: #fff;
+    }
+    .elementor-container {
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        margin-right: auto;
+        margin-left: auto;
+        position: relative;
+    }
+}
+
+.elementor-shape[data-negative=false].elementor-shape-bottom, .elementor-shape[data-negative=true].elementor-shape-top {
+    @include transformar("rotate",180deg);
+}
+.elementor-shape {
+    overflow: hidden;
+    left: 0;
+    width: 100%;
+    line-height: 0;
+    direction: ltr;
+    .elementor-shape-fill {
+        fill: #fff;
+        transform-origin: center;
+        @include transformar("rotateY",0deg);
+    }
+    svg {
+        display: block;
+        width: calc(100% + 1.3px);
+        position: relative;
+        left: 50%;
+        @include transformar("translateX",-50%);
+    }
+}
+
+.elementor-widget-heading{
+    $sizes: ("small": 15px, "medium": 19px, "large": 29px,"xl":39px,"xxl":59px);
+    .elementor-heading-title{
+        text-align: left;
+        color: #fff;
+        padding: 0px;
+        margin:0;
+        line-height:1;
+    }
+    .elementor-heading-title[class*=elementor-size-]>a{
+        color:inherit;
+        font-size:inherit;
+        line-height:inherit;
+    }
+    @each $name, $size in $sizes{
+        @include size-fuente($name,$size);
+    }
+}
+.tgx-portfolio {
+    .hover-1{
+        .row {
+            margin-right: 15px;
+            margin-left: 15px;
+            .portfolio-item{ 
+                img{
+                    left: 100%; 
+                    top: 0px; 
+                    @include transicion("all 300ms ease 0s");
+                }
+            }
+        }
+        .portfolio-item {
+            span {
+                position: absolute;
+                background-color: #056ddc;
+            }
+        }
+    }
+}
+
+
+.tgx-portfolio {
+
+    .hover-1 {
+        #news{
+            padding-top: 10px;
+            padding-bottom: 30px;
+        }
+        .portfolio-item {
+            padding: 30px 10px;
+            .fade:not(.show){
+                background-color: #056ddc;
+                opacity: 0.5;
+            }
+            .span-img{
+                width: 100%;
+                height: 100%;
+                .vinculo-noticia{
+                    width: 100%;
+                    height: 100%;
+                    img{
+                        width: 100%;
+                        height: 100%;
+                    }
+                    text-decoration: none;
+                    .titulo-noticia{
+                        position: absolute;
+                        background-color: transparent;
+                        height: 50%;
+                        width: 100%;
+                        top: 50%;
+                        left: 50%;
+                        opacity: 1;
+                        color: white;
+                        transform: translate(-50%, 0%);
+                        font-weight: bold;
+                        text-align: center;
+                        h4{
+                            margin: 0;
+                            
+                        }
+                    }
+                    .fade.titulo-noticia:not(.show){
+                        opacity: 0;
+                    }   
+                } 
+            }         
+            span {
+                display: block;
+                position: relative;
+                overflow: hidden;
+            }
+            
+        }
+    }
+}
+.elementor-section.elementor-section-boxed>.elementor-container {
+    max-width: 1140px;
+}
+.span-img img{
+    border-style: none;
+    height: auto;
+    max-width: 100%;
+}
+.elementor-column-gap-default>.elementor-column>.elementor-element-populated {
+    padding: 10px;
+}
+.elementor-832 .elementor-element.elementor-element-bdd763f {
+    transition: background 0.3s, border 0.3s, border-radius 0.3s, box-shadow 0.3s;
+}
+.elementor-832 .elementor-element.elementor-element-082e3a1 .tgx-portfolio #hover-1 .portfolio-item .portfolio-buttons a, .elementor-832 .elementor-element.elementor-element-082e3a1 .tgx-portfolio .hover-2 .portfolio-btn a, .elementor-832 .elementor-element.elementor-element-082e3a1 .tgx-portfolio .hover-3 .effect-3 .external-link li a {
+    color: #056ddc;
+}
+.elementor-element.elementor-element-bdd763f:not(.elementor-motion-effects-element-type-background), .elementor-832 .elementor-element.elementor-element-bdd763f > .elementor-motion-effects-container > .elementor-motion-effects-layer {
+    background-color: #EA5356;
+}
+.elementor-832 .elementor-element.elementor-element-082e3a1 .tgx-portfolio #hover-1 .portfolio-item .portfolio-buttons a, .elementor-832 .elementor-element.elementor-element-082e3a1 .tgx-portfolio .hover-2 .portfolio-btn a, .elementor-832 .elementor-element.elementor-element-082e3a1 .tgx-portfolio .hover-3 .effect-3 .external-link li a {
+    background-color: #fff;
+}
+.elementor a {
+    -webkit-box-shadow: none;
+    box-shadow: none;
+    text-decoration: none;
+}
