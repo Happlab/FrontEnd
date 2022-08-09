@@ -58,7 +58,7 @@ class SobreNosotros extends React.Component {
 		</section>
 		<section id="portfolio" class="gallery">
 			<div class="content">
-				<h2 class="subtitle">Gallery</h2>
+				<h2 class="subtitle">Galería</h2>
 				<div class="content-gallery">
 					<img class="img-gallery" src={imagenes.imgTec1} alt="" />
 					<img class="img-gallery" src={imagenes.imgTec2} alt="" />
