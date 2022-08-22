@@ -1,13 +1,11 @@
 import React, { Component } from "react";
-import Cookie from "universal-cookie";
 import user_service from "../../../services/UserServices";
 
 export default class Header extends Component {
   constructor(props) {
-    super();
+    super(props);
     this.handleClickCerrarSesion = this.handleClickCerrarSesion.bind(this);
   }
-  cookie = new Cookie();
   handleClickCerrarSesion() {
     user_service.deleteToken();
   }

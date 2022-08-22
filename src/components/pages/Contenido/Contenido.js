@@ -12,9 +12,8 @@ import Col from "react-bootstrap/Col";
 import Modal from "react-bootstrap/Modal";
 import NotificacionContenido from "../../navegation/modal_contenido/modal_contenido";
 import Notificacion from "../Admin/TemplatesAdmin/modal";
-import Cookies from "universal-cookie";
-import user_services from "../../services/UserServices";
 import { PeticionGet } from "../Admin/PeticionesAdmin.js";
+import { TokenContext } from "../../../context/GlobalContext";
 
 class Contenido extends React.Component {
   constructor(props) {
@@ -56,7 +55,7 @@ class Contenido extends React.Component {
     this.actualizarCredito = this.actualizarCredito.bind(this);
     this.handleClick = this.handleClick.bind(this);
   }
-
+  static contextType = TokenContext;
   peticion = 0;
   credito = 0;
 
@@ -230,10 +229,8 @@ class Contenido extends React.Component {
         this.setState({ arrayContenidos: Array.from(data) });
       }
     });
-    const cookies = new Cookies();
-    const token = cookies.get("token");
-    if (token) {
-      const usuarios = user_services.getDataToken(token);
+    let usuarios = this.context.token;
+    if (usuarios != null) {
       this.setState({ email: usuarios.email, logeado: true });
       this.credito = usuarios.tokens;
     }

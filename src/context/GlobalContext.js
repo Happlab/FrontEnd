@@ -12,11 +12,16 @@ export class TokenContextProvider extends React.Component {
             children: props.children
         }
     }
-
     token = user_services.getDataToken(user_services.getToken());
+    setToken(newToken) {
+        user_services.setToken(newToken);
+        this.token = user_services.getDataToken(newToken);
+    }
+
     render() {
+        console.log("context", this.token);
         return(
-            <TokenContext.Provider value={{ token: this.token, setToken: user_services.setToken }}>
+            <TokenContext.Provider value={{ token: this.token, setToken: this.setToken }}>
                 {this.state.children}
             </TokenContext.Provider>
         )

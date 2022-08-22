@@ -9,7 +9,7 @@ export default class AdminUsuarios extends Component {
   static contextType = TokenContext;
   render() {
     let data = this.context.token;
-    if(data === null && data.rol[0] !== 'ADMIN') {
+    if(data === null) {
       return (
           <Navigate to="/login" state={{data}} />
       )
