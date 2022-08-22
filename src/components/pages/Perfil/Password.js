@@ -87,7 +87,6 @@ class Password extends React.Component {
 
     render() {
         let data = this.context.token;
-        console.log(data, "password");
         if(data === null) {
             return (<Navigate replace to="/" />);
         }

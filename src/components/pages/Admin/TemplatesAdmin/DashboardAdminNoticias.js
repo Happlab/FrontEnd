@@ -173,7 +173,6 @@ export default class DashboardAdminInicio extends Component {
                         document.getElementById("inputFileAdd").files[0]
                       );
                       formdata.append("visible", true);
-                      console.log(formdata);
                       const url = this.urlServicio + "create";
                       const metodo = "POST";
                       const peticion = PeticionEnvioDataFrom(

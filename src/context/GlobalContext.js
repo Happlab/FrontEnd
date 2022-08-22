@@ -19,7 +19,6 @@ export class TokenContextProvider extends React.Component {
     }
 
     render() {
-        console.log("context", this.token);
         return(
             <TokenContext.Provider value={{ token: this.token, setToken: this.setToken }}>
                 {this.state.children}

@@ -16,7 +16,6 @@ export async function PeticionGet(url) {
             return content;
         })
         .then(data => { 
-            console.log(data);
             if( status && data !== "" ){
                 return data;
             }else{
@@ -39,7 +38,6 @@ export async function PeticionEnvio(objetoAModificar, url, metodo){
     }
     return fetch(url, requestOptions)
         .then(response => {
-            console.log("Response", response)
             if (response.status === 200) return true
             else{
                 return false;
@@ -60,7 +58,6 @@ export async function PeticionEnvioDataFrom(objetoAModificar, url, metodo){
     }
     return fetch(url, requestOptions)
         .then(response => {
-            console.log("Response", response)
             if (response.ok) return true
             else{
                 return false;

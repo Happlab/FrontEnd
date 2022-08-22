@@ -65,7 +65,6 @@ const Registro = () => {
                             }
                             fetch('http://localhost:8080/persona/registro', requestOptions)
                                 .then(response => {
-                                    console.log("response register: "+response.status);
                                     if (response.status === 200) setSuccess(true)
                                     else setError(true)
                                 })

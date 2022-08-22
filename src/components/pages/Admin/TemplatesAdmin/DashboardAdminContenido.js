@@ -99,7 +99,6 @@ export default class DashboardAdminContenido extends Component {
     };
     return fetch(petUsuario, request_options)
       .then((response) => {
-        console.log("Response", response);
         if (response.status === 200) {
           console.log(this.credito);
         } else {

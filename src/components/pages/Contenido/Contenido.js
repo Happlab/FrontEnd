@@ -137,7 +137,6 @@ class Contenido extends React.Component {
     let status = 0;
     var formdata = new FormData();
     formdata.append("email_autor", this.state.email);
-    console.log(this.state.email);
     formdata.append("titulo", document.getElementById("idTitulo").value);
     formdata.append("archivo", document.getElementById("idFile").files[0]);
     formdata.append("resumen", document.getElementById("idResumen").value);
@@ -188,7 +187,6 @@ class Contenido extends React.Component {
     };
     return fetch(peticion, request_options)
       .then((response) => {
-        console.log("Response", response);
         if (response.status === 200) {
           console.log(this.credito);
         } else {
@@ -290,7 +288,6 @@ class Contenido extends React.Component {
     };
     return fetch(url, requestOptions)
       .then((response) => {
-        console.log("Response", response);
         if (response.status === 200) {
           this.setState({
             notificacionContenido: true,

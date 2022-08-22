@@ -106,7 +106,6 @@ class Perfil extends React.Component {
     }
 
     render() {
-		console.log(this.context, "valuecontext2");
         let data = this.context.token;
         if(data === null) {
             return (

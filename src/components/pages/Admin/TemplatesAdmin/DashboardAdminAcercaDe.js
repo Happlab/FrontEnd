@@ -360,7 +360,6 @@ export default class DashboardAdminAcercaDe extends Component {
                       }}
                       validationSchema={validationSchema2}
                       onSubmit={(values) => {
-                        console.log(values);
                         const titulo = values.titulo_seccion;
                         const url_seccion = " ";
                         const contenido = new File([""], "");

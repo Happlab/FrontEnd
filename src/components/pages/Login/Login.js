@@ -79,7 +79,6 @@ class Login extends React.Component {
 	}
 
 	render() {
-		console.log(this.context, "valuecontext");
 		let valid_user = this.state.valid_user;
 		let data = this.context.token;
 		if (data !== null && valid_user === null && (data.rol[0] === "ADMIN" || data.rol[0] === "USER")) return (<Navigate replace to="/" />)
