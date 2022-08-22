@@ -2,17 +2,20 @@ import React, { Component } from 'react'
 import Header from './TemplatesAdmin/Header'
 import Menu from './TemplatesAdmin/Menu'
 import DashboardAdminContenido from './TemplatesAdmin/DashboardAdminContenido'
-import user_service from '../../services/UserServices';
-import { useLocation, Navigate } from 'react-router-dom';
-
+import { Navigate } from 'react-router-dom';
+import { TokenContext } from '../../../context/GlobalContext';
 
 export default class AdminContenido extends Component {
+  static contextType = TokenContext;
   render() {
-    const user=user_service.getToken();
-    const data=user_service.getDataToken(user);
-    if(data.rol[0] !== 'ADMIN') {
+    let data = this.context.token;
+    if(data === null && data.rol[0] !== 'ADMIN') {
       return (
           <Navigate to="/login" state={{data}} />
+      )
+    } else if(data !== null && data.rol[0] !== "ADMIN") {
+      return (
+          <Navigate to="/" />
       )
     }
     return (

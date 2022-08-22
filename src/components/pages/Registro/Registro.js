@@ -8,9 +8,9 @@ import Col from "react-bootstrap/Col";
 import Form from 'react-bootstrap/Form';
 import Button from "react-bootstrap/Button";
 import { Link } from 'react-router-dom';
-import Navbar1 from '../../navegation/navbar/Navbar1'
-import Footer from '../../navegation/footer/Footer'
-import './Registro.css'
+import { Navbar } from '../../navegation/navbar/Navbar';
+import Footer from '../../navegation/footer/Footer';
+import './Registro.css';
 
 const SignupSchema = Yup.object().shape({
     name: Yup.string().required('Campo requerido'),
@@ -31,7 +31,7 @@ const Registro = () => {
 
     return (
         <Row className="mx-auto justify-content-center" >
-            <Navbar1 />
+            <Navbar />
             <Alert dismissible variant="danger" onClose={() => setError(true)} show={error}>
                 Error registrando el usuario, Correo electronico ya registrado.
             </Alert>

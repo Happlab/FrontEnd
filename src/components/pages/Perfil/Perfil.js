@@ -1,17 +1,16 @@
 import React from 'react';
-import { useLocation, Navigate } from 'react-router-dom';
-import Navbar1 from '../../navegation/navbar/Navbar1';
+import { Navigate } from 'react-router-dom';
+import { Navbar } from '../../navegation/navbar/Navbar';
 import Footer from '../../navegation/footer/Footer';
 import './Perfil.scss'
 import user_service from '../../services/UserServices';
 import Notificacion from '../Admin/TemplatesAdmin/modal';
-import Cookie from 'universal-cookie'
+import { TokenContext } from '../../../context/GlobalContext';
 
 class Perfil extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            data_user: props.location.state ? props.location.state.data: null,
             isPassword: false,
             isCargo: false,
             isStatus: false,
@@ -32,8 +31,7 @@ class Perfil extends React.Component {
         this.eliminarCookie = this.eliminarCookie.bind(this);
     }
 
-    cookie = new Cookie();
-    token = this.cookie.get('token');
+	static contextType = TokenContext;
 
     onChangedPassword() {
         this.setState(previousState => ({
@@ -67,7 +65,6 @@ class Perfil extends React.Component {
                     notificacion: true, tituloNotificacion: "Perfil del usuario",
                     mensajeNotificacion: "La cuenta ha sido desactivada exitosamente"
                 });
-                user_service.deleteToken();
                 this.eliminarCookie();
             }
             else this.setState({
@@ -91,7 +88,6 @@ class Perfil extends React.Component {
                     notificacion: true, tituloNotificacion: "Perfil del usuario",
                     mensajeNotificacion: "Cargo modificado exitosamente"
                 });
-                user_service.deleteToken();
                 this.eliminarCookie();
             } else this.setState({
                 notificacion: true, tituloNotificacion: "Perfil del usuario",
@@ -110,10 +106,11 @@ class Perfil extends React.Component {
     }
 
     render() {
-        let data = this.state.data_user === null ? user_service.getDataToken(this.token):this.state.data_user
+		console.log(this.context, "valuecontext2");
+        let data = this.context.token;
         if(data === null) {
             return (
-                <Navigate to="/Login" state={{ data }} />
+                <Navigate to="/Login" />
             )
         }
         data.tipo_docente = (this.state.cargo !== "") ? this.state.cargo : data.tipo_docente;
@@ -122,7 +119,7 @@ class Perfil extends React.Component {
                 <Notificacion show={this.state.notificacion} titulo={this.state.tituloNotificacion} mensaje={this.state.mensajeNotificacion} onclick={this.handleClickCerrarModal} />
                 {this.state.isPassword && (
                     data = JSON.stringify(data),
-                    <Navigate to="/Password" state={{ data }} />
+                    <Navigate to="/Password" />
                 )}
                 {this.state.isStatus && (
                     this.onChangedStatusAccount(data.email)
@@ -131,7 +128,7 @@ class Perfil extends React.Component {
                     this.setState(values => ({ ...values, updateVerified: !this.state.updateVerified, isCargo : !this.state.isCargo})),
                     this.saveChange(data)
                 )}
-                <Navbar1 />
+                <Navbar />
                 <div className="container m-0 content-perfil">
                     <div className="d-flex flex-column align-items-center text-center p-4 py-3">
                         <h1 className="titulo-estandar">Perfil de usuario</h1>
@@ -139,9 +136,9 @@ class Perfil extends React.Component {
                     <div className="row">
                         <div className="col-md-4 border-right">
                             <div className="p-5 py-5">
-                                <div className="card mb-3">
+                                <div className="card mb-0">
                                     <div className="card-body">
-                                        <div className="d-flex flex-column align-items-center text-center p-4 py-3"><img className="rounded-circle mt-5" width="200px" src="https://st3.depositphotos.com/15648834/17930/v/600/depositphotos_179308454-stock-illustration-unknown-person-silhouette-glasses-profile.jpg" alt='Foto perfil' /><span className="font-weight-bold">{data.nombres}</span><span className="text-black-50">{data.email}</span><span> </span></div>
+                                        <div className="d-flex flex-column align-items-center text-center p-4 py-3"><img className="rounded-circle" width="200px" src="https://st3.depositphotos.com/15648834/17930/v/600/depositphotos_179308454-stock-illustration-unknown-person-silhouette-glasses-profile.jpg" alt='Foto perfil' /><span className="font-weight-bold">{data.nombres}</span><span className="text-black-50">{data.email}</span><span> </span></div>
                                         <div className="d-flex justify-content-center mb-2">
                                             <button onClick={this.onChangedPassword} className="btn btn-primary">Cambiar contraseña</button>
                                             <button onClick={this.onChangedCargo} className="btn btn-outline-primary ms-1">Editar cargo</button>
@@ -203,13 +200,13 @@ class Perfil extends React.Component {
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-4">
-                            <div class="p-5 py-5">
+                        <div className="col-md-3">
+                            <div className="p-3 py-5">
                                 <div className="card mb-4">
                                     <div className="card-body">
-                                        <div class="d-flex justify-content-between align-items-center cargo"><h4>Cargo Actual</h4></div><br />
-                                        <label for="selectCargo">Usted es docente de</label>
-                                        <select class="form-control" id="selectCargo" disabled={!this.state.isCargo} value={data.tipo_docente} onChange={this.handleChange}>
+                                        <div className="d-flex justify-content-between align-items-center cargo"><h4>Cargo Actual</h4></div><br />
+                                        <label htmlFor="selectCargo">Usted es docente de</label>
+                                        <select className="form-control" id="selectCargo" disabled={!this.state.isCargo} value={data.tipo_docente} onChange={this.handleChange}>
                                             <option value="Docente de Primaria">Primaria</option>
                                             <option value="Docente de Secundaria">Secundaria</option>
                                             <option value="Docente Universitario">Universidad</option>
@@ -223,8 +220,8 @@ class Perfil extends React.Component {
                         </div>
                     </div>
                     <div className="row d-flex justify-content-center">
-                        <div class="col-md-0">
-                            <div class="p-0 py-0">
+                        <div className="">
+                            <div className="">
                                 <div className="d-flex justify-content-center">
                                     <button onClick={this.onChangedStatus} className="btn-lg btn-primary">Darme de baja</button>
                                 </div>
@@ -239,7 +236,4 @@ class Perfil extends React.Component {
     }
 }
 
-export default function WithRoutePerfil(props) {
-    let location = useLocation();
-    return <Perfil {...props} location={location} />
-}
+export default Perfil;

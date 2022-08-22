@@ -16,36 +16,11 @@ import Contenido from './components/pages/Contenido/Contenido'
 import Perfil from './components/pages/Perfil/Perfil';
 import Password from './components/pages/Perfil/Password';
 import SobreNosotros from './components/pages/About/SobreNosotros';
-import user_service from './components/services/UserServices';
-
-let data = null;
-
-const RenderServices = (verified) => {
-    if(verified === "ADMIN") {
-        return (
-            <>
-            <Route path='AdminInicio' element={<AdminInicio />}/>
-            <Route path='AdminNoticias' element={<AdminNoticias/>}/>
-            <Route path='AdminContenido' element={<AdminContenido/>}/>
-            <Route path='AdminUsuarios' element={<AdminUsuarios/>}/>
-            <Route path='AdminAcercaDe' element={<AdminAcercaDe />}/>
-            </>
-        );
-    } else if (verified === "USER") {
-        return (
-            <>
-            <Route path='Perfil' element={<Perfil/>}/>
-            <Route path='Password' element={<Password/>}/>
-            </>
-        );
-    }
-}
+import { TokenContextProvider } from './context/GlobalContext';
 
 function App() {
-    if( user_service.getToken() !== null ) {
-        data = user_service.getDataToken(user_service.getToken());
-    }
     return (
+    <TokenContextProvider>
     <div className="App">
         <Routes>
             <Route path='AdminInicio' element={<AdminInicio />}/>
@@ -68,6 +43,7 @@ function App() {
             <Route path='*' element={<Navigate replace to="/"/>}/>
         </Routes>
     </div>
+    </TokenContextProvider>
   );
 }
 

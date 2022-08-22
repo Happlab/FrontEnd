@@ -1,13 +1,13 @@
-import React from 'react'
-import Navbar1 from '../../navegation/navbar/Navbar1'
-import Footer from '../../navegation/footer/Footer'
+import React from 'react';
+import { Navbar } from '../../navegation/navbar/Navbar';
+import Footer from '../../navegation/footer/Footer';
 import '../Login/Login.scss'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faEyeLowVision } from '@fortawesome/free-solid-svg-icons';
 import user_service from '../../services/UserServices';
 import { Navigate } from "react-router-dom";
-import Cookies from 'universal-cookie';
 import Notificacion from '../Admin/TemplatesAdmin/modal';
+import { TokenContext } from '../../../context/GlobalContext';
 
 class Login extends React.Component {
 	constructor(props) {
@@ -26,8 +26,8 @@ class Login extends React.Component {
 		this.onRoute = this.onRoute.bind(this);
 		this.handleClickCerrarModal = this.handleClickCerrarModal.bind(this);
 	}
+	static contextType = TokenContext;
 
-	cookies = new Cookies();
 	handleChange(event) {
 		let name = event.target.name;
 		let value = event.target.value;
@@ -54,9 +54,8 @@ class Login extends React.Component {
 		let token = null;
 		login.then(data => {
 			if (data !== null) {
-				user_service.setToken(data);
-				token = user_service.getToken();
-				data_user = user_service.getDataToken(token);
+				this.context.setToken(data);
+				data_user = this.context.token;
 				this.setState(values => ({ ...values, valid_user: data_user.activo, data_user: data_user, token: token }));
 			}
 			else this.setState({
@@ -71,8 +70,8 @@ class Login extends React.Component {
 	onRoute() {
 		let data = this.state.data_user;
 		let index = 0
-		if (data.rol[index] === "ADMIN") return <Navigate to="/adminInicio" state={{ data }} />
-		else if (data.rol[index] === "USER") return <Navigate to='/perfil' state={{ data }} />
+		if (data.rol[index] === "ADMIN") return <Navigate to="/adminInicio" state={{  }} />
+		else if (data.rol[index] === "USER") return <Navigate to='/perfil' state={{  }} />
 	}
 
 	handleClickCerrarModal() {
@@ -80,16 +79,19 @@ class Login extends React.Component {
 	}
 
 	render() {
+		console.log(this.context, "valuecontext");
+		let valid_user = this.state.valid_user;
+		let data = this.context.token;
+		if (data !== null && valid_user === null && (data.rol[0] === "ADMIN" || data.rol[0] === "USER")) return (<Navigate replace to="/" />)
 		var icono = <FontAwesomeIcon icon={faEye} size='1x' fixedWidth />;
 		if (this.state.press) {
 			icono = <FontAwesomeIcon icon={faEyeLowVision} size='1x' fixedWidth />;
 		}
-		let valid_user = this.state.valid_user;
 		return (
 			<div className='main-login'>
 				<Notificacion show={this.state.notificacion} titulo={this.state.tituloNotificacion} mensaje={this.state.mensajeNotificacion} onclick={this.handleClickCerrarModal} />
 				{valid_user && this.onRoute()}
-				<Navbar1 />
+				<Navbar />
 				<section id='contenedor' className="elementor-section elementor-top-section elementor-element elementor-element-2bd9dc1 elementor-section-full_width elementor-section-height-full elementor-section-height-default elementor-section-items-middle" data-id="2bd9dc1" data-element_type="section" style={{ backgroundColor: '#fff' }}>
 					<div id='svg-top' className="elementor-shape elementor-shape-top" data-negative="false">
 						<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 283.5 27.8" preserveAspectRatio="none">

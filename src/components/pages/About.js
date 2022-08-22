@@ -1,13 +1,12 @@
-import React from 'react'
-import Footer from '../navegation/footer/Footer'
-import Navbar1 from '../navegation/navbar/Navbar1'
-import Slider from "react-slick";
-import { Card, CardText, CardBody,
-  CardTitle, Button } from 'reactstrap';
-import Rating from 'react-rating'
-import './About.scss'
-import Row from 'react-bootstrap/Row'
-import Col from 'react-bootstrap/Col'
+import React from 'react';
+import Footer from '../navegation/footer/Footer';
+import './About.scss';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
+import Rating from 'react-rating';
+import { Card, CardText, CardBody, CardTitle, Button } from 'reactstrap';
+import { Navbar } from '../navegation/navbar/Navbar';
+import Slider from "react-slick";;
 
 var settings = {
   dots: false,
@@ -24,7 +23,7 @@ function handleClick() {
 const About = () => {
   return (
     <div>
-        <Navbar1/>
+        <Navbar/>
         <Slider className='carrusel-cards' {...settings}>
       <div>
       <Card className='card-change' onClick={handleClick} style={{ cursor: "pointer" }}>

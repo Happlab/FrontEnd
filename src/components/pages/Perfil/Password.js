@@ -1,16 +1,15 @@
 import React from 'react';
-import { useLocation, Navigate } from 'react-router-dom';
-import Navbar1 from '../../navegation/navbar/Navbar1';
+import { Navigate } from 'react-router-dom';
+import { Navbar } from '../../navegation/navbar/Navbar';
 import Footer from '../../navegation/footer/Footer';
 import user_service from '../../services/UserServices';
 import Notificacion from '../Admin/TemplatesAdmin/modal';
-import Cookie from 'universal-cookie'
+import { TokenContext } from '../../../context/GlobalContext';
 
 class Password extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            data_user: props.location.state.data,
             inputPasswordOld: "",
             inputPasswordNew: "",
             inputPasswordVerified: "",
@@ -24,8 +23,7 @@ class Password extends React.Component {
         this.eliminarCookie = this.eliminarCookie.bind(this);
     }
 
-    cookie = new Cookie();
-    token = this.cookie.get('token');
+	static contextType = TokenContext;
 
     handleChange(event) {
         let name = event.target.name;
@@ -38,7 +36,7 @@ class Password extends React.Component {
     handleSubmit(event) {
         event.preventDefault();
         if (this.state.inputPasswordNew === this.state.inputPasswordVerified) {
-            let email = JSON.parse(this.state.data_user).email;
+            let email = this.context.token.email;
             let passNew = user_service.onLogin(email, this.state.inputPasswordOld);
             passNew.then(data => {
                 if (data !== null) {
@@ -59,17 +57,15 @@ class Password extends React.Component {
     }
 
     onSendUpdateRequest(data) {
-        data = JSON.parse(data);
         data.password = this.state.inputPasswordNew;
         let update = user_service.updateUser(data);
         update.then(data => {
             if (data !== null) {
-                this.setState(values => ({ ...values, updateVerified: !this.state.updateVerified, data_user: data }));
+                this.setState(values => ({ ...values, updateVerified: !this.state.updateVerified}));
                 this.setState({
                     notificacion: true, tituloNotificacion: "Cambio de contraseña",
                     mensajeNotificacion: "Contraseña cambiada exitosamente"
                 });
-                user_service.deleteToken()
                 this.eliminarCookie();
             } else this.setState({
                 notificacion: true, tituloNotificacion: "Cambio de contraseña",
@@ -86,11 +82,15 @@ class Password extends React.Component {
     }
 
     eliminarCookie(){
-        this.cookie.remove('token');
+        user_service.deleteToken();
     }
 
     render() {
-        let data = this.state.data_user;
+        let data = this.context.token;
+        console.log(data, "password");
+        if(data === null) {
+            return (<Navigate replace to="/" />);
+        }
         return (
             <div className="row">
                 <Notificacion show={this.state.notificacion} titulo={this.state.tituloNotificacion} mensaje={this.state.mensajeNotificacion} onclick={this.handleClickCerrarModal} />
@@ -100,7 +100,7 @@ class Password extends React.Component {
                 {this.state.updateVerified && (
                     data = JSON.stringify(data)
                 )}
-                <Navbar1 />
+                <Navbar />
                 <div className="col-md-6 offset-md-3">
                     <span className="anchor" id="formChangePassword"></span>
                     <hr className="mb-5" />
@@ -142,7 +142,4 @@ class Password extends React.Component {
     }
 }
 
-export default function WithRoutePassword(props) {
-    let location = useLocation();
-    return <Password {...props} location={location} />
-};
+export default Password;

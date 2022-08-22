@@ -1,4 +1,4 @@
-export function PeticionGet(url) {
+export async function PeticionGet(url) {
     let status = 0;
     let content;
     const request_options = {
@@ -26,7 +26,7 @@ export function PeticionGet(url) {
         .catch(error => console.log("Error", error));
 }
 
-export function PeticionEnvio(objetoAModificar, url, metodo){
+export async function PeticionEnvio(objetoAModificar, url, metodo){
     const requestOptions = {
         method: metodo,
         mode: 'cors',
@@ -49,7 +49,7 @@ export function PeticionEnvio(objetoAModificar, url, metodo){
         .catch(error => console.log("Error", error))
 }
 
-export function PeticionEnvioDataFrom(objetoAModificar, url, metodo){
+export async function PeticionEnvioDataFrom(objetoAModificar, url, metodo){
     const requestOptions = {
         method: metodo,
         mode: 'cors',

@@ -1,11 +1,9 @@
-import React, {useState} from 'react'
-import Navbar1 from '../../navegation/navbar/Navbar1'
-import Footer from '../../navegation/footer/Footer'
-import './Noticias.scss'
-import {Fade} from 'react-bootstrap'
-import {PeticionEnvio, PeticionGet} from '../Admin/PeticionesAdmin.js'
-
-
+import React, {useState} from 'react';
+import { Navbar } from '../../navegation/navbar/Navbar';
+import Footer from '../../navegation/footer/Footer';
+import './Noticias.scss';
+import { Fade } from 'react-bootstrap';
+import { PeticionGet } from '../Admin/PeticionesAdmin.js';
 
 class Noticias extends React.Component {
     constructor(props){
@@ -31,8 +29,8 @@ class Noticias extends React.Component {
             }
         });
     }
-    handleCambioEnNoticias(cant, e){
-       this.setState(state=>({cantidadNoticias:true}));
+    handleCambioEnNoticias(){
+       this.setState(()=>({cantidadNoticias:true}));
     }
     
     render(){
@@ -42,7 +40,7 @@ class Noticias extends React.Component {
             return(
             <div className="col-md-4 col-sm-6 mix mix-082e3a1 portfolio-item business-082e3a1 onepage-082e3a1" >
                 <span className='span-img' style={{backgrounColor:'black'}}>
-                    <a className='vinculo-noticia' href={props.LinkPage} target="_blank" onMouseOut={()=>setOpen(false)}>
+                    <a className='vinculo-noticia' href={props.LinkPage} target="_blank" rel="noreferrer" onMouseOut={()=>setOpen(false)}>
                     <Fade in={!open}>
                         <img src={props.srcImg} alt="Switch Pro" onMouseEnter={()=>setOpen(true)} onMouseOut={()=>setOpen(false)}/>
                     </Fade>
@@ -55,7 +53,7 @@ class Noticias extends React.Component {
             );
         }
         /*Formar y llenar Array de noticias listas para ser mostradas*/
-        const MostrarNoticias=(props)=>{
+        const MostrarNoticias=()=>{
             const arrayContendor=[];
             for (let i = 0; i < this.state.arrayNoticias.length; i++) {
                 if(this.state.arrayNoticias[i].visible){
@@ -75,7 +73,7 @@ class Noticias extends React.Component {
 
     return(
     <div className='main-noticias'>
-        <Navbar1 />
+        <Navbar />
         <section  className="elementor-section elementor-top-section elementor-element elementor-element-bdd763f elementor-section-boxed elementor-section-height-default elementor-section-height-default" data-id="bdd763f" data-element_type="section">
 			<div id='shape-top' className="elementor-shape elementor-shape-top" data-negative="false">
 			    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 20" preserveAspectRatio="none">

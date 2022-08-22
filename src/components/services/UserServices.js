@@ -9,7 +9,12 @@ const base_url = "http://localhost:8080";
 const key = "token";
 
 const getDataToken = inputToken => {
-    let data = jwtDecode(inputToken);
+    let data = null;
+    try {
+        data = jwtDecode(inputToken);
+    } catch (e) {
+        data = null;
+    }
     return data;
 }
 

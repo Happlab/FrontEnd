@@ -1,12 +1,12 @@
-import React from 'react'
-import Footer from '../../navegation/footer/Footer'
-import Navbar1 from '../../navegation/navbar/Navbar1'
-import Fancybox from '../../pages/Investigadores/fancybox'
+import React from 'react';
+import Footer from '../../navegation/footer/Footer';
+import { Navbar } from '../../navegation/navbar/Navbar';
+import Fancybox from '../../pages/Investigadores/fancybox';
 
 const Investigadores = () => {
   return (
     <div>
-        <Navbar1/>
+        <Navbar/>
         <Fancybox>
         <div className='box-fancy'>
         <div data-Fancybox="dialog" data-src="#dialog-content">
