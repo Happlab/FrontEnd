@@ -223,7 +223,6 @@ class Contenido extends React.Component {
     const mensajeError = "no hay contenidos";
     const datos = this.PeticionGet(url, mensajeError);
     datos.then((data) => {
-      console.log("data",data);
       if (data !== null) {
         this.setState({ arrayContenidos: Array.from(data) });
       }
