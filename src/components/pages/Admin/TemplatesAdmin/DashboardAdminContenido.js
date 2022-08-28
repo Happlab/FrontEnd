@@ -215,10 +215,10 @@ export default class DashboardAdminContenido extends Component {
                         <tbody>
                           {this.state.contenidos
                             .filter((content) => content.pendiente)
-                            .map((e, i) => {
+                            .map((contentPendiente) => {
                               return (
                                 <tr>
-                                  <td>{this.state.contenidos[i].titulo}</td>
+                                  <td>{contentPendiente.titulo}</td>
                                   <td>
                                     <textarea
                                       id="inputDescription"
@@ -226,19 +226,19 @@ export default class DashboardAdminContenido extends Component {
                                       style={{ width: "300px" }}
                                       rows={4}
                                       defaultValue={
-                                        this.state.contenidos[i].resumen
+                                        contentPendiente.resumen
                                       }
                                     />
                                   </td>
                                   <td>
-                                    {this.state.contenidos[i].id_autor.email}
+                                    {contentPendiente.id_autor.email}
                                   </td>
                                   <div className="btn-group btn-group-sm">
                                     <button
                                       type="button"
                                       onClick={() =>
                                         this.Descargar(
-                                          this.state.contenidos[i].link
+                                          contentPendiente.link
                                         )
                                       }
                                       className="btn btn-primary float-right"
@@ -255,12 +255,12 @@ export default class DashboardAdminContenido extends Component {
                                       style={{ width: "150px" }}
                                       rows={4}
                                       defaultValue={
-                                        this.state.contenidos[i].tags
+                                        contentPendiente.tags
                                       }
                                     />
                                   </td>
                                   <td>
-                                    {this.state.contenidos[i].fecha_subida}
+                                    {contentPendiente.fecha_subida}
                                   </td>
                                   <td>
                                     <div className="input-group-prepend">
@@ -278,7 +278,7 @@ export default class DashboardAdminContenido extends Component {
                                           style={{ cursor: "pointer" }}
                                           onClick={() =>
                                             this.Aceptar(
-                                              this.state.contenidos[i]
+                                              contentPendiente
                                             )
                                           }
                                         >
@@ -289,7 +289,7 @@ export default class DashboardAdminContenido extends Component {
                                           style={{ cursor: "pointer" }}
                                           onClick={() =>
                                             this.Eliminar(
-                                              this.state.contenidos[i]
+                                              contentPendiente
                                             )
                                           }
                                         >
@@ -342,11 +342,11 @@ export default class DashboardAdminContenido extends Component {
                         <tbody>
                           {this.state.contenidos
                             .filter((content) => !content.pendiente)
-                            .map((e, i) => {
+                            .map((contentNoPendiente, i) => {
                               return (
                                 <tr>
-                                  <td>{i}</td>
-                                  <td>{this.state.contenidos[i].titulo}</td>
+                                  <td>{i+1}</td>
+                                  <td>{contentNoPendiente.titulo}</td>
                                   <td>
                                     <textarea
                                       id="inputDescription"
@@ -355,12 +355,12 @@ export default class DashboardAdminContenido extends Component {
                                       cols={10}
                                       rows={4}
                                       defaultValue={
-                                        this.state.contenidos[i].resumen
+                                        contentNoPendiente.resumen
                                       }
                                     />
                                   </td>
                                   <td>
-                                    {this.state.contenidos[i].id_autor.email}
+                                    {contentNoPendiente.id_autor.email}
                                   </td>
                                   <td>
                                     <div className="btn-group btn-group-sm">
@@ -368,7 +368,7 @@ export default class DashboardAdminContenido extends Component {
                                         type="button"
                                         onClick={() =>
                                           this.Descargar(
-                                            this.state.contenidos[i].link
+                                            contentNoPendiente.link
                                           )
                                         }
                                         className="btn btn-primary float-right"
@@ -380,9 +380,7 @@ export default class DashboardAdminContenido extends Component {
                                     </div>
                                   </td>
                                   <td>
-                                    {this.state.contenidos[
-                                      i
-                                    ].valoracion_general.toFixed(3)}
+                                    {contentNoPendiente.valoracion_general.toFixed(3)}
                                   </td>
                                   <td>
                                     <textarea
@@ -391,17 +389,17 @@ export default class DashboardAdminContenido extends Component {
                                       style={{ width: "150px" }}
                                       rows={4}
                                       defaultValue={
-                                        this.state.contenidos[i].tags
+                                        contentNoPendiente.tags
                                       }
                                     />
                                   </td>
                                   <td>
                                     {new Date(
-                                      this.state.contenidos[i].fecha_subida
+                                      contentNoPendiente.fecha_subida
                                     ).toLocaleDateString()}
                                   </td>
                                   <td>
-                                    {this.state.contenidos[i].visible
+                                    {contentNoPendiente.visible
                                       ? "Si"
                                       : "No"}
                                   </td>
@@ -412,12 +410,12 @@ export default class DashboardAdminContenido extends Component {
                                         className="btn btn-warning"
                                         onClick={() =>
                                           this.MostrarOcultar(
-                                            this.state.contenidos[i]
+                                            contentNoPendiente
                                           )
                                         }
                                         aria-expanded="false"
                                       >
-                                        {this.state.contenidos[i].visible
+                                        {contentNoPendiente.visible
                                           ? "Ocultar"
                                           : "Mostrar"}
                                       </button>
