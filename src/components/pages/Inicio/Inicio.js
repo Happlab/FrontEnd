@@ -15,7 +15,7 @@ class Inicio extends React.Component {
     };
   }
 
-  urlServicio = "http://localhost:8080/seccion/";
+  urlServicio = "https://api-happlab.herokuapp.com/seccion/";
   
   componentDidMount() {
     this.ListarInicio();

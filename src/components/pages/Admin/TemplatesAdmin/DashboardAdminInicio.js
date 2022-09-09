@@ -31,7 +31,7 @@ export default class DashboardAdminInicio extends Component {
     this.editar = this.editar.bind(this);
     this.funcioneditar = this.funcioneditar.bind(this);
   }
-  urlServicio = "http://localhost:8080/seccion/";
+  urlServicio = "https://api-happlab.herokuapp.com/seccion/";
   componentDidMount() {
     this.listarInformacion();
   }

@@ -16,14 +16,14 @@ class Acerca extends React.Component {
     };
   }
 
-  urlServicio = "http://localhost:8080/seccion/";
+  urlServicio = "https://api-happlab.herokuapp.com/seccion/";
 
   componentDidMount() {
     this.listarAcerca();
   }
 
   listarAcerca() {
-    const url = "http://localhost:8080/seccion/";
+    const url = "https://api-happlab.herokuapp.com/seccion/";
     const mensajeError = "No hay informacion de inicio";
     const datos = PeticionGet(url, mensajeError);
     datos.then((data) => {

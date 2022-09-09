@@ -18,7 +18,7 @@ export default class Dashboard extends Component {
     this.Inactivar = this.Inactivar.bind(this);
     this.handleClickCerrarModal = this.handleClickCerrarModal.bind(this);
   }
-  urlServicio = "http://localhost:8080/persona/";
+  urlServicio = "https://api-happlab.herokuapp.com/persona/";
 
   componentDidMount() {
     this.ListarUsuarios();

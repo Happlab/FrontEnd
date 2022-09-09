@@ -15,7 +15,7 @@ class Noticias extends React.Component {
         this.handleClick=this.handleCambioEnNoticias.bind(this);
     }
 
-    urlServicio='http://localhost:8080/noticia/';
+    urlServicio='https://api-happlab.herokuapp.com/noticia/';
     componentDidMount(){
         this.ListarNoticias();
     }

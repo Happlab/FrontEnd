@@ -19,7 +19,7 @@ export default class DashboardAdminContenido extends Component {
     this.handleClickCerrarModal = this.handleClickCerrarModal.bind(this);
   }
 
-  urlServicio = "http://localhost:8080/contenido/";
+  urlServicio = "https://api-happlab.herokuapp.com/contenido/";
 
   componentDidMount() {
     this.ListarContenido();
@@ -85,7 +85,7 @@ export default class DashboardAdminContenido extends Component {
     });
 
     const petUsuario =
-      "http://localhost:8080/persona/modToken/" +
+      "https://api-happlab.herokuapp.com/persona/modToken/" +
       contenido.id_autor.email +
       "&" +
       (contenido.id_autor.tokens + 1);

@@ -64,7 +64,7 @@ class Contenido extends React.Component {
   }
   handleClick(tags) {
     this.setState(() => ({ ListarPorTag: false }));
-    const url = "http://localhost:8080/contenido/buscar/" + tags;
+    const url = "https://api-happlab.herokuapp.com/contenido/buscar/" + tags;
     const mensajeError = "no hay contenidos";
     const datos = PeticionGet(url, mensajeError);
     datos.then((data) => {
@@ -122,7 +122,7 @@ class Contenido extends React.Component {
   }
 
   listarContenido() {
-    const url = "http://localhost:8080/contenido/";
+    const url = "https://api-happlab.herokuapp.com/contenido/";
     const mensajeError = "no hay contenidos";
     const datos = this.PeticionGet(url, mensajeError);
     datos.then((data) => {
@@ -150,7 +150,7 @@ class Contenido extends React.Component {
       },
       body: formdata,
     };
-    fetch("http://localhost:8080/contenido/create", requestOptions)
+    fetch("https://api-happlab.herokuapp.com/contenido/create", requestOptions)
       .then((response) => {
         status = response.status;
       })
@@ -173,7 +173,7 @@ class Contenido extends React.Component {
 
   async actualizarCredito() {
     const peticion =
-      "http://localhost:8080/persona/modToken/" +
+      "https://api-happlab.herokuapp.com/persona/modToken/" +
       this.state.email +
       "&" +
       this.credito;
@@ -219,7 +219,7 @@ class Contenido extends React.Component {
   }
 
   componentDidMount() {
-    const url = "http://localhost:8080/contenido/";
+    const url = "https://api-happlab.herokuapp.com/contenido/";
     const mensajeError = "no hay contenidos";
     const datos = this.PeticionGet(url, mensajeError);
     datos.then((data) => {
@@ -237,7 +237,7 @@ class Contenido extends React.Component {
   aceptar() {
     if (this.peticion === 0) {
       window.location.href =
-        "http://localhost:8080/contenido/download/" + this.state.link;
+        "https://api-happlab.herokuapp.com/contenido/download/" + this.state.link;
       this.setState({ link: "" });
       this.setState({ notificacion: false });
       this.setState({ estadoTrigger: false });
@@ -274,7 +274,7 @@ class Contenido extends React.Component {
       comentario: this.state.comentario,
     };
     const url =
-      "http://localhost:8080/contenido/comentar/" +
+      "https://api-happlab.herokuapp.com/contenido/comentar/" +
       this.state.arrayContenidos[this.state.posSeleccionado].link;
     const requestOptions = {
       method: "POST",

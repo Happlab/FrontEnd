@@ -32,7 +32,7 @@ export default class DashboardAdminInicio extends Component {
     this.handleClickCerrarModal = this.handleClickCerrarModal.bind(this);
   }
 
-  urlServicio = "http://localhost:8080/noticia/";
+  urlServicio = "https://api-happlab.herokuapp.com/noticia/";
 
   validationSchema = Yup.object().shape({
     Titulo: Yup.string()

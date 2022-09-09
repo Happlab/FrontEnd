@@ -3,7 +3,7 @@ import jwtDecode from "jwt-decode";
 let status = 0;
 let request_options = {};
 let token = null;
-const base_url = "http://localhost:8080";
+const base_url = "https://api-happlab.herokuapp.com";
 const key = "token";
 
 const getDataToken = inputToken => {

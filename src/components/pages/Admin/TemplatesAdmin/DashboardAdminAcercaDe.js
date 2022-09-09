@@ -45,7 +45,7 @@ export default class DashboardAdminAcercaDe extends Component {
     this.handleClickCerrarModal = this.handleClickCerrarModal.bind(this);
   }
 
-  urlServicio = "http://localhost:8080/seccion/";
+  urlServicio = "https:/api-happlab.herokuapp.com/seccion/";
 
   componentDidMount() {
     this.listarInformacion();
