@@ -581,7 +581,6 @@ class Contenido extends React.Component {
           <div className="filtros">
             <ListGroup
               as={"ul"}
-              variant="flush"
               className="lista-filtros"
               horizontal="lg"
             >
@@ -621,7 +620,6 @@ class Contenido extends React.Component {
                   <Button
                     className="btn-busqueda"
                     onClick={this.handleClickSubirContenido}
-                    variant="outline-secondary"
                     size="md"
                   >
                     <FontAwesomeIcon
@@ -669,7 +667,6 @@ class Contenido extends React.Component {
               <p>{this.state.resumen}</p>
               {this.state.logeado ? (
                 <Button
-                  variant="info"
                   className="btn-Descarga"
                   onClick={() =>
                     this.descarga(
@@ -686,7 +683,6 @@ class Contenido extends React.Component {
               )}
               <p>{this.state.tag}</p>
               <Button
-                variant="dark"
                 className="btn-Salir"
                 onClick={this.handleClickEstadoFalse}
               >
@@ -715,7 +711,6 @@ class Contenido extends React.Component {
                     />{" "}
                   </p>
                   <Button
-                    variant="dark"
                     className="btn-Subir"
                     onClick={this.handleSubmit}
                   >
