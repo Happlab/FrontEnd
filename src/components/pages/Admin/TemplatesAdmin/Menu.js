@@ -4,7 +4,7 @@ import user_service from "../../../services/UserServices";
 
 export default class Menu extends Component {
   constructor(props) {
-    super();
+    super(props);
     this.handleClickCerrarSesion = this.handleClickCerrarSesion.bind(this);
   }
   handleClickCerrarSesion() {
@@ -28,7 +28,7 @@ export default class Menu extends Component {
             <div className="user-panel mt-3 pb-3 mb-3 d-flex">
               <div className="image">
                 <img
-                  src="dist/img/user2-160x160.jpg"
+                  src="https://cdnjs.cloudflare.com/ajax/libs/admin-lte/3.2.0/img/user1-128x128.jpg"
                   className="img-circle elevation-2"
                   aria-hidden
                   alt="User Image"
