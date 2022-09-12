@@ -120,7 +120,7 @@ export default class DashboardAdminInicio extends Component {
   ListarNoticias() {
     const url = this.urlServicio;
     const mensajeError = "no hay noticias";
-    const datos = PeticionGet(url, mensajeError);
+    let datos = PeticionGet(url, mensajeError);
     datos.then((data) => {
       if (data !== null) {
         this.setState({ noticias: Array.from(data) });
@@ -296,7 +296,7 @@ export default class DashboardAdminInicio extends Component {
                           {[...Array(this.state.noticias.length)].map(
                             (e, i) => {
                               return (
-                                <tr>
+                                <tr key={i + 1}>
                                   <td>{i + 1}</td>
                                   <td>
                                     {this.state.noticias[i].titulo_noticia}

@@ -19,7 +19,7 @@ export default class AdminUsuarios extends Component {
       )
     }
     return (
-      <div class="wrapper">
+      <div className="wrapper">
         <Header/>
         <Menu opcion="usuario"/>
         <DashboardAdmUsuarios/>

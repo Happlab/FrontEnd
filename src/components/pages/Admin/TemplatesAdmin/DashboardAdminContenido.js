@@ -39,7 +39,7 @@ export default class DashboardAdminContenido extends Component {
     }
     const url = this.urlServicio + "changeVisible/" + contenido.link;
     const metodo = "PUT";
-    const peticion = PeticionEnvio("", url, metodo);
+    let peticion = PeticionEnvio("", url, metodo);
     peticion.then((data) => {
       if (data) {
         this.setState({
@@ -64,7 +64,7 @@ export default class DashboardAdminContenido extends Component {
     contenido.visible = true;
     const url = this.urlServicio + "changePendiente/" + contenido.link;
     const metodo = "PUT";
-    const peticion = PeticionEnvio("", url, metodo);
+    let peticion = PeticionEnvio("", url, metodo);
     peticion.then((data) => {
       if (data) {
         this.setState({
@@ -110,7 +110,7 @@ export default class DashboardAdminContenido extends Component {
   Eliminar(contenido) {
     const url = this.urlServicio + "delete/" + contenido.link;
     const metodo = "DELETE";
-    const peticion = PeticionEnvio("", url, metodo);
+    let peticion = PeticionEnvio("", url, metodo);
     peticion.then((data) => {
       if (data) {
         this.setState({
@@ -133,9 +133,9 @@ export default class DashboardAdminContenido extends Component {
   ListarContenido() {
     let cont = 0;
     const url = this.urlServicio;
-    const datos = PeticionGet(url);
+    let datos = PeticionGet(url);
     datos.then((data) => {
-      if (data !== null) {
+      if (data !== null && data !== undefined) {
         for (let i = 0; i < data.length; i++) {
           if (data[i].visible && !data[i].pendiente) {
             cont = cont + 1;
@@ -215,9 +215,9 @@ export default class DashboardAdminContenido extends Component {
                         <tbody>
                           {this.state.contenidos
                             .filter((content) => content.pendiente)
-                            .map((contentPendiente) => {
+                            .map((contentPendiente, i) => {
                               return (
-                                <tr>
+                                <tr key={i+1}>
                                   <td>{contentPendiente.titulo}</td>
                                   <td>
                                     <textarea
@@ -344,7 +344,7 @@ export default class DashboardAdminContenido extends Component {
                             .filter((content) => !content.pendiente)
                             .map((contentNoPendiente, i) => {
                               return (
-                                <tr>
+                                <tr key={i+1}>
                                   <td>{i+1}</td>
                                   <td>{contentNoPendiente.titulo}</td>
                                   <td>

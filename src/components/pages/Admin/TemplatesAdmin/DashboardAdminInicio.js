@@ -135,8 +135,8 @@ export default class DashboardAdminInicio extends Component {
                             .filter((value, index) => index < 2)
                             .map((e, i) => {
                               return (
-                                <tr>
-                                  <td>{i}</td>
+                                <tr key={i+1}>
+                                  <td>{i+1}</td>
                                   <td>{this.state.inicio[i].titulo_seccion}</td>
                                   <td>
                                     <div className="input-group-prepend">
@@ -231,7 +231,7 @@ export default class DashboardAdminInicio extends Component {
                       }}
                     >
                       {(props) => (
-                        <Form onSubmit={props.handleSubmit}>
+                        <Form key={1} onSubmit={props.handleSubmit}>
                           <Form.Group className="mb-3" controlId="inpuTitulo">
                             <Form.Label>Titulo</Form.Label>
                             <Form.Control

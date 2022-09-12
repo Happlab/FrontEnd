@@ -41,9 +41,9 @@ class Acerca extends React.Component {
         <Navbar />
         <hr />
         <h2 className="titulo-estandar">Bienvenido a HappLab</h2>
-          {this.state.acerca.filter((value, index) => index === 2).map((acerca) => {
+          {this.state.acerca.filter((value, index) => index === 2).map((acerca, i) => {
             return (
-              <div className="columna-acerca">
+              <div key={i + 1} className="columna-acerca">
                 <div className="columna-acerca-text">
                   <h3 className="title-dest" style={{ color: "black" }}>
                     {acerca.titulo_seccion}
@@ -80,19 +80,19 @@ class Acerca extends React.Component {
             );
         })}
         <h2 className="title-map">¿Dónde nos encuentras?</h2>
-          {this.state.acerca.filter((content, index) => index === 3).map((acerca) => {
+          {this.state.acerca.filter((content, index) => index === 3).map((acerca, i) => {
           const position = [
             acerca.coordenadas[0],
             acerca.coordenadas[1],
           ];
             return (
-              <div className="row-map">
+              <div key={i+1} className="row-map">
                 <div className="col-map">
                   <link
                     rel="stylesheet"
                     href="https://unpkg.com/leaflet@1.8.0/dist/leaflet.css"
                     integrity="sha512-hoalWLoI8r4UszCkZ5kL8vayOGVae1oxXe/2A4AO6J9+580uKHDO3JdHb7NzwwzK5xr/Fs0W40kiNHxM9vyTtQ=="
-                    crossorigin=""
+                    crossOrigin=""
                   />
                   <MapContainer
                     center={position}
@@ -119,10 +119,10 @@ class Acerca extends React.Component {
                 </div>
 
                 <div className="col-text">
+                  <h3 className="title-dest" style={{ color: "black" }}>
+                    {acerca.titulo_seccion}
+                  </h3>
                   <p className="text-lore">
-                    <h3 className="title-dest" style={{ color: "black" }}>
-                      {acerca.titulo_seccion}
-                    </h3>
                     {acerca.descripcion}
                   </p>
                 </div>

@@ -29,67 +29,67 @@ class SobreNosotros extends React.Component {
       <div>
         <Navbar />
         <span
-          class="fa-solid fa-angle-up go-up"
+          className="fa-solid fa-angle-up go-up"
           onLoad={this.getAddStylesElements}
         ></span>
-        <header id="start" class="header">
-          <div class="content head">
-            <h1 class="title-about">Convert yours dreams in reality</h1>
-            <p class="copy">
+        <header id="start" className="header">
+          <div className="content head">
+            <h1 className="title-about">Convert yours dreams in reality</h1>
+            <p className="copy">
               Adipisicing maiores ab doloremque dolor cupiditate. Expedita!
             </p>
           </div>
         </header>
         <main>
-          <section class="content" id="services">
-            <h2 class="subtitle">Nuestros Proyectos</h2>
-            <div class="content-service">
+          <section className="content" id="services">
+            <h2 className="subtitle">Nuestros Proyectos</h2>
+            <div className="content-service">
               <img src={imagenes.imgGico} alt="" />
-              <div class="checklist-service">
-                <div class="service">
-                  <h3 class="n-service">
-                    <span class="number">1</span>Cohetiria
+              <div className="checklist-service">
+                <div className="service">
+                  <h3 className="n-service">
+                    <span className="number">1</span>Cohetiria
                   </h3>
                   Construccion de un cohete con combustible solido
                 </div>
-                <div class="service">
-                  <h3 class="n-service">
-                    <span class="number">2</span>Astronautas Analogos
+                <div className="service">
+                  <h3 className="n-service">
+                    <span className="number">2</span>Astronautas Analogos
                   </h3>
                   Diseño y fabricacion de un Rovert para agronomia
                 </div>
-                <div class="service">
-                  <h3 class="n-service">
-                    <span class="number">3</span>Aess
+                <div className="service">
+                  <h3 className="n-service">
+                    <span className="number">3</span>Aess
                   </h3>
                   Diseño y fabricacion de Alas Zaji
                 </div>
               </div>
             </div>
           </section>
-          <section id="portfolio" class="gallery">
-            <div class="content">
-              <h2 class="subtitle">Galería</h2>
-              <div class="content-gallery">
-                <img class="img-gallery" src={imagenes.imgTec1} alt="" />
-                <img class="img-gallery" src={imagenes.imgTec2} alt="" />
-                <img class="img-gallery" src={imagenes.imgTec3} alt="" />
-                <img class="img-gallery" src={imagenes.imgTec4} alt="" />
-                <img class="img-gallery" src={imagenes.imgTec5} alt="" />
-                <img class="img-gallery" src={imagenes.imgTec6} alt="" />
+          <section id="portfolio" className="gallery">
+            <div className="content">
+              <h2 className="subtitle">Galería</h2>
+              <div className="content-gallery">
+                <img className="img-gallery" src={imagenes.imgTec1} alt="" />
+                <img className="img-gallery" src={imagenes.imgTec2} alt="" />
+                <img className="img-gallery" src={imagenes.imgTec3} alt="" />
+                <img className="img-gallery" src={imagenes.imgTec4} alt="" />
+                <img className="img-gallery" src={imagenes.imgTec5} alt="" />
+                <img className="img-gallery" src={imagenes.imgTec6} alt="" />
               </div>
             </div>
           </section>
-          <section id="xpert" class="content">
-            <h2 class="subtitle">Quienes nos ayudan:</h2>
-            <section class="xpert">
-              <div class="cont-xpert">
+          <section id="xpert" className="content">
+            <h2 className="subtitle">Quienes nos ayudan:</h2>
+            <section className="xpert">
+              <div className="cont-xpert">
                 <img src={imagenes.imgAESS} alt="" />
-                <h3 class="n-xpert">Analytics</h3>
+                <h3 className="n-xpert">Analytics</h3>
               </div>
-              <div class="cont-xpert">
+              <div className="cont-xpert">
                 <img src={imagenes.img1} alt="" />
-                <h3 class="n-xpert">Security</h3>
+                <h3 className="n-xpert">Security</h3>
               </div>
             </section>
           </section>

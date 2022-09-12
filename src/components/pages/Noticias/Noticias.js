@@ -22,7 +22,7 @@ class Noticias extends React.Component {
     ListarNoticias(){
         const url=this.urlServicio;
         const mensajeError='no hay noticias';
-        const datos=PeticionGet(url, mensajeError);
+        let datos=PeticionGet(url, mensajeError);
         datos.then(data =>{
             if(data!==null){
                 this.setState({arrayNoticias: Array.from(data)});
@@ -59,6 +59,7 @@ class Noticias extends React.Component {
                 if(this.state.arrayNoticias[i].visible){
                 arrayContendor.push(
                         <ContenidoNoticias 
+                            key={i+1}
                             titulo={this.state.arrayNoticias[i].titulo_noticia}
                             srcImg={this.urlServicio+'img/'+this.state.arrayNoticias[i].link_contenido}
                             LinkPage={this.state.arrayNoticias[i].url_noticia}

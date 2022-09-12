@@ -126,7 +126,7 @@ export default class Dashboard extends Component {
   ListarUsuarios() {
     let cont = 0;
     const url = this.urlServicio;
-    const datos = PeticionGet(url);
+    let datos = PeticionGet(url);
     datos.then((data) => {
       if (data !== null) {
         for (let i = 0; i < data.length; i++) {
@@ -158,10 +158,10 @@ export default class Dashboard extends Component {
           <h1 align="center">Módulo Administrador - Usuarios</h1>
           <br></br>
           {/* Estádisticas de voisitantes y usuarios */}
-          <div class="container-fluid">
+          <div className="container-fluid">
             <br />
             <h3>Estadísticas de usuarios</h3>
-            <div class="row">
+            <div className="row">
               <div className="col-lg-3 col-6">
                 <div className="small-box bg-warning">
                   <div className="inner">
@@ -213,7 +213,7 @@ export default class Dashboard extends Component {
                             {this.state.usuarios.filter(content => content.pendiente).map(
                             (e, i) => {
                                 return (
-                                  <tr>
+                                  <tr key={i+1}>
                                     <td>
                                       {this.state.usuarios[i].nombres +
                                         " " +
@@ -309,7 +309,7 @@ export default class Dashboard extends Component {
                             {this.state.usuarios.filter(content => !content.pendiente).map(
                             (e, i) => {
                                 return (
-                                  <tr>
+                                  <tr key={i + 1}>
                                     <td>
                                       {this.state.usuarios[i].nombres +
                                         " " +

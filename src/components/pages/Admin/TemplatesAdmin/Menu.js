@@ -12,7 +12,7 @@ export default class Menu extends Component {
   }
   render() {
     return (
-      <div class="wraper">
+      <div className="wraper">
         <aside className="main-sidebar sidebar-dark-primary elevation-4">
           <div
             className="brand-link"

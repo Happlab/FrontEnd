@@ -343,7 +343,7 @@ class Contenido extends React.Component {
         if (this.state.ListarPorTag) {
           for (let i = 0; i < this.state.contenidosPorTag.length; i++) {
             array2[i] = (
-              <div>
+              <div key={i+1}>
                 <Col>
                   <Card className="card-change">
                     <CardBody>
@@ -396,7 +396,7 @@ class Contenido extends React.Component {
         } else {
           for (let i = 0; i < this.state.arrayContenidos.length; i++) {
             array2[i] = (
-              <div>
+              <div key={i+1}>
                 <Col>
                   <Card className="card-change">
                     <CardBody>
@@ -642,7 +642,7 @@ class Contenido extends React.Component {
             <FormularioSubirContenido />
           </div>
         </section>
-        <section>
+        <div className="container-fluid">
           <Row xs={3}>
             <MostrarContenido />
           </Row>
@@ -753,7 +753,7 @@ class Contenido extends React.Component {
               })}
             </Modal.Body>
           </Modal>
-        </section>
+        </div>
         <Footer />
       </div>
     );

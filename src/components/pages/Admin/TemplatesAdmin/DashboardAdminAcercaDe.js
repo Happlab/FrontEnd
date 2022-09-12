@@ -167,16 +167,16 @@ export default class DashboardAdminAcercaDe extends Component {
                           </tr>
                         </thead>
                         <tbody>
-                          {this.state.inicio.filter((value, index) => index > 1).map((e, i) => {
+                          {this.state.inicio.filter((value, index) => index > 1).map((acerca, i) => {
                               return (
-                                <tr>
-                                  <td>{i}</td>
-                                  <td>{this.state.inicio[i].titulo_seccion}</td>
+                                <tr key={i + 1}>
+                                  <td>{i + 1}</td>
+                                  <td>{acerca.titulo_seccion}</td>
                                   <td>
                                     <div className="input-group-prepend">
                                       <button
                                         onClick={() =>
-                                          this.editar(this.state.inicio[i], i)
+                                            this.editar(acerca, i == 0 ? 2: 3)
                                         }
                                         className="btn btn-warning"
                                       >
