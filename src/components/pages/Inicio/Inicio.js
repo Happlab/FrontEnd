@@ -41,22 +41,22 @@ class Inicio extends React.Component {
         </div>
         {this.state.inicio
           .filter((content, index) => index < 2)
-          .map((e, i) => {
+          .map((inicio, i) => {
             return (
               <div className="content-video" key={i}>
                 <div className="columna-inicio">
                   <h3 className="title-dest">
-                    {this.state.inicio[i].titulo_seccion}
+                    {inicio.titulo_seccion}
                   </h3>
                   <div className="columna-inicio-texto">
                     <p className="text-lore">
-                      {this.state.inicio[i].descripcion}
+                      {inicio.descripcion}
                     </p>
                   </div>
                   <div className="columna-inicio-video">
-                    {this.state.inicio[i].url !== "" ? (
+                    {inicio.url !== "" ? (
                       <ReactPlayer
-                        url={this.state.inicio[i].url}
+                        url={inicio.url}
                         width="100%"
                         height="100%"
                         controls
@@ -69,7 +69,7 @@ class Inicio extends React.Component {
                         src={
                           this.urlServicio +
                           "contenido/" +
-                          this.state.inicio[i].nombre_contenido
+                          inicio.nombre_contenido
                         }
                         width={400}
                         height={150}

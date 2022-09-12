@@ -114,7 +114,7 @@ class Perfil extends React.Component {
         }
         data.tipo_docente = (this.state.cargo !== "") ? this.state.cargo : data.tipo_docente;
         return (
-            <div className="row">
+            <>
                 <Notificacion show={this.state.notificacion} titulo={this.state.tituloNotificacion} mensaje={this.state.mensajeNotificacion} onclick={this.handleClickCerrarModal} />
                 {this.state.isPassword && (
                     data = JSON.stringify(data),
@@ -128,7 +128,7 @@ class Perfil extends React.Component {
                     this.saveChange(data)
                 )}
                 <Navbar />
-                <div className="container m-0 content-perfil">
+                <div className="container-fluid">
                     <div className="d-flex flex-column align-items-center text-center p-4 py-3">
                         <h1 className="titulo-estandar">Perfil de usuario</h1>
                     </div>
@@ -230,7 +230,7 @@ class Perfil extends React.Component {
                     <br />
                 </div>
                 <Footer />
-            </div>
+            </>
         )
     }
 }
