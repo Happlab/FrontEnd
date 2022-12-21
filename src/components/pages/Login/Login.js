@@ -53,11 +53,16 @@ class Login extends React.Component {
 		let login = user_service.onLogin(this.state.email, this.state.password);
 		let token = null;
 		login.then(data => {
-			if (data !== null) {
+			if (data !== null && data !== undefined) {
 				this.context.setToken(data);
 				data_user = this.context.token;
 				this.setState(values => ({ ...values, valid_user: data_user.activo, data_user: data_user, token: token }));
 			}
+			else if(data === undefined) this.setState({
+				notificacion: true, 
+				tituloNotificacion: "Inicio de sesion",
+				mensajeNotificacion: "Error en el sistema, comuniquese con soporte tecnico"
+			})
 			else this.setState({
 				notificacion: true, tituloNotificacion: "Inicio de sesion",
 				mensajeNotificacion: "El correo o la contraseña son incorrectas"

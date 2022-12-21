@@ -27,7 +27,7 @@ class Acerca extends React.Component {
     const mensajeError = "No hay informacion de inicio";
     const datos = PeticionGet(url, mensajeError);
     datos.then((data) => {
-      if (data !== null) {
+      if (data !== null && data !== undefined) {
         this.setState({
           acerca: Array.from(data),
         });
@@ -40,8 +40,9 @@ class Acerca extends React.Component {
       <div className="main">
         <Navbar />
         <hr />
-        <h2 className="titulo-estandar">Bienvenido a HappLab</h2>
-          {this.state.acerca.filter((value, index) => index === 2).map((acerca, i) => {
+        {this.state.acerca.length === 0 && <p className="notAvalaible">La informacion no se encuentra disponible</p>}
+        {this.state.acerca.length !== 0 && <h2 className="titulo-estandar">Bienvenido a HappLab</h2>}
+        {this.state.acerca.filter((value, index) => index === 2).map((acerca, i) => {
             return (
               <div key={i + 1} className="columna-acerca">
                 <div className="columna-acerca-text">
@@ -79,8 +80,8 @@ class Acerca extends React.Component {
               </div>
             );
         })}
-        <h2 className="title-map">¿Dónde nos encuentras?</h2>
-          {this.state.acerca.filter((content, index) => index === 3).map((acerca, i) => {
+        {this.state.acerca.length !== 0 && <h2 className="title-map">¿Dónde nos encuentras?</h2>}
+        {this.state.acerca.filter((content, index) => index === 3).map((acerca, i) => {
           const position = [
             acerca.coordenadas[0],
             acerca.coordenadas[1],

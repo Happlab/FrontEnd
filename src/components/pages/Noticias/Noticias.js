@@ -24,7 +24,7 @@ class Noticias extends React.Component {
         const mensajeError='no hay noticias';
         let datos=PeticionGet(url, mensajeError);
         datos.then(data =>{
-            if(data!==null){
+            if(data!==null && data !== undefined){
                 this.setState({arrayNoticias: Array.from(data)});
             }
         });
@@ -55,9 +55,10 @@ class Noticias extends React.Component {
         /*Formar y llenar Array de noticias listas para ser mostradas*/
         const MostrarNoticias=()=>{
             const arrayContendor=[];
+            if (this.state.arrayNoticias.length === 0 ) return <p className='notAvalaible'>No hay noticias disponibles</p>
             for (let i = 0; i < this.state.arrayNoticias.length; i++) {
                 if(this.state.arrayNoticias[i].visible){
-                arrayContendor.push(
+                    arrayContendor.push(
                         <ContenidoNoticias 
                             key={i+1}
                             titulo={this.state.arrayNoticias[i].titulo_noticia}
@@ -67,9 +68,7 @@ class Noticias extends React.Component {
                     )
                 }
             }
-            return(
-                arrayContendor 
-            );
+            return arrayContendor;
         }
 
     return(

@@ -25,7 +25,7 @@ class Inicio extends React.Component {
     const mensajeError = "no hay informacion de inicio";
     const datos = PeticionGet(url, mensajeError);
     datos.then((data) => {
-      if (data !== null) {
+      if (data !== null && data !== undefined) {
         this.setState({ inicio: Array.from(data) });
       }
     });
@@ -39,6 +39,7 @@ class Inicio extends React.Component {
           <h3 className="title-h2">Destacados de la semana</h3>
           <hr className="hr-line-white" />
         </div>
+        {this.state.inicio.length === 0 && <p className="notAvalaible">No hay noticias destacadas</p>}
         {this.state.inicio
           .filter((content, index) => index < 2)
           .map((inicio, i) => {

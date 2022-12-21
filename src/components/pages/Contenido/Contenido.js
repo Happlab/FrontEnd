@@ -126,7 +126,7 @@ class Contenido extends React.Component {
     const mensajeError = "no hay contenidos";
     const datos = this.PeticionGet(url, mensajeError);
     datos.then((data) => {
-      if (data !== null) {
+      if (data !== null && data !== undefined) {
         this.setState({ arrayContenidos: Array.from(data) });
       }
     });
@@ -223,7 +223,7 @@ class Contenido extends React.Component {
     const mensajeError = "no hay contenidos";
     const datos = this.PeticionGet(url, mensajeError);
     datos.then((data) => {
-      if (data !== null) {
+      if (data !== null && data !== undefined) {
         this.setState({ arrayContenidos: Array.from(data) });
       }
     });
@@ -643,6 +643,8 @@ class Contenido extends React.Component {
           </div>
         </section>
         <div className="container-fluid">
+          { this.state.arrayContenidos.length === 0 && <p className="notAvalaible">No hay contenidos disponibles</p>
+          }
           <Row xs={3}>
             <MostrarContenido />
           </Row>
