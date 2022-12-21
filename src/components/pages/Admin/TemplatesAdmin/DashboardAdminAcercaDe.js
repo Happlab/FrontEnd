@@ -177,7 +177,7 @@ export default class DashboardAdminAcercaDe extends Component {
                                     <div className="input-group-prepend">
                                       <button
                                         onClick={() =>
-                                            this.editar(acerca, i == 0 ? 2: 3)
+                                            this.editar(acerca, i === 0 ? 2: 3)
                                         }
                                         className="btn btn-warning"
                                       >

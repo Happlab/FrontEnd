@@ -68,7 +68,7 @@ class Contenido extends React.Component {
     let contentForTag = [];
     this.state.arrayContenidos.forEach((content) => {
       content.tags.filter((tag) => tags === tag).map((contentTag) => {
-        contentForTag.push(content);
+        return contentForTag.push(content);
       });
     });
     this.setState(() => ({

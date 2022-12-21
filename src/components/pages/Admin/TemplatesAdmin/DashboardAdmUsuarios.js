@@ -172,7 +172,7 @@ export default class Dashboard extends Component {
                   <div className="icon">
                     <i className="ion ion-person-add" />
                   </div>
-                  <a className="small-box-footer">
+                  <a href="/AdminUsuarios" className="small-box-footer">
                     More info <i className="fas fa-arrow-circle-right" />
                   </a>
                 </div>

@@ -20,7 +20,7 @@ const listContent = async () => {
     }).then((data) => {
         content = (status === 200 && data !== "") ? Array.from(data) : [];
         content.filter((cont) => !cont.pendiente && cont.visible).map((contentFilter) => {
-            contentNoPendiente.push(contentFilter);
+            return contentNoPendiente.push(contentFilter);
         })
         return contentNoPendiente;
     }).catch((error) => console.log("Error", error));
@@ -74,4 +74,5 @@ const writeComment = async (link, comment) => {
     }).catch((error) => console.log("Error", error));
 }
 
-export default { listContent, uploadContent, updateCredit, writeComment }
+// eslint-disable-next-line import/no-anonymous-default-export
+export default { listContent, uploadContent, updateCredit, writeComment };
