@@ -12,8 +12,8 @@ import Col from "react-bootstrap/Col";
 import Modal from "react-bootstrap/Modal";
 import NotificacionContenido from "../../navegation/modal_contenido/modal_contenido";
 import Notificacion from "../Admin/TemplatesAdmin/modal";
-import { PeticionGet } from "../Admin/PeticionesAdmin.js";
 import { TokenContext } from "../../../context/GlobalContext";
+import { environment } from "../../../environments/environment";
 
 class Contenido extends React.Component {
   constructor(props) {
@@ -62,20 +62,20 @@ class Contenido extends React.Component {
   handleClickSubirContenido() {
     this.setState({ estadoSubirContenido: !this.state.estadoSubirContenido });
   }
+
   handleClick(tags) {
-    this.setState(() => ({ ListarPorTag: false }));
-    const url = "https://api-happlab.herokuapp.com/contenido/buscar/" + tags;
-    const mensajeError = "no hay contenidos";
-    const datos = PeticionGet(url, mensajeError);
-    datos.then((data) => {
-      if (data !== null) {
-        this.setState(() => ({
-          contenidosPorTag: Array.from(data),
-          ListarPorTag: !this.state.ListarPorTag,
-        }));
-      }
+    let contentForTag = [];
+    this.state.arrayContenidos.forEach((content) => {
+      content.tags.filter((tag) => tags === tag).map((contentTag) => {
+        contentForTag.push(content);
+      });
     });
+    this.setState(() => ({
+      contenidosPorTag: contentForTag,
+      ListarPorTag: contentForTag.length !== 0,
+    }));
   }
+
   handleChange(event) {
     let name = event.target.name;
     let value = event.target.value;
@@ -122,7 +122,7 @@ class Contenido extends React.Component {
   }
 
   listarContenido() {
-    const url = "https://api-happlab.herokuapp.com/contenido/";
+    const url = environment.baseUrl + "/contenido/";
     const mensajeError = "no hay contenidos";
     const datos = this.PeticionGet(url, mensajeError);
     datos.then((data) => {
@@ -150,7 +150,7 @@ class Contenido extends React.Component {
       },
       body: formdata,
     };
-    fetch("https://api-happlab.herokuapp.com/contenido/create", requestOptions)
+    fetch( environment.baseUrl + "/contenido/create", requestOptions)
       .then((response) => {
         status = response.status;
       })
@@ -172,8 +172,7 @@ class Contenido extends React.Component {
   }
 
   async actualizarCredito() {
-    const peticion =
-      "https://api-happlab.herokuapp.com/persona/modToken/" +
+    const peticion = environment.baseUrl + "/persona/modToken/" +
       this.state.email +
       "&" +
       this.credito;
@@ -219,7 +218,7 @@ class Contenido extends React.Component {
   }
 
   componentDidMount() {
-    const url = "https://api-happlab.herokuapp.com/contenido/";
+    const url = environment.baseUrl + "/contenido/";
     const mensajeError = "no hay contenidos";
     const datos = this.PeticionGet(url, mensajeError);
     datos.then((data) => {
@@ -236,8 +235,7 @@ class Contenido extends React.Component {
 
   aceptar() {
     if (this.peticion === 0) {
-      window.location.href =
-        "https://api-happlab.herokuapp.com/contenido/download/" + this.state.link;
+      window.location.href = environment.baseUrl + "/contenido/download/" + this.state.link;
       this.setState({ link: "" });
       this.setState({ notificacion: false });
       this.setState({ estadoTrigger: false });
@@ -273,8 +271,7 @@ class Contenido extends React.Component {
       valoracion: this.valoracion_usuario,
       comentario: this.state.comentario,
     };
-    const url =
-      "https://api-happlab.herokuapp.com/contenido/comentar/" +
+    const url = environment.baseUrl + "/contenido/comentar/" +
       this.state.arrayContenidos[this.state.posSeleccionado].link;
     const requestOptions = {
       method: "POST",
@@ -586,6 +583,13 @@ class Contenido extends React.Component {
             >
               <ListGroup.Item as={"li"} className="item-filtro">
                 <h2 id="texto-filtro">Filtros</h2>
+              </ListGroup.Item>
+              <ListGroup.Item
+                onClick={() => this.handleClick("")}
+                action
+                className="item-filtro"
+              >
+                Todas
               </ListGroup.Item>
               <ListGroup.Item
                 onClick={() => this.handleClick("matematicas")}

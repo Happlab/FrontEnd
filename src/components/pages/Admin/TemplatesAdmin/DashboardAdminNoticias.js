@@ -8,6 +8,7 @@ import * as Yup from "yup";
 import { Formik } from "formik";
 import { Form, Button } from "react-bootstrap";
 import Notificacion from "./modal.js";
+import { environment } from "../../../../environments/environment.js";
 
 export default class DashboardAdminInicio extends Component {
   constructor(props) {
@@ -32,7 +33,7 @@ export default class DashboardAdminInicio extends Component {
     this.handleClickCerrarModal = this.handleClickCerrarModal.bind(this);
   }
 
-  urlServicio = "https://api-happlab.herokuapp.com/noticia/";
+  urlServicio = environment.baseUrl + "/noticia/";
 
   validationSchema = Yup.object().shape({
     Titulo: Yup.string()

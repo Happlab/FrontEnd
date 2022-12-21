@@ -1,9 +1,9 @@
 import jwtDecode from "jwt-decode";
+import { environment } from "../../environments/environment";
 
 let status = 0;
 let request_options = {};
 let token = null;
-const base_url = "https://api-happlab.herokuapp.com";
 const key = "token";
 
 const getDataToken = inputToken => {
@@ -40,7 +40,7 @@ const disabledUser = async (email) => {
             'Authorization': token
         }
     };
-    return fetch(base_url+'/persona/desactivar/'+email, request_options)
+    return fetch(environment.baseUrl+'/persona/desactivar/'+email, request_options)
             .then(response => {
                 return response.status;
             })
@@ -56,7 +56,7 @@ const updateUser = async (data) => {
         },
         body: JSON.stringify(data)
     };
-    return fetch(base_url+'/persona/update', request_options)
+    return fetch(environment.baseUrl+'/persona/update', request_options)
             .then(response => {
                 let text = response.text();
                 status = response.status;
@@ -74,7 +74,7 @@ const onLogin = async (email, password) => {
 		method: 'GET',
 		mode: 'cors',
 	}
-    return fetch(base_url+'/persona/auth/?Email='+email+"&Contraseña="+password, request_options)
+    return fetch(environment.baseUrl+'/persona/auth/?Email='+email+"&Contraseña="+password, request_options)
 		.then(response => {
 			let text = response.text();
 			status = response.status;

@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { PeticionEnvio, PeticionGet } from "../PeticionesAdmin.js";
 import Notificacion from "./modal.js";
+import { environment } from "../../../../environments/environment.js";
 
 export default class Dashboard extends Component {
   constructor(props) {
@@ -18,7 +19,7 @@ export default class Dashboard extends Component {
     this.Inactivar = this.Inactivar.bind(this);
     this.handleClickCerrarModal = this.handleClickCerrarModal.bind(this);
   }
-  urlServicio = "https://api-happlab.herokuapp.com/persona/";
+  urlServicio = environment.baseUrl + "/persona/";
 
   componentDidMount() {
     this.ListarUsuarios();

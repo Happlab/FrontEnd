@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { PeticionEnvio, PeticionGet } from "../PeticionesAdmin.js";
 import Notificacion from "./modal.js";
+import { environment } from "../../../../environments/environment.js";
 
 export default class DashboardAdminContenido extends Component {
   constructor(props) {
@@ -19,7 +20,7 @@ export default class DashboardAdminContenido extends Component {
     this.handleClickCerrarModal = this.handleClickCerrarModal.bind(this);
   }
 
-  urlServicio = "https://api-happlab.herokuapp.com/contenido/";
+  urlServicio = environment.baseUrl + "/contenido/";
 
   componentDidMount() {
     this.ListarContenido();

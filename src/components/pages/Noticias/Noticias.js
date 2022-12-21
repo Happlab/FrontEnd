@@ -4,6 +4,7 @@ import Footer from '../../navegation/footer/Footer';
 import './Noticias.scss';
 import { Fade } from 'react-bootstrap';
 import { PeticionGet } from '../Admin/PeticionesAdmin.js';
+import { environment } from '../../../environments/environment';;
 
 class Noticias extends React.Component {
     constructor(props){
@@ -15,12 +16,12 @@ class Noticias extends React.Component {
         this.handleClick=this.handleCambioEnNoticias.bind(this);
     }
 
-    urlServicio='https://api-happlab.herokuapp.com/noticia/';
     componentDidMount(){
         this.ListarNoticias();
     }
+
     ListarNoticias(){
-        const url=this.urlServicio;
+        const url = environment.baseUrl + "/noticia/";
         const mensajeError='no hay noticias';
         let datos=PeticionGet(url, mensajeError);
         datos.then(data =>{
@@ -62,7 +63,7 @@ class Noticias extends React.Component {
                         <ContenidoNoticias 
                             key={i+1}
                             titulo={this.state.arrayNoticias[i].titulo_noticia}
-                            srcImg={this.urlServicio+'img/'+this.state.arrayNoticias[i].link_contenido}
+                            srcImg={environment.baseUrl + '/noticia/img/'+this.state.arrayNoticias[i].link_contenido}
                             LinkPage={this.state.arrayNoticias[i].url_noticia}
                         />
                     )

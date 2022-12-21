@@ -7,6 +7,7 @@ import markerIconPng from "leaflet/dist/images/marker-icon.png";
 import { Icon } from "leaflet";
 import "./Acerca.scss";
 import { PeticionGet } from "../Admin/PeticionesAdmin";
+import { environment } from "../../../environments/environment";;
 
 class Acerca extends React.Component {
   constructor(props) {
@@ -16,14 +17,12 @@ class Acerca extends React.Component {
     };
   }
 
-  urlServicio = "https://api-happlab.herokuapp.com/seccion/";
-
   componentDidMount() {
     this.listarAcerca();
   }
 
   listarAcerca() {
-    const url = "https://api-happlab.herokuapp.com/seccion/";
+    const url = environment.baseUrl + "/seccion/";
     const mensajeError = "No hay informacion de inicio";
     const datos = PeticionGet(url, mensajeError);
     datos.then((data) => {
@@ -67,8 +66,8 @@ class Acerca extends React.Component {
                       style={{ width: "100%", height: "100%" }}
                       className="images-carousel"
                       src={
-                        this.urlServicio +
-                        "contenido/" +
+                        environment.baseUrl +
+                        "/seccion/contenido/" +
                         acerca.nombre_contenido
                       }
                       width={400}

@@ -4,6 +4,7 @@ import Notificacion from "./modal.js";
 import * as Yup from "yup";
 import { Formik } from "formik";
 import { Form, Button } from "react-bootstrap";
+import { environment } from "../../../../environments/environment.js";
 
 const validationSchema = Yup.object().shape({
   titulo_seccion: Yup.string()
@@ -31,7 +32,7 @@ export default class DashboardAdminInicio extends Component {
     this.editar = this.editar.bind(this);
     this.funcioneditar = this.funcioneditar.bind(this);
   }
-  urlServicio = "https://api-happlab.herokuapp.com/seccion/";
+  urlServicio = environment.baseUrl + "/seccion/";
   componentDidMount() {
     this.listarInformacion();
   }

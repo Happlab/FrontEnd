@@ -6,6 +6,7 @@ import { Navbar } from "../../navegation/navbar/Navbar";
 import Footer from "../../navegation/footer/Footer";
 import { Carousel } from "react-bootstrap";
 import { PeticionGet } from "../Admin/PeticionesAdmin";
+import { environment } from "../../../environments/environment";
 
 class Inicio extends React.Component {
   constructor(props) {
@@ -15,13 +16,12 @@ class Inicio extends React.Component {
     };
   }
 
-  urlServicio = "https://api-happlab.herokuapp.com/seccion/";
-  
   componentDidMount() {
     this.ListarInicio();
   }
+
   ListarInicio() {
-    const url = this.urlServicio;
+    const url = environment.baseUrl+"/seccion/";
     const mensajeError = "no hay informacion de inicio";
     const datos = PeticionGet(url, mensajeError);
     datos.then((data) => {
@@ -68,8 +68,8 @@ class Inicio extends React.Component {
                         style={{ width: "100%", height: "100%" }}
                         className="images-carousel"
                         src={
-                          this.urlServicio +
-                          "contenido/" +
+                          environment.baseUrl +
+                          "/seccion/contenido/" +
                           inicio.nombre_contenido
                         }
                         width={400}
