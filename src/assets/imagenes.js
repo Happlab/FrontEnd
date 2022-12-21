@@ -11,7 +11,7 @@ import tecno5 from './images/hl5.jpeg'
 import tecno6 from './images/hl6.png'
 import logoGico from './images/LogoGICO.png'
 
-
+// eslint-disable-next-line import/no-anonymous-default-export
 export default {
     "img1": logo1,
     "img2": back1,
@@ -25,5 +25,4 @@ export default {
     "imgTec5": tecno5,
     "imgTec6": tecno6,
     "imgGico": logoGico
-    
 }

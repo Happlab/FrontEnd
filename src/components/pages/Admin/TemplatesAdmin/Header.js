@@ -18,7 +18,7 @@ export default class Header extends Component {
               <a
                 className="nav-link"
                 data-widget="pushmenu"
-                href="#"
+                href="/"
                 role="button"
               >
                 <i className="fas fa-bars" />

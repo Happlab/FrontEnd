@@ -64,7 +64,7 @@ export default class Menu extends Component {
                 data-accordion="false"
               >
                 <li className="nav-item menu-open">
-                  <a href="#" className="nav-link active">
+                  <a href="/adminInicio" className="nav-link active">
                     <i className="nav-icon fas fa-tachometer-alt" />
                     <p>
                       Administrar
