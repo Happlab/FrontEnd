@@ -1,8 +1,9 @@
 .main-registro {
-    flex-wrap: wrap;
+    min-height: 100%;
+    position: relative;
 }
 
-.main-registro .hr-line-white {
-    text-align: center;
-    color: white;
+.content-register {
+    padding-bottom: 40px;
 }
+

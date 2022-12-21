@@ -107,6 +107,7 @@
 } 
 #contenedor  {
     background-color: white;
+    padding-bottom: 40px;
 }
 .elementor-section.elementor-section-items-middle>.elementor-container {
     align-items: center;
@@ -126,4 +127,7 @@
 .elementor-section.elementor-section-height-full {
     height: 100vh; 
 }
-
+.main-login {
+    min-height: 100%;
+    position: relative;
+}

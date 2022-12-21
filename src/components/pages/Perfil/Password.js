@@ -5,6 +5,7 @@ import Footer from '../../navegation/footer/Footer';
 import user_service from '../../services/UserServices';
 import Notificacion from '../Admin/TemplatesAdmin/modal';
 import { TokenContext } from '../../../context/GlobalContext';
+import './Password.scss';
 
 class Password extends React.Component {
     constructor(props) {
@@ -91,7 +92,7 @@ class Password extends React.Component {
             return (<Navigate replace to="/" />);
         }
         return (
-            <div className="row">
+            <div className="main-pass">
                 <Notificacion show={this.state.notificacion} titulo={this.state.tituloNotificacion} mensaje={this.state.mensajeNotificacion} onclick={this.handleClickCerrarModal} />
                 {this.state.userVerified && (
                     this.onSendUpdateRequest(data)
@@ -100,7 +101,7 @@ class Password extends React.Component {
                     data = JSON.stringify(data)
                 )}
                 <Navbar />
-                <div className="col-md-6 offset-md-3">
+                <div className="col-md-6 offset-md-3 content-pass">
                     <span className="anchor" id="formChangePassword"></span>
                     <hr className="mb-5" />
                     <div className="card card-outline-secondary">

@@ -30,8 +30,9 @@ const Registro = () => {
     const [success, setSuccess] = useState(false);
 
     return (
-        <Row className="mx-auto justify-content-center" >
+        <div className="main-registro">
             <Navbar />
+            <Row className="mx-auto justify-content-center" >
             <Alert dismissible variant="danger" onClose={() => setError(true)} show={error}>
                 Error registrando el usuario, Correo electronico ya registrado.
             </Alert>
@@ -172,10 +173,11 @@ const Registro = () => {
                     </Formik>
                 </div>
             </Col>
-            <hr className='hr-line-white' />
-            <Footer />
-
-        </Row>)
+        </Row>
+        <hr className="content-register"/>
+        <Footer />
+        </div>
+    );
 };
 
 export default Registro;
