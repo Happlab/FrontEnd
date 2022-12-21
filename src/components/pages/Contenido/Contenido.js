@@ -14,6 +14,7 @@ import NotificacionContenido from "../../navegation/modal_contenido/modal_conten
 import Notificacion from "../Admin/TemplatesAdmin/modal";
 import { TokenContext } from "../../../context/GlobalContext";
 import { environment } from "../../../environments/environment";
+import contentService from "../../services/ContentServices";
 
 class Contenido extends React.Component {
   constructor(props) {
@@ -82,49 +83,8 @@ class Contenido extends React.Component {
     this.setState((values) => ({ ...values, [name]: value }));
   }
 
-  async PeticionGet(url, mensajeError) {
-    let status = 0;
-    let content;
-    let contenido;
-    let contenidoNoPendiente = [];
-    const request_options = {
-      method: "GET",
-      mode: "cors",
-      ContentType: "application/json",
-      headers: {
-        "Access-Control-Allow-Origin": "*",
-      },
-    };
-    return fetch(url, request_options)
-      .then((response) => {
-        content = response.json();
-        status = response.status;
-        return content;
-      })
-      .then((data) => {
-        if (status === 200 && data !== "") {
-          contenido = Array.from(data);
-          let j = 0;
-          for (let i = 0; i < contenido.length; i++) {
-            if (!contenido[i].pendiente) {
-              if (contenido[i].visible) {
-                contenidoNoPendiente[j] = contenido[i];
-                j++;
-              }
-            }
-          }
-          return contenidoNoPendiente;
-        } else {
-          return null;
-        }
-      })
-      .catch((error) => console.log("Error", error));
-  }
-
   listarContenido() {
-    const url = environment.baseUrl + "/contenido/";
-    const mensajeError = "no hay contenidos";
-    const datos = this.PeticionGet(url, mensajeError);
+    const datos = contentService.listContent();
     datos.then((data) => {
       if (data !== null && data !== undefined) {
         this.setState({ arrayContenidos: Array.from(data) });
@@ -134,7 +94,6 @@ class Contenido extends React.Component {
 
   subirContenido() {
     this.peticion = 1;
-    let status = 0;
     var formdata = new FormData();
     formdata.append("email_autor", this.state.email);
     formdata.append("titulo", document.getElementById("idTitulo").value);
@@ -142,20 +101,8 @@ class Contenido extends React.Component {
     formdata.append("resumen", document.getElementById("idResumen").value);
     formdata.append("autores", document.getElementById("idAutores").value);
     formdata.append("tags", document.getElementById("idTags").value);
-    var requestOptions = {
-      method: "POST",
-      mode: "cors",
-      headers: {
-        "Access-Control-Allow-Origin": "*",
-      },
-      body: formdata,
-    };
-    fetch( environment.baseUrl + "/contenido/create", requestOptions)
-      .then((response) => {
-        status = response.status;
-      })
-      .then((data) => {
-        if (status === 200 && data !== "") {
+    contentService.uploadContent(formdata).then((data) => {
+        if (data !== null) {
           this.setState({
             notificacionContenido: true,
             tituloNotificacion: "Contenido",
@@ -171,28 +118,8 @@ class Contenido extends React.Component {
       });
   }
 
-  async actualizarCredito() {
-    const peticion = environment.baseUrl + "/persona/modToken/" +
-      this.state.email +
-      "&" +
-      this.credito;
-    const request_options = {
-      method: "PUT",
-      mode: "cors",
-      ContentType: "application/json",
-      headers: {
-        "Access-Control-Allow-Origin": "*",
-      },
-    };
-    return fetch(peticion, request_options)
-      .then((response) => {
-        if (response.status === 200) {
-          console.log(this.credito);
-        } else {
-          console.log(this.credito);
-        }
-      })
-      .catch((error) => console.log("Error", error));
+  actualizarCredito() {
+    contentService.updateCredit(this.state.email, this.credito);
   }
 
   descarga(contenido_link) {
@@ -218,14 +145,7 @@ class Contenido extends React.Component {
   }
 
   componentDidMount() {
-    const url = environment.baseUrl + "/contenido/";
-    const mensajeError = "no hay contenidos";
-    const datos = this.PeticionGet(url, mensajeError);
-    datos.then((data) => {
-      if (data !== null && data !== undefined) {
-        this.setState({ arrayContenidos: Array.from(data) });
-      }
-    });
+    this.listarContenido();
     let usuarios = this.context.token;
     if (usuarios != null) {
       this.setState({ email: usuarios.email, logeado: true });
@@ -264,42 +184,28 @@ class Contenido extends React.Component {
     }
   }
 
-  async handleSubmit() {
+  handleSubmit() {
     this.peticion = 2;
     const comentarioUsuario = {
       email_persona: this.state.email,
       valoracion: this.valoracion_usuario,
       comentario: this.state.comentario,
     };
-    const url = environment.baseUrl + "/contenido/comentar/" +
-      this.state.arrayContenidos[this.state.posSeleccionado].link;
-    const requestOptions = {
-      method: "POST",
-      mode: "cors",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-        "Access-Control-Allow-Origin": "*",
-      },
-      body: JSON.stringify(comentarioUsuario),
-    };
-    return fetch(url, requestOptions)
-      .then((response) => {
-        if (response.status === 200) {
-          this.setState({
-            notificacionContenido: true,
-            tituloNotificacion: "Comentario",
-            mensajeNotificacion: "Comentario subido exitosamente",
-          });
-        } else {
-          this.setState({
-            notificacionContenido: true,
-            tituloNotificacion: "Comentario",
-            mensajeNotificacion: "No se pudo subir el comentario",
-          });
-        }
-      })
-      .catch((error) => console.log("Error", error));
+    contentService.writeComment(this.state.arrayContenidos[this.state.posSeleccionado].link, comentarioUsuario).then((response) => {
+      if (response === 200) {
+        this.setState({
+          notificacionContenido: true,
+          tituloNotificacion: "Comentario",
+          mensajeNotificacion: "Comentario subido exitosamente",
+        });
+      } else {
+        this.setState({
+          notificacionContenido: true,
+          tituloNotificacion: "Comentario",
+          mensajeNotificacion: "No se pudo subir el comentario",
+        });
+      }
+    })
   }
 
   handleClickEstadoTrue(
