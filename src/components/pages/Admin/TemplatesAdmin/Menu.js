@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import { Button } from "react-bootstrap";
 import user_service from "../../../services/UserServices";
 
 export default class Menu extends Component {
