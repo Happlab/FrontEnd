@@ -5,10 +5,19 @@ import user_service from "../../../services/UserServices";
 export default class Menu extends Component {
   constructor(props) {
     super(props);
+    this.state = {
+      isHover: false,
+    }
     this.handleClickCerrarSesion = this.handleClickCerrarSesion.bind(this);
+    this.toggleHover = this.toggleHover.bind(this);
   }
   handleClickCerrarSesion() {
     user_service.deleteToken();
+  }
+  toggleHover() {
+    this.setState({
+      isHover: !this.state.isHover
+    })
   }
   render() {
     return (
@@ -22,7 +31,8 @@ export default class Menu extends Component {
               color: "rgba(255,255,255,.8)",
             }}
           >
-            <span className="brand-text font-weight-light">Admin HappLab</span>
+            <span className="brand-text font-weight-light" style={{
+            }}>Admin HappLab</span>
           </div>
           <div className="sidebar">
             <div className="user-panel mt-3 pb-3 mb-3 d-flex">
@@ -73,7 +83,7 @@ export default class Menu extends Component {
                             this.props.opcion === "usuario" ? "green" : "",
                         }}
                       >
-                        <i className="far fa-circle nav-icon" />
+                        <i className="fa fa-user nav-icon" />
                         <p>Administrar usuarios</p>
                       </a>
                     </li>
@@ -87,7 +97,7 @@ export default class Menu extends Component {
                             this.props.opcion === "noticia" ? "green" : "",
                         }}
                       >
-                        <i className="far fa-circle nav-icon" />
+                        <i className="fas fa-newspaper nav-icon" />
                         <p>Administrar noticias</p>
                       </a>
                     </li>
@@ -101,7 +111,7 @@ export default class Menu extends Component {
                             this.props.opcion === "contenido" ? "green" : "",
                         }}
                       >
-                        <i className="far fa-circle nav-icon" />
+                        <i className="fa fa-book nav-icon" />
                         <p>Administrar contenidos</p>
                       </a>
                     </li>
@@ -115,7 +125,7 @@ export default class Menu extends Component {
                             this.props.opcion === "inicio" ? "green" : "",
                         }}
                       >
-                        <i className="far fa-circle nav-icon" />
+                        <i className="fa fa-home nav-icon" />
                         <p>Administrar inicio</p>
                       </a>
                     </li>
@@ -129,22 +139,27 @@ export default class Menu extends Component {
                             this.props.opcion === "acercaDe" ? "green" : "",
                         }}
                       >
-                        <i className="far fa-circle nav-icon" />
+                        <i className="fa fa-location-dot nav-icon" />
                         <p>Administrar Acerca de</p>
                       </a>
                     </li>
                     <li
                       className="nav-item"
-                      style={{
-                        display: "flex",
-                        justifyContent: "center",
-                        marginTop: "30px",
-                      }}
                     >
-                      <a href="/">
-                        <Button onClick={this.handleClickCerrarSesion}>
+                      <a 
+                        href="/"
+                        className="nav-link"
+                        onMouseEnter={this.toggleHover}
+                        onMouseLeave={this.toggleHover}
+                        style={{
+                          backgroundColor: !this.state.isHover ? "#007BFF" : "#95a9bd",
+                          color: "#fff",
+                        }}
+                      >
+                        <i className="fa fa-sign-out nav-icon" />
+                        <p onClick={this.handleClickCerrarSesion}>
                           Cerrar Sesion
-                        </Button>
+                        </p>
                       </a>
                     </li>
                   </ul>

@@ -1,6 +1,5 @@
 import { Navigate, Route, Routes } from 'react-router-dom';
 import Inicio from './components/pages/Inicio/Inicio';
-import About from './components/pages/About';
 import Acerca from './components/pages/Acerca de/Acerca';
 import Noticias from './components/pages/Noticias/Noticias'
 import Tecnologias from './components/pages/Tecnologias/Tecnologias'
@@ -31,7 +30,6 @@ function App() {
             <Route path='Perfil' element={<Perfil/>}/>
             <Route path='Password' element={<Password/>}/>
             <Route index element={<Inicio />}/>
-            <Route path='About' element={<About />}/>
             <Route path='Acerca' element={<Acerca />}/>
             <Route path='Noticias' element={<Noticias />}/>
             <Route path='Tecnologias' element={<Tecnologias />}/>
