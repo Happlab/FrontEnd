@@ -5,6 +5,10 @@ $color-words: white;
 
 .footer-main{
     background-color: $color-background;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 40px;
 }
 
 .columnas{

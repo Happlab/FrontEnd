@@ -26,7 +26,7 @@ class SobreNosotros extends React.Component {
 
   render() {
     return (
-      <div>
+      <div className="main-about">
         <Navbar />
         <span
           className="fa-solid fa-angle-up go-up"

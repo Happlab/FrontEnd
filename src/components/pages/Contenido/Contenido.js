@@ -67,9 +67,11 @@ class Contenido extends React.Component {
   handleClick(tags) {
     let contentForTag = [];
     this.state.arrayContenidos.forEach((content) => {
-      content.tags.filter((tag) => tags === tag).map((contentTag) => {
-        return contentForTag.push(content);
-      });
+      content.tags
+        .filter((tag) => tags === tag)
+        .map((contentTag) => {
+          return contentForTag.push(content);
+        });
     });
     this.setState(() => ({
       contenidosPorTag: contentForTag,
@@ -102,20 +104,20 @@ class Contenido extends React.Component {
     formdata.append("autores", document.getElementById("idAutores").value);
     formdata.append("tags", document.getElementById("idTags").value);
     contentService.uploadContent(formdata).then((data) => {
-        if (data !== null) {
-          this.setState({
-            notificacionContenido: true,
-            tituloNotificacion: "Contenido",
-            mensajeNotificacion: "Contenido subido exitosamente",
-          });
-        } else {
-          this.setState({
-            notificacionContenido: true,
-            tituloNotificacion: "Contenido",
-            mensajeNotificacion: "No se pudo subir el contenido",
-          });
-        }
-      });
+      if (data !== null) {
+        this.setState({
+          notificacionContenido: true,
+          tituloNotificacion: "Contenido",
+          mensajeNotificacion: "Contenido subido exitosamente",
+        });
+      } else {
+        this.setState({
+          notificacionContenido: true,
+          tituloNotificacion: "Contenido",
+          mensajeNotificacion: "No se pudo subir el contenido",
+        });
+      }
+    });
   }
 
   actualizarCredito() {
@@ -155,7 +157,8 @@ class Contenido extends React.Component {
 
   aceptar() {
     if (this.peticion === 0) {
-      window.location.href = environment.baseUrl + "/contenido/download/" + this.state.link;
+      window.location.href =
+        environment.baseUrl + "/contenido/download/" + this.state.link;
       this.setState({ link: "" });
       this.setState({ notificacion: false });
       this.setState({ estadoTrigger: false });
@@ -191,21 +194,26 @@ class Contenido extends React.Component {
       valoracion: this.valoracion_usuario,
       comentario: this.state.comentario,
     };
-    contentService.writeComment(this.state.arrayContenidos[this.state.posSeleccionado].link, comentarioUsuario).then((response) => {
-      if (response === 200) {
-        this.setState({
-          notificacionContenido: true,
-          tituloNotificacion: "Comentario",
-          mensajeNotificacion: "Comentario subido exitosamente",
-        });
-      } else {
-        this.setState({
-          notificacionContenido: true,
-          tituloNotificacion: "Comentario",
-          mensajeNotificacion: "No se pudo subir el comentario",
-        });
-      }
-    })
+    contentService
+      .writeComment(
+        this.state.arrayContenidos[this.state.posSeleccionado].link,
+        comentarioUsuario
+      )
+      .then((response) => {
+        if (response === 200) {
+          this.setState({
+            notificacionContenido: true,
+            tituloNotificacion: "Comentario",
+            mensajeNotificacion: "Comentario subido exitosamente",
+          });
+        } else {
+          this.setState({
+            notificacionContenido: true,
+            tituloNotificacion: "Comentario",
+            mensajeNotificacion: "No se pudo subir el comentario",
+          });
+        }
+      });
   }
 
   handleClickEstadoTrue(
@@ -246,7 +254,7 @@ class Contenido extends React.Component {
         if (this.state.ListarPorTag) {
           for (let i = 0; i < this.state.contenidosPorTag.length; i++) {
             array2[i] = (
-              <div key={i+1}>
+              <div key={i + 1}>
                 <Col>
                   <Card className="card-change">
                     <CardBody>
@@ -299,7 +307,7 @@ class Contenido extends React.Component {
         } else {
           for (let i = 0; i < this.state.arrayContenidos.length; i++) {
             array2[i] = (
-              <div key={i+1}>
+              <div key={i + 1}>
                 <Col>
                   <Card className="card-change">
                     <CardBody>
@@ -482,11 +490,7 @@ class Contenido extends React.Component {
         <hr />
         <section className="sec-filtros">
           <div className="filtros">
-            <ListGroup
-              as={"ul"}
-              className="lista-filtros"
-              horizontal="lg"
-            >
+            <ListGroup as={"ul"} className="lista-filtros" horizontal="lg">
               <ListGroup.Item as={"li"} className="item-filtro">
                 <h2 id="texto-filtro">Filtros</h2>
               </ListGroup.Item>
@@ -540,7 +544,8 @@ class Contenido extends React.Component {
                     Subir Contenido
                   </Button>
                 ) : (
-                  <div /* Este es el div 2 */ className="red2" />
+          <div /* Este es el div 2 */ className="red2">
+          </div>
                 )}
               </ListGroup.Item>
             </ListGroup>
@@ -553,8 +558,9 @@ class Contenido extends React.Component {
           </div>
         </section>
         <div className="container-fluid">
-          { this.state.arrayContenidos.length === 0 && <p className="notAvalaible">No hay contenidos disponibles</p>
-          }
+          {this.state.arrayContenidos.length === 0 && (
+            <p className="notAvalaible">No hay contenidos disponibles</p>
+          )}
           <Row xs={3}>
             <MostrarContenido />
           </Row>
@@ -622,15 +628,13 @@ class Contenido extends React.Component {
                       required
                     />{" "}
                   </p>
-                  <Button
-                    className="btn-Subir"
-                    onClick={this.handleSubmit}
-                  >
+                  <Button className="btn-Subir" onClick={this.handleSubmit}>
                     Subir
                   </Button>
                 </div>
               ) : (
-                <div /* Este es el div 2 */ className="red2" />
+              <div /* Este es el div 2 */ className="red2" >
+              </div>
               )}
               <h4> Comentarios </h4>
               {[...Array(this.state.comentarios.length)].map((e, i) => {
@@ -665,9 +669,9 @@ class Contenido extends React.Component {
               })}
             </Modal.Body>
           </Modal>
-        </div>
+          </div>
         <Footer />
-      </div>
+        </div>
     );
   }
 }

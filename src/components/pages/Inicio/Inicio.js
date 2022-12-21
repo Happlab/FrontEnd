@@ -109,7 +109,7 @@ class Inicio extends React.Component {
             </Carousel.Item>
           </Carousel>
         </div>
-        <hr />
+        <hr className="br-carousel"/>
         <Footer />
       </div>
     );

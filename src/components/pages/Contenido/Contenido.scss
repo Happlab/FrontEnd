@@ -5,6 +5,13 @@ $posicion-text: center;
 $color-text: gray;
 $color-tittle: black;
 
+.main-contenido {
+    min-height: 100%;
+    position: relative;
+}
+.container-fluid {
+    padding-bottom: 40px;
+}
 .titulo > div{
     width: 100%;
 }

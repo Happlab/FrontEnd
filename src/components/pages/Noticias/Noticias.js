@@ -118,6 +118,7 @@ class Noticias extends React.Component {
 		        </div>
 			</div>
 		</section>
+        <div className='news-separator'></div>
         <Footer />
     </div>
     )};

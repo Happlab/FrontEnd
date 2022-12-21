@@ -36,7 +36,7 @@ class Acerca extends React.Component {
 
   render() {
     return (
-      <div className="main">
+      <div className="main-aboutme">
         <Navbar />
         <hr />
         {this.state.acerca.length === 0 && <p className="notAvalaible">La informacion no se encuentra disponible</p>}
@@ -129,7 +129,7 @@ class Acerca extends React.Component {
               </div>
             );
         })}
-        <hr />
+        <hr className="aboutme" />
         <Footer />
       </div>
     );

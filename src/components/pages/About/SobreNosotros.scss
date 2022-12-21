@@ -1,102 +1,5 @@
 @import url('https://unpkg.com/boxicons@2.0.5/css/boxicons.min.css');
 
-// $size-font: 23px;
-
-// .content-about {
-//     // background-color: rgb(22, 90, 158);
-//     margin: 1% 8% 1% 5%;
-//     padding: 2% 1%;
-//     display: flex;
-//     flex-direction: column;
-//     flex: 1 1 auto;
-//     border-radius: 10px;
-// }
-
-// .content-about-title{
-//     position: absolute;
-//     left: 470px;
-//     // color: rgb(71, 16, 255);
-//     color: rgb(247, 154, 51);
-// }
-
-// .content-about-title-center{
-//     // color: rgb(71, 16, 255);
-//     margin: 0;
-//     padding: 0;
-//     padding-top: 2%;
-//     text-align: center;
-//     color: rgb(247, 154, 51);
-// }
-
-// .content-about-title-right {
-//     position: absolute;
-//     right: 400px;
-//     // color: rgb(71, 16, 255);
-//     color: rgb(247, 154, 51);
-// }
-
-// .content-about-body {
-//     display: flex;
-//     flex-direction: row;
-//     flex: 1 1 auto;
-//     p {
-//         font-family: 'Poppins', sans-serif;
-//         font-size: $size-font;
-//         margin: 3% 4%;
-//         // background-color: rgb(247, 154, 51);
-//         background-color: rgb(71, 16, 255);
-//         text-align: justify;
-        // border-radius: 10px;
-        // padding: 1.5%;
-        // color: rgb(255, 255, 255);
-    // }
-    // img {
-        // object-fit: contain;
-    // }
-// }
-
-// .content-about-body-right {
-    // display: flex;
-    // flex-direction: row;
-    // flex: 1 1 auto;
-    // padding: 0% 0% 0% 4%;
-    // p {
-        // font-family: 'Poppins', sans-serif;
-        // font-size: $size-font;
-        // margin: 3% 0 0 6%;
-        // // background-color: rgb(247, 154, 51);
-        // background-color: rgb(71, 16, 255);
-        // text-align: justify;
-        // border-radius: 10px;
-        // padding: 1.5%;
-        // color: rgb(255, 255, 255);
-    // }
-    // img {
-        // object-fit: contain;
-    // }
-// }
-
-// .content-about-body-center {
-    // display: flex;
-    // flex-direction: column;
-    // flex: 1 1 auto;
-    // p {
-        // font-family: 'Poppins', sans-serif;
-        // font-size: $size-font;
-        // margin: 0.2% 0 0 5%;
-        // // background-color: rgb(247, 154, 51);
-        // background-color: rgb(71, 16, 255);
-        // text-align: justify;
-        // border-radius: 10px;
-        // padding: 1.5%;
-        // color: rgb(255, 255, 255);
-    // }
-    // img {
-        // margin: 1% auto;
-        // object-fit: contain;
-    // }
-// }
-
 header{
 	text-align: center;
 	height: 100vh;
@@ -210,6 +113,15 @@ header{
 	width: 100%;
 	font-weight: 400;
 }
+.main-about {
+    min-height: 100%;
+    position: relative;
+}
+
+main {
+    padding-bottom: 40px;
+}
+
 
 @media screen and (max-width:800px){
 	.title-about{

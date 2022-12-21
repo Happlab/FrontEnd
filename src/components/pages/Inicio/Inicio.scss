@@ -10,6 +10,8 @@ $tam-2: 100px;
 
 .main-inicio{
     background-color: $color-background;
+    min-height: 100%;
+    position: relative;
 }
 
 .row-inicio{
@@ -80,4 +82,7 @@ $tam-2: 100px;
         object-fit: inherit;
         border-radius: 20px;
     }
+ }
+ .br-carousel {
+    padding-bottom: 40px;
  }

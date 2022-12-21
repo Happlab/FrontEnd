@@ -8,6 +8,8 @@
 }
 
 .main-noticias{ 
+    min-height: 100%;
+    position: relative;
     .elementor-section{
         position: relative;
         background-color: #fff;
@@ -21,8 +23,13 @@
         display: flex;
         margin-right: auto;
         margin-left: auto;
-        position: relative;
+        // position: relative;
+        margin-bottom: 25px;
     }
+}
+
+.news-separator {
+    padding-bottom: 30px;
 }
 
 .elementor-shape[data-negative=false].elementor-shape-bottom, .elementor-shape[data-negative=true].elementor-shape-top {
