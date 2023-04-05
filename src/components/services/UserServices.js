@@ -5,6 +5,7 @@ let status = 0;
 let request_options = {};
 let token = null;
 const key = "token";
+let url = "";
 
 const getDataToken = inputToken => {
     let data = null;
@@ -16,16 +17,11 @@ const getDataToken = inputToken => {
     return data;
 }
 
-const setToken = (newtoken) => {
-    window.sessionStorage.setItem(key, newtoken);
-}
+const setToken = newtoken => window.sessionStorage.setItem(key, newtoken);
 
 const getToken = () => {
     let token = window.sessionStorage.getItem(key);
-    if(token === undefined){
-        token=null;
-    }
-    return token;
+    return token ? token : null;
 }
 
 const deleteToken = () => {
@@ -34,13 +30,14 @@ const deleteToken = () => {
 }
 
 const disabledUser = async (email) => {
+    url = environment.baseUrl + '/persona/desactivar/' + email;
     request_options = {
         method: 'DELETE',
         headers: {
             'Authorization': token
         }
     };
-    return fetch(environment.baseUrl+'/persona/desactivar/'+email, request_options)
+    return fetch(url, request_options)
             .then(response => {
                 return response.status;
             })
@@ -48,6 +45,7 @@ const disabledUser = async (email) => {
 }
 
 const updateUser = async (data) => {
+    url = environment.baseUrl + '/persona/update';
     request_options = {
         method: 'PUT',
         headers: {
@@ -56,7 +54,7 @@ const updateUser = async (data) => {
         },
         body: JSON.stringify(data)
     };
-    return fetch(environment.baseUrl+'/persona/update', request_options)
+    return fetch(url, request_options)
             .then(response => {
                 let text = response.text();
                 status = response.status;
@@ -70,11 +68,12 @@ const updateUser = async (data) => {
 }
 
 const onLogin = async (email, password) => {
+    url = environment.baseUrl + '/persona/auth/?Email=' + email + "&Contraseña=" + password;
 	request_options = {
 		method: 'GET',
 		mode: 'cors',
-	}
-    return fetch(environment.baseUrl+'/persona/auth/?Email='+email+"&Contraseña="+password, request_options)
+	};
+    return fetch(url, request_options)
 		.then(response => {
 			let text = response.text();
 			status = response.status;
