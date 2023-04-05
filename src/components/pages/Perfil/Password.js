@@ -15,13 +15,13 @@ class Password extends React.Component {
             inputPasswordNew: "",
             inputPasswordVerified: "",
             userVerified: false,
-            updateVerified: false
+            isUpdate: false,
+            dataUpdate: null,
         }
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.onSendUpdateRequest = this.onSendUpdateRequest.bind(this);
         this.handleClickCerrarModal = this.handleClickCerrarModal.bind(this);
-        this.eliminarCookie = this.eliminarCookie.bind(this);
     }
 
 	static contextType = TokenContext;
@@ -40,12 +40,8 @@ class Password extends React.Component {
             let email = this.context.token.email;
             let passNew = user_service.onLogin(email, this.state.inputPasswordOld);
             passNew.then(data => {
-                if (data !== null) {
-                    this.setState(values => ({ ...values, userVerified: !this.state.userVerified }));
-                    this.setState({
-                        notificacion: true, tituloNotificacion: "Cambio de contraseña",
-                        mensajeNotificacion: "Contraseña cambiada exitosamente"
-                    });
+                if (data !== null && data !== undefined) {
+                    this.setState({ userVerified: !this.state.userVerified, notificacion: true, tituloNotificacion: "Cambio de contraseña", mensajeNotificacion: "Contraseña cambiada exitosamente" });
                 } else this.setState({
                     notificacion: true, tituloNotificacion: "Cambio de contraseña",
                     mensajeNotificacion: "La contraseña actual ingresada no es correcta"
@@ -60,14 +56,9 @@ class Password extends React.Component {
     onSendUpdateRequest(data) {
         data.password = this.state.inputPasswordNew;
         let update = user_service.updateUser(data);
-        update.then(data => {
-            if (data !== null) {
-                this.setState(values => ({ ...values, updateVerified: !this.state.updateVerified}));
-                this.setState({
-                    notificacion: true, tituloNotificacion: "Cambio de contraseña",
-                    mensajeNotificacion: "Contraseña cambiada exitosamente"
-                });
-                this.eliminarCookie();
+        update.then(dataUpdate => {
+            if (dataUpdate !== null && dataUpdate !== undefined) {
+                this.setState({ isUpdate: true, dataUpdate: JSON.parse(dataUpdate), userVerified: !this.state.userVerified, notificacion: true, tituloNotificacion: "Cambio de contraseña", mensajeNotificacion: "Contraseña cambiada exitosamente"});
             } else this.setState({
                 notificacion: true, tituloNotificacion: "Cambio de contraseña",
                 mensajeNotificacion: "No se pudo cambiar la contraseña"
@@ -76,29 +67,39 @@ class Password extends React.Component {
     }
 
     handleClickCerrarModal() {
-        if (this.state.userVerified) {
-            window.location.href = "/Login"
-        }
         this.setState({ notificacion: false });
+        let data = this.context.token;
+        if(data === null) window.location.replace("/");
+        else if(data.rol[0] === "ADMIN" && this.state.isUpdate) window.location.replace("/adminInicio");
+        else if(data.rol[0] === "USER" && this.state.isUpdate) window.location.replace("/perfil");
     }
 
-    eliminarCookie(){
-        user_service.deleteToken();
+    onUpdateToken() {
+        if(this.state.dataUpdate === null || this.state.dataUpdate === undefined) return;
+        let login = user_service.onLogin(this.state.dataUpdate.email, this.state.dataUpdate.password);
+        login.then(dataLogin => {
+            if(dataLogin !== null && dataLogin !== undefined) {
+                this.context.setToken(dataLogin);
+            }
+        })
+    }
+
+    componentDidMount() {
+        this.onUpdateToken();
     }
 
     render() {
         let data = this.context.token;
         if(data === null) {
-            return (<Navigate replace to="/" />);
+            return (
+                <Navigate to="/" />
+            )
         }
         return (
             <div className="main-pass">
                 <Notificacion show={this.state.notificacion} titulo={this.state.tituloNotificacion} mensaje={this.state.mensajeNotificacion} onclick={this.handleClickCerrarModal} />
                 {this.state.userVerified && (
                     this.onSendUpdateRequest(data)
-                )}
-                {this.state.updateVerified && (
-                    data = JSON.stringify(data)
                 )}
                 <Navbar />
                 <div className="col-md-6 offset-md-3 content-pass">

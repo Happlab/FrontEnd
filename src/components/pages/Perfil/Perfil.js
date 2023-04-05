@@ -97,7 +97,6 @@ class Perfil extends React.Component {
     }
 
     handleClickCerrarModal() {
-        window.location.href = "/Login"
         this.setState({ notificacion: false });
     }
 
