@@ -1,6 +1,7 @@
 import React from "react";
 import Footer from "../../navegation/footer/Footer";
 import { Navbar } from '../../navegation/navbar/Navbar';
+import Loader from "../../navegation/loader/Loader";
 import ReactPlayer from "react-player";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import markerIconPng from "leaflet/dist/images/marker-icon.png";
@@ -14,10 +15,14 @@ class Acerca extends React.Component {
     super(props);
     this.state = {
       acerca: [],
+      estaCargando: true,
     };
   }
 
   componentDidMount() {
+    this.setState({
+      estaCargando: true,
+    })
     this.listarAcerca();
   }
 
@@ -29,8 +34,13 @@ class Acerca extends React.Component {
       if (data !== null && data !== undefined) {
         this.setState({
           acerca: Array.from(data),
+          estaCargando: false,
         });
       }
+    }).finally(()=>{
+      this.setState({
+        estaCargando: false,
+      })
     });
   }
 
@@ -38,7 +48,10 @@ class Acerca extends React.Component {
     return (
       <div className="main-aboutme">
         <Navbar />
-        <hr />
+        {this.state.estaCargando 
+          ? <div style={{padding:"50px"}}><Loader /></div>
+          :
+        <div>
         {this.state.acerca.length === 0 && <p className="notAvalaible">La informacion no se encuentra disponible</p>}
         {this.state.acerca.length !== 0 && <h2 className="titulo-estandar">Bienvenido a HappLab</h2>}
         {this.state.acerca.filter((value, index) => index === 2).map((acerca, i) => {
@@ -130,6 +143,8 @@ class Acerca extends React.Component {
             );
         })}
         <hr className="aboutme" />
+        </div>
+        }
         <Footer />
       </div>
     );

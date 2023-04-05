@@ -15,6 +15,7 @@ import Notificacion from "../Admin/TemplatesAdmin/modal";
 import { TokenContext } from "../../../context/GlobalContext";
 import { environment } from "../../../environments/environment";
 import contentService from "../../services/ContentServices";
+import Loader from "../../navegation/loader/Loader";
 
 class Contenido extends React.Component {
   constructor(props) {
@@ -42,6 +43,7 @@ class Contenido extends React.Component {
       comentario: "",
       link: "",
       email: "",
+      estaCargando: true,
     };
     this.handleClickSubirContenido = this.handleClickSubirContenido.bind(this);
     this.descarga = this.descarga.bind(this);
@@ -89,8 +91,12 @@ class Contenido extends React.Component {
     const datos = contentService.listContent();
     datos.then((data) => {
       if (data !== null && data !== undefined) {
-        this.setState({ arrayContenidos: Array.from(data) });
+        this.setState({ arrayContenidos: Array.from(data), estaCargando: false });
       }
+    }).finally(()=>{
+      this.setState({
+        estaCargando: false,
+      })
     });
   }
 
@@ -147,6 +153,9 @@ class Contenido extends React.Component {
   }
 
   componentDidMount() {
+    this.setState({
+      estaCargando: true,
+    })
     this.listarContenido();
     let usuarios = this.context.token;
     if (usuarios != null) {
@@ -558,12 +567,18 @@ class Contenido extends React.Component {
           </div>
         </section>
         <div className="container-fluid">
-          {this.state.arrayContenidos.length === 0 && (
-            <p className="notAvalaible">No hay contenidos disponibles</p>
-          )}
-          <Row xs={3}>
-            <MostrarContenido />
-          </Row>
+          {this.state.estaCargando ? <Loader />
+          :
+          <div>
+            {this.state.arrayContenidos.length === 0 ? (
+              <p className="notAvalaible">No hay contenidos disponibles</p>
+            ):
+              <Row xs={3}>
+                <MostrarContenido />
+              </Row>
+            }
+          </div>
+          }
           <Modal
             show={this.state.estadoTrigger}
             size="lg"

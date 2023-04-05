@@ -7,16 +7,21 @@ import Footer from "../../navegation/footer/Footer";
 import { Carousel } from "react-bootstrap";
 import { PeticionGet } from "../Admin/PeticionesAdmin";
 import { environment } from "../../../environments/environment";
+import Loader from "../../navegation/loader/Loader";
 
 class Inicio extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       inicio: [],
+      estaCargando: true,
     };
   }
 
   componentDidMount() {
+    this.setState({
+      estaCargando: true,
+    })
     this.ListarInicio();
   }
 
@@ -26,8 +31,12 @@ class Inicio extends React.Component {
     const datos = PeticionGet(url, mensajeError);
     datos.then((data) => {
       if (data !== null && data !== undefined) {
-        this.setState({ inicio: Array.from(data) });
+        this.setState({ inicio: Array.from(data), estaCargando: false });
       }
+    }).finally(() => {
+      this.setState({
+        estaCargando: false,
+      })
     });
   }
   render() {
@@ -39,6 +48,10 @@ class Inicio extends React.Component {
           <h3 className="title-h2">Destacados de la semana</h3>
           <hr className="hr-line-white" />
         </div>
+        {this.state.estaCargando 
+          ? <Loader />
+          :
+        <div>
         {this.state.inicio.length === 0 && <p className="notAvalaible">No hay noticias destacadas</p>}
         {this.state.inicio
           .filter((content, index) => index < 2)
@@ -82,6 +95,8 @@ class Inicio extends React.Component {
               </div>
             );
           })}
+        </div>
+        }
         <hr className="hr-line-white" />
 
         <div className="carousel">

@@ -4,19 +4,24 @@ import Footer from '../../navegation/footer/Footer';
 import './Noticias.scss';
 import { Fade } from 'react-bootstrap';
 import { PeticionGet } from '../Admin/PeticionesAdmin.js';
-import { environment } from '../../../environments/environment';;
+import { environment } from '../../../environments/environment';
+import Loader from '../../navegation/loader/Loader';
 
 class Noticias extends React.Component {
     constructor(props){
         super(props);
         this.state={
             arrayNoticias: [],
-            cambioEnNoticias: false
+            cambioEnNoticias: false,
+            estaCargando: true,
         };
         this.handleClick=this.handleCambioEnNoticias.bind(this);
     }
 
     componentDidMount(){
+        this.setState({
+            estaCargando: true,
+        })
         this.ListarNoticias();
     }
 
@@ -26,8 +31,12 @@ class Noticias extends React.Component {
         let datos=PeticionGet(url, mensajeError);
         datos.then(data =>{
             if(data!==null && data !== undefined){
-                this.setState({arrayNoticias: Array.from(data)});
+                this.setState({arrayNoticias: Array.from(data), estaCargando: false});
             }
+        }).finally(()=> {
+            this.setState({
+                estaCargando: false,
+            })
         });
     }
     handleCambioEnNoticias(){
@@ -107,7 +116,10 @@ class Noticias extends React.Component {
 			                    <div className="tgx-portfolio">
                                     <div id="hover-1" className="hover-1">
                                         <div id='news' className="row">
-                                            <MostrarNoticias/>
+                                            {this.state.estaCargando 
+                                                ? <Loader /> 
+                                                : <MostrarNoticias/>
+                                            }
                                         </div>
                                     </div>
                                 </div>		
