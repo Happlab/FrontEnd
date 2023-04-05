@@ -1,9 +1,11 @@
 import { environment } from "../../environments/environment";
 
+let url = "";
 let status = 0;
 let requestOptions = {}
 
 const listContent = async () => {
+    url = environment.baseUrl + "/contenido/";
     requestOptions = {
       method: "GET",
       mode: "cors",
@@ -14,7 +16,7 @@ const listContent = async () => {
     };
     let content = [];
     let contentNoPendiente = [];
-    return fetch(environment.baseUrl + "/contenido/", requestOptions).then((response) => {
+    return fetch(url, requestOptions).then((response) => {
         status = response.status;
         return response.json();
     }).then((data) => {
@@ -27,6 +29,7 @@ const listContent = async () => {
 }
 
 const uploadContent = async (data) => {
+    url = environment.baseUrl + "/contenido/create";
     requestOptions = {
         method: "POST",
         mode: "cors",
@@ -35,7 +38,7 @@ const uploadContent = async (data) => {
         },
         body: data,
     }
-    return fetch(environment.baseUrl + "/contenido/create", requestOptions).then((response) => {
+    return fetch(url, requestOptions).then((response) => {
         status = response.status;
         return response.json();
     }).then((data) => {
@@ -45,6 +48,7 @@ const uploadContent = async (data) => {
 };
 
 const updateCredit = async (email, credit) => {
+    url = environment.baseUrl + "/persona/modToken/" + email + "&" + credit;
     requestOptions = {
         method: "PUT",
         mode: "cors",
@@ -53,12 +57,13 @@ const updateCredit = async (email, credit) => {
             "Access-Control-Allow-Origin": "*",
         },
     };
-    return fetch(environment.baseUrl + "/persona/modToken/" + email + "&" + credit).then((response) => {
+    return fetch(url, requestOptions).then((response) => {
         console.log(response, credit);
     }).catch((error) => console.log("Error", error));
 };
 
 const writeComment = async (link, comment) => {
+    url = environment.baseUrl + "/contenido/comentar/" + link;
     requestOptions = {
         method: "POST",
         mode: "cors",
@@ -69,7 +74,7 @@ const writeComment = async (link, comment) => {
         },
         body: JSON.stringify(comment),
     };
-    return fetch(environment.baseUrl + "/contenido/comentar/" + link, requestOptions).then((response) => {
+    return fetch(url, requestOptions).then((response) => {
         return response.status;
     }).catch((error) => console.log("Error", error));
 }
