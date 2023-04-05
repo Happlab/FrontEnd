@@ -13,25 +13,14 @@ $separacion-letras: 1px;
 }
 
 .login{
+    border-radius: 10px;
     background: #EA5356;
-    width: 20%;
     letter-spacing: $separacion-letras;
     text-align: $alineacion;
-}
-.logout{
-    a{
+    .button{
         background: #EA5356;
-        .button{
-            background: #EA5356;
-        }
-        
     }
-    transition: color .15s ease-in-out;
-    width: 20%;
-    letter-spacing: $separacion-letras;
-    text-align: $alineacion;
 }
-
 .me-auto{
     background-color: $color-background;
     width: 80%;

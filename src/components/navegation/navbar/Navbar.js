@@ -44,14 +44,15 @@ class NavbarCustom extends React.Component {
                   Acerca de
                 </Nav.Link>
               </Nav>
-              {token === null && (
-                <Nav className="login">
-                  <Nav.Link href="/Registro">Registro</Nav.Link>
-                  <Nav.Link href="/Login">Iniciar Sesion</Nav.Link>
-                </Nav>
-              )}
-              {token !== null && (
-                <Nav className="logout">
+              <Nav className="login" style={token ? {width: '20%'} : { width: '23.8%' }}>
+              {token === null ? (
+                  <>
+                    <Nav.Link href="/Registro">Registro</Nav.Link>
+                    <Nav.Link href="/Login">Iniciar Sesion</Nav.Link>
+                  </>
+                )
+                :
+                  <>
                   <Nav.Link href="/perfil">Perfil</Nav.Link>
                   <Nav.Link href="/">
                     <button
@@ -66,8 +67,9 @@ class NavbarCustom extends React.Component {
                       Cerrar Sesion
                     </button>
                   </Nav.Link>
-                </Nav>
-              )}
+                  </>
+              }
+              </Nav>
             </Navbar.Collapse>
           </Container>
         </Navbar>
