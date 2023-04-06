@@ -62,6 +62,7 @@ class Perfil extends React.Component {
         disable.then(response => {
             if (response === 200) {
                 this.setState({
+                    isStatus: false,
                     notificacion: true, tituloNotificacion: "Perfil del usuario",
                     mensajeNotificacion: "La cuenta ha sido desactivada exitosamente"
                 });
@@ -98,7 +99,7 @@ class Perfil extends React.Component {
 
     handleClickCerrarModal() {
         this.setState({ notificacion: false });
-        if(this.state.isStatus) this.eliminarCookie();
+        if(!this.state.isStatus) this.eliminarCookie();
         if(this.state.cargo !== "") this.onUpdateToken();
     }
 
