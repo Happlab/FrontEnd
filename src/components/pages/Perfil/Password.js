@@ -17,13 +17,17 @@ class Password extends React.Component {
             userVerified: false,
             isUpdate: false,
             dataUpdate: null,
+            isVerifiedPassword: false,
+            isVerifiedTwoPassword: true,
         }
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.onSendUpdateRequest = this.onSendUpdateRequest.bind(this);
         this.handleClickCerrarModal = this.handleClickCerrarModal.bind(this);
+        this.verifiedPassword = this.verifiedPassword.bind(this);
+        this.verifiedTwoPasswordNew = this.verifiedTwoPasswordNew.bind(this);
     }
-
+    
 	static contextType = TokenContext;
 
     handleChange(event) {
@@ -36,7 +40,13 @@ class Password extends React.Component {
 
     handleSubmit(event) {
         event.preventDefault();
-        if (this.state.inputPasswordNew === this.state.inputPasswordVerified) {
+        if(!this.state.isVerifiedPassword) {
+            this.setState({
+                notificacion: true,
+                tituloNotificacion: "Cambio de contraseña",
+                mensajeNotificacion: "La contraseña no cumple con las especificaciones, revisela e intente nuevamente",
+            })
+        } else if (this.state.inputPasswordNew === this.state.inputPasswordVerified) {
             let email = this.context.token.email;
             let passNew = user_service.onLogin(email, this.state.inputPasswordOld);
             passNew.then(data => {
@@ -49,7 +59,7 @@ class Password extends React.Component {
             })
         } else this.setState({
             notificacion: true, tituloNotificacion: "Cambio de contraseña",
-            mensajeNotificacion: "La contraseña nueva no coincide, verifique nuevamente"
+            mensajeNotificacion: "La contraseña nueva no coincide con la contraseña de verificación, verifique e intente nuevamente"
         });
     }
 
@@ -81,6 +91,19 @@ class Password extends React.Component {
             if(dataLogin !== null && dataLogin !== undefined) {
                 this.context.setToken(dataLogin);
             }
+        })
+    }
+
+    verifiedPassword() {
+        let pass = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&'/*'"{}=+-_()])(?=.{8,})/;
+        this.setState({
+            isVerifiedPassword: !pass.test(this.state.inputPasswordNew),
+        })
+    }
+
+    verifiedTwoPasswordNew() {
+        this.setState({
+            isVerifiedTwoPassword: this.state.inputPasswordNew == this.state.inputPasswordVerified,
         })
     }
 
@@ -116,17 +139,20 @@ class Password extends React.Component {
                                     <input name='inputPasswordOld' onChange={this.handleChange} type="password" className="form-control" id="inputPasswordOld" required />
                                 </div>
                                 <div className="form-group">
-                                    <label htmlFor="inputPasswordNew">Nueva contraseña</label>
-                                    <input name="inputPasswordNew" onChange={this.handleChange} type="password" className="form-control" id="inputPasswordNew" required />
+                                    <label htmlFor="inputPasswordNew" className={!this.state.isVerifiedPassword ? "":"error-label"}>Nueva contraseña</label>
+                                    <input name="inputPasswordNew" onChange={this.handleChange} onBlur={this.verifiedPassword} type="password" className={!this.state.isVerifiedPassword ? "form-control" : "error-input form-control"} id="inputPasswordNew" required />
                                     <span className="form-text small text-muted">
-                                        La contraseña debe tener al menos 8 caracteres, y <em>no</em> debe tener espacios.
+                                        La contraseña debe contener almenos 8 caracteres, una mayuscula, una minuscula, un numero y un caracter especial.
                                     </span>
                                 </div>
                                 <div className="form-group">
-                                    <label htmlFor="inputPasswordNewVerify">Verificar contraseña</label>
-                                    <input name='inputPasswordVerified' onChange={this.handleChange} type="password" className="form-control" id="inputPasswordNewVerify" required />
+                                    <label htmlFor="inputPasswordNewVerify" className={this.state.isVerifiedTwoPassword ? "" : "error-label"}>Verificar contraseña</label>
+                                    <input name='inputPasswordVerified' onChange={this.handleChange} onBlur={this.verifiedTwoPasswordNew} type="password" className={this.state.isVerifiedTwoPassword ? "form-control" : "error-input form-control"} id="inputPasswordNewVerify" required />
+                                    <span className={this.state.isVerifiedTwoPassword ? "hidden" : "error-label"}>
+                                        Las contraseña nuevas no coinciden, por favor verifique
+                                    </span>
                                     <span className="form-text small text-muted">
-                                        Para confirmar, escriba la contraseña nuevamente.
+                                        Para confirmar, escriba la nueva contraseña.
                                     </span>
                                 </div>
                                 <div className="form-group">
