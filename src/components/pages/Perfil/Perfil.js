@@ -65,7 +65,6 @@ class Perfil extends React.Component {
                     notificacion: true, tituloNotificacion: "Perfil del usuario",
                     mensajeNotificacion: "La cuenta ha sido desactivada exitosamente"
                 });
-                this.eliminarCookie();
             }
             else this.setState({
                 notificacion: true, tituloNotificacion: "Perfil del usuario",
@@ -83,12 +82,13 @@ class Perfil extends React.Component {
     saveChange(data) {
         let update = user_service.updateUser(data);
         update.then(data_user => {
-            if (data_user !== null) {
+            if (data_user !== null && data_user !== undefined) {
                 this.setState({
+                    updateVerified: !this.state.updateVerified,
+                    isCargo: !this.state.isCargo,
                     notificacion: true, tituloNotificacion: "Perfil del usuario",
                     mensajeNotificacion: "Cargo modificado exitosamente"
                 });
-                this.eliminarCookie();
             } else this.setState({
                 notificacion: true, tituloNotificacion: "Perfil del usuario",
                 mensajeNotificacion: "El cargo no pudo ser modificado"
@@ -98,32 +98,40 @@ class Perfil extends React.Component {
 
     handleClickCerrarModal() {
         this.setState({ notificacion: false });
+        if(this.state.isStatus) this.eliminarCookie();
+        if(this.state.cargo !== "") this.onUpdateToken();
     }
 
     eliminarCookie(){
         user_service.deleteToken();
     }
 
+    onUpdateToken() {
+        let data = this.context.token;
+        let login = user_service.onLogin(data.email, data.password);
+        login.then(dataEnd => {
+            if(dataEnd !== null && dataEnd !== undefined) {
+                this.context.setToken(dataEnd);
+            }
+        })
+    }
+
     render() {
         let data = this.context.token;
         if(data === null) {
-            return (
-                <Navigate to="/Login" />
-            )
+            return ( <Navigate to="/Login" /> )
         }
         data.tipo_docente = (this.state.cargo !== "") ? this.state.cargo : data.tipo_docente;
         return (
             <div className='main-perfil'>
                 <Notificacion show={this.state.notificacion} titulo={this.state.tituloNotificacion} mensaje={this.state.mensajeNotificacion} onclick={this.handleClickCerrarModal} />
                 {this.state.isPassword && (
-                    data = JSON.stringify(data),
                     <Navigate to="/Password" />
                 )}
                 {this.state.isStatus && (
                     this.onChangedStatusAccount(data.email)
                 )}
                 {this.state.updateVerified && (
-                    this.setState(values => ({ ...values, updateVerified: !this.state.updateVerified, isCargo : !this.state.isCargo})),
                     this.saveChange(data)
                 )}
                 <Navbar />
