@@ -4,7 +4,7 @@ import Footer from '../../navegation/footer/Footer';
 import '../Login/Login.scss'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faEyeLowVision } from '@fortawesome/free-solid-svg-icons';
-import user_service from '../../services/UserServices';
+import user_service from '../../../services/UserServices';
 import { Navigate } from "react-router-dom";
 import Notificacion from '../Admin/TemplatesAdmin/modal';
 import { TokenContext } from '../../../context/GlobalContext';

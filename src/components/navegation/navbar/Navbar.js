@@ -3,7 +3,7 @@ import { Navbar, Nav, Container } from "react-bootstrap";
 import { Outlet, Link } from "react-router-dom";
 import "../colores.scss";
 import logo from "../../../../src/assets/images/logo3.jpg";
-import user_service from "../../services/UserServices";
+import user_service from "../../../services/UserServices";
 import { TokenContext } from "../../../context/GlobalContext";
 
 class NavbarCustom extends React.Component {

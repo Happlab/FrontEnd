@@ -1,5 +1,5 @@
 import React from 'react';
-import user_services from '../components/services/UserServices';
+import user_services from "../services/UserServices";
 
 export const TokenContext = React.createContext();
 

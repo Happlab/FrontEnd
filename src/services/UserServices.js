@@ -1,5 +1,5 @@
 import jwtDecode from "jwt-decode";
-import { environment } from "../../environments/environment";
+import { environment } from "../environments/environment";
 
 let status = 0;
 let request_options = {};

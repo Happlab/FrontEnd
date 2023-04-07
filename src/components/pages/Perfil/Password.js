@@ -2,7 +2,7 @@ import React from 'react';
 import { Navigate } from 'react-router-dom';
 import { Navbar } from '../../navegation/navbar/Navbar';
 import Footer from '../../navegation/footer/Footer';
-import user_service from '../../services/UserServices';
+import user_service from '../../../services/UserServices';
 import Notificacion from '../Admin/TemplatesAdmin/modal';
 import { TokenContext } from '../../../context/GlobalContext';
 import './Password.scss';
@@ -103,7 +103,7 @@ class Password extends React.Component {
 
     verifiedTwoPasswordNew() {
         this.setState({
-            isVerifiedTwoPassword: this.state.inputPasswordNew == this.state.inputPasswordVerified,
+            isVerifiedTwoPassword: this.state.inputPasswordNew === this.state.inputPasswordVerified,
         })
     }
 

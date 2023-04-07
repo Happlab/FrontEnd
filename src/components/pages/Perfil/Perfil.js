@@ -3,7 +3,7 @@ import { Navigate } from 'react-router-dom';
 import { Navbar } from '../../navegation/navbar/Navbar';
 import Footer from '../../navegation/footer/Footer';
 import './Perfil.scss'
-import user_service from '../../services/UserServices';
+import user_service from '../../../services/UserServices';
 import Notificacion from '../Admin/TemplatesAdmin/modal';
 import { TokenContext } from '../../../context/GlobalContext';
 

@@ -14,7 +14,7 @@ import NotificacionContenido from "../../navegation/modal_contenido/modal_conten
 import Notificacion from "../Admin/TemplatesAdmin/modal";
 import { TokenContext } from "../../../context/GlobalContext";
 import { environment } from "../../../environments/environment";
-import contentService from "../../services/ContentServices";
+import contentService from "../../../services/ContentServices";
 import Loader from "../../navegation/loader/Loader";
 
 class Contenido extends React.Component {
