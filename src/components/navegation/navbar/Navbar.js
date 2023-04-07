@@ -44,7 +44,7 @@ class NavbarCustom extends React.Component {
                   Acerca de
                 </Nav.Link>
               </Nav>
-              <Nav className="login" style={token ? {width: '20%'} : { width: '23.8%' }}>
+              <Nav className="login justified" style={token ? {width: '21%'} : { width: '25%' }}>
               {token === null ? (
                   <>
                     <Nav.Link href="/Registro">Registro</Nav.Link>

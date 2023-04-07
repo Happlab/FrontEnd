@@ -5,29 +5,19 @@ import imagenes from '../../../assets/imagenes';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFacebookSquare, faInstagram, faLinkedin, faTwitter } from '@fortawesome/free-brands-svg-icons';
 
-const redireccionF = () => {
-    window.open('https://www.facebook.com/AInteligentePop', '_blank');
-  }
+let showUrl = (url) => window.open(url);
 
-const redireccionT = () => {
-    window.open('https://twitter.com/jorgeadrianmu', '_blank');
-  }
+let redireccionF = () => showUrl('https://www.facebook.com/AInteligentePop');
 
-const redireccionI = () => {
-    window.open('https://www.instagram.com/explore/tags/happlab/?hl=es', '_blank');
-  }
+let redireccionT = () => showUrl('https://twitter.com/jorgeadrianmu');
 
-const redireccionL = () => {
-    window.open('https://www.linkedin.com/company/happlabs/about/', '_blank');
-  }
+let redireccionI = () => showUrl('https://www.instagram.com/explore/tags/happlab/?hl=es');
 
-const redireccionUni = () => {
-    window.open('http://www.unicauca.edu.co/versionP/', '_blank');
-  }
+let redireccionL = () => showUrl('https://www.linkedin.com/company/happlabs/about/');
 
-const redireccionGico = () => {
-    window.open('https://www.unicauca.edu.co/gico/', '_blank');
-  }
+let redireccionUni = () => showUrl('http://www.unicauca.edu.co/versionP/');
+
+let redireccionGico = ()=> showUrl('https://www.unicauca.edu.co/gico/');
 
 const Footer = () => {  
     return (

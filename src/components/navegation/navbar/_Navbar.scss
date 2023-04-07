@@ -2,6 +2,11 @@ $color-background: #1E86C0;
 $alineacion: center;
 $separacion-letras: 1px;
 
+a, button {
+    font-size: 15px;
+    line-height: 2;
+}
+
 .navBg{
     width: 100%;
     background-color: $color-background; 
@@ -25,5 +30,4 @@ $separacion-letras: 1px;
     background-color: $color-background;
     width: 80%;
     letter-spacing: $separacion-letras;
-
 }

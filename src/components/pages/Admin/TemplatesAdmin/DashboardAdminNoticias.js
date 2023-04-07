@@ -7,8 +7,8 @@ import {
 import * as Yup from "yup";
 import { Formik } from "formik";
 import { Form, Button } from "react-bootstrap";
-import Notificacion from "./modal.js";
 import { environment } from "../../../../environments/environment.js";
+import Popup from "../../../navegation/popup/Popup.js";
 
 export default class DashboardAdminInicio extends Component {
   constructor(props) {
@@ -131,11 +131,11 @@ export default class DashboardAdminInicio extends Component {
   render() {
     return (
       <div>
-        <Notificacion
+        <Popup
           show={this.state.notificacion}
-          titulo={this.state.tituloNotificacion}
-          mensaje={this.state.mensajeNotificacion}
-          onclick={this.handleClickCerrarModal}
+          title={this.state.tituloNotificacion}
+          message={this.state.mensajeNotificacion}
+          accept={this.handleClickCerrarModal}
         />
         <div className="content-wrapper" style={{ minHeight: "2080.12px" }}>
           <h1 align="center">Módulo Administrador - Página de Noticias</h1>

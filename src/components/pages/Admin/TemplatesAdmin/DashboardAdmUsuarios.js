@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { PeticionEnvio, PeticionGet } from "../PeticionesAdmin.js";
-import Notificacion from "./modal.js";
 import { environment } from "../../../../environments/environment.js";
+import Popup from "../../../navegation/popup/Popup.js";
 
 export default class Dashboard extends Component {
   constructor(props) {
@@ -148,11 +148,11 @@ export default class Dashboard extends Component {
   render() {
     return (
       <div>
-        <Notificacion
+        <Popup
           show={this.state.notificacion}
-          titulo={this.state.tituloNotificacion}
-          mensaje={this.state.mensajeNotificacion}
-          onclick={this.handleClickCerrarModal}
+          title={this.state.tituloNotificacion}
+          message={this.state.mensajeNotificacion}
+          accept={this.handleClickCerrarModal}
         />
         {/*Lista d solicitudes*/}
         <div className="content-wrapper" style={{ minHeight: "2080.12px" }}>

@@ -1,10 +1,10 @@
 import React, { Component } from "react";
 import { PeticionEnvioDataFrom, PeticionGet } from "../PeticionesAdmin.js";
-import Notificacion from "./modal.js";
 import * as Yup from "yup";
 import { Formik } from "formik";
 import { Form, Button } from "react-bootstrap";
 import { environment } from "../../../../environments/environment.js";
+import Popup from "../../../navegation/popup/Popup.js";
 
 const validationSchema = Yup.object().shape({
   titulo_seccion: Yup.string()
@@ -95,11 +95,11 @@ export default class DashboardAdminInicio extends Component {
   render() {
     return (
       <div>
-        <Notificacion
+        <Popup
           show={this.state.notificacion}
-          titulo={this.state.tituloNotificacion}
-          mensaje={this.state.mensajeNotificacion}
-          onclick={this.handleClickCerrarModal}
+          title={this.state.tituloNotificacion}
+          message={this.state.mensajeNotificacion}
+          accept={this.handleClickCerrarModal}
         />
         <div className="content-wrapper" style={{ minHeight: "2080.12px" }}>
           {/*Lista de contenido inicio*/}

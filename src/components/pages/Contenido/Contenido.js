@@ -10,12 +10,11 @@ import Rating from "react-rating";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Modal from "react-bootstrap/Modal";
-import NotificacionContenido from "../../navegation/modal_contenido/modal_contenido";
-import Notificacion from "../Admin/TemplatesAdmin/modal";
 import { TokenContext } from "../../../context/GlobalContext";
 import { environment } from "../../../environments/environment";
 import contentService from "../../../services/ContentServices";
 import Loader from "../../navegation/loader/Loader";
+import Popup from "../../navegation/popup/Popup";
 
 class Contenido extends React.Component {
   constructor(props) {
@@ -431,18 +430,18 @@ class Contenido extends React.Component {
     return (
       <div className="main-contenido">
         <Navbar />
-        <Notificacion
+        <Popup
           show={this.state.notificacionContenido}
-          titulo={this.state.tituloNotificacion}
-          mensaje={this.state.mensajeNotificacion}
-          onclick={this.aceptar}
+          title={this.state.tituloNotificacion}
+          message={this.state.mensajeNotificacion}
+          accept={this.aceptar}
         />
-        <NotificacionContenido
+        <Popup
           show={this.state.notificacion}
-          titulo={this.state.tituloNotificacion}
-          mensaje={this.state.mensajeNotificacion}
-          onclick={this.aceptar}
-          cancelar={this.cancelar}
+          title={this.state.tituloNotificacion}
+          message={this.state.mensajeNotificacion}
+          accept={this.aceptar}
+          cancel={this.cancelar}
         />
         <section className="titulo">
           <div className="contenedor-titulo">

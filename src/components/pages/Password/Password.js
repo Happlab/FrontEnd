@@ -3,9 +3,9 @@ import { Navigate } from 'react-router-dom';
 import { Navbar } from '../../navegation/navbar/Navbar';
 import Footer from '../../navegation/footer/Footer';
 import user_service from '../../../services/UserServices';
-import Notificacion from '../Admin/TemplatesAdmin/modal';
 import { TokenContext } from '../../../context/GlobalContext';
 import './Password.scss';
+import Popup from '../../navegation/popup/Popup';
 
 class Password extends React.Component {
     constructor(props) {
@@ -120,7 +120,7 @@ class Password extends React.Component {
         }
         return (
             <div className="main-pass">
-                <Notificacion show={this.state.notificacion} titulo={this.state.tituloNotificacion} mensaje={this.state.mensajeNotificacion} onclick={this.handleClickCerrarModal} />
+                <Popup show={this.state.notificacion} title={this.state.tituloNotificacion} message={this.state.mensajeNotificacion} accept={this.handleClickCerrarModal} />
                 {this.state.userVerified && (
                     this.onSendUpdateRequest(data)
                 )}

@@ -4,8 +4,8 @@ import { Navbar } from '../../navegation/navbar/Navbar';
 import Footer from '../../navegation/footer/Footer';
 import './Perfil.scss'
 import user_service from '../../../services/UserServices';
-import Notificacion from '../Admin/TemplatesAdmin/modal';
 import { TokenContext } from '../../../context/GlobalContext';
+import Popup from '../../navegation/popup/Popup';
 
 class Perfil extends React.Component {
     constructor(props) {
@@ -125,7 +125,7 @@ class Perfil extends React.Component {
         data.tipo_docente = (this.state.cargo !== "") ? this.state.cargo : data.tipo_docente;
         return (
             <div className='main-perfil'>
-                <Notificacion show={this.state.notificacion} titulo={this.state.tituloNotificacion} mensaje={this.state.mensajeNotificacion} onclick={this.handleClickCerrarModal} />
+                <Popup show={this.state.notificacion} title={this.state.tituloNotificacion} message={this.state.mensajeNotificacion} accept={this.handleClickCerrarModal} />
                 {this.state.isPassword && (
                     <Navigate to="/Password" />
                 )}

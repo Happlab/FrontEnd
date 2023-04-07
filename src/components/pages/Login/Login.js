@@ -6,8 +6,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faEyeLowVision } from '@fortawesome/free-solid-svg-icons';
 import user_service from '../../../services/UserServices';
 import { Navigate } from "react-router-dom";
-import Notificacion from '../Admin/TemplatesAdmin/modal';
 import { TokenContext } from '../../../context/GlobalContext';
+import Popup from '../../navegation/popup/Popup';
 
 class Login extends React.Component {
 	constructor(props) {
@@ -87,13 +87,13 @@ class Login extends React.Component {
 		let valid_user = this.state.valid_user;
 		let data = this.context.token;
 		if (data !== null && valid_user === null && (data.rol[0] === "ADMIN" || data.rol[0] === "USER")) return (<Navigate replace to="/" />)
-		var icono = <FontAwesomeIcon icon={faEye} size='1x' fixedWidth />;
+		var icono = <FontAwesomeIcon icon={faEyeLowVision} size='1x' fixedWidth />;
 		if (this.state.press) {
-			icono = <FontAwesomeIcon icon={faEyeLowVision} size='1x' fixedWidth />;
+			icono = <FontAwesomeIcon icon={faEye} size='1x' fixedWidth />;
 		}
 		return (
 			<div className='main-login'>
-				<Notificacion show={this.state.notificacion} titulo={this.state.tituloNotificacion} mensaje={this.state.mensajeNotificacion} onclick={this.handleClickCerrarModal} />
+				<Popup show={this.state.notificacion} title={this.state.tituloNotificacion} message={this.state.mensajeNotificacion} accept={this.handleClickCerrarModal} />
 				{valid_user && this.onRoute()}
 				<Navbar />
 				<section id='contenedor' className="elementor-section elementor-top-section elementor-element elementor-element-2bd9dc1 elementor-section-full_width elementor-section-height-full elementor-section-height-default elementor-section-items-middle" data-id="2bd9dc1" data-element_type="section" style={{ backgroundColor: '#fff' }}>
