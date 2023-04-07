@@ -17,7 +17,7 @@ class Password extends React.Component {
             userVerified: false,
             isUpdate: false,
             dataUpdate: null,
-            isVerifiedPassword: false,
+            isVerifiedPassword: true,
             isVerifiedTwoPassword: true,
         }
         this.handleChange = this.handleChange.bind(this);
@@ -97,7 +97,7 @@ class Password extends React.Component {
     verifiedPassword() {
         let pass = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&'/*'"{}=+-_()])(?=.{8,})/;
         this.setState({
-            isVerifiedPassword: !pass.test(this.state.inputPasswordNew),
+            isVerifiedPassword: pass.test(this.state.inputPasswordNew),
         })
     }
 
@@ -139,8 +139,8 @@ class Password extends React.Component {
                                     <input name='inputPasswordOld' onChange={this.handleChange} type="password" className="form-control" id="inputPasswordOld" required />
                                 </div>
                                 <div className="form-group">
-                                    <label htmlFor="inputPasswordNew" className={!this.state.isVerifiedPassword ? "":"error-label"}>Nueva contraseña</label>
-                                    <input name="inputPasswordNew" onChange={this.handleChange} onBlur={this.verifiedPassword} type="password" className={!this.state.isVerifiedPassword ? "form-control" : "error-input form-control"} id="inputPasswordNew" required />
+                                    <label htmlFor="inputPasswordNew" className={this.state.isVerifiedPassword ? "":"error-label"}>Nueva contraseña</label>
+                                    <input name="inputPasswordNew" onChange={this.handleChange} onBlur={this.verifiedPassword} type="password" className={this.state.isVerifiedPassword ? "form-control" : "error-input form-control"} id="inputPasswordNew" required />
                                     <span className="form-text small text-muted">
                                         La contraseña debe contener almenos 8 caracteres, una mayuscula, una minuscula, un numero y un caracter especial.
                                     </span>
