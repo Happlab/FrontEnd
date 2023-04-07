@@ -2,10 +2,8 @@ import { Navigate, Route, Routes } from 'react-router-dom';
 import Inicio from './components/pages/Inicio/Inicio';
 import Acerca from './components/pages/Acerca de/Acerca';
 import Noticias from './components/pages/Noticias/Noticias'
-import Tecnologias from './components/pages/Tecnologias/Tecnologias'
 import Login from './components/pages/Login/Login'
 import Registro from './components/pages/Registro/Registro'
-import Investigadores from './components/pages/Investigadores/Investigadores';
 import AdminUsuarios from './components/pages/Admin/AdminUsuarios';
 import AdminNoticias from './components/pages/Admin/AdminNoticias';
 import AdminContenido from './components/pages/Admin/AdminContenido';
@@ -13,7 +11,7 @@ import AdminInicio from './components/pages/Admin/AdminInicio';
 import AdminAcercaDe from './components/pages/Admin/AdminAcercaDe';
 import Contenido from './components/pages/Contenido/Contenido'
 import Perfil from './components/pages/Perfil/Perfil';
-import Password from './components/pages/Perfil/Password';
+import Password from './components/pages/Password/Password';
 import SobreNosotros from './components/pages/About/SobreNosotros';
 import { TokenContextProvider } from './context/GlobalContext';
 
@@ -32,8 +30,6 @@ function App() {
             <Route index element={<Inicio />}/>
             <Route path='Acerca' element={<Acerca />}/>
             <Route path='Noticias' element={<Noticias />}/>
-            <Route path='Tecnologias' element={<Tecnologias />}/>
-            <Route path='Investigadores' element={<Investigadores />}/>
             <Route path='AboutUs' element={<SobreNosotros />}/>
             <Route path='Login' element={<Login/>}/>
             <Route path='Contenido' element={<Contenido/>}/>
