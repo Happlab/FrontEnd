@@ -2,13 +2,13 @@ import React from "react";
 import Footer from "../../navegation/footer/Footer";
 import { Navbar } from '../../navegation/navbar/Navbar';
 import Loader from "../../navegation/loader/Loader";
-import ReactPlayer from "react-player";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import markerIconPng from "leaflet/dist/images/marker-icon.png";
 import { Icon } from "leaflet";
 import "./Acerca.scss";
 import { PeticionGet } from "../Admin/PeticionesAdmin";
-import { environment } from "../../../environments/environment";;
+import { environment } from "../../../environments/environment";
+import Player from "../../navegation/player/Player";
 
 class Acerca extends React.Component {
   constructor(props) {
@@ -67,16 +67,12 @@ class Acerca extends React.Component {
                 </div>
                 <div className="columna-acerca-video">
                   {acerca.url !== "" ? (
-                    <ReactPlayer
+                    <Player
                       url={acerca.url}
-                      width="100%"
-                      height="100%"
-                      controls
-                      loop
                     />
                   ) : (
                     <img
-                      style={{ width: "100%", height: "100%" }}
+                      style={{ width: "100%", height: "100%", borderRadius: "10px" }}
                       className="images-carousel"
                       src={
                         environment.baseUrl +

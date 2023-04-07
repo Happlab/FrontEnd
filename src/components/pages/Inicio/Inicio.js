@@ -1,13 +1,13 @@
 import React from "react";
 import "./Inicio.scss";
 import imagenes from "../../../assets/imagenes";
-import ReactPlayer from "react-player";
 import { Navbar } from "../../navegation/navbar/Navbar";
 import Footer from "../../navegation/footer/Footer";
 import { Carousel } from "react-bootstrap";
 import { PeticionGet } from "../Admin/PeticionesAdmin";
 import { environment } from "../../../environments/environment";
 import Loader from "../../navegation/loader/Loader";
+import Player from "../../navegation/player/Player";
 
 class Inicio extends React.Component {
   constructor(props) {
@@ -69,16 +69,12 @@ class Inicio extends React.Component {
                   </div>
                   <div className="columna-inicio-video">
                     {inicio.url !== "" ? (
-                      <ReactPlayer
-                        url={inicio.url}
-                        width="100%"
-                        height="100%"
-                        controls
-                        loop
+                      <Player
+                        src={inicio.url}
                       />
                     ) : (
                       <img
-                        style={{ width: "100%", height: "100%" }}
+                        style={{ width: "100%", height: "100%", borderRadius: "10px" }}
                         className="images-carousel"
                         src={
                           environment.baseUrl +
