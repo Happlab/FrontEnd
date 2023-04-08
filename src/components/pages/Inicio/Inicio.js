@@ -3,11 +3,11 @@ import "./Inicio.scss";
 import imagenes from "../../../assets/imagenes";
 import { Navbar } from "../../navegation/navbar/Navbar";
 import Footer from "../../navegation/footer/Footer";
-import { Carousel } from "react-bootstrap";
 import { PeticionGet } from "../Admin/PeticionesAdmin";
 import { environment } from "../../../environments/environment";
 import Loader from "../../navegation/loader/Loader";
 import Player from "../../navegation/player/Player";
+import Carousel from "../../navegation/carousel/Carousel";
 
 class Inicio extends React.Component {
   constructor(props) {
@@ -95,30 +95,8 @@ class Inicio extends React.Component {
         }
         <hr className="hr-line-white" />
 
-        <div className="carousel">
-          <Carousel fade variant="dark" indicators={false}>
-            <Carousel.Item interval={1000}>
-              <img
-                className="images-carousel"
-                src={imagenes.imgUni}
-                alt="First slide"
-              />
-            </Carousel.Item>
-            <Carousel.Item interval={1000}>
-              <img
-                className="images-carousel"
-                src={imagenes.imgSam}
-                alt="Second slide"
-              />
-            </Carousel.Item>
-            <Carousel.Item interval={1000}>
-              <img
-                className="images-carousel"
-                src={imagenes.imgAESS}
-                alt="Third slide"
-              />
-            </Carousel.Item>
-          </Carousel>
+        <div className="main-carousel">
+          <Carousel time={5000} items={[imagenes.imgUni, imagenes.imgSam, imagenes.imgAESS]} />
         </div>
         <hr className="br-carousel"/>
         <Footer />
