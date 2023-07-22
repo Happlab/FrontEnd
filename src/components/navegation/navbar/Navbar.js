@@ -1,7 +1,7 @@
 import React from "react";
-import { Navbar, Nav, Container } from "react-bootstrap";
-import { Outlet, Link } from "react-router-dom";
-import "../colores.scss";
+// import { Navbar, Nav, Container } from "react-bootstrap";
+// import { Link } from "react-router-dom";
+import "./_Navbar.scss";
 import logo from "../../../../src/assets/images/logo3.jpg";
 import user_service from "../../../services/UserServices";
 import { TokenContext } from "../../../context/GlobalContext";
@@ -9,76 +9,138 @@ import { TokenContext } from "../../../context/GlobalContext";
 class NavbarCustom extends React.Component {
   constructor(props) {
     super(props);
+    this.state = {
+      isCollapse: false,
+    };
     this.eliminarCookie = this.eliminarCookie.bind(this);
+    this.showMenuCollapse = this.showMenuCollapse.bind(this);
+    this.resizeMode = this.showMenuCollapse.bind(this);
   }
   static contextType = TokenContext;
 
   eliminarCookie() {
     user_service.deleteToken();
   }
+
+  showMenuCollapse() {
+    this.setState({ isCollapse: !this.state.isCollapse });
+  }
+
+  resizeMode() {
+    window.onresize = () => {
+      if (!window.matchMedia("(min-width: 992px)").matches) {
+        this.setState({ isCollapse: false });
+      }
+    };
+  }
+
   render() {
     let token = this.context.token;
     return (
       <>
-        <Navbar className="navBg" variant="dark" sticky="top" expand="lg">
-          <Container>
-            <Navbar.Brand as={Link} to="/">
-              HappLab Home Page
-            </Navbar.Brand>
-            <Navbar.Toggle aria-controls="basic-navbar-nav" />
-            <Navbar.Collapse id="basic-navbar-nav">
-              <Nav className="me-auto" justify={true}>
-                <Nav.Link as={Link} to="/">
-                  Inicio
-                </Nav.Link>
-                <Nav.Link as={Link} to="/AboutUs">
-                  Sobre Nosotros
-                </Nav.Link>
-                <Nav.Link as={Link} to="/Noticias">
-                  Noticias
-                </Nav.Link>
-                <Nav.Link as={Link} to="/Contenido">
-                  Contenidos
-                </Nav.Link>
-                <Nav.Link as={Link} to="/Acerca">
-                  Acerca de
-                </Nav.Link>
-              </Nav>
-              <Nav className="login justified" style={token ? {width: '21%'} : { width: '25%' }}>
-              {token === null ? (
-                  <>
-                    <Nav.Link href="/Registro">Registro</Nav.Link>
-                    <Nav.Link href="/Login">Iniciar Sesion</Nav.Link>
-                  </>
-                )
-                :
-                  <>
-                  <Nav.Link href="/perfil">Perfil</Nav.Link>
-                  <Nav.Link href="/">
-                    <button
-                      className="button"
-                      onClick={this.eliminarCookie}
-                      style={{
-                        width: "100%",
-                        border: "none",
-                        color: "rgba(255,255,255,.55)",
-                      }}
-                    >
-                      Cerrar Sesion
-                    </button>
-                  </Nav.Link>
-                  </>
+        <nav className="navbar" onLoad={this.resizeMode}>
+          <div className="navbar-content">
+            <div className="navbar-brand">
+              <a className="nav-link" href="/">
+                HappLab Home Page
+              </a>
+            </div>
+            <button className="navbar-toggler" onClick={this.showMenuCollapse}>
+              <span className="navbar-toggler-icon"></span>
+            </button>
+            <div
+              className={
+                this.state.isCollapse
+                  ? "navbar-collapse without-collapse"
+                  : "navbar-collapse"
               }
-              </Nav>
-            </Navbar.Collapse>
-          </Container>
-        </Navbar>
+            >
+              <div
+                className={
+                  this.state.isCollapse
+                    ? "navbar-menu me-auto without-collapse"
+                    : "navbar-menu me-auto"
+                }
+              >
+                <ul className={this.state.isCollapse ? "without-collapse" : ""}>
+                  <li>
+                    <a className="nav-link" href="/">
+                      Inicio
+                    </a>
+                  </li>
+                  <li>
+                    <a className="nav-link" href="/AboutUs">
+                      Sobre Nosotros
+                    </a>
+                  </li>
+                  <li>
+                    <a className="nav-link" href="/Noticias">
+                      Noticias
+                    </a>
+                  </li>
+                  <li>
+                    <a className="nav-link" href="/Contenido">
+                      Contenidos
+                    </a>
+                  </li>
+                  <li>
+                    <a className="nav-link" href="/Acerca">
+                      Acerca de
+                    </a>
+                  </li>
+                </ul>
+              </div>
+              <div
+                className={
+                  this.state.isCollapse
+                    ? "navbar-login without-collapse"
+                    : "navbar-login"
+                }
+              >
+                {token === null ? (
+                  <div
+                    className={
+                      this.state.isCollapse
+                        ? "login-content without-collapse"
+                        : "login-content"
+                    }
+                  >
+                    <a className="nav-link" href="/Registro">
+                      Registro
+                    </a>
+                    <a className="nav-link" href="/Login">
+                      Iniciar Sesion
+                    </a>
+                  </div>
+                ) : (
+                  <div className="login-content">
+                    <a className="nav-link" href="/Perfil">
+                      Registro
+                    </a>
+                    <a className="nav-link" href="/">
+                      <button
+                        className="button"
+                        onClick={this.eliminarCookie}
+                        style={{
+                          width: "100%",
+                          border: "none",
+                          color: "rgba(255,255,255,.55)",
+                        }}
+                      >
+                        Cerrar Sesion
+                      </button>
+                    </a>
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+        </nav>
 
         <section>
           <div className="Logo">
             <img className="logo2" src={logo} alt="" />
           </div>
-          <Outlet></Outlet>
         </section>
       </>
     );

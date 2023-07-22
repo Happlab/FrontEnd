@@ -51,7 +51,7 @@ class Inicio extends React.Component {
         {this.state.estaCargando 
           ? <Loader />
           :
-        <div>
+        <div className="inicio-content">
         {this.state.inicio.length === 0 && <p className="notAvalaible">No hay noticias destacadas</p>}
         {this.state.inicio
           .filter((content, index) => index < 2)

@@ -1,8 +1,8 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import { Navbar } from '../../navegation/navbar/Navbar';
 import Footer from '../../navegation/footer/Footer';
 import './Noticias.scss';
-import { Fade } from 'react-bootstrap';
+// import { Fade } from 'react-bootstrap';
 import { PeticionGet } from '../Admin/PeticionesAdmin.js';
 import { environment } from '../../../environments/environment';
 import Loader from '../../navegation/loader/Loader';
@@ -51,12 +51,12 @@ class Noticias extends React.Component {
             <div className="col-md-4 col-sm-6 mix mix-082e3a1 portfolio-item business-082e3a1 onepage-082e3a1" >
                 <span className='span-img' style={{backgrounColor:'black'}}>
                     <a className='vinculo-noticia' href={props.LinkPage} target="_blank" rel="noreferrer" onMouseOut={()=>setOpen(false)}>
-                    <Fade in={!open}>
-                        <img src={props.srcImg} alt="Switch Pro" onMouseEnter={()=>setOpen(true)} onMouseOut={()=>setOpen(false)}/>
-                    </Fade>
-                    <Fade in={open} className='titulo-noticia' onMouseOver={()=>setOpen(true)}>
-                        <h4>{props.titulo}</h4> 
-                    </Fade>
+                    {/* <Fade in={!open}> */}
+                    {/*     <img src={props.srcImg} alt="Switch Pro" onMouseEnter={()=>setOpen(true)} onMouseOut={()=>setOpen(false)}/> */}
+                    {/* </Fade> */}
+                    {/* <Fade in={open} className='titulo-noticia' onMouseOver={()=>setOpen(true)}> */}
+                    {/*     <h4>{props.titulo}</h4> */} 
+                    {/* </Fade> */}
                     </a>  
                 </span>
             </div>
@@ -108,7 +108,9 @@ class Noticias extends React.Component {
             </div>
 		</section>  
         <section className="elementor-section elementor-top-section elementor-element elementor-element-1a63a0d elementor-section-boxed elementor-section-height-default elementor-section-height-default" data-id="1a63a0d" data-element_type="section" data-settings="{&quot;background_background&quot;:&quot;classic&quot;}">
-			<div className="elementor-container elementor-column-gap-default">
+        {this.state.estaCargando 
+            ? <Loader /> 
+            :<div className="elementor-container elementor-column-gap-default">
 				<div className="elementor-column elementor-col-100 elementor-top-column elementor-element elementor-element-55e9d7d" data-id="55e9d7d" data-element_type="column">
 			        <div className="elementor-widget-wrap elementor-element-populated">
 						<div className="elementor-element elementor-element-082e3a1 elementor-widget elementor-widget-widgetkit-for-elementor-portfolio" data-id="082e3a1" data-element_type="widget" data-widget_type="widgetkit-for-elementor-portfolio.default">
@@ -116,10 +118,7 @@ class Noticias extends React.Component {
 			                    <div className="tgx-portfolio">
                                     <div id="hover-1" className="hover-1">
                                         <div id='news' className="row">
-                                            {this.state.estaCargando 
-                                                ? <Loader /> 
-                                                : <MostrarNoticias/>
-                                            }
+                                            <MostrarNoticias/>
                                         </div>
                                     </div>
                                 </div>		
@@ -129,6 +128,7 @@ class Noticias extends React.Component {
 					</div>
 		        </div>
 			</div>
+        }
 		</section>
         <div className='news-separator'></div>
         <Footer />

@@ -34,7 +34,7 @@ $color-tittle: black;
         h2{
             font-size: 2rem;
             color: #C53E3E;
-            font-weight: 700;
+            font-weight: bold;
            
             font-style: normal;
         }
@@ -49,23 +49,29 @@ $color-tittle: black;
     margin-right: 5px;
     .filtros{
         .lista-filtros{
-            border-radius: 4px;
-            text-align: center;
             vertical-align: middle;
+            display: flex;
+            margin-bottom: 0.5rem;
             .dropdown{
                 display: flex;
                 justify-content: center;
             }
-            
             #boton-busqueda{
                 display: flex;
                 align-items: center;
                 justify-content: center;
             }
             .item-filtro{
+                list-style: none;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                cursor: pointer;
                 font-weight: bold;
                 background-color: #C53E3E;
                 color: black;
+                padding: 0.75rem 1.25rem;
+                width: 100%;
                 #btn-materias {
                     color: black;
                     background-color: transparent;
@@ -77,20 +83,36 @@ $color-tittle: black;
                     box-shadow: none;
                 }
                 .btn-busqueda{
+                    cursor: pointer;
                     background-color: #1e86c0;
                     color: #fff;
                     width: max-content;
+                    padding: 0.75rem 1.25rem;
+                    border-radius: 13px;
+                    border: none;
                 }
                 .btn-busqueda:hover{
                     background-color: #65B462;
                 }      
-                h2{
+                h2 {
                     color: #fff;
                     line-height: 1.5;
+                    cursor: auto;
+                    font-size: 2rem;
                 }
             }
             .item-filtro:hover{
                 color: #fff;
+            }
+            .item-filtro:first-child {
+                border-bottom-left-radius: 0.25rem;
+                border-top-left-radius: 0.25rem;
+                border-right: 1px solid rgba(0, 0, 0, 0.2);
+                width: 20%;
+            }
+            .item-filtro:last-child {
+                border-bottom-right-radius: 0.25rem;
+                border-top-right-radius: 0.25rem;
             }
         }
         
@@ -107,7 +129,7 @@ $color-tittle: black;
         width: 50%;
     }
 }
-@media (min-width: 992px){
+@media only screen and (max-width: 992px){
     .list-group-horizontal-lg>.list-group-item+.list-group-item {
         border: none;
     }
@@ -115,8 +137,12 @@ $color-tittle: black;
     .sec-filtros{
         .filtros{
             .lista-filtros{
+                display: block;
                 .dropdown{
                     justify-content: left;
+                }
+                .item-filtro:first-child {
+                    width: 100%;
                 }
             }
         }
@@ -171,4 +197,16 @@ $color-tittle: black;
     top: -50px;
     right: 16px;
 }
-
+.contenido-separator {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    border: 0;
+    border-top: 1px solid rgba(0,0,0,.1);
+}
+.container-contenido {
+    padding-bottom: 60px;
+    margin: 0 auto;
+}
+.contenido-content {
+    padding: 0 7.5px;
+}

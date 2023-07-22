@@ -1,183 +1,268 @@
-// vendors
 import React, { useState } from "react";
-import { Formik} from 'formik';
-import * as Yup from 'yup';
-import Alert from 'react-bootstrap/Alert';
-import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
-import Form from 'react-bootstrap/Form';
-import Button from "react-bootstrap/Button";
-import { Link } from 'react-router-dom';
-import { Navbar } from '../../navegation/navbar/Navbar';
-import Footer from '../../navegation/footer/Footer';
-import './Registro.css';
-
-const SignupSchema = Yup.object().shape({
-    name: Yup.string().required('Campo requerido'),
-    lastName: Yup.string().required('Campo requerido'),
-    documentId: Yup.number('Ingresa solo números').required('Campo requerido').min(999999999,'Debe tener almenos 10 caracteres'),
-    email: Yup.string().email('Correo inválido').required('Campo requerido'),
-    password: Yup.string().required('Campo requerido').matches(
-        /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&'/*'"{}=+-_()])(?=.{8,})/,
-        "Debe contener almenos 8 caracteres, Una mayuscula, Una minuscula, Un numero y Un caracter Especial"
-      ),
-    repeatPassword: Yup.string().required('Campo requerido').oneOf([Yup.ref("password"), null], "Contraseña debe ser la misma"),
-    teacherType: Yup.string().required('Campo requerido')
-})
+import { Link } from "react-router-dom";
+import { Navbar } from "../../navegation/navbar/Navbar";
+import Footer from "../../navegation/footer/Footer";
+import Alert from "../../navegation/alert/Alert";
+import { environment } from "../../../environments/environment";
+import "./Registro.css";
 
 const Registro = () => {
-    const [error, setError] = useState(false);
-    const [success, setSuccess] = useState(false);
+  const [success, setSuccess] = useState(false);
+  const [error, setError] = useState(false);
+  const [messagesError, setMessagesError] = useState({});
+  const [values, setValues] = useState({
+    name: "",
+    lastName: "",
+    documentId: "",
+    email: "",
+    password: "",
+    repeatPassword: "",
+    teacherType: "",
+  });
 
-    return (
-        <div className="main-registro">
-            <Navbar />
-            <Row className="mx-auto justify-content-center" >
-            <Alert dismissible variant="danger" onClose={() => setError(true)} show={error}>
-                Error registrando el usuario, Correo electronico ya registrado.
-            </Alert>
-            <Alert dismissible variant="success" onClose={() => setSuccess(true)} show={success}>
-                Usuario creado con éxito. Haz click <Link className="alert-link" to="/Login">aquí</Link> para iniciar sesión
-            </Alert>
-            <Col lg='5'>
-                <div lg='5'>
-                    <Formik
-                        initialValues={{
-                            name: '',
-                            lastName: '',
-                            documentId: '',
-                            email: '',
-                            repeatPassword: '',
-                            password: '',
-                            teacherType: '',
-                        }}
-                        validationSchema={SignupSchema}
-                        onSubmit={values => {
-                            const data = { 'email': values.email, 'password': values.password, 'cedula': values.documentId, 'nombres': values.name, 'apellidos': values.lastName, 'tipo_docente': values.teacherType, 'tokens': 0 };
-                            const requestOptions = {
-                                method: 'POST',
-                                mode: 'cors',
-                                headers: {
-                                    'Accept': 'application/json',
-                                    'Content-Type': 'application/json',
-                                    'Access-Control-Allow-Origin': '*'
-                                },
-                                body: JSON.stringify(data)
-                            }
-                            fetch('http://localhost:8080/persona/registro', requestOptions)
-                                .then(response => {
-                                    if (response.status === 200) setSuccess(true)
-                                    else setError(true)
-                                })
-                                .catch(error => console.log("Error", error))
-                        }}
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setValues((prevValues) => ({ ...prevValues, [name]: value }));
+  };
 
-                    >
-                        {props => (
-                            <Form onSubmit={props.handleSubmit}>
-                                <Form.Group className="mb-3" controlId="formName">
-                                    <Form.Label>Nombre</Form.Label>
-                                    <Form.Control
-                                        name="name"
-                                        placeholder="Ingresa tu nombre"
-                                        isInvalid={props.touched.name && !!props.errors.name}
-                                        value={props.values.name} onChange={props.handleChange}
-                                    />
-                                    <Form.Control.Feedback type="invalid">
-                                        {props.errors.name}
-                                    </Form.Control.Feedback>
-                                </Form.Group>
-                                <Form.Group className="mb-3" controlId="formLastName">
-                                    <Form.Label>Apellido</Form.Label>
-                                    <Form.Control
-                                        name="lastName"
-                                        placeholder="Ingresa tu apellido"
-                                        isInvalid={props.touched.lastName && !!props.errors.lastName}
-                                        value={props.values.lastName} onChange={props.handleChange}
-                                    />
-                                    <Form.Control.Feedback type="invalid">
-                                        {props.errors.lastName}
-                                    </Form.Control.Feedback>
-                                </Form.Group>
-                                <Form.Group className="mb-3" controlId="formDocumentId">
-                                    <Form.Label>Documento de identidad</Form.Label>
-                                    <Form.Control
-                                        name="documentId"
-                                        type="number"
-                                        placeholder="Ingresa tu documento de identidad"
-                                        isInvalid={props.touched.documentId && !!props.errors.documentId}
-                                        value={props.values.documentId} onChange={props.handleChange}
-                                    />
-                                    <Form.Control.Feedback type="invalid">
-                                        {props.errors.documentId}
-                                    </Form.Control.Feedback>
-                                </Form.Group>
-                                <Form.Group className="mb-3" controlId="formEmail">
-                                    <Form.Label>Correo</Form.Label>
-                                    <Form.Control
-                                        name="email"
-                                        type="email"
-                                        placeholder="Ingresa tu correo"
-                                        isInvalid={props.touched.email && !!props.errors.email}
-                                        value={props.values.email} onChange={props.handleChange}
-                                    />
-                                    <Form.Control.Feedback type="invalid">
-                                        {props.errors.email}
-                                    </Form.Control.Feedback>
-                                </Form.Group>
-                                <Form.Group className="mb-3" controlId="formtPassword">
-                                    <Form.Label>Contraseña</Form.Label>
-                                    <Form.Control
-                                        name="password"
-                                        type="password"
-                                        placeholder="Contraseña"
-                                        isInvalid={props.touched.password && !!props.errors.password}
-                                        value={props.values.password} onChange={props.handleChange}
-                                    />
-                                    <Form.Control.Feedback type="invalid">
-                                        {props.errors.password}
-                                    </Form.Control.Feedback>
-                                </Form.Group>
-                                <Form.Group className="mb-3" controlId="formtrepeatPassword">
-                                    <Form.Label>Repite la Contraseña</Form.Label>
-                                    <Form.Control
-                                        name="repeatPassword"
-                                        type="password"
-                                        placeholder="Contraseña"
-                                        isInvalid={props.touched.repeatPassword && !!props.errors.repeatPassword}
-                                        value={props.values.repeatPassword} onChange={props.handleChange}
+  const handleBlur = (e) => {
+    const { name, value } = e.target;
+    let error = validField(name, value);
+    setMessagesError(prevValues => ({ ...prevValues, [name]: error }))
+  };
 
-                                    />
-                                    <Form.Control.Feedback type="invalid">
-                                        {props.errors.repeatPassword}
-                                    </Form.Control.Feedback>
-                                </Form.Group>
-                                <Form.Group className="mb-3" controlId="formTeacherType">
-                                    <Form.Label>Soy docente de</Form.Label>
+  const isValidAllValues = () => {
+    const newErrors = {}
 
-                                    <Form.Select
-                                        name="teacherType"
-                                        isInvalid={props.touched.teacherType && !!props.errors.teacherType}
-                                        value={props.values.teacherType} onChange={props.handleChange}
-                                    >
-                                        <option hidden selected>Selecciona una opción</option>
-                                        <option value= 'Docente de Primaria'>Primaria</option>
-                                        <option value= 'Docente de Secundaria'>Secundaria</option>
-                                        <option value= 'Docente Universitario'>Universidad</option>
-                                    </Form.Select>
-                                </Form.Group>
-                                <Button type="submit">Enviar</Button>
-                            </Form>
+    Object.keys(values).forEach((field) => {
+      const error = validField(field, values[field]);
+      if(error) newErrors[field] = error;
+    });
 
-                        )}
-                    </Formik>
-                </div>
-            </Col>
-        </Row>
-        <hr className="content-register"/>
-        <Footer />
-        </div>
-    );
+    setMessagesError(newErrors);
+
+    const isValid = Object.keys(newErrors).length === 0;
+
+    return isValid;
+  }
+
+  const validField = (field, value) => {
+    let error = null;
+
+    const fieldMessages = {
+      name: () => { if(!value) error = "El nombre es requerido"; },
+      lastName: () => { if(!value) error = "El apellido es requerido"; },
+      teacherType: () => { if(!value) error = "El tipo de docente es requerido"; },
+      email: () => {
+        if (!value) error = "El correo es requerido";
+        else if (
+          !/^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$/.test(value)
+        )
+          error = "Correo inválido";
+      },
+      documentId: () => {
+        if (!value)
+          error = "El documento de identidad es requerido";
+        else if (isNaN(value))
+          error = "Ingresa solo números";
+        else if (value.toString().length < 10)
+          error = "Debe tener al menos 10 caracteres";
+      },
+      password: () => {
+        if (!value) error = "La contraseña es requerida";
+        else if (
+          !/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&'/*'"{}=+-_()])(?=.{8,})/.test(
+            value
+          )
+        )
+          error = "Debe contener al menos 8 caracteres, una mayuscula, una minuscula, un numero y un caracter especial";
+      },
+      repeatPassword: () => {
+        if (!value)
+          error = "La repeticion de contraseña es requerida";
+        else if (values.password !== value)
+          error = "Las contraseñas deben coincidir";
+      },
+    };
+    
+    fieldMessages[field]()
+
+    return error;
+  };
+
+  const sendRegister = () => {
+    const data = {
+      email: values.email,
+      password: values.password,
+      cedula: values.documentId,
+      nombres: values.name,
+      apellidos: values.lastName,
+      tipo_docente: values.teacherType,
+      tokens: 0,
+    };
+    const requestOptions = {
+      method: "POST",
+      mode: "cors",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Origin": "*",
+      },
+      body: JSON.stringify(data),
+    };
+    fetch(environment.baseUrl + "/persona/registro", requestOptions)
+      .then((response) => {
+        if (response.status === 200) setSuccess(true);
+        else setError(true);
+      })
+      .catch((error) => {
+        setError(true);
+        console.log("Error", error);
+      });
+  };
+
+  return (
+    <div className="main-registro">
+      <Navbar />
+      <div className="messages-alert-content">
+        <Alert variant="success" show={success}>
+          Usuario creado con éxito. Haz click{" "}
+          {
+            <Link className="alert-link" to="/Login">
+              aquí
+            </Link>
+          }{" "}
+          para iniciar sesión
+        </Alert>
+        <Alert variant="error" show={error}>
+          Error registrando el usuario, Correo electronico ya registrado.
+        </Alert>
+      </div>
+      <div className="form-registro">
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            if(isValidAllValues()) sendRegister();
+          }}
+        >
+          <div className="group-registro">
+            <label>Nombre</label>
+            <input
+              className={messagesError.name ? "is-invalid" : ""}
+              type="text"
+              name="name"
+              value={values.name}
+              onChange={handleChange}
+              onBlur={handleBlur}
+              placeholder="Ingresa tu nombre"
+            />
+            {messagesError.name && (
+              <div className="invalid-field">{messagesError.name}</div>
+            )}
+          </div>
+          <div className="group-registro">
+            <label>Apellido</label>
+            <input
+              className={messagesError.lastName ? "is-invalid" : ""}
+              type="text"
+              name="lastName"
+              value={values.lastName}
+              onChange={handleChange}
+              onBlur={handleBlur}
+              placeholder="Ingresa tu apellido"
+            />
+            {messagesError.lastName && (
+              <div className="invalid-field">{messagesError.lastName}</div>
+            )}
+          </div>
+          <div className="group-registro">
+            <label>Documento de Identidad</label>
+            <input
+              className={messagesError.documentId ? "is-invalid" : ""}
+              type="text"
+              name="documentId"
+              value={values.documentId}
+              onChange={handleChange}
+              onBlur={handleBlur}
+              placeholder="Ingresa tu numero de documento de identidad"
+            />
+            {messagesError.documentId && (
+              <div className="invalid-field">{messagesError.documentId}</div>
+            )}
+          </div>
+          <div className="group-registro">
+            <label>Correo</label>
+            <input
+              className={messagesError.email ? "is-invalid" : ""}
+              type="text"
+              name="email"
+              value={values.email}
+              onChange={handleChange}
+              onBlur={handleBlur}
+              placeholder="Ingresa tu correo"
+            />
+            {messagesError.email && (
+              <div className="invalid-field">{messagesError.email}</div>
+            )}
+          </div>
+          <div className="group-registro">
+            <label>Contraseña</label>
+            <input
+              className={messagesError.password ? "is-invalid" : ""}
+              type="password"
+              name="password"
+              value={values.password}
+              onChange={handleChange}
+              onBlur={handleBlur}
+              placeholder="Ingresa tu contraseña"
+            />
+            {messagesError.password && (
+              <div className="invalid-field">{messagesError.password}</div>
+            )}
+          </div>
+          <div className="group-registro">
+            <label>Repite la contraseña</label>
+            <input
+              className={messagesError.repeatPassword ? "is-invalid" : ""}
+              type="password"
+              name="repeatPassword"
+              value={values.repeatPassword}
+              onChange={handleChange}
+              onBlur={handleBlur}
+              placeholder="Vuelva a ingresar tu contraseña"
+            />
+            {messagesError.repeatPassword && (
+              <div className="invalid-field">
+                {messagesError.repeatPassword}
+              </div>
+            )}
+          </div>
+          <div className="group-registro">
+            <label>Soy docente de</label>
+            <select
+              className={messagesError.teacherType ? "is-invalid" : ""}
+              name="teacherType"
+              value={values.teacherType}
+              onChange={handleChange}
+              onBlur={handleBlur}
+            >
+              <option hidden selected>
+                Selecciona una opción
+              </option>
+              <option value="Docente de Primaria">Primaria</option>
+              <option value="Docente de Secundaria">Secundaria</option>
+              <option value="Docente Universitario">Universidad</option>
+            </select>
+            {messagesError.teacherType && (
+              <div className="invalid-field">{messagesError.teacherType}</div>
+            )}
+          </div>
+          <button type="submit">Enviar</button>
+        </form>
+      </div>
+      <Footer />
+    </div>
+  );
 };
 
 export default Registro;

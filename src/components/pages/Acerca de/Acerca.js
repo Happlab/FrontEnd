@@ -51,7 +51,7 @@ class Acerca extends React.Component {
         {this.state.estaCargando 
           ? <div style={{padding:"50px"}}><Loader /></div>
           :
-        <div>
+        <div className="aboutme-content">
         {this.state.acerca.length === 0 && <p className="notAvalaible">La informacion no se encuentra disponible</p>}
         {this.state.acerca.length !== 0 && <h2 className="titulo-estandar">Bienvenido a HappLab</h2>}
         {this.state.acerca.filter((value, index) => index === 2).map((acerca, i) => {
@@ -138,7 +138,7 @@ class Acerca extends React.Component {
               </div>
             );
         })}
-        <hr className="aboutme" />
+          <div className="aboutme"></div>
         </div>
         }
         <Footer />

@@ -10,13 +10,12 @@ export default class Player extends React.Component {
 
   render() {
     return (
-      <iframe
+      <video
         style={{ width: "100%", height: "100%", borderRadius: "10px" }}
-        src={"https://www.youtube.com/embed/" + this.state.idVideo}
-        frameborder="0"
-        allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-        allowfullscreen
-      ></iframe>
+        controls
+      >
+        <source src={"https://www.youtube.com/embed/" + this.state.idVideo}></source>
+      </video>
     );
   }
 }

@@ -14,6 +14,7 @@ import Perfil from './components/pages/Perfil/Perfil';
 import Password from './components/pages/Password/Password';
 import SobreNosotros from './components/pages/About/SobreNosotros';
 import { TokenContextProvider } from './context/GlobalContext';
+import "./App.css";
 
 function App() {
     return (

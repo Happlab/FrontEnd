@@ -2,14 +2,86 @@ $color-background: #1E86C0;
 $alineacion: center;
 $separacion-letras: 1px;
 
-a, button {
-    font-size: 15px;
-    line-height: 2;
+.navbar {
+    background-color: $color-background; 
+    display: flex;
+    // width: 100%;
+    padding: 0.5rem;
+    // flex-basis: 100%;
+    // flex-grow: 1;
+    align-items: center;
+    justify-content: space-between;
+}
+.navbar-content {
+    width: 100%;
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.5rem 7.5rem;
+}
+.navbar-collapse {
+    display: flex;
+    flex-basis: 100%;
+    flex-grow: 1;
+    align-items: center;
 }
 
-.navBg{
-    width: 100%;
-    background-color: $color-background; 
+.navbar-menu, .navbar-login {
+    display: inline-block;
+}
+
+.navbar-menu > ul, .login-content {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.navbar-menu > ul > li{
+    list-style: none;
+    display: inline-block;
+}
+
+.login-content > a {
+    padding: 0px 6px;
+}
+
+.navbar-brand {
+    width: 30%;
+}
+
+.navbar-brand > a {
+    font-size: 1.25rem;
+    display: block;
+}
+.navbar-brand > a, .navbar-menu > ul > li > a, .login-content > a {
+    text-decoration: none;
+    cursor: pointer;
+    line-height: 50px;
+}
+
+.navbar-brand, .navbar-toggler-icon, .nav-link {
+    color: #fff;
+}
+
+.nav-link:hover {
+    color: rgba(255,255,255,.5);
+}
+
+.navbar-link {
+    display: block;
+}
+
+.navbar-toggler {
+    border-color: #fff;
+    display: none;
+    padding: 0.25rem 0.75rem;
+    // background-color: transparent;
+    font-size: 1.25rem;
+    line-height: 1;
+    // border: 1px solid transparent;
+    border-radius: 0.25rem;
+    cursor: pointer;
 }
 
 .Logo{
@@ -17,7 +89,7 @@ a, button {
     text-align: $alineacion;
 }
 
-.login{
+.navbar-login{
     border-radius: 10px;
     background: #EA5356;
     letter-spacing: $separacion-letras;
@@ -25,9 +97,42 @@ a, button {
     .button{
         background: #EA5356;
     }
+    // margin: 0 auto;
+    width: 35%;
 }
 .me-auto{
     background-color: $color-background;
-    width: 80%;
+    width: 100%;
     letter-spacing: $separacion-letras;
+}
+.navbar-toggler-icon {
+    background-image: url("data:image/svg+xml;charset=utf8,%3Csvg viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='rgba%28255, 255, 255, 0.75%29' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E");
+    display: inline-block;
+    width: 1.5em;
+    height: 1.5em;
+    vertical-align: middle;
+    content: "";
+    background: 50%/100% 100% no-repeat;
+}
+
+@media only screen and (max-width: 992px) {
+    .navbar {
+        width: 100%;
+        flex-flow: row nowrap;
+        justify-content: flex-start;
+    }
+    .navbar-toggler{
+        display: inline-block;
+    }
+    .navbar-collapse {
+        display: none;
+    }
+    .navbar-content {
+        flex-wrap: wrap;
+    }
+}
+
+.without-collapse {
+    display: flex;
+    flex-direction: column;
 }
