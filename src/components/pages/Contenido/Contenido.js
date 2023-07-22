@@ -1,6 +1,5 @@
 import React from "react";
-import { Navbar } from "../../navegation/navbar/Navbar";
-import Footer from "../../navegation/footer/Footer";
+import MainPages from "../../wrappers/mainpages/MainPages";
 import "./Contenido.scss";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUpload } from "@fortawesome/free-solid-svg-icons";
@@ -15,6 +14,7 @@ import { environment } from "../../../environments/environment";
 import contentService from "../../../services/ContentServices";
 import Loader from "../../navegation/loader/Loader";
 import Popup from "../../navegation/popup/Popup";
+import NotAvalaible from "../../navegation/notavalaible/NotAvalaible";
 
 class Contenido extends React.Component {
   constructor(props) {
@@ -696,7 +696,7 @@ class Contenido extends React.Component {
   render() {
     return (
       <div className="main-contenido">
-        <Navbar />
+        <MainPages>
         <Popup
           show={this.state.notificacionContenido}
           title={this.state.tituloNotificacion}
@@ -826,14 +826,14 @@ class Contenido extends React.Component {
           ) : (
             <div className="contenido-content">
               {this.state.arrayContenidos.length === 0 ? (
-                <p className="notAvalaible">No hay contenidos disponibles</p>
+                <NotAvalaible>No hay contenidos disponibles</NotAvalaible>
               ) : (
                 <div>AHAHA</div>
               )}
             </div>
           )}
         </div>
-        <Footer />
+        </MainPages>
       </div>
     );
   }

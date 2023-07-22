@@ -1,29 +1,13 @@
-import React, { Component } from 'react'
-import Header from './TemplatesAdmin/Header'
-import Menu from './TemplatesAdmin/Menu'
-import DashboardAdmAcercaDe from './TemplatesAdmin/DashboardAdminAcercaDe'
-import { Navigate } from 'react-router-dom';
-import { TokenContext } from '../../../context/GlobalContext';
+import React from "react";
+import DashboardAdmAcercaDe from "./TemplatesAdmin/DashboardAdminAcercaDe";
+import AdminMainPages from "../../wrappers/adminMainPages/AdminMainPages";
 
-export default class AdminAcercaDe extends Component {
-  static contextType = TokenContext;
-  render() {
-    let data = this.context.token;
-    if(data === null) {
-      return (
-          <Navigate to="/login" state={{data}} />
-      )
-    } else if(data !== null && data.rol[0] !== "ADMIN") {
-      return (
-          <Navigate to="/" />
-      )
-    }
-    return (
-      <div>
-        <Header/>
-        <Menu opcion="acercaDe"/>
-        <DashboardAdmAcercaDe/>
-      </div>
-    )
-  }
-}
+const AdminAcercaDe = () => {
+  return (
+    <AdminMainPages option="acercaDe">
+      <DashboardAdmAcercaDe />
+    </AdminMainPages>
+  );
+};
+
+export default AdminAcercaDe;

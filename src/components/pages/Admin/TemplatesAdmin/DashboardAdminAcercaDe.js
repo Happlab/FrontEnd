@@ -1,35 +1,35 @@
 import React, { Component } from "react";
 import { PeticionEnvioDataFrom, PeticionGet } from "../PeticionesAdmin.js";
-import * as Yup from "yup";
-import { Formik } from "formik";
+// import * as Yup from "yup";
+// import { Formik } from "formik";
 // import { Form, Button } from "react-bootstrap";
 import { environment } from "../../../../environments/environment.js";
 import Popup from "../../../navegation/popup/Popup.js";
 
-const validationSchema = Yup.object().shape({
-  titulo_seccion: Yup.string()
-    .required("Campo Requerido")
-    .min(5, "Minimo 5 caracteres")
-    .max(50, "Maximo 50 caracteres"),
-  url_seccion: Yup.string().url("URL no valida"),
-  descripcion: Yup.string()
-    .required("Campo Requerido")
-    .min(50, "Minimo 50 caracteres")
-    .max(250, "Maximo 250 caracteres"),
-});
+// const validationSchema = Yup.object().shape({
+//   titulo_seccion: Yup.string()
+//     .required("Campo Requerido")
+//     .min(5, "Minimo 5 caracteres")
+//     .max(50, "Maximo 50 caracteres"),
+//   url_seccion: Yup.string().url("URL no valida"),
+//   descripcion: Yup.string()
+//     .required("Campo Requerido")
+//     .min(50, "Minimo 50 caracteres")
+//     .max(250, "Maximo 250 caracteres"),
+// });
 
-const validationSchema2 = Yup.object().shape({
-  titulo_seccion: Yup.string()
-    .required("Campo Requerido")
-    .min(10, "Minimo 10 caracteres")
-    .max(50, "Maximo 50 caracteres"),
-  descripcion: Yup.string()
-    .required("Campo Requerido")
-    .min(50, "Minimo 50 caracteres")
-    .max(250, "Maximo 250 caracteres"),
-  latitud: Yup.number().required("Campo Requerido"),
-  longitud: Yup.number().required("Campo Requerido"),
-});
+// const validationSchema2 = Yup.object().shape({
+//   titulo_seccion: Yup.string()
+//     .required("Campo Requerido")
+//     .min(10, "Minimo 10 caracteres")
+//     .max(50, "Maximo 50 caracteres"),
+//   descripcion: Yup.string()
+//     .required("Campo Requerido")
+//     .min(50, "Minimo 50 caracteres")
+//     .max(250, "Maximo 250 caracteres"),
+//   latitud: Yup.number().required("Campo Requerido"),
+//   longitud: Yup.number().required("Campo Requerido"),
+// });
 
 export default class DashboardAdminAcercaDe extends Component {
   constructor(props) {

@@ -1,22 +1,22 @@
 import React, { Component } from "react";
 import { PeticionEnvioDataFrom, PeticionGet } from "../PeticionesAdmin.js";
-import * as Yup from "yup";
-import { Formik } from "formik";
+// import * as Yup from "yup";
+// import { Formik } from "formik";
 // import { Form, Button } from "react-bootstrap";
 import { environment } from "../../../../environments/environment.js";
 import Popup from "../../../navegation/popup/Popup.js";
 
-const validationSchema = Yup.object().shape({
-  titulo_seccion: Yup.string()
-    .required("Campo Requerido")
-    .min(10, "Minimo 10 caracteres")
-    .max(100, "Maximo 100 caracteres"),
-  url_seccion: Yup.string().url("URL no valida"),
-  descripcion: Yup.string()
-    .required("Campo Requerido")
-    .min(50, "Minimo 50 caracteres")
-    .max(250, "Maximo 250 caracteres"),
-});
+// const validationSchema = Yup.object().shape({
+//   titulo_seccion: Yup.string()
+//     .required("Campo Requerido")
+//     .min(10, "Minimo 10 caracteres")
+//     .max(100, "Maximo 100 caracteres"),
+//   url_seccion: Yup.string().url("URL no valida"),
+//   descripcion: Yup.string()
+//     .required("Campo Requerido")
+//     .min(50, "Minimo 50 caracteres")
+//     .max(250, "Maximo 250 caracteres"),
+// });
 
 export default class DashboardAdminInicio extends Component {
   constructor(props) {

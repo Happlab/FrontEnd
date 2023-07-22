@@ -4,8 +4,8 @@ import {
   PeticionEnvioDataFrom,
   PeticionGet,
 } from "../PeticionesAdmin.js";
-import * as Yup from "yup";
-import { Formik } from "formik";
+// import * as Yup from "yup";
+// import { Formik } from "formik";
 // import { Form, Button } from "react-bootstrap";
 import { environment } from "../../../../environments/environment.js";
 import Popup from "../../../navegation/popup/Popup.js";
@@ -35,13 +35,13 @@ export default class DashboardAdminInicio extends Component {
 
   urlServicio = environment.baseUrl + "/noticia/";
 
-  validationSchema = Yup.object().shape({
-    Titulo: Yup.string()
-      .required("Campo Requerido")
-      .min(5, "Minimo 5 caracteres")
-      .max(50, "Maximo 50 caracteres"),
-    LinkNoticia: Yup.string().required("Campo requerido").url("URL no valida"),
-  });
+  // validationSchema = Yup.object().shape({
+  //   Titulo: Yup.string()
+  //     .required("Campo Requerido")
+  //     .min(5, "Minimo 5 caracteres")
+  //     .max(50, "Maximo 50 caracteres"),
+  //   LinkNoticia: Yup.string().required("Campo requerido").url("URL no valida"),
+  // });
 
   componentDidMount() {
     this.ListarNoticias();

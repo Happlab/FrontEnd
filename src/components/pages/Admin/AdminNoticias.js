@@ -1,29 +1,13 @@
-import React, { Component } from 'react'
-import Header from './TemplatesAdmin/Header'
-import Menu from './TemplatesAdmin/Menu'
-import DashboardAdmNoticias from './TemplatesAdmin/DashboardAdminNoticias'
-import { Navigate } from 'react-router-dom';
-import { TokenContext } from '../../../context/GlobalContext';
+import React from "react";
+import AdminMainPages from "../../wrappers/adminMainPages/AdminMainPages";
+import DashboardAdmNoticias from "./TemplatesAdmin/DashboardAdminNoticias";
 
-export default class AdminNoticias extends Component {
-  static contextType = TokenContext;
-  render() {
-    let data = this.context.token;
-    if(data === null) {
-      return (
-          <Navigate to="/login" state={{data}} />
-      )
-    } else if(data !== null && data.rol[0] !== "ADMIN") {
-      return (
-          <Navigate to="/" />
-      )
-    }
-    return (
-      <div>
-        <Header/>
-        <Menu opcion="noticia"/>
-        <DashboardAdmNoticias/>
-      </div>
-    )
-  }
-}
+const AdminNoticias = () => {
+  return (
+    <AdminMainPages option="noticia">
+      <DashboardAdmNoticias />
+    </AdminMainPages>
+  );
+};
+
+export default AdminNoticias;
