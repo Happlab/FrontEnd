@@ -148,113 +148,110 @@ class Password extends React.Component {
       return <Navigate to="/" />;
     }
     return (
-      <div className="main-pass">
-        <MainPages>
-          <Popup
-            show={this.state.notificacion}
-            title={this.state.tituloNotificacion}
-            message={this.state.mensajeNotificacion}
-            accept={this.handleClickCerrarModal}
-          />
-          {this.state.userVerified && this.onSendUpdateRequest(data)}
-          <div className="col-md-6 offset-md-3 content-pass">
-            <span className="anchor" id="formChangePassword"></span>
-            <hr className="mb-5" />
-            <div className="card card-outline-secondary">
-              <div className="header-tarjeta">
-                <h3 className="titulo-form">Actualizar Contraseña</h3>
-              </div>
-              <div className="card-body">
-                <form className="form" onSubmit={this.handleSubmit}>
-                  <div className="form-group">
-                    <label htmlFor="inputPasswordOld">Contraseña actual</label>
-                    <input
-                      name="inputPasswordOld"
-                      onChange={this.handleChange}
-                      type="password"
-                      className="form-control"
-                      id="inputPasswordOld"
-                      required
-                    />
-                  </div>
-                  <div className="form-group">
-                    <label
-                      htmlFor="inputPasswordNew"
-                      className={
-                        this.state.isVerifiedPassword ? "" : "error-label"
-                      }
-                    >
-                      Nueva contraseña
-                    </label>
-                    <input
-                      name="inputPasswordNew"
-                      onChange={this.handleChange}
-                      onBlur={this.verifiedPassword}
-                      type="password"
-                      className={
-                        this.state.isVerifiedPassword
-                          ? "form-control"
-                          : "error-input form-control"
-                      }
-                      id="inputPasswordNew"
-                      required
-                    />
-                    <span className="form-text small text-muted">
-                      La contraseña debe contener almenos 8 caracteres, una
-                      mayuscula, una minuscula, un numero y un caracter
-                      especial.
-                    </span>
-                  </div>
-                  <div className="form-group">
-                    <label
-                      htmlFor="inputPasswordNewVerify"
-                      className={
-                        this.state.isVerifiedTwoPassword ? "" : "error-label"
-                      }
-                    >
-                      Verificar contraseña
-                    </label>
-                    <input
-                      name="inputPasswordVerified"
-                      onChange={this.handleChange}
-                      onBlur={this.verifiedTwoPasswordNew}
-                      type="password"
-                      className={
-                        this.state.isVerifiedTwoPassword
-                          ? "form-control"
-                          : "error-input form-control"
-                      }
-                      id="inputPasswordNewVerify"
-                      required
-                    />
-                    <span
-                      className={
-                        this.state.isVerifiedTwoPassword
-                          ? "hidden"
-                          : "error-label"
-                      }
-                    >
-                      Las contraseña nuevas no coinciden, por favor verifique
-                    </span>
-                    <span className="form-text small text-muted">
-                      Para confirmar, escriba la nueva contraseña.
-                    </span>
-                  </div>
-                  <div className="form-group">
-                    <button
-                      type="submit"
-                      className="btn btn-outline-primary ms-1"
-                    >
-                      Guardar
-                    </button>
-                  </div>
-                </form>
-              </div>
+      <MainPages>
+        <Popup
+          show={this.state.notificacion}
+          title={this.state.tituloNotificacion}
+          message={this.state.mensajeNotificacion}
+          accept={this.handleClickCerrarModal}
+        />
+        {this.state.userVerified && this.onSendUpdateRequest(data)}
+        <div className="col-md-6 offset-md-3 content-pass">
+          <span className="anchor" id="formChangePassword"></span>
+          <hr className="mb-5" />
+          <div className="card card-outline-secondary">
+            <div className="header-tarjeta">
+              <h3 className="titulo-form">Actualizar Contraseña</h3>
             </div>
-            <hr className="mb-5" />
+            <div className="card-body">
+              <form className="form" onSubmit={this.handleSubmit}>
+                <div className="form-group">
+                  <label htmlFor="inputPasswordOld">Contraseña actual</label>
+                  <input
+                    name="inputPasswordOld"
+                    onChange={this.handleChange}
+                    type="password"
+                    className="form-control"
+                    id="inputPasswordOld"
+                    required
+                  />
+                </div>
+                <div className="form-group">
+                  <label
+                    htmlFor="inputPasswordNew"
+                    className={
+                      this.state.isVerifiedPassword ? "" : "error-label"
+                    }
+                  >
+                    Nueva contraseña
+                  </label>
+                  <input
+                    name="inputPasswordNew"
+                    onChange={this.handleChange}
+                    onBlur={this.verifiedPassword}
+                    type="password"
+                    className={
+                      this.state.isVerifiedPassword
+                        ? "form-control"
+                        : "error-input form-control"
+                    }
+                    id="inputPasswordNew"
+                    required
+                  />
+                  <span className="form-text small text-muted">
+                    La contraseña debe contener almenos 8 caracteres, una
+                    mayuscula, una minuscula, un numero y un caracter especial.
+                  </span>
+                </div>
+                <div className="form-group">
+                  <label
+                    htmlFor="inputPasswordNewVerify"
+                    className={
+                      this.state.isVerifiedTwoPassword ? "" : "error-label"
+                    }
+                  >
+                    Verificar contraseña
+                  </label>
+                  <input
+                    name="inputPasswordVerified"
+                    onChange={this.handleChange}
+                    onBlur={this.verifiedTwoPasswordNew}
+                    type="password"
+                    className={
+                      this.state.isVerifiedTwoPassword
+                        ? "form-control"
+                        : "error-input form-control"
+                    }
+                    id="inputPasswordNewVerify"
+                    required
+                  />
+                  <span
+                    className={
+                      this.state.isVerifiedTwoPassword
+                        ? "hidden"
+                        : "error-label"
+                    }
+                  >
+                    Las contraseña nuevas no coinciden, por favor verifique
+                  </span>
+                  <span className="form-text small text-muted">
+                    Para confirmar, escriba la nueva contraseña.
+                  </span>
+                </div>
+                <div className="form-group">
+                  <button
+                    type="submit"
+                    className="btn btn-outline-primary ms-1"
+                  >
+                    Guardar
+                  </button>
+                </div>
+              </form>
+            </div>
           </div>
-        </MainPages>
-      </div>
+          <hr className="mb-5" />
+        </div>
+      </MainPages>
     );
   }
 }

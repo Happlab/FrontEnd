@@ -44,69 +44,67 @@ class Inicio extends React.Component {
 
   render() {
     return (
-      <div className="main-inicio">
-        <MainPages>
-          <div className="container-inicio">
-            <hr />
-            <h3 className="title-h2">Destacados de la semana</h3>
-            <hr className="hr-line-white" />
-          </div>
-          {this.state.estaCargando ? (
-            <Loader />
-          ) : (
-            <div className="inicio-content">
-              {this.state.inicio.length === 0 && (
-                <NotAvalaible>No hay noticias destacadas</NotAvalaible>
-              )}
-              {this.state.inicio
-                .filter((content, index) => index < 2)
-                .map((inicio, i) => {
-                  return (
-                    <div className="content-video" key={i}>
-                      <div className="columna-inicio">
-                        <h3 className="title-dest">{inicio.titulo_seccion}</h3>
-                        <div className="columna-inicio-texto">
-                          <p className="text-lore">{inicio.descripcion}</p>
-                        </div>
-                        <div className="columna-inicio-video">
-                          {inicio.url !== "" ? (
-                            <Player src={inicio.url} />
-                          ) : (
-                            <img
-                              style={{
-                                width: "100%",
-                                height: "100%",
-                                borderRadius: "10px",
-                              }}
-                              className="images-carousel"
-                              src={
-                                environment.baseUrl +
-                                "/seccion/contenido/" +
-                                inicio.nombre_contenido
-                              }
-                              width={400}
-                              height={150}
-                              alt="Third slide"
-                            />
-                          )}
-                        </div>
+      <MainPages color={true}>
+        <div className="container-inicio">
+          <hr />
+          <h3 className="title-h2">Destacados de la semana</h3>
+          <hr className="hr-line-white" />
+        </div>
+        {this.state.estaCargando ? (
+          <Loader />
+        ) : (
+          <div className="inicio-content">
+            {this.state.inicio.length === 0 && (
+              <NotAvalaible>No hay noticias destacadas</NotAvalaible>
+            )}
+            {this.state.inicio
+              .filter((content, index) => index < 2)
+              .map((inicio, i) => {
+                return (
+                  <div className="content-video" key={i}>
+                    <div className="columna-inicio">
+                      <h3 className="title-dest">{inicio.titulo_seccion}</h3>
+                      <div className="columna-inicio-texto">
+                        <p className="text-lore">{inicio.descripcion}</p>
+                      </div>
+                      <div className="columna-inicio-video">
+                        {inicio.url !== "" ? (
+                          <Player src={inicio.url} />
+                        ) : (
+                          <img
+                            style={{
+                              width: "100%",
+                              height: "100%",
+                              borderRadius: "10px",
+                            }}
+                            className="images-carousel"
+                            src={
+                              environment.baseUrl +
+                              "/seccion/contenido/" +
+                              inicio.nombre_contenido
+                            }
+                            width={400}
+                            height={150}
+                            alt="Third slide"
+                          />
+                        )}
                       </div>
                     </div>
-                  );
-                })}
-            </div>
-          )}
-          <hr className="hr-line-white" />
-
-          <div className="main-carousel">
-            <Carousel
-              time={5000}
-              items={[imagenes.imgUni, imagenes.imgSam, imagenes.imgAESS]}
-            />
+                  </div>
+                );
+              })}
           </div>
-          <hr className="br-carousel" />
-        </MainPages>
-      </div>
+        )}
+        <hr className="hr-line-white" />
+
+        <div className="main-carousel">
+          <Carousel
+            time={5000}
+            items={[imagenes.imgUni, imagenes.imgSam, imagenes.imgAESS]}
+          />
+        </div>
+        <hr className="br-carousel" />
+      </MainPages>
     );
   }
 }

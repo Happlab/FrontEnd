@@ -695,8 +695,7 @@ class Contenido extends React.Component {
   //}
   render() {
     return (
-      <div className="main-contenido">
-        <MainPages>
+      <MainPages>
         <Popup
           show={this.state.notificacionContenido}
           title={this.state.tituloNotificacion}
@@ -763,7 +762,7 @@ class Contenido extends React.Component {
             </div>
           </div>
         </section>
-        <hr className="contenido-separator"/>
+        <hr className="contenido-separator" />
         <section className="sec-filtros">
           <div className="filtros">
             <ul className="lista-filtros">
@@ -784,7 +783,7 @@ class Contenido extends React.Component {
             </ul>
           </div>
         </section>
-        <hr className="contenido-separator"/>
+        <hr className="contenido-separator" />
         <section className="sec-form">
           <div className="formulario">
             {this.state.estadoSubirContenido && (
@@ -833,8 +832,7 @@ class Contenido extends React.Component {
             </div>
           )}
         </div>
-        </MainPages>
-      </div>
+      </MainPages>
     );
   }
 }

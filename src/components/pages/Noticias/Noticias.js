@@ -99,96 +99,94 @@ class Noticias extends React.Component {
     };
 
     return (
-      <div className="main-noticias">
-        <MainPages>
-          <section
-            className="elementor-section elementor-top-section elementor-element elementor-element-bdd763f elementor-section-boxed elementor-section-height-default elementor-section-height-default"
-            data-id="bdd763f"
-            data-element_type="section"
+      <MainPages>
+        <section
+          className="elementor-section elementor-top-section elementor-element elementor-element-bdd763f elementor-section-boxed elementor-section-height-default elementor-section-height-default"
+          data-id="bdd763f"
+          data-element_type="section"
+        >
+          <div
+            id="shape-top"
+            className="elementor-shape elementor-shape-top"
+            data-negative="false"
           >
-            <div
-              id="shape-top"
-              className="elementor-shape elementor-shape-top"
-              data-negative="false"
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 1000 20"
+              preserveAspectRatio="none"
             >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 1000 20"
-                preserveAspectRatio="none"
-              >
-                <path
-                  className="elementor-shape-fill"
-                  d="M0,0v3c0,0,393.8,0,483.4,0c9.2,0,16.6,7.4,16.6,16.6c0-9.1,7.4-16.6,16.6-16.6C606.2,3,1000,3,1000,3V0H0z"
-                ></path>
-              </svg>
-            </div>
-            <div className="elementor-container elementor-column-gap-default">
-              <div
-                className="elementor-column elementor-col-100 elementor-top-column elementor-element elementor-element-b43338a"
-                data-id="b43338a"
-                data-element_type="column"
-              >
-                <div className="elementor-widget-wrap elementor-element-populated">
-                  <div
-                    className="elementor-element elementor-element-3cfed6b elementor-widget elementor-widget-heading"
-                    data-id="3cfed6b"
-                    data-element_type="widget"
-                    data-widget_type="heading.default"
-                  >
-                    <div className="elementor-widget-container">
-                      <h1 className="elementor-heading-title elementor-size-default">
-                        Sección de noticias
-                      </h1>
-                    </div>
+              <path
+                className="elementor-shape-fill"
+                d="M0,0v3c0,0,393.8,0,483.4,0c9.2,0,16.6,7.4,16.6,16.6c0-9.1,7.4-16.6,16.6-16.6C606.2,3,1000,3,1000,3V0H0z"
+              ></path>
+            </svg>
+          </div>
+          <div className="elementor-container elementor-column-gap-default">
+            <div
+              className="elementor-column elementor-col-100 elementor-top-column elementor-element elementor-element-b43338a"
+              data-id="b43338a"
+              data-element_type="column"
+            >
+              <div className="elementor-widget-wrap elementor-element-populated">
+                <div
+                  className="elementor-element elementor-element-3cfed6b elementor-widget elementor-widget-heading"
+                  data-id="3cfed6b"
+                  data-element_type="widget"
+                  data-widget_type="heading.default"
+                >
+                  <div className="elementor-widget-container">
+                    <h1 className="elementor-heading-title elementor-size-default">
+                      Sección de noticias
+                    </h1>
                   </div>
                 </div>
               </div>
             </div>
-            <div
-              id="shape-bottom"
-              className="elementor-shape elementor-shape-bottom"
-              data-negative="false"
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 1000 20"
-                preserveAspectRatio="none"
-              >
-                <path
-                  className="elementor-shape-fill"
-                  d="M0,0v3c0,0,393.8,0,483.4,0c9.2,0,16.6,7.4,16.6,16.6c0-9.1,7.4-16.6,16.6-16.6C606.2,3,1000,3,1000,3V0H0z"
-                ></path>
-              </svg>
-            </div>
-          </section>
-          <section
-            className="elementor-section elementor-top-section elementor-element elementor-element-1a63a0d elementor-section-boxed elementor-section-height-default elementor-section-height-default"
-            data-id="1a63a0d"
-            data-element_type="section"
-            data-settings='{"background_background":"classic"}'
+          </div>
+          <div
+            id="shape-bottom"
+            className="elementor-shape elementor-shape-bottom"
+            data-negative="false"
           >
-            {this.state.estaCargando ? (
-              <Loader />
-            ) : (
-              <div className="elementor-container elementor-column-gap-default">
-                <div
-                  className="elementor-column elementor-col-100 elementor-top-column elementor-element elementor-element-55e9d7d"
-                  data-id="55e9d7d"
-                  data-element_type="column"
-                >
-                  <div className="elementor-widget-wrap elementor-element-populated">
-                    <div
-                      className="elementor-element elementor-element-082e3a1 elementor-widget elementor-widget-widgetkit-for-elementor-portfolio"
-                      data-id="082e3a1"
-                      data-element_type="widget"
-                      data-widget_type="widgetkit-for-elementor-portfolio.default"
-                    >
-                      <div className="elementor-widget-container">
-                        <div className="tgx-portfolio">
-                          <div id="hover-1" className="hover-1">
-                            <div id="news" className="row">
-                              <MostrarNoticias />
-                            </div>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 1000 20"
+              preserveAspectRatio="none"
+            >
+              <path
+                className="elementor-shape-fill"
+                d="M0,0v3c0,0,393.8,0,483.4,0c9.2,0,16.6,7.4,16.6,16.6c0-9.1,7.4-16.6,16.6-16.6C606.2,3,1000,3,1000,3V0H0z"
+              ></path>
+            </svg>
+          </div>
+        </section>
+        <section
+          className="elementor-section elementor-top-section elementor-element elementor-element-1a63a0d elementor-section-boxed elementor-section-height-default elementor-section-height-default"
+          data-id="1a63a0d"
+          data-element_type="section"
+          data-settings='{"background_background":"classic"}'
+        >
+          {this.state.estaCargando ? (
+            <Loader />
+          ) : (
+            <div className="elementor-container elementor-column-gap-default">
+              <div
+                className="elementor-column elementor-col-100 elementor-top-column elementor-element elementor-element-55e9d7d"
+                data-id="55e9d7d"
+                data-element_type="column"
+              >
+                <div className="elementor-widget-wrap elementor-element-populated">
+                  <div
+                    className="elementor-element elementor-element-082e3a1 elementor-widget elementor-widget-widgetkit-for-elementor-portfolio"
+                    data-id="082e3a1"
+                    data-element_type="widget"
+                    data-widget_type="widgetkit-for-elementor-portfolio.default"
+                  >
+                    <div className="elementor-widget-container">
+                      <div className="tgx-portfolio">
+                        <div id="hover-1" className="hover-1">
+                          <div id="news" className="row">
+                            <MostrarNoticias />
                           </div>
                         </div>
                       </div>
@@ -196,11 +194,11 @@ class Noticias extends React.Component {
                   </div>
                 </div>
               </div>
-            )}
-          </section>
-          <div className="news-separator"></div>
-        </MainPages>
-      </div>
+            </div>
+          )}
+        </section>
+        <div className="news-separator"></div>
+      </MainPages>
     );
   }
 }

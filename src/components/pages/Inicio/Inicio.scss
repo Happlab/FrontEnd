@@ -8,12 +8,6 @@ $posicion-rig: right;
 $tam: 150px;
 $tam-2: 100px;
 
-.main-inicio{
-    background-color: $color-background;
-    min-height: 100%;
-    position: relative;
-}
-
 .row-inicio{
     @include formacion_columnas($color-page);
 }

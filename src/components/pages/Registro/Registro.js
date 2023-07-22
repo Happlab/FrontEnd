@@ -123,146 +123,144 @@ const Registro = () => {
   };
 
   return (
-    <div className="main-registro">
-      <MainPages>
-        <div className="messages-alert-content">
-          <Alert variant="success" show={success}>
-            Usuario creado con éxito. Haz click{" "}
-            {
-              <Link className="alert-link" to="/Login">
-                aquí
-              </Link>
-            }{" "}
-            para iniciar sesión
-          </Alert>
-          <Alert variant="error" show={error}>
-            Error registrando el usuario, Correo electronico ya registrado.
-          </Alert>
-        </div>
-        <div className="form-registro">
-          <form
-            onSubmit={(e) => {
-              e.preventDefault();
-              if (isValidAllValues()) sendRegister();
-            }}
-          >
-            <div className="group-registro">
-              <label>Nombre</label>
-              <input
-                className={messagesError.name ? "is-invalid" : ""}
-                type="text"
-                name="name"
-                value={values.name}
-                onChange={handleChange}
-                onBlur={handleBlur}
-                placeholder="Ingresa tu nombre"
-              />
-              {messagesError.name && (
-                <div className="invalid-field">{messagesError.name}</div>
-              )}
-            </div>
-            <div className="group-registro">
-              <label>Apellido</label>
-              <input
-                className={messagesError.lastName ? "is-invalid" : ""}
-                type="text"
-                name="lastName"
-                value={values.lastName}
-                onChange={handleChange}
-                onBlur={handleBlur}
-                placeholder="Ingresa tu apellido"
-              />
-              {messagesError.lastName && (
-                <div className="invalid-field">{messagesError.lastName}</div>
-              )}
-            </div>
-            <div className="group-registro">
-              <label>Documento de Identidad</label>
-              <input
-                className={messagesError.documentId ? "is-invalid" : ""}
-                type="text"
-                name="documentId"
-                value={values.documentId}
-                onChange={handleChange}
-                onBlur={handleBlur}
-                placeholder="Ingresa tu numero de documento de identidad"
-              />
-              {messagesError.documentId && (
-                <div className="invalid-field">{messagesError.documentId}</div>
-              )}
-            </div>
-            <div className="group-registro">
-              <label>Correo</label>
-              <input
-                className={messagesError.email ? "is-invalid" : ""}
-                type="text"
-                name="email"
-                value={values.email}
-                onChange={handleChange}
-                onBlur={handleBlur}
-                placeholder="Ingresa tu correo"
-              />
-              {messagesError.email && (
-                <div className="invalid-field">{messagesError.email}</div>
-              )}
-            </div>
-            <div className="group-registro">
-              <label>Contraseña</label>
-              <input
-                className={messagesError.password ? "is-invalid" : ""}
-                type="password"
-                name="password"
-                value={values.password}
-                onChange={handleChange}
-                onBlur={handleBlur}
-                placeholder="Ingresa tu contraseña"
-              />
-              {messagesError.password && (
-                <div className="invalid-field">{messagesError.password}</div>
-              )}
-            </div>
-            <div className="group-registro">
-              <label>Repite la contraseña</label>
-              <input
-                className={messagesError.repeatPassword ? "is-invalid" : ""}
-                type="password"
-                name="repeatPassword"
-                value={values.repeatPassword}
-                onChange={handleChange}
-                onBlur={handleBlur}
-                placeholder="Vuelva a ingresar tu contraseña"
-              />
-              {messagesError.repeatPassword && (
-                <div className="invalid-field">
-                  {messagesError.repeatPassword}
-                </div>
-              )}
-            </div>
-            <div className="group-registro">
-              <label>Soy docente de</label>
-              <select
-                className={messagesError.teacherType ? "is-invalid" : ""}
-                name="teacherType"
-                value={values.teacherType}
-                onChange={handleChange}
-                onBlur={handleBlur}
-              >
-                <option hidden selected>
-                  Selecciona una opción
-                </option>
-                <option value="Docente de Primaria">Primaria</option>
-                <option value="Docente de Secundaria">Secundaria</option>
-                <option value="Docente Universitario">Universidad</option>
-              </select>
-              {messagesError.teacherType && (
-                <div className="invalid-field">{messagesError.teacherType}</div>
-              )}
-            </div>
-            <button type="submit">Enviar</button>
-          </form>
-        </div>
-      </MainPages>
-    </div>
+    <MainPages>
+      <div className="messages-alert-content">
+        <Alert variant="success" show={success}>
+          Usuario creado con éxito. Haz click{" "}
+          {
+            <Link className="alert-link" to="/Login">
+              aquí
+            </Link>
+          }{" "}
+          para iniciar sesión
+        </Alert>
+        <Alert variant="error" show={error}>
+          Error registrando el usuario, Correo electronico ya registrado.
+        </Alert>
+      </div>
+      <div className="form-registro">
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            if (isValidAllValues()) sendRegister();
+          }}
+        >
+          <div className="group-registro">
+            <label>Nombre</label>
+            <input
+              className={messagesError.name ? "is-invalid" : ""}
+              type="text"
+              name="name"
+              value={values.name}
+              onChange={handleChange}
+              onBlur={handleBlur}
+              placeholder="Ingresa tu nombre"
+            />
+            {messagesError.name && (
+              <div className="invalid-field">{messagesError.name}</div>
+            )}
+          </div>
+          <div className="group-registro">
+            <label>Apellido</label>
+            <input
+              className={messagesError.lastName ? "is-invalid" : ""}
+              type="text"
+              name="lastName"
+              value={values.lastName}
+              onChange={handleChange}
+              onBlur={handleBlur}
+              placeholder="Ingresa tu apellido"
+            />
+            {messagesError.lastName && (
+              <div className="invalid-field">{messagesError.lastName}</div>
+            )}
+          </div>
+          <div className="group-registro">
+            <label>Documento de Identidad</label>
+            <input
+              className={messagesError.documentId ? "is-invalid" : ""}
+              type="text"
+              name="documentId"
+              value={values.documentId}
+              onChange={handleChange}
+              onBlur={handleBlur}
+              placeholder="Ingresa tu numero de documento de identidad"
+            />
+            {messagesError.documentId && (
+              <div className="invalid-field">{messagesError.documentId}</div>
+            )}
+          </div>
+          <div className="group-registro">
+            <label>Correo</label>
+            <input
+              className={messagesError.email ? "is-invalid" : ""}
+              type="text"
+              name="email"
+              value={values.email}
+              onChange={handleChange}
+              onBlur={handleBlur}
+              placeholder="Ingresa tu correo"
+            />
+            {messagesError.email && (
+              <div className="invalid-field">{messagesError.email}</div>
+            )}
+          </div>
+          <div className="group-registro">
+            <label>Contraseña</label>
+            <input
+              className={messagesError.password ? "is-invalid" : ""}
+              type="password"
+              name="password"
+              value={values.password}
+              onChange={handleChange}
+              onBlur={handleBlur}
+              placeholder="Ingresa tu contraseña"
+            />
+            {messagesError.password && (
+              <div className="invalid-field">{messagesError.password}</div>
+            )}
+          </div>
+          <div className="group-registro">
+            <label>Repite la contraseña</label>
+            <input
+              className={messagesError.repeatPassword ? "is-invalid" : ""}
+              type="password"
+              name="repeatPassword"
+              value={values.repeatPassword}
+              onChange={handleChange}
+              onBlur={handleBlur}
+              placeholder="Vuelva a ingresar tu contraseña"
+            />
+            {messagesError.repeatPassword && (
+              <div className="invalid-field">
+                {messagesError.repeatPassword}
+              </div>
+            )}
+          </div>
+          <div className="group-registro">
+            <label>Soy docente de</label>
+            <select
+              className={messagesError.teacherType ? "is-invalid" : ""}
+              name="teacherType"
+              value={values.teacherType}
+              onChange={handleChange}
+              onBlur={handleBlur}
+            >
+              <option hidden selected>
+                Selecciona una opción
+              </option>
+              <option value="Docente de Primaria">Primaria</option>
+              <option value="Docente de Secundaria">Secundaria</option>
+              <option value="Docente Universitario">Universidad</option>
+            </select>
+            {messagesError.teacherType && (
+              <div className="invalid-field">{messagesError.teacherType}</div>
+            )}
+          </div>
+          <button type="submit">Enviar</button>
+        </form>
+      </div>
+    </MainPages>
   );
 };
 
