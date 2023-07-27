@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import MainPages from "../../wrappers/mainpages/MainPages";
 import { Link } from "react-router-dom";
-import Alert from "../../navegation/alert/Alert";
+import MainPages from "../../wrappers/mainpages/MainPages";
 import { environment } from "../../../environments/environment";
+import Alert from "../../navegation/alert/Alert";
 import "./Registro.css";
 
 const Registro = () => {

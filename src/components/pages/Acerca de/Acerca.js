@@ -1,158 +1,137 @@
-import React from "react";
-import Loader from "../../navegation/loader/Loader";
+import React, { useEffect, useState } from "react";
+import MainPages from "../../wrappers/mainpages/MainPages";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import markerIconPng from "leaflet/dist/images/marker-icon.png";
 import { Icon } from "leaflet";
-import "./Acerca.scss";
-import { PeticionGet } from "../Admin/PeticionesAdmin";
+import { PeticionGet } from "../../../services/AdminServices";
 import { environment } from "../../../environments/environment";
 import Player from "../../navegation/player/Player";
+import Loader from "../../navegation/loader/Loader";
 import NotAvalaible from "../../navegation/notavalaible/NotAvalaible";
-import MainPages from "../../wrappers/mainpages/MainPages";
+import "./Acerca.scss";
 
-class Acerca extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      acerca: [],
-      estaCargando: true,
-    };
-  }
+const urlService = environment.baseUrl + "/seccion/";
 
-  componentDidMount() {
-    this.setState({
-      estaCargando: true,
-    });
-    this.listarAcerca();
-  }
+const Acerca = () => {
+  const [abouts, setAbouts] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
-  listarAcerca() {
-    const url = environment.baseUrl + "/seccion/";
+  useEffect(() => {
+    setIsLoading(true);
+    listAbout();
+  }, []);
+
+  const listAbout = () => {
     const mensajeError = "No hay informacion de inicio";
-    const datos = PeticionGet(url, mensajeError);
-    datos
+    PeticionGet(urlService, mensajeError)
       .then((data) => {
-        if (data !== null && data !== undefined) {
-          this.setState({
-            acerca: Array.from(data),
-            estaCargando: false,
-          });
-        }
+        if (data) setAbouts(Array.from(data));
+        setIsLoading(false);
       })
-      .finally(() => {
-        this.setState({
-          estaCargando: false,
-        });
-      });
-  }
+      .finally(() => setIsLoading(false));
+  };
 
-  render() {
-    return (
-      <MainPages>
-        {this.state.estaCargando ? (
-          <div style={{ padding: "50px" }}>
-            <Loader />
-          </div>
-        ) : (
-          <div className="aboutme-content">
-            {this.state.acerca.length === 0 && (
-              <NotAvalaible>
-                La informacion no se encuentra disponible
-              </NotAvalaible>
-            )}
-            {this.state.acerca.length !== 0 && (
-              <h2 className="titulo-estandar">Bienvenido a HappLab</h2>
-            )}
-            {this.state.acerca
-              .filter((value, index) => index === 2)
-              .map((acerca, i) => {
-                return (
-                  <div key={i + 1} className="columna-acerca">
-                    <div className="columna-acerca-text">
-                      <h3 className="title-dest" style={{ color: "black" }}>
-                        {acerca.titulo_seccion}
-                      </h3>
-                      <p className="text-lore">{acerca.descripcion}</p>
-                    </div>
-                    <div className="columna-acerca-video">
-                      {acerca.url !== "" ? (
-                        <Player url={acerca.url} />
-                      ) : (
-                        <img
-                          style={{
-                            width: "100%",
-                            height: "100%",
-                            borderRadius: "10px",
-                          }}
-                          className="images-carousel"
-                          src={
-                            environment.baseUrl +
-                            "/seccion/contenido/" +
-                            acerca.nombre_contenido
-                          }
-                          width={400}
-                          height={150}
-                          alt="Third slide"
-                        />
-                      )}
-                    </div>
+  return (
+    <MainPages>
+      {isLoading ? (
+        <div style={{ padding: "50px" }}>
+          <Loader />
+        </div>
+      ) : (
+        <div className="aboutme-content">
+          {abouts.length === 0 && (
+            <NotAvalaible>
+              La informacion no se encuentra disponible
+            </NotAvalaible>
+          )}
+          {abouts.length !== 0 && (
+            <h2 className="titulo-estandar">Bienvenido a HappLab</h2>
+          )}
+          {abouts
+            .filter((value, index) => index === 2)
+            .map((about, i) => {
+              return (
+                <div key={i + 1} className="columna-acerca">
+                  <div className="columna-acerca-text">
+                    <h3 className="title-dest" style={{ color: "black" }}>
+                      {about.titulo_seccion}
+                    </h3>
+                    <p className="text-lore">{about.descripcion}</p>
                   </div>
-                );
-              })}
-            {this.state.acerca.length !== 0 && (
-              <h2 className="title-map">¿Dónde nos encuentras?</h2>
-            )}
-            {this.state.acerca
-              .filter((content, index) => index === 3)
-              .map((acerca, i) => {
-                const position = [acerca.coordenadas[0], acerca.coordenadas[1]];
-                return (
-                  <div key={i + 1} className="row-map">
-                    <div className="col-map">
-                      <link
-                        rel="stylesheet"
-                        href="https://unpkg.com/leaflet@1.8.0/dist/leaflet.css"
-                        integrity="sha512-hoalWLoI8r4UszCkZ5kL8vayOGVae1oxXe/2A4AO6J9+580uKHDO3JdHb7NzwwzK5xr/Fs0W40kiNHxM9vyTtQ=="
-                        crossOrigin=""
+                  <div className="columna-acerca-video">
+                    {about.url !== "" ? (
+                      <Player url={about.url} />
+                    ) : (
+                      <img
+                        style={{
+                          width: "100%",
+                          height: "100%",
+                          borderRadius: "10px",
+                        }}
+                        className="images-carousel"
+                        src={urlService + "contenido/" + about.nombre_contenido}
+                        width={400}
+                        height={150}
+                        alt="Third slide"
                       />
-                      <MapContainer
-                        center={position}
-                        zoom={25}
-                        scrollWheelZoom={false}
-                      >
-                        <TileLayer
-                          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-                          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                        />
-                        <Marker
-                          position={position}
-                          icon={
-                            new Icon({
-                              iconUrl: markerIconPng,
-                              iconSize: [25, 41],
-                              iconAnchor: [12, 41],
-                            })
-                          }
-                        >
-                          <Popup>HappLab</Popup>
-                        </Marker>
-                      </MapContainer>
-                    </div>
-
-                    <div className="col-text">
-                      <h3 className="title-dest" style={{ color: "black" }}>
-                        {acerca.titulo_seccion}
-                      </h3>
-                      <p className="text-lore">{acerca.descripcion}</p>
-                    </div>
+                    )}
                   </div>
-                );
-              })}
-            <div className="aboutme"></div>
-          </div>
-        )}
-      </MainPages>
-    );
-  }
-}
+                </div>
+              );
+            })}
+          {abouts.length !== 0 && (
+            <h2 className="title-map">¿Dónde nos encuentras?</h2>
+          )}
+          {abouts
+            .filter((content, index) => index === 3)
+            .map((about, i) => {
+              const position = [about.coordenadas[0], about.coordenadas[1]];
+              return (
+                <div key={i + 1} className="row-map">
+                  <div className="col-map">
+                    <link
+                      rel="stylesheet"
+                      href="https://unpkg.com/leaflet@1.8.0/dist/leaflet.css"
+                      integrity="sha512-hoalWLoI8r4UszCkZ5kL8vayOGVae1oxXe/2A4AO6J9+580uKHDO3JdHb7NzwwzK5xr/Fs0W40kiNHxM9vyTtQ=="
+                      crossOrigin=""
+                    />
+                    <MapContainer
+                      center={position}
+                      zoom={25}
+                      scrollWheelZoom={false}
+                    >
+                      <TileLayer
+                        attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                      />
+                      <Marker
+                        position={position}
+                        icon={
+                          new Icon({
+                            iconUrl: markerIconPng,
+                            iconSize: [25, 41],
+                            iconAnchor: [12, 41],
+                          })
+                        }
+                      >
+                        <Popup>HappLab</Popup>
+                      </Marker>
+                    </MapContainer>
+                  </div>
+
+                  <div className="col-text">
+                    <h3 className="title-dest" style={{ color: "black" }}>
+                      {about.titulo_seccion}
+                    </h3>
+                    <p className="text-lore">{about.descripcion}</p>
+                  </div>
+                </div>
+              );
+            })}
+          <div className="aboutme"></div>
+        </div>
+      )}
+    </MainPages>
+  );
+};
 export default Acerca;

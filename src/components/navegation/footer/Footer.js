@@ -1,9 +1,9 @@
 import React from 'react'
-import "./_Footer.scss";
-import LogoU from "../../../../src/assets/images/logo2.png"; 
-import imagenes from '../../../assets/imagenes';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFacebookSquare, faInstagram, faLinkedin, faTwitter } from '@fortawesome/free-brands-svg-icons';
+import LogoU from "../../../../src/assets/images/logo2.png"; 
+import imagenes from '../../../assets/imagenes';
+import "./_Footer.scss";
 
 let showUrl = (url) => window.open(url);
 

@@ -1,68 +1,54 @@
-import React from "react";
-// import { Navbar, Nav, Container } from "react-bootstrap";
-// import { Link } from "react-router-dom";
-import "./_Navbar.scss";
-import logo from "../../../../src/assets/images/logo3.jpg";
-import user_service from "../../../services/UserServices";
+import React, {useContext, useState} from "react";
 import { TokenContext } from "../../../context/GlobalContext";
+import user_service from "../../../services/UserServices";
+import logo from "../../../../src/assets/images/logo3.jpg";
+import "./_Navbar.scss";
 
-class NavbarCustom extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      isCollapse: false,
-    };
-    this.eliminarCookie = this.eliminarCookie.bind(this);
-    this.showMenuCollapse = this.showMenuCollapse.bind(this);
-    this.resizeMode = this.showMenuCollapse.bind(this);
-  }
-  static contextType = TokenContext;
+const Navbar = () => {
+  const [isCollapse, setIsCollapse] = useState(false);
+  const { tokenUser } = useContext(TokenContext);
 
-  eliminarCookie() {
+  const deleteCookie = () => {
     user_service.deleteToken();
-  }
+  };
 
-  showMenuCollapse() {
-    this.setState({ isCollapse: !this.state.isCollapse });
-  }
+  const showMenuCollapse = () => {
+    setIsCollapse(!isCollapse);
+  };
 
-  resizeMode() {
+  const resizeMode = () => {
     window.onresize = () => {
-      if (!window.matchMedia("(min-width: 992px)").matches) {
-        this.setState({ isCollapse: false });
-      }
+      if (!window.matchMedia("(min-width: 992px)").matches) setIsCollapse(false);
     };
-  }
+  };
 
-  render() {
-    let token = this.context.token;
     return (
       <>
-        <nav className="navbar" onLoad={this.resizeMode}>
+        <nav className="navbar" onLoad={resizeMode}>
           <div className="navbar-content">
             <div className="navbar-brand">
               <a className="nav-link" href="/">
                 HappLab Home Page
               </a>
             </div>
-            <button className="navbar-toggler" onClick={this.showMenuCollapse}>
+            <button className="navbar-toggler" onClick={showMenuCollapse}>
               <span className="navbar-toggler-icon"></span>
             </button>
             <div
               className={
-                this.state.isCollapse
+                isCollapse
                   ? "navbar-collapse without-collapse"
                   : "navbar-collapse"
               }
             >
               <div
                 className={
-                  this.state.isCollapse
+                  isCollapse
                     ? "navbar-menu me-auto without-collapse"
                     : "navbar-menu me-auto"
                 }
               >
-                <ul className={this.state.isCollapse ? "without-collapse" : ""}>
+                <ul className={isCollapse ? "without-collapse" : ""}>
                   <li>
                     <a className="nav-link" href="/">
                       Inicio
@@ -92,15 +78,15 @@ class NavbarCustom extends React.Component {
               </div>
               <div
                 className={
-                  this.state.isCollapse
+                  isCollapse
                     ? "navbar-login without-collapse"
                     : "navbar-login"
                 }
               >
-                {token === null ? (
+                {tokenUser === null ? (
                   <div
                     className={
-                      this.state.isCollapse
+                      isCollapse
                         ? "login-content without-collapse"
                         : "login-content"
                     }
@@ -115,12 +101,12 @@ class NavbarCustom extends React.Component {
                 ) : (
                   <div className="login-content">
                     <a className="nav-link" href="/Perfil">
-                      Registro
+                      Perfil
                     </a>
                     <a className="nav-link" href="/">
                       <button
                         className="button"
-                        onClick={this.eliminarCookie}
+                        onClick={deleteCookie}
                         style={{
                           width: "100%",
                           border: "none",
@@ -144,7 +130,6 @@ class NavbarCustom extends React.Component {
         </section>
       </>
     );
-  }
 }
 
-export { NavbarCustom as Navbar };
+export default Navbar;

@@ -1,293 +1,233 @@
-import React from "react";
-import MainPages from "../../wrappers/mainpages/MainPages";
+import React, { useContext, useState } from "react";
 import { Navigate } from "react-router-dom";
-import "./Perfil.scss";
-import user_service from "../../../services/UserServices";
 import { TokenContext } from "../../../context/GlobalContext";
+import MainPages from "../../wrappers/mainpages/MainPages";
+import user_service from "../../../services/UserServices";
 import Popup from "../../navegation/popup/Popup";
+import "./Perfil.scss";
 
-class Perfil extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      isPassword: false,
-      isCargo: false,
-      isStatus: false,
-      cargo: "",
-      updateVerified: false,
-      notificacion: false,
-      tituloNotificacion: "",
-      mensajeNotificacion: "",
-    };
-    this.onChangedPassword = this.onChangedPassword.bind(this);
-    this.onChangedCargo = this.onChangedCargo.bind(this);
-    this.onChangedStatusAccount = this.onChangedStatusAccount.bind(this);
-    this.onChangedStatus = this.onChangedStatus.bind(this);
-    this.onChangedUpdate = this.onChangedUpdate.bind(this);
-    this.handleChange = this.handleChange.bind(this);
-    this.saveChange = this.saveChange.bind(this);
-    this.handleClickCerrarModal = this.handleClickCerrarModal.bind(this);
-    this.eliminarCookie = this.eliminarCookie.bind(this);
-  }
+const Perfil = () => {
+  const [showNotification, setShowNotification] = useState(false);
+  const [titleNotification, setTitleNotification] = useState("");
+  const [messageNotification, setMessageNotification] = useState("");
+  const [profession, setProfession] = useState("");
+  const [isProfession, setIsProfession] = useState(true);
+  const { tokenUser, setTokenUser } = useContext(TokenContext);
 
-  static contextType = TokenContext;
+  const handleChange = (e) => {
+    setProfession(e.target.value);
+  };
 
-  onChangedPassword() {
-    this.setState((previousState) => ({
-      ...previousState,
-      isPassword: !previousState.isPassword,
-    }));
-  }
+  const onChangedPassword = () => {
+    return <Navigate to="/Password" />;
+  };
 
-  onChangedCargo() {
-    this.setState((previousState) => ({
-      ...previousState,
-      isCargo: !previousState.isCargo,
-    }));
-  }
+  const onChangedProfession = () => {
+    setIsProfession(!isProfession);
+  };
 
-  onChangedStatus() {
-    this.setState((previousState) => ({
-      ...previousState,
-      isStatus: !previousState.isStatus,
-    }));
-  }
+  const onChangedStatus = () => {
+    onChangedStatusAccount(tokenUser.email);
+  };
 
-  onChangedUpdate() {
-    this.setState((previousState) => ({
-      ...previousState,
-      updateVerified: !previousState.updateVerified,
-    }));
-  }
-
-  onChangedStatusAccount(email) {
-    let disable = user_service.disabledUser(email);
-    disable.then((response) => {
-      if (response === 200) {
-        this.setState({
-          isStatus: false,
-          notificacion: true,
-          tituloNotificacion: "Perfil del usuario",
-          mensajeNotificacion: "La cuenta ha sido desactivada exitosamente",
-        });
-      } else
-        this.setState({
-          notificacion: true,
-          tituloNotificacion: "Perfil del usuario",
-          mensajeNotificacion: "La cuenta no pudo ser desactivada",
-        });
+  const onChangedStatusAccount = (email) => {
+    user_service.disabledUser(email).then((response) => {
+      setShowNotification(true);
+      setTitleNotification("Perfil del Usuario");
+      if (response === 200)
+        setMessageNotification("La cuenta ha sido desactivada correctamente");
+      else
+        setMessageNotification(
+          "La cuenta no pudo ser desactivada, verifique su conexión a internet"
+        );
     });
-  }
+  };
 
-  handleChange(event) {
-    this.setState((previousState) => ({
-      ...previousState,
-      cargo: event.target.value,
-    }));
-  }
-
-  saveChange(data) {
-    let update = user_service.updateUser(data);
-    update.then((data_user) => {
-      if (data_user !== null && data_user !== undefined) {
-        this.setState({
-          updateVerified: !this.state.updateVerified,
-          isCargo: !this.state.isCargo,
-          notificacion: true,
-          tituloNotificacion: "Perfil del usuario",
-          mensajeNotificacion: "Cargo modificado exitosamente",
-        });
+  const saveChange = (dataUpdate) => {
+    user_service.updateUser(dataUpdate).then((data) => {
+      setShowNotification(true);
+      setTitleNotification("Perfil de usuario");
+      if (data) {
+        setMessageNotification("Cargo modificado exitosamente");
       } else
-        this.setState({
-          notificacion: true,
-          tituloNotificacion: "Perfil del usuario",
-          mensajeNotificacion: "El cargo no pudo ser modificado",
-        });
+        setMessageNotification(
+          "El cargo no pudo ser modificado, verifique su conexión a internet"
+        );
     });
-  }
+  };
 
-  handleClickCerrarModal() {
-    this.setState({ notificacion: false });
-    if (!this.state.isStatus) this.eliminarCookie();
-    if (this.state.cargo !== "") this.onUpdateToken();
-  }
+  const handleClickCloseModal = () => {
+    setShowNotification(false);
+    // if (!this.state.isStatus) this.eliminarCookie();
+    // if (this.state.cargo !== "") this.onUpdateToken();
+  };
 
-  eliminarCookie() {
+  const deleteCookie = () => {
     user_service.deleteToken();
-  }
+  };
 
-  onUpdateToken() {
-    let data = this.context.token;
-    let login = user_service.onLogin(data.email, data.password);
-    login.then((dataEnd) => {
-      if (dataEnd !== null && dataEnd !== undefined) {
-        this.context.setToken(dataEnd);
-      }
+  const onUpdateToken = () => {
+    user_service.onLogin(tokenUser.email, tokenUser.password).then((data) => {
+      if (data) setTokenUser(data);
     });
-  }
+  };
 
-  render() {
-    let data = this.context.token;
-    if (data === null) {
-      return <Navigate to="/Login" />;
-    }
-    data.tipo_docente =
-      this.state.cargo !== "" ? this.state.cargo : data.tipo_docente;
-    return (
-      <MainPages>
-        <Popup
-          show={this.state.notificacion}
-          title={this.state.tituloNotificacion}
-          message={this.state.mensajeNotificacion}
-          accept={this.handleClickCerrarModal}
-        />
-        {this.state.isPassword && <Navigate to="/Password" />}
-        {this.state.isStatus && this.onChangedStatusAccount(data.email)}
-        {this.state.updateVerified && this.saveChange(data)}
-        <div className="container-fluid content-perfil">
-          <div className="d-flex flex-column align-items-center text-center p-4 py-3">
-            <h1 className="titulo-estandar">Perfil de usuario</h1>
-          </div>
-          <div className="row">
-            <div className="col-md-4 border-right">
-              <div className="p-5 py-5">
-                <div className="card mb-0">
-                  <div className="card-body">
-                    <div className="d-flex flex-column align-items-center text-center p-4 py-3">
-                      <img
-                        className="rounded-circle"
-                        width="200px"
-                        src="https://st3.depositphotos.com/15648834/17930/v/600/depositphotos_179308454-stock-illustration-unknown-person-silhouette-glasses-profile.jpg"
-                        alt="Foto perfil"
-                      />
-                      <span className="font-weight-bold">{data.nombres}</span>
-                      <span className="text-black-50">{data.email}</span>
-                      <span> </span>
-                    </div>
-                    <div className="d-flex justify-content-center mb-2">
-                      <button
-                        onClick={this.onChangedPassword}
-                        className="btn btn-primary"
-                      >
-                        Cambiar contraseña
-                      </button>
-                      <button
-                        onClick={this.onChangedCargo}
-                        className="btn btn-outline-primary ms-1"
-                      >
-                        Editar cargo
-                      </button>
-                    </div>
+  let data = tokenUser;
+  if (data === null) return <Navigate to="/Login" />;
+  data.tipo_docente = profession !== "" ? profession : data.tipo_docente;
+  return (
+    <MainPages>
+      <Popup
+        show={showNotification}
+        title={titleNotification}
+        message={messageNotification}
+        accept={handleClickCloseModal}
+      />
+      <div className="content-perfil">
+        <div className="header-perfil">
+          <h1 className="title-perfil">Perfil de usuario</h1>
+        </div>
+        <div className="row-perfil">
+          <div className="col-perfil border-right-perfil">
+            <div className="padding-5">
+              <div className="card-perfil">
+                <div className="card-body-perfil">
+                  <div className="bodycard-perfil-photo">
+                    <img
+                      className="rounded-circle"
+                      width="200px"
+                      src="https://st3.depositphotos.com/15648834/17930/v/600/depositphotos_179308454-stock-illustration-unknown-person-silhouette-glasses-profile.jpg"
+                      alt="Foto perfil"
+                    />
+                    <span className="font-weight-bold">{data.nombres}</span>
+                    <span className="text-black-50">{data.email}</span>
+                    <span> </span>
                   </div>
-                </div>
-              </div>
-            </div>
-            <div className="col-md-4 border-right">
-              <div className="p-5 py-5">
-                <div className="card mb-5">
-                  <div className="card-body">
-                    <div className="row">
-                      <div className="col-sm-4">
-                        <p className="mb-0">Cedula</p>
-                      </div>
-                      <div className="col-sm-8">
-                        <p className="text-muted mb-0">{data.cedula}</p>
-                      </div>
-                    </div>
-                    <hr />
-                    <div className="row">
-                      <div className="col-sm-4">
-                        <p className="mb-0">Nombre</p>
-                      </div>
-                      <div className="col-sm-8">
-                        <p className="text-muted mb-0">{data.nombres}</p>
-                      </div>
-                    </div>
-                    <hr />
-                    <div className="row">
-                      <div className="col-sm-4">
-                        <p className="mb-0">Apellido</p>
-                      </div>
-                      <div className="col-sm-8">
-                        <p className="text-muted mb-0">{data.apellidos}</p>
-                      </div>
-                    </div>
-                    <hr />
-                    <div className="row">
-                      <div className="col-sm-4">
-                        <p className="mb-0">Email</p>
-                      </div>
-                      <div className="col-sm-8">
-                        <p className="text-muted mb-0">{data.email}</p>
-                      </div>
-                    </div>
-                    <hr />
-                    <div className="row">
-                      <div className="col-sm-4">
-                        <p className="mb-0">Rol</p>
-                      </div>
-                      <div className="col-sm-8">
-                        <p className="text-muted mb-0">{data.tipo_docente}</p>
-                      </div>
-                    </div>
-                    <hr />
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className="col-md-3">
-              <div className="p-3 py-5">
-                <div className="card mb-4">
-                  <div className="card-body">
-                    <div className="d-flex justify-content-between align-items-center cargo">
-                      <h4>Cargo Actual</h4>
-                    </div>
-                    <br />
-                    <label htmlFor="selectCargo">Usted es docente de</label>
-                    <select
-                      className="form-control"
-                      id="selectCargo"
-                      disabled={!this.state.isCargo}
-                      value={data.tipo_docente}
-                      onChange={this.handleChange}
+                  <div className="bodycard-perfil-photo-options">
+                    <button
+                      onClick={onChangedPassword}
+                      className="btn-perfil btn-perfil-primary"
                     >
-                      <option value="Docente de Primaria">Primaria</option>
-                      <option value="Docente de Secundaria">Secundaria</option>
-                      <option value="Docente Universitario">Universidad</option>
-                    </select>
+                      Cambiar contraseña
+                    </button>
+                    <button
+                      onClick={onChangedProfession}
+                      className="btn-perfil btn-perfil-outline-primary ms-1"
+                    >
+                      Editar cargo
+                    </button>
                   </div>
                 </div>
               </div>
-              <div className="d-flex justify-content-center">
+            </div>
+          </div>
+          <div className="col-perfil border-right-perfil">
+            <div className="padding-5">
+              <div className="card-perfil">
+                <div className="card-body-perfil">
+                  <div className="row-perfil">
+                    <div className="col-perfil col-perfil-sm">
+                      <p className="mb-0">Cedula</p>
+                    </div>
+                    <div className="col-perfil-lg col-perfil-sm">
+                      <p className="text-muted-perfil mb-0">{data.cedula}</p>
+                    </div>
+                  </div>
+                  <hr className="hr-perfil" />
+                  <div className="row-perfil">
+                    <div className="col-perfil col-perfil-sm">
+                      <p className="mb-0">Nombre</p>
+                    </div>
+                    <div className="col-perfil-lg col-perfil-sm">
+                      <p className="text-muted-perfil mb-0">{data.nombres}</p>
+                    </div>
+                  </div>
+                  <hr className="hr-perfil" />
+                  <div className="row-perfil">
+                    <div className="col-perfil col-perfil-sm">
+                      <p className="mb-0">Apellido</p>
+                    </div>
+                    <div className="col-perfil-lg col-perfil-sm">
+                      <p className="text-muted-perfil mb-0">{data.apellidos}</p>
+                    </div>
+                  </div>
+                  <hr className="hr-perfil" />
+                  <div className="row-perfil">
+                    <div className="col-perfil col-perfil-sm">
+                      <p className="mb-0">Email</p>
+                    </div>
+                    <div className="col-perfil-lg col-perfil-sm">
+                      <p className="text-muted-perfil mb-0">{data.email}</p>
+                    </div>
+                  </div>
+                  <hr className="hr-perfil" />
+                  <div className="row-perfil">
+                    <div className="col-perfil col-perfil-sm">
+                      <p className="mb-0">Rol</p>
+                    </div>
+                    <div className="col-perfil-lg col-perfil-sm">
+                      <p className="text-muted-perfil mb-0">
+                        {data.tipo_docente}
+                      </p>
+                    </div>
+                  </div>
+                  <hr className="hr-perfil" />
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className="col-perfil">
+            <div className="padding-3">
+              <div className="card-perfil">
+                <div className="card-body-perfil">
+                  <div className="profesion-card-perfil">
+                    <h4>Cargo Actual</h4>
+                  </div>
+                  <br />
+                  <label htmlFor="selectCargo">Usted es docente de</label>
+                  <select
+                    className="form-control-perfil"
+                    id="selectCargo"
+                    disabled={isProfession}
+                    value={data.tipo_docente}
+                    onChange={handleChange}
+                  >
+                    <option value="Docente de Primaria">Primaria</option>
+                    <option value="Docente de Secundaria">Secundaria</option>
+                    <option value="Docente Universitario">Universidad</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+            <div className="btn-end">
+              <button
+                onClick={() => saveChange(data)}
+                className="btn-perfil btn-perfil-outline-primary"
+                disabled={isProfession}
+              >
+                Guardar
+              </button>
+            </div>
+          </div>
+        </div>
+        <div className="btn-end">
+          <div className="">
+            <div className="">
+              <div className="btn-end">
                 <button
-                  onClick={this.onChangedUpdate}
-                  className="btn btn-outline-primary ms-1"
-                  disabled={!this.state.isCargo}
+                  onClick={onChangedStatus}
+                  className="btn-lg-perfil btn-perfil-primary"
                 >
-                  Guardar
+                  Darme de baja
                 </button>
               </div>
             </div>
           </div>
-          <div className="row d-flex justify-content-center">
-            <div className="">
-              <div className="">
-                <div className="d-flex justify-content-center">
-                  <button
-                    onClick={this.onChangedStatus}
-                    className="btn-lg btn-primary"
-                  >
-                    Darme de baja
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-          <br />
         </div>
-      </MainPages>
-    );
-  }
-}
+        <br />
+      </div>
+    </MainPages>
+  );
+};
 
 export default Perfil;

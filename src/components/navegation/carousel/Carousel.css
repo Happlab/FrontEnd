@@ -38,4 +38,9 @@
   padding: 0.5rem;
   transform: translateY(-50%);
   cursor: pointer;
+  opacity: 0.4;
+}
+
+.carousel-controls > button:hover {
+  opacity: 1;
 }

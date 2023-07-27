@@ -1,33 +1,25 @@
-import React, { Component } from "react";
-import Header from "../../pages/Admin/TemplatesAdmin/Header";
-import Menu from "../../pages/Admin/TemplatesAdmin/Menu";
+import React, { Component, useContext } from "react";
 import { Navigate } from "react-router-dom";
 import { TokenContext } from "../../../context/GlobalContext";
+import Header from "../../pages/Admin/navegation/Header/Header";
+import Sidebar from "../../pages/Admin/navegation/Sidebar/Sidebar";
 
-export default class AdminMainPages extends Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      option: this.props.option,
-      children: this.props.children,
-    };
-  }
+const AdminMainPages = ({ option, children }) => {
+  const { tokenUser, setTokenUser } = useContext(TokenContext);
 
-  static contextType = TokenContext;
+  let data = tokenUser;
+  // if (data === null) {
+  //   return <Navigate to="/login" state={{ data }} />;
+  // } else if ((data !== null) & (data.rol[0] !== "ADMIN")) {
+  //   return <Navigate to="/" />;
+  // }
+  return (
+    <div>
+      <Header />
+      <Sidebar option={option} />
+      {children}
+    </div>
+  );
+};
 
-  render() {
-    let data = this.context.token;
-    if (data === null) {
-      return <Navigate to="/login" state={{ data }} />;
-    } else if ((data !== null) & (data.rol[0] !== "ADMIN")) {
-      return <Navigate to="/" />;
-    }
-    return (
-      <div>
-        <Header />
-        <Menu opcion={this.state.option} />
-        {this.state.children}
-      </div>
-    );
-  }
-}
+export default AdminMainPages;

@@ -1,160 +1,104 @@
-import React, { Component } from "react";
-import { PeticionEnvio, PeticionGet } from "../PeticionesAdmin.js";
-import { environment } from "../../../../environments/environment.js";
-import Popup from "../../../navegation/popup/Popup.js";
+import React, { useEffect, useState } from "react";
+import AdminMainPages from "../../../wrappers/adminMainPages/AdminMainPages";
+import { PeticionEnvio, PeticionGet } from "../../../../services/AdminServices";
+import { environment } from "../../../../environments/environment";
+import Popup from "../../../navegation/popup/Popup";
 
-export default class DashboardAdminContenido extends Component {
-  constructor(props) {
-    super();
-    this.state = {
-      contenidos: [],
-      conteo: 0,
-      notificacion: false,
-      tituloNotificacion: "",
-      mensajeNotificacion: "",
-    };
-    this.Eliminar = this.Eliminar.bind(this);
-    this.MostrarOcultar = this.MostrarOcultar.bind(this);
-    this.Aceptar = this.Aceptar.bind(this);
-    this.Descargar = this.Descargar.bind(this);
-    this.handleClickCerrarModal = this.handleClickCerrarModal.bind(this);
-  }
+const urlService = environment.baseUrl + "/contenido/";
 
-  urlServicio = environment.baseUrl + "/contenido/";
+const AdminContenido = () => {
+  const [contents, setContents] = useState([]);
+  const [count, setCount] = useState(0);
+  const [showNotification, setShowNotification] = useState(false);
+  const [titleNotification, setTitleNotification] = useState("");
+  const [messageNotification, setMessageNotification] = useState("");
 
-  componentDidMount() {
-    this.ListarContenido();
-  }
-  handleClickCerrarModal() {
-    this.setState({ notificacion: false });
-  }
-  Descargar(contenido_link) {
-    window.location.href = this.urlServicio + "download/" + contenido_link;
-  }
+  const handleClickCloseModal = () => {
+    setShowNotification(false);
+  };
 
-  MostrarOcultar(contenido) {
-    if (contenido.visible) {
-      contenido.visible = false;
-    } else {
-      contenido.visible = true;
-    }
-    const url = this.urlServicio + "changeVisible/" + contenido.link;
-    const metodo = "PUT";
-    let peticion = PeticionEnvio("", url, metodo);
-    peticion.then((data) => {
+  const downloadContent = (linkContent) =>
+    (window.location.href = urlService + "download/" + linkContent);
+
+  const showOrCloseContent = (content) => {
+    content.visible = content.visible ? false : true;
+    const url = urlService + "changeVisible/" + content.link;
+    PeticionEnvio("", url, "PUT").then((data) => {
+      setShowNotification(true);
+      setTitleNotification("Gestión de Contenidos");
       if (data) {
-        this.setState({
-          notificacion: true,
-          tituloNotificacion: "Gestion de contenidos",
-          mensajeNotificacion:
-            "El estado de visibilidad del contenido se ha actualizado correctamente",
-        });
-        this.ListarContenido();
+        setMessageNotification(
+          "El estado de visibilidad del contenido se ha actualizado correctamente"
+        );
+        listContent();
       } else {
-        this.setState({
-          notificacion: true,
-          tituloNotificacion: "Gestion de contenidos",
-          mensajeNotificacion:
-            "No fue posible cambiar estado de visibilidad del contenido, verifique su conexion con el servidor o a internet",
-        });
+        setMessageNotification(
+          "No fue posible cambiar estado de visibilidad del contenido, verifique su conexión a internet"
+        );
       }
     });
-  }
-  Aceptar(contenido) {
-    contenido.pendiente = false;
-    contenido.visible = true;
-    const url = this.urlServicio + "changePendiente/" + contenido.link;
-    const metodo = "PUT";
-    let peticion = PeticionEnvio("", url, metodo);
-    peticion.then((data) => {
-      if (data) {
-        this.setState({
-          notificacion: true,
-          tituloNotificacion: "Gestion de contenidos",
-          mensajeNotificacion:
-            "La solicitud para publicar el contenido fue aceptada",
-        });
-        this.ListarContenido();
-      } else {
-        this.setState({
-          notificacion: true,
-          tituloNotificacion: "Gestion de contenidos",
-          mensajeNotificacion:
-            "No fue posible aceptar la solicitud de publicar contenido, verifique su conexion con el servidor o a internet",
-        });
-      }
-    });
+  };
 
-    const petUsuario =
-      "https://api-happlab.herokuapp.com/persona/modToken/" +
-      contenido.id_autor.email +
-      "&" +
-      (contenido.id_autor.tokens + 1);
-    const request_options = {
-      method: "PUT",
-      mode: "cors",
-      ContentType: "application/json",
-      headers: {
-        "Access-Control-Allow-Origin": "*",
-      },
-    };
-    return fetch(petUsuario, request_options)
-      .then((response) => {
-        if (response.status === 200) {
-          console.log(this.credito);
-        } else {
-          console.log(this.credito);
-        }
-      })
-      .catch((error) => console.log("Error", error));
-  }
-  Eliminar(contenido) {
-    const url = this.urlServicio + "delete/" + contenido.link;
-    const metodo = "DELETE";
-    let peticion = PeticionEnvio("", url, metodo);
-    peticion.then((data) => {
+  const acceptContent = (content) => {
+    content.pendiente = false;
+    content.visible = true;
+    const url = urlService + "changePendiente/" + content.link;
+    PeticionEnvio("", url, "PUT").then((data) => {
+      setShowNotification(true);
+      setTitleNotification("Gestión de Contenidos");
       if (data) {
-        this.setState({
-          notificacion: true,
-          tituloNotificacion: "Gestion de contenidos",
-          mensajeNotificacion:
-            "La solicitud para publicar el contenido fue rechazada",
-        });
-        this.ListarContenido();
+        setMessageNotification(
+          "La solicitud para publicar el contenido fue aceptada"
+        );
+        listContent();
       } else {
-        this.setState({
-          notificacion: true,
-          tituloNotificacion: "Gestion de contenidos",
-          mensajeNotificacion:
-            "No fue posible rechazar la solicitud de contenido, verifique su conexion con el servidor o a internet",
-        });
+        setMessageNotification(
+          "No fue posible aceptar la solicitud de publicar contenido, verifique su conexión a internet"
+        );
       }
     });
-  }
-  ListarContenido() {
-    let cont = 0;
-    const url = this.urlServicio;
-    let datos = PeticionGet(url);
-    datos.then((data) => {
-      if (data !== null && data !== undefined) {
-        for (let i = 0; i < data.length; i++) {
-          if (data[i].visible && !data[i].pendiente) {
-            cont = cont + 1;
-          }
-        }
-        this.setState({ contenidos: Array.from(data), conteo: cont });
-      }
-    });
-  }
+  };
 
-  render() {
-    return (
+  const deleteContent = (content) => {
+    const url = urlService + "delete/" + content.link;
+    PeticionEnvio("", url, "DELETE").then((data) => {
+      setShowNotification(true);
+      setTitleNotification("Gestión de Contenidos");
+      if (data) {
+        setMessageNotification(
+          "La solicitud para publicar el contenido fue rechazada"
+        );
+        listContent();
+      } else {
+        setMessageNotification(
+          "No fue posible rechazar la solicitud de contenido, verifique su conexión a internet"
+        );
+      }
+    });
+  };
+
+  useEffect(() => listContent(), []);
+
+  const listContent = () => {
+    PeticionGet(urlService).then((data) => {
+      if (data) {
+        let dataFilter = data.filter(
+          (value) => value.visible && value.pendiente
+        );
+        setCount(dataFilter.length);
+        setContents(Array.from(data));
+      }
+    });
+  };
+
+  return (
+    <AdminMainPages option="contenido">
       <div>
         <Popup
-          show={this.state.notificacion}
-          title={this.state.tituloNotificacion}
-          message={this.state.mensajeNotificacion}
-          accept={this.handleClickCerrarModal}
+          show={showNotification}
+          title={titleNotification}
+          message={messageNotification}
+          accept={handleClickCloseModal}
         />
         {/*Lista d solicitudes*/}
         <div className="content-wrapper" style={{ minHeight: "2080.12px" }}>
@@ -168,7 +112,7 @@ export default class DashboardAdminContenido extends Component {
               <div className="col-lg-3 col-6">
                 <div className="small-box bg-danger">
                   <div className="inner">
-                    <h3>{this.state.conteo}</h3>
+                    <h3>{count}</h3>
                     <p>Número de contenidos</p>
                   </div>
                   <div className="icon">
@@ -214,11 +158,11 @@ export default class DashboardAdminContenido extends Component {
                           </tr>
                         </thead>
                         <tbody>
-                          {this.state.contenidos
+                          {contents
                             .filter((content) => content.pendiente)
                             .map((contentPendiente, i) => {
                               return (
-                                <tr key={i+1}>
+                                <tr key={i + 1}>
                                   <td>{contentPendiente.titulo}</td>
                                   <td>
                                     <textarea
@@ -226,21 +170,15 @@ export default class DashboardAdminContenido extends Component {
                                       className="form-control"
                                       style={{ width: "300px" }}
                                       rows={4}
-                                      defaultValue={
-                                        contentPendiente.resumen
-                                      }
+                                      defaultValue={contentPendiente.resumen}
                                     />
                                   </td>
-                                  <td>
-                                    {contentPendiente.id_autor.email}
-                                  </td>
+                                  <td>{contentPendiente.id_autor.email}</td>
                                   <div className="btn-group btn-group-sm">
                                     <button
                                       type="button"
                                       onClick={() =>
-                                        this.Descargar(
-                                          contentPendiente.link
-                                        )
+                                        downloadContent(contentPendiente.link)
                                       }
                                       className="btn btn-primary float-right"
                                       style={{ marginRight: 5 }}
@@ -255,14 +193,10 @@ export default class DashboardAdminContenido extends Component {
                                       className="form-control"
                                       style={{ width: "150px" }}
                                       rows={4}
-                                      defaultValue={
-                                        contentPendiente.tags
-                                      }
+                                      defaultValue={contentPendiente.tags}
                                     />
                                   </td>
-                                  <td>
-                                    {contentPendiente.fecha_subida}
-                                  </td>
+                                  <td>{contentPendiente.fecha_subida}</td>
                                   <td>
                                     <div className="input-group-prepend">
                                       <button
@@ -278,9 +212,7 @@ export default class DashboardAdminContenido extends Component {
                                           className="dropdown-item"
                                           style={{ cursor: "pointer" }}
                                           onClick={() =>
-                                            this.Aceptar(
-                                              contentPendiente
-                                            )
+                                            acceptContent(contentPendiente)
                                           }
                                         >
                                           Aprobar
@@ -289,9 +221,7 @@ export default class DashboardAdminContenido extends Component {
                                           className="dropdown-item"
                                           style={{ cursor: "pointer" }}
                                           onClick={() =>
-                                            this.Eliminar(
-                                              contentPendiente
-                                            )
+                                            deleteContent(contentPendiente)
                                           }
                                         >
                                           Rechazar
@@ -341,12 +271,12 @@ export default class DashboardAdminContenido extends Component {
                           </tr>
                         </thead>
                         <tbody>
-                          {this.state.contenidos
+                          {contents
                             .filter((content) => !content.pendiente)
                             .map((contentNoPendiente, i) => {
                               return (
-                                <tr key={i+1}>
-                                  <td>{i+1}</td>
+                                <tr key={i + 1}>
+                                  <td>{i + 1}</td>
                                   <td>{contentNoPendiente.titulo}</td>
                                   <td>
                                     <textarea
@@ -355,20 +285,16 @@ export default class DashboardAdminContenido extends Component {
                                       className="form-control"
                                       cols={10}
                                       rows={4}
-                                      defaultValue={
-                                        contentNoPendiente.resumen
-                                      }
+                                      defaultValue={contentNoPendiente.resumen}
                                     />
                                   </td>
-                                  <td>
-                                    {contentNoPendiente.id_autor.email}
-                                  </td>
+                                  <td>{contentNoPendiente.id_autor.email}</td>
                                   <td>
                                     <div className="btn-group btn-group-sm">
                                       <button
                                         type="button"
                                         onClick={() =>
-                                          this.Descargar(
+                                          downloadContent(
                                             contentNoPendiente.link
                                           )
                                         }
@@ -381,7 +307,9 @@ export default class DashboardAdminContenido extends Component {
                                     </div>
                                   </td>
                                   <td>
-                                    {contentNoPendiente.valoracion_general.toFixed(3)}
+                                    {contentNoPendiente.valoracion_general.toFixed(
+                                      3
+                                    )}
                                   </td>
                                   <td>
                                     <textarea
@@ -389,9 +317,7 @@ export default class DashboardAdminContenido extends Component {
                                       className="form-control"
                                       style={{ width: "150px" }}
                                       rows={4}
-                                      defaultValue={
-                                        contentNoPendiente.tags
-                                      }
+                                      defaultValue={contentNoPendiente.tags}
                                     />
                                   </td>
                                   <td>
@@ -400,9 +326,7 @@ export default class DashboardAdminContenido extends Component {
                                     ).toLocaleDateString()}
                                   </td>
                                   <td>
-                                    {contentNoPendiente.visible
-                                      ? "Si"
-                                      : "No"}
+                                    {contentNoPendiente.visible ? "Si" : "No"}
                                   </td>
                                   <td>
                                     <div className="input-group-prepend">
@@ -410,9 +334,7 @@ export default class DashboardAdminContenido extends Component {
                                         type="button"
                                         className="btn btn-warning"
                                         onClick={() =>
-                                          this.MostrarOcultar(
-                                            contentNoPendiente
-                                          )
+                                          showOrCloseContent(contentNoPendiente)
                                         }
                                         aria-expanded="false"
                                       >
@@ -435,6 +357,8 @@ export default class DashboardAdminContenido extends Component {
           </section>
         </div>
       </div>
-    );
-  }
-}
+    </AdminMainPages>
+  );
+};
+
+export default AdminContenido;
