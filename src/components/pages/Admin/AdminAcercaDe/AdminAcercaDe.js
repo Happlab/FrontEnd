@@ -147,7 +147,7 @@ const AdminAcercaDe = () => {
         message={messageNotification}
         accept={handleClickCloseModal}
       />
-      <div>
+      <div className="content-about-admin">
         <section className="header-about-admin">
           <div className="row-about-admin">
             <div className="col-about-admin">

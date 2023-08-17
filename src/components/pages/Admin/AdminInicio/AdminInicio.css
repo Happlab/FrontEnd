@@ -1,0 +1,137 @@
+.content-wrapper-start-admin { 
+  background-color: #f4f6f9;
+  height: 100%;
+  transition: margin-left .3s ease-in-out;
+  margin-left: 250px;
+  min-height: 554px;
+}
+.content-header-start-admin {
+  display: block;
+  padding: 15px 0.5rem;
+}
+.row-start-admin {
+  display: flex;
+  flex-wrap: wrap;
+  margin: .5rem 2rem;
+}
+.row-start-admin > * {
+  flex-shrink: 0;
+  width: 100%;
+  max-width: 100%;
+  padding-right: calc(1.5rem * .5);
+  padding-left: calc(1.5rem * .5);
+  margin-top: 0;
+}
+.col-start-admin {
+  position: relative;
+  width: 100%;
+  flex: 0 0 auto;
+  max-width: 100%;
+}
+.col-start-admin > h1 {
+  font-weight: bold;
+  line-height: 1.2;
+  font-size: 1.8rem;
+  margin: 0;
+}
+.content-start-admin {
+  padding: 0 0.5rem;
+  padding-right: 7.5px;
+  padding-left: 7.5px;
+  margin-right: auto;
+  margin-left: auto;
+}
+.card-start-admin {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  word-wrap: break-word;
+  background-color: #fff;
+  background-clip: border-box;
+  border: 1px solid rgba(0,0,0,.125);
+  border-radius: 0.25rem;
+  box-shadow: 0 0 1px rgba(0,0,0,.125), 0 1px 3px rgba(0,0,0,.2);
+  margin-bottom: 1rem;
+}
+.card-header-start-admin {
+  position: relative;
+  padding: 0.5rem 1rem;
+  margin-bottom: 0;
+  background-color: rgba(0,0,0,.03);
+  border: 0;
+}
+.card-header-start-admin:first-child {
+  border-radius: calc(0.25rem - 1px) calc(0.25rem - 1px) 0 0;
+}
+.card-title-start-admin {
+  float: left;
+  font-size: 1.1rem;
+  font-weight: 400;
+  margin: 0;
+  margin-bottom: 0.5rem;
+}
+.card-body-start-admin {
+  min-height: 1px;
+  flex: 1 1 auto;
+  padding: 1.25rem;
+}
+.table-responsive-start-admin {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  overflow-x: auto;
+  padding: 0;
+}
+.table-start-admin {
+  caption-side: bottom;
+  border-collapse: collapse;
+  background-color: transparent;
+  width: 100%;
+  vertical-align: top;
+  border-color: #dee2e6;
+  margin-bottom: 0;
+  color: inherit;
+}
+.table-start-admin > thead > tr > th, .table-start-admin > tbody > tr > td {
+  padding: .75rem;
+  border-top: 1px solid #dee2e6;
+}
+.table-start-admin > thead > tr > th {
+  border-top-width: 0;
+}
+.card-primary-start-admin {
+  background-color: #007bff;
+  color: #fff;
+}
+.btn-start-admin {
+  overflow: visible;
+  text-transform: none;
+  display: inline-block;
+  font-weight: 400;
+  line-height: 1.5;
+  text-align: center;
+  text-decoration: none;
+  vertical-align: middle;
+  cursor: pointer;
+  user-select: none;
+  background-color: transparent;
+  border: 1px solid transparent;
+  padding: 0.375rem 0.75rem;
+  font-size: 1rem;
+  border-radius: 0.25rem;
+  transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+}
+.card-tools-start-admin {
+  float: right;
+  margin-right: -0.625rem;
+}
+.btn-tool-start-admin {
+  margin: -0.75rem 0;
+  color: rgba(255,255,255,.8);
+  font-weight: 900;
+  line-height: 1;
+}
+.content-start-admin > .card-start-admin {
+  margin: 0.5rem 1.2rem 0.5rem 2.6rem;
+}

@@ -1,3 +1,10 @@
+.content-about-admin {
+  background-color: #f4f6f9;
+  height: 100%;
+  transition: margin-left .3s ease-in-out;
+  margin-left: 250px;
+  min-height: 554px;
+}
 .header-about-admin {
   display: block;
   padding: 15px .5rem;
@@ -52,6 +59,7 @@
   width: 100%;
   background-color: transparent;
   margin-bottom: 0;
+  color:inherit;
 }
 .table-admin > thead > tr > th, .table-admin > tbody > tr > td {
   padding: .75rem;

@@ -18,7 +18,7 @@ $separacion-letras: 1px;
     flex-wrap: nowrap;
     align-items: center;
     justify-content: space-between;
-    padding: 0.5rem 7.5rem;
+    padding: 0 7.5rem;
 }
 .navbar-collapse {
     display: flex;
@@ -47,34 +47,41 @@ $separacion-letras: 1px;
 }
 
 .navbar-brand {
-    display: inline-block;
     font-size: 1.25rem;
     white-space: nowrap;
     width: 30%;
-}
-
-.navbar-brand > a {
+    margin-right: 1rem;
+    padding: 0.3125rem 0;
     font-size: 1.25rem;
     display: block;
 }
-.navbar-brand > a, .navbar-menu > ul > li > a, .login-content > a {
+.navbar-brand, .navbar-menu > ul > li > a, .login-content > a {
     text-decoration: none;
     cursor: pointer;
-    line-height: 50px;
+    font-weight: 400;
+}
+.navbar-brand > a, .login-content > a {
+    line-height: 30px;
 }
 
 .navbar-brand, .navbar-toggler-icon, .nav-link {
     color: #fff;
 }
 
+.nav-link {
+    display: block;
+    text-align: center;
+    line-height: 24px;
+}
+
 .nav-link:hover {
     color: rgba(255,255,255,.5);
 }
 
-.navbar-link {
-    display: block;
+.navbar-menu > ul > li > a, .login-content > a {
+    font-size: 16px;
+    padding: .5rem;
 }
-
 .navbar-toggler {
     display: none;
     padding: 0.25rem 0.75rem;

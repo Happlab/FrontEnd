@@ -1,9 +1,18 @@
 import React from "react";
 import user_service from "../../../../../services/UserServices";
 import "./Sidebar.css";
+import {
+  TachometerIcon,
+  AngleLeftIcon,
+  UserIcon,
+  NewsIcon,
+  BookIcon,
+  LocationIcon,
+  SignoutIcon,
+  HomeIcon,
+} from "../../../../../assets/icons/Icons";
 
 const Sidebar = ({ option }) => {
-
   const handleClickCerrarSesion = () => {
     user_service.deleteToken();
   };
@@ -37,11 +46,9 @@ const Sidebar = ({ option }) => {
             >
               <li className="nav-item-admin menu-open-admin">
                 <a href="/adminInicio" className="nav-link-admin active">
-                  <i className="nav-icon fas fa-tachometer-alt" />
-                  <p>
-                    Administrar
-                    <i className="right fas fa-angle-left" />
-                  </p>
+                  <TachometerIcon />
+                  <p>Administrar</p>
+                  <AngleLeftIcon />
                 </a>
                 <ul className="nav-admin nav-treeview-admin">
                   <li className="nav-item-admin">
@@ -53,7 +60,7 @@ const Sidebar = ({ option }) => {
                         backgroundColor: option === "usuario" ? "green" : "",
                       }}
                     >
-                      <i className="fa fa-user nav-icon" />
+                      <UserIcon />
                       <p>Administrar usuarios</p>
                     </a>
                   </li>
@@ -66,7 +73,7 @@ const Sidebar = ({ option }) => {
                         backgroundColor: option === "noticia" ? "green" : "",
                       }}
                     >
-                      <i className="fas fa-newspaper nav-icon" />
+                      <NewsIcon />
                       <p>Administrar noticias</p>
                     </a>
                   </li>
@@ -79,7 +86,7 @@ const Sidebar = ({ option }) => {
                         backgroundColor: option === "contenido" ? "green" : "",
                       }}
                     >
-                      <i className="fa fa-book nav-icon" />
+                      <BookIcon />
                       <p>Administrar contenidos</p>
                     </a>
                   </li>
@@ -92,7 +99,7 @@ const Sidebar = ({ option }) => {
                         backgroundColor: option === "inicio" ? "green" : "",
                       }}
                     >
-                      <i className="fa fa-home nav-icon" />
+                      <HomeIcon />
                       <p>Administrar inicio</p>
                     </a>
                   </li>
@@ -105,16 +112,14 @@ const Sidebar = ({ option }) => {
                         backgroundColor: option === "acercaDe" ? "green" : "",
                       }}
                     >
-                      <i className="fa fa-location-dot nav-icon" />
+                      <LocationIcon />
                       <p>Administrar Acerca de</p>
                     </a>
                   </li>
                   <li className="nav-item-admin">
                     <a href="/" className="nav-link-admin active">
-                      <i className="fa fa-sign-out nav-icon" />
-                      <p onClick={handleClickCerrarSesion}>
-                        Cerrar Sesion
-                      </p>
+                      <SignoutIcon />
+                      <p onClick={handleClickCerrarSesion}>Cerrar Sesion</p>
                     </a>
                   </li>
                 </ul>

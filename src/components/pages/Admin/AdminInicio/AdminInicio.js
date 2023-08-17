@@ -3,6 +3,7 @@ import AdminMainPages from "../../../wrappers/adminMainPages/AdminMainPages";
 import { PeticionEnvioDataFrom, PeticionGet } from "../../../../services/AdminServices";
 import { environment } from "../../../../environments/environment";
 import Popup from "../../../navegation/popup/Popup";
+import "./AdminInicio.css";
 
 const urlService = environment.baseUrl + "/seccion/";
 
@@ -126,7 +127,7 @@ const AdminInicio = () => {
         message={messageNotification}
         accept={handleClickCloseModal}
       />
-      <div>
+      <div className="content-wrapper-start-admin">
         <section className="content-header-start-admin">
           <div className="row-start-admin">
             <div className="col-start-admin">
@@ -184,8 +185,8 @@ const AdminInicio = () => {
           </div>
         </section>
         <section className="content-start-admin">
-          <div className="card-start-admin card-primary-start-admin">
-            <div className="card-header-start-admin">
+          <div className="card-start-admin">
+            <div className="card-header-start-admin card-primary-start-admin">
               <h3 className="card-title-start-admin">
                 Editar Contenido (Inicio)
               </h3>

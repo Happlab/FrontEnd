@@ -14,11 +14,11 @@ const AdminMainPages = ({ option, children }) => {
   //   return <Navigate to="/" />;
   // }
   return (
-    <div>
+    <>
       <Header />
       <Sidebar option={option} />
       {children}
-    </div>
+    </>
   );
 };
 

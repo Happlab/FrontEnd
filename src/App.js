@@ -16,7 +16,7 @@ import SobreNosotros from "./components/pages/About/SobreNosotros";
 import TokenContextProvider from "./context/GlobalContext";
 import "./App.css";
 
-function App() {
+const App = () => {
   return (
     <TokenContextProvider>
       <Routes>

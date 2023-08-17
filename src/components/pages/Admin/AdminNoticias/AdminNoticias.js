@@ -7,6 +7,7 @@ import {
 } from "../../../../services/AdminServices";
 import { environment } from "../../../../environments/environment";
 import Popup from "../../../navegation/popup/Popup";
+import "./AdminNoticias.css";
 
 const urlService = environment.baseUrl + "/noticia/";
 
@@ -181,15 +182,15 @@ const AdminNoticias = () => {
         message={messageNotification}
         accept={handleClickCloseModal}
       />
-      <div>
-        <h1>Módulo Administrador - Página de Noticias</h1>
+      <div className="content-wrapper-news-admin">
+        <h1 className="content-title-news-admin">Módulo Administrador - Página de Noticias</h1>
         <br />
         <section className="content-news-admin">
-          <div className="card-news-admin card-news-primary-admin">
-            <div className="card-header-news-admin">
-              <h3 className="card-title-news-admin">Editar Noticia</h3>
+          <div className="card-news-admin">
+            <div className="card-header-news-admin card-news-primary-admin">
+              <h3 className="card-title-news-admin">Añadir noticia</h3>
               <div className="card-tools-news-admin">
-                <button className="btn-news-admin btn-tools-news-admin">
+                <button className="btn-news-admin">
                   -
                 </button>
               </div>
@@ -246,8 +247,7 @@ const AdminNoticias = () => {
                     </span>
                   )}
                 </div>
-                <button type="submit">Enviar</button>
-                <button onClick={handleClickClose}>Cerrar</button>
+                <button className="btn-news-admin btn-primary-news-admin" type="submit">Enviar</button>
               </form>
             </div>
           </div>
@@ -333,8 +333,8 @@ const AdminNoticias = () => {
           </div>
         </section>
         <section className="content-news-admin">
-          <div className="card-news-admin card-primary-news-admin">
-            <div className="card-header-news-admin">
+          <div className="card-news-admin">
+            <div className="card-header-news-admin card-news-primary-admin">
               <h3 className="card-title-news-admin">Editar Noticia</h3>
               <div className="card-tools-news-admin">
                 <button
@@ -401,7 +401,7 @@ const AdminNoticias = () => {
                       </span>
                     )}
                   </div>
-                  <button type="submit">Enviar</button>
+                  <button className="btn-news-admin btn-primary-news-admin" type="submit">Enviar</button>
                   <button onClick={handleClickClose}>Cerrar</button>
                 </form>
               )}
