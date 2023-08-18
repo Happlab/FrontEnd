@@ -17,15 +17,18 @@ const Navbar = () => {
   };
 
   const resizeMode = () => {
-    window.onresize = () => {
-      if (!window.matchMedia("(min-width: 992px)").matches)
+    const desktopMediaQuery = window.matchMedia("(min-width: 992px)");
+    desktopMediaQuery.onchange = (e) => {
+      if(e.matches) {
         setIsCollapse(false);
+      }
     };
   };
 
   return (
     <>
-      <nav className="navbar" onLoad={resizeMode}>
+      {resizeMode()}
+      <nav className="navbar">
         <div className="navbar-content">
           <a className="nav-link navbar-brand" href="/">
             HappLab Home Page
