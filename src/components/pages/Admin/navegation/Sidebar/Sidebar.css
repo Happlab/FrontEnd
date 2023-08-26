@@ -1,5 +1,4 @@
 .mainadmin-sidebar {
-  /* display: none; /1* block *1/ */
   display: block;
   transition: margin-left .3s ease-in-out,width .3s ease-in-out;
   width: 250px;
@@ -14,7 +13,6 @@
   position: fixed;
   top: 0;
 }
-
 .brand-link-admin {
   display: block;
   font-size: 1.25rem;
@@ -72,6 +70,11 @@
   padding: 5px 5px 5px 10px;
   transition: margin-left .3s linear, opacity .3s ease,visibility .3s ease;
 }
+.nav-link-admin > p {
+  transition: margin-left .3s linear, opacity .3s ease,visibility .3s ease;
+  display: inline;
+  vertical-align: middle;
+}
 .infdes-admin {
   display: block;
   text-decoration: none;
@@ -100,26 +103,37 @@
   text-decoration: none;
   font-size: 15px;
   line-height: 2;
-  display: flex;
+  display: block;
   padding: .4rem 1rem;
   border-radius: .25rem;
   margin-bottom: .2rem;
   width: calc(250px - .5rem * 6);
   height: 1.8rem;
   transition: width ease-in-out .3s;
-  align-items: center;
-  justify-content: justify;
-  gap: 4%;
+  margin-bottom: 0.2rem;
+  position: relative;
 }
 .nav-link-admin > svg {
   filter: invert(100%);
+  font-size: 1.1rem;
+  margin-left: 0.05rem;
+  margin-right: 0.2rem;
+  text-align: center;
+  width: 1.6rem;
+  vertical-align: middle;
+}
+.second-icon-admin {
+  position: absolute;
+  right: 1rem;
+  top: 0.85rem;
+  transition: transform ease-in-out .3s,-webkit-transform ease-in-out .3s;
 }
 .nav-link-admin.active {
   box-shadow: 0 1px 3px rgba(0,0,0,.12),0 1px 2px rgba(0,0,0,.24);
   background-color: #007bff;
   color: #fff;
 }
-.menu-open-admin > .nav-treeview-admin {
+.nav-item-admin.menu-open-admin > .nav-treeview-admin {
   display: block;
 }
 .nav-treeview-admin {
@@ -143,4 +157,24 @@
 .sidebar-admin-collapse {
   margin-left: 0;
   width: 4.6rem;
+}
+.mainadmin-sidebar.sidebar-admin-collapse .user-panel-admin > .info-admin, .mainadmin-sidebar.sidebar-admin-collapse .nav-link-admin > p, .mainadmin-sidebar.sidebar-admin-collapse > .brand-link-admin > .brand-text {
+  margin-left: -10px;
+  visibility: hidden;
+}
+.mainadmin-sidebar.sidebar-admin-collapse .nav-link-admin {
+  width: 1.6rem;
+}
+.mainadmin-sidebar.sidebar-admin-collapse .nav-link-admin > .second-icon-admin {
+  margin-left: -10px;
+  visibility: hidden;
+}
+.nav-item-admin.menu-open-admin .second-icon-admin {
+  transform: rotate(-90deg);
+}
+.nav-item-admin:not(".menu-open-admin") .second-icon-admin {
+  transform: rotate(0);
+}
+.nav-item-admin > .nav-treeview-admin {
+  display: none;
 }

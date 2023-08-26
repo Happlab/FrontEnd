@@ -4,7 +4,8 @@ import "./Header.css";
 const Header = () => {
   const [marginOn, setMarginOn] = useState(true);
 
-  const handleClick = () => {
+  const handleClick = (e) => {
+    e.preventDefault();
     setMarginOn(!marginOn);
     let root = document.getElementById("root");
     let sidebar = document.querySelector(".mainadmin-sidebar");
@@ -21,7 +22,7 @@ const Header = () => {
     <nav className="mainadmin-header">
       <ul className="navbar-header-nav-admin">
         <li className="nav-header-item-admin">
-          <a className="nav-header-link-admin" onClick={handleClick}>
+          <a href="/" className="nav-header-link-admin" onClick={handleClick}>
             <span className="navbar-header-bar-icon"></span>
           </a>
         </li>

@@ -13,6 +13,12 @@ import {
 } from "../../../../../assets/icons/Icons";
 
 const Sidebar = ({ option }) => {
+  const handleCloseMenu = (e) => {
+    e.preventDefault();
+    let menu = document.querySelector(".nav-item-admin");
+    menu.classList.toggle("menu-open-admin");
+  };
+
   const handleClickCerrarSesion = () => {
     user_service.deleteToken();
   };
@@ -45,10 +51,10 @@ const Sidebar = ({ option }) => {
               data-accordion="false"
             >
               <li className="nav-item-admin menu-open-admin">
-                <a href="/adminInicio" className="nav-link-admin active">
+                <a href="/" onClick={handleCloseMenu} className="nav-link-admin active">
                   <TachometerIcon />
                   <p>Administrar</p>
-                  <AngleLeftIcon />
+                  <AngleLeftIcon className="second-icon-admin"/>
                 </a>
                 <ul className="nav-admin nav-treeview-admin">
                   <li className="nav-item-admin">
