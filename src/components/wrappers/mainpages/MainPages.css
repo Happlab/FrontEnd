@@ -1,6 +1,7 @@
 .main-pages {
   min-height: 100%;
   position: relative;
+  width: 100%;
 }
 .colorpage {
   background-color: #1E86C0;

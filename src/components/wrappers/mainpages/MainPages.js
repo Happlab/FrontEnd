@@ -6,7 +6,7 @@ import "./MainPages.css";
 const MainPages = ({ color, children }) => {
 
   return (
-    <div className={ color ? "mainpages colorpage" : "mainpages" }>
+    <div className={ color ? "main-pages colorpage" : "main-pages" }>
       <Navbar />
       {children}
       <Footer />

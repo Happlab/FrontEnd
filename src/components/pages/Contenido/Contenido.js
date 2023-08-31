@@ -1,8 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import { TokenContext } from "../../../context/GlobalContext";
 import MainPages from "../../wrappers/mainpages/MainPages";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faUpload } from "@fortawesome/free-solid-svg-icons";
 import { environment } from "../../../environments/environment";
 import contentService from "../../../services/ContentServices";
 import Loader from "../../navegation/loader/Loader";
@@ -10,6 +8,7 @@ import Popup from "../../navegation/popup/Popup";
 import Modal from "../../navegation/modal/Modal";
 import Rating from "../../navegation/rating/Rating";
 import NotAvalaible from "../../navegation/notavalaible/NotAvalaible";
+import { UploadIcon } from "../../../assets/icons/Icons";
 import "./Contenido.scss";
 
 const urlService = environment.baseUrl + "/contenido/";
@@ -34,10 +33,7 @@ const Contenido = () => {
     tags: "",
   });
   const { tokenUser } = useContext(TokenContext);
-  let [user, setUser] = useState({});
-
-  // static contextType = TokenContext;
-  // peticion = 0;
+    let [user, setUser] = useState({});
 
   const handleClickShowFormUploadContent = () => {
     setIsUploadContent(!isUploadContent);
@@ -55,7 +51,7 @@ const Contenido = () => {
   };
 
   const handleFilter = (nameTag) => {
-    setContentsForTag(contents.filter((content) => nameTag = content.tag));
+    setContentsForTag(contents.filter((content) => (content.tags.includes(nameTag))));
   };
 
   const listContents = () => {
@@ -98,10 +94,14 @@ const Contenido = () => {
     setTitleNotification("Descarga de contenido");
     if (user.tokens !== 0) {
       this.peticion = 0;
-      setMessageNotification("¿Esta seguro que desea usar un credito para descargar este contenido? Usted posee: " + user.tokens + " Creditos para usar")
+      setMessageNotification(
+        "¿Esta seguro que desea usar un credito para descargar este contenido? Usted posee: " +
+          user.tokens +
+          " Creditos para usar"
+      );
     } else {
       this.peticion = 2;
-      setMessageNotification("No tiene creditos suficientes para esta acción")
+      setMessageNotification("No tiene creditos suficientes para esta acción");
     }
   };
 
@@ -141,8 +141,12 @@ const Contenido = () => {
       .then((response) => {
         setShowNotification(true);
         setTitleNotification("Comentario");
-        if (response === 200) setMessageNotification("Comentario subido exitosamente");
-        else setMessageNotification("No su pudo subir el comentario, verifique su conexión a internet");
+        if (response === 200)
+          setMessageNotification("Comentario subido exitosamente");
+        else
+          setMessageNotification(
+            "No su pudo subir el comentario, verifique su conexión a internet"
+          );
       });
   };
 
@@ -227,11 +231,30 @@ const Contenido = () => {
             <li className="item-filtro">
               <h2 id="texto-filtro">Filtros</h2>
             </li>
-            <li className="item-filtro" onClick={() => setContentsForTag([])}>Todas</li>
-            <li className="item-filtro" onClick={() => handleFilter("matematicas")}>Matematicas</li>
-            <li className="item-filtro" onClick={() => handleFilter("religion")}>Religion</li>
-            <li className="item-filtro" onClick={() => handleFilter("ingles")}>Ingles</li>
-            <li className="item-filtro" onClick={() => handleFilter("sociales")}>Sociales</li>
+            <li className="item-filtro" onClick={() => setContentsForTag([])}>
+              Todas
+            </li>
+            <li
+              className="item-filtro"
+              onClick={() => handleFilter("matematicas")}
+            >
+              Matematicas
+            </li>
+            <li
+              className="item-filtro"
+              onClick={() => handleFilter("religion")}
+            >
+              Religion
+            </li>
+            <li className="item-filtro" onClick={() => handleFilter("ingles")}>
+              Ingles
+            </li>
+            <li
+              className="item-filtro"
+              onClick={() => handleFilter("sociales")}
+            >
+              Sociales
+            </li>
 
             {user.email && (
               <li className="item-filtro">
@@ -239,7 +262,8 @@ const Contenido = () => {
                   className="btn-busqueda"
                   onClick={handleClickShowFormUploadContent}
                 >
-                  Subir documento
+                  <UploadIcon />
+                  Subir Contenido
                 </button>
               </li>
             )}
@@ -251,43 +275,48 @@ const Contenido = () => {
         <section className="sec-form">
           <div className="formulario">
             <form className="form-contenido" onSubmit={subirContenido}>
-              <div className="form-group">
-                <label>Titulo</label>
+              <div className="form-group-contenido">
+                <label className="form-label-contenido">Titulo</label>
                 <input
+                  className="form-control-contenido"
                   name="titulo"
                   type="text"
                   placeholder="Ingresa el titulo"
                   onChange={handleChange}
                 />
               </div>
-              <div className="form-group">
-                <label>Seleccione el archivo</label>
-                <input
-                  name="nombre"
-                  type="file"
-                  onChange={handleChange}
+              <div className="form-group-contenido">
+                <label className="form-label-contenido">Seleccione el archivo</label>
+                <input 
+                  className="form-control-contenido"
+                  name="nombre" 
+                  type="file" 
+                  onChange={handleChange} 
                 />
               </div>
-              <div className="form-group">
-                <label>Resumen</label>
+              <div className="form-group-contenido">
+                <label className="form-label-contenido">Resumen</label>
                 <textarea
+                  className="form-control-contenido"
                   name="resumen"
                   placeholder="Ingrese un resumen del material que desea subir"
                   onChange={handleChange}
                 />
               </div>
-              <div className="form-group">
-                <label>Autores</label>
+              <div className="form-group-contenido">
+                <label className="form-label-contenido">Autores</label>
                 <input
+                  className="form-control-contenido"
                   name="autor"
                   type="text"
                   placeholder="Autores que participaron en la elaboracion"
                   onChange={handleChange}
                 />
               </div>
-              <div className="form-group">
-                <label>Tags</label>
+              <div className="form-group-contenido">
+                <label className="form-label-contenido">Tags</label>
                 <input
+                  className="form-control-contenido"
                   name="tags"
                   type="text"
                   placeholder="Ingrese los tags separados por comas"
@@ -299,7 +328,7 @@ const Contenido = () => {
           </div>
         </section>
       ) : (
-        <div className="container-contenido">
+        <section className="container-contenido">
           {isLoading ? (
             <Loader />
           ) : (
@@ -321,13 +350,18 @@ const Contenido = () => {
                                 {content.id_autor.nombres}
                               </div>
                               <div className="card-text-content-user">
-                                {content.valoracion_usuario}
+                                <Rating
+                                  initialRating={content.valoracion_usuario}
+                                />
                               </div>
                               <div className="card-text-content-user">
                                 {content.tags}
                               </div>
                             </div>
-                            <button className="" onClick={() => handleClickSelected(content)}>
+                            <button
+                              className="card-button-content-user card-button-primary-content-user"
+                              onClick={() => handleClickSelected(content)}
+                            >
                               Ver más
                             </button>
                           </div>
@@ -340,50 +374,76 @@ const Contenido = () => {
             </div>
           )}
           <Modal show={showModal}>
-            <div className="modal-header">
-              <h3 className="modal-title-element"></h3>
-              <h4 className="modal-title-element"></h4>
-              <h5 className="modal-title-element"></h5>
+            <div className="modal-header-user">
+              <h3 className="modal-title-element-user">
+                {contentSelected.titulo}
+              </h3>
+              <h4 className="modal-title-element-user">
+                author: {contentSelected?.id_autor?.nombres}
+              </h4>
+              <h5 className="modal-title-element-user">
+                fecha subida: {contentSelected.fecha_subida}
+              </h5>
             </div>
-            <div className="modal-body">
-              <p></p>
-              <button type="button" onClick={downloadContent}>Descarga</button>
-              <p></p>
-              <button type="button" onClick={handleClickCancel}>Salir</button>
+            <div className="modal-body-user">
+              <p>{contentSelected.resumen}</p>
+              <button
+                className="btn-modal-user btn-download-modal-user"
+                type="button"
+                onClick={downloadContent}
+              >
+                Descarga
+              </button>
+              <p>{contentSelected.tags}</p>
+              <button
+                className="btn-modal-user btn-exit-modal-user"
+                type="button"
+                onClick={handleClickCancel}
+              >
+                Salir
+              </button>
               <div>
                 <p>Déjanos tu comentario</p>
                 <p>
-                  <div className="card-modal-rating"></div>
+                  <Rating />
                 </p>
-                <p></p>
-                <button type="button" onClick={handleSubmit}>Subir</button>
-                <h4>Comentarios</h4>
-                {comments.map((comment) => {
-                  return (
-                    <div className="card-modal-user">
-                      <div className="card-text-modal-user">
-                        <div className="card-modal-rating">
-                          {comment.valoracion}
-                        </div>
-                      </div>
-                      <div className="card-text-modal-user">
-                        {comment.id_persona.nombres +
-                          " " +
-                          comment.id_persona.apellidos}
-                      </div>
-                      <div className="card-text-modal-user">
-                        {comment.fecha_calificacion}
-                      </div>
-                      <div className="card-text-modal-user">
-                        {comment.comentarios}
-                      </div>
-                    </div>
-                  );
-                })}
+                <p>
+                  <input type="text" name="comentario" />
+                </p>
+                <button
+                  className="btn-modal-user btn-subir-modal-user"
+                  type="button"
+                  onClick={handleSubmit}
+                >
+                  Subir
+                </button>
               </div>
+              <h4>Comentarios</h4>
+              {comments.map((comment) => {
+                return (
+                  <div className="card-modal-user">
+                    <p className="card-text-modal-user">
+                      <Rating initialRating={comment.valoracion} />
+                    </p>
+                    <p className="card-text-modal-user">
+                      {comment.id_persona.nombres +
+                        " " +
+                        comment.id_persona.apellidos}
+                    </p>
+                    <p className="card-text-modal-user">
+                      {comment.fecha_calificacion}
+                    </p>
+                    {comment.comentarios && (
+                      <p className="card-text-modal-user">
+                        {comment.comentarios}
+                      </p>
+                    )}
+                  </div>
+                );
+              })}
             </div>
           </Modal>
-        </div>
+        </section>
       )}
     </MainPages>
   );
