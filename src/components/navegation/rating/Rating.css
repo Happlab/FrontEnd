@@ -1,0 +1,18 @@
+.container-rating {
+  display: inline;
+  direction: ltr;
+}
+.child-rating {
+  cursor: pointer;
+  display: inline-block;
+  position: relative;
+}
+.icon-rating:first-child {
+  font-weight: 400;
+  font-size: 2em;
+}
+.icon-rating:last-child {
+  font-weight: 900;
+  font-size: 2em;
+  display: inline-block;
+}
