@@ -18,7 +18,96 @@ const Contenido = () => {
   const [showModal, setShowModal] = useState(false);
   const [titleNotification, setTitleNotification] = useState("");
   const [messageNotification, setMessageNotification] = useState("");
-  const [contents, setContents] = useState([]);
+  const [contents, setContents] = useState([
+    {
+      titulo: "hello",
+      id_autor: {
+        nombres: "jj hh",
+        apellidos: "nn",
+      },
+      valoracion_usuario: 4.5,
+      valoracion_general: 4.5,
+      fecha_subida: "25/12/2020",
+      resumen: "nada interesante",
+      tags: ["matematicas", "ingles"],
+      comentarios: [
+        {
+          valoracion: 4.5,
+          id_persona: {
+            nombres: "jose",
+            apellidos: "jj",
+          },
+          fecha_calificacion: "26/12/2020",
+        },
+      ],
+    },
+    {
+      titulo: "hello",
+      id_autor: {
+        nombres: "jj hh",
+        apellidos: "nn",
+      },
+      valoracion_usuario: 4.5,
+      valoracion_general: 4.5,
+      fecha_subida: "25/12/2020",
+      resumen: "nada interesante",
+      tags: ["matematicas", "ingles"],
+      comentarios: [
+        {
+          valoracion: 4.5,
+          id_persona: {
+            nombres: "jose",
+            apellidos: "jj",
+          },
+          fecha_calificacion: "26/12/2020",
+        },
+      ],
+    },
+    {
+      titulo: "hello",
+      id_autor: {
+        nombres: "jj hh",
+        apellidos: "nn",
+      },
+      valoracion_usuario: 4,
+      valoracion_general: 4,
+      fecha_subida: "25/12/2020",
+      resumen: "nada interesante",
+      tags: ["matematicas", "ingles"],
+      comentarios: [
+        {
+          valoracion: 4.5,
+          id_persona: {
+            nombres: "jose",
+            apellidos: "jj",
+          },
+          fecha_calificacion: "26/12/2020",
+        },
+      ],
+    },
+    {
+      titulo: "hello",
+      id_autor: {
+        nombres: "jj hh",
+        apellidos: "nn",
+      },
+      valoracion_usuario: 4,
+      valoracion_general: 4,
+      fecha_subida: "25/12/2020",
+      resumen: "nada interesante",
+      tags: ["matematicas", "ingles"],
+      comentarios: [
+        {
+          valoracion: 4.5,
+          id_persona: {
+            nombres: "jose",
+            apellidos: "jj",
+          },
+          fecha_calificacion: "26/12/2020",
+        },
+      ],
+    },
+  ]);
   const [comments, setComments] = useState([]);
   const [contentsForTag, setContentsForTag] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -33,7 +122,8 @@ const Contenido = () => {
     tags: "",
   });
   const { tokenUser } = useContext(TokenContext);
-    let [user, setUser] = useState({});
+  let [user, setUser] = useState({});
+  const [numRequest, setNumRequest] = useState(null);
 
   const handleClickShowFormUploadContent = () => {
     setIsUploadContent(!isUploadContent);
@@ -51,7 +141,9 @@ const Contenido = () => {
   };
 
   const handleFilter = (nameTag) => {
-    setContentsForTag(contents.filter((content) => (content.tags.includes(nameTag))));
+    setContentsForTag(
+      contents.filter((content) => content.tags.includes(nameTag))
+    );
   };
 
   const listContents = () => {
@@ -67,7 +159,7 @@ const Contenido = () => {
   };
 
   const subirContenido = () => {
-    this.peticion = 1;
+    setNumRequest(1);
 
     let formdata = new FormData();
     formdata.append("email_autor", user.email);
@@ -92,15 +184,15 @@ const Contenido = () => {
   const downloadContent = () => {
     setShowNotification(true);
     setTitleNotification("Descarga de contenido");
-    if (user.tokens !== 0) {
-      this.peticion = 0;
+    if (user.tokens && user.tokens !== 0) {
+      setNumRequest(0);
       setMessageNotification(
         "¿Esta seguro que desea usar un credito para descargar este contenido? Usted posee: " +
           user.tokens +
           " Creditos para usar"
       );
     } else {
-      this.peticion = 2;
+      setNumRequest(2);
       setMessageNotification("No tiene creditos suficientes para esta acción");
     }
   };
@@ -110,16 +202,17 @@ const Contenido = () => {
     listContents();
     let userContext = tokenUser;
     if (userContext) setUser(userContext);
-  }, []);
+  }, [tokenUser]);
 
   const accept = () => {
     setShowNotification(false);
-    setShowModal(false);
-    if (this.peticion === 0) {
+    if (numRequest === 0) {
+      setShowModal(false);
       window.location.href = urlService + "download/" + contentSelected.link;
       user.tokens -= 1;
       updateCredit();
-    } else {
+    } else if (numRequest === 1) {
+      setShowModal(false);
       listContents();
     }
   };
@@ -130,7 +223,7 @@ const Contenido = () => {
   };
 
   const handleSubmit = () => {
-    this.peticion = 2;
+    setNumRequest(2);
     const comentarioUsuario = {
       email_persona: user.email,
       valoracion: user.valoracion,
@@ -145,7 +238,7 @@ const Contenido = () => {
           setMessageNotification("Comentario subido exitosamente");
         else
           setMessageNotification(
-            "No su pudo subir el comentario, verifique su conexión a internet"
+            "No se pudo subir el comentario, verifique su conexión a internet"
           );
       });
   };
@@ -169,7 +262,7 @@ const Contenido = () => {
         title={titleNotification}
         message={messageNotification}
         accept={accept}
-        cancel={user.tokens !== 0 ? cancel : null}
+        cancel={user.tokens && user.tokens !== 0 ? cancel : null}
       />
       <section className="titulo">
         <div className="contenedor-titulo">
@@ -286,12 +379,14 @@ const Contenido = () => {
                 />
               </div>
               <div className="form-group-contenido">
-                <label className="form-label-contenido">Seleccione el archivo</label>
-                <input 
+                <label className="form-label-contenido">
+                  Seleccione el archivo
+                </label>
+                <input
                   className="form-control-contenido"
-                  name="nombre" 
-                  type="file" 
-                  onChange={handleChange} 
+                  name="nombre"
+                  type="file"
+                  onChange={handleChange}
                 />
               </div>
               <div className="form-group-contenido">

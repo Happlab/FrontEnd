@@ -12,7 +12,18 @@ import "./Inicio.scss";
 const urlService = environment.baseUrl + "/seccion/";
 
 const Inicio = () => {
-  const [start, setStart] = useState([]);
+  const [start, setStart] = useState([
+    {
+      titulo_seccion: 'Amargura - Karol G',
+      descripcion: 'vacilando con otra',
+      url: 'https://www.youtube.com/watch?v=fEWhm_TVvUw',
+    },
+    {
+      titulo_seccion: 'Lala - Mike Towers',
+      descripcion: 'a manejar me dejo',
+      url: 'https://www.youtube.com/watch?v=BVdngsy95mY',
+    }
+  ]);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -42,7 +53,7 @@ const Inicio = () => {
       {isLoading ? (
         <Loader />
       ) : (
-        <div className="inicio-content">
+        <div className="inicio-content" style={start.length === 0 ? { margin: '1rem 8rem' } : {}}>
           {start.length === 0 && (
             <NotAvalaible>No hay noticias destacadas</NotAvalaible>
           )}

@@ -11,11 +11,10 @@
     .elementor-container {
         margin: 0 7rem;
     }
+    .elementor-container-loader {
+        margin: 1rem 7rem;
+    }
 }
-.news-separator {
-    padding-bottom: 30px;
-}
-
 .elementor-shape[data-negative=false].elementor-shape-bottom, .elementor-shape[data-negative=true].elementor-shape-top {
     @include transformar("rotate",180deg);
 }
@@ -62,6 +61,8 @@
 .tgx-portfolio {
     .hover-1{
         .row {
+            display: flex;
+            flex-wrap: wrap;
             // margin-right: 15px;
             // margin-left: 15px;
             .portfolio-item{ 
@@ -71,6 +72,10 @@
                     @include transicion("all 300ms ease 0s");
                 }
             }
+        }
+        .row > * {
+            max-width: 100%;
+            margin-top: 0;
         }
         .portfolio-item {
             span {
@@ -83,7 +88,6 @@
 
 
 .tgx-portfolio {
-
     .hover-1 {
         #news{
             padding-top: 10px;
@@ -91,7 +95,7 @@
         }
         .portfolio-item {
             padding: 30px 10px;
-            .fade:not(.show){
+            .fade:not(.show-fade){
                 background-color: #056ddc;
                 opacity: 0.5;
             }
@@ -99,6 +103,7 @@
                 width: 100%;
                 height: 100%;
                 border-radius: 7px;
+                text-decoration: none;
                 .vinculo-noticia{
                     width: 100%;
                     height: 100%;
@@ -124,7 +129,7 @@
                             
                         }
                     }
-                    .fade.titulo-noticia:not(.show){
+                    .fade.titulo-noticia:not(.show-fade){
                         opacity: 0;
                     }   
                 } 
@@ -165,4 +170,20 @@
     -webkit-box-shadow: none;
     box-shadow: none;
     text-decoration: none;
+}
+.col-news-user {
+    position: relative;
+    flex: 0 0 auto;
+    width: 31%;
+}
+
+@media only screen and (max-width: 1034px) {
+    .col-news-user {
+        width: 30%;
+    } 
+}
+@media only screen and (max-width: 840px) {
+    .col-news-user {
+        width: 40%;
+    } 
 }

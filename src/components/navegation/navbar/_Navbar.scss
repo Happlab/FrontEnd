@@ -42,14 +42,9 @@ $separacion-letras: 1px;
     display: inline-block;
 }
 
-.login-content > a {
-    padding: 0px 6px;
-}
-
 .navbar-brand {
     font-size: 1.25rem;
     white-space: nowrap;
-    width: 30%;
     margin-right: 1rem;
     padding: 0.3125rem 0;
     font-size: 1.25rem;
@@ -108,8 +103,7 @@ $separacion-letras: 1px;
     .button{
         background: #EA5356;
     }
-    // margin: 0 auto;
-    width: 35%;
+    width: 38%;
 }
 .me-auto{
     background-color: $color-background;

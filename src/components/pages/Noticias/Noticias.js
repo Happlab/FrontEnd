@@ -1,16 +1,42 @@
 import React, { useEffect, useState } from "react";
 import MainPages from "../../wrappers/mainpages/MainPages";
-// import { Fade } from 'react-bootstrap';
 import { PeticionGet } from "../../../services/AdminServices";
 import { environment } from "../../../environments/environment";
 import Loader from "../../navegation/loader/Loader";
 import NotAvalaible from "../../navegation/notavalaible/NotAvalaible";
+import Fade from "../../navegation/fade/Fade";
 import "./Noticias.scss";
+import img from '../../../assets/images/imagenes';
 
 const urlService = environment.baseUrl + "/noticia/";
 
 const Noticias = () => {
-  const [news, setNews] = useState([]);
+  const [news, setNews] = useState([
+    {
+      titulo_noticia: 'hola',
+      link_contenido: img.img1,
+      visible: true,
+      url_noticia: 'hola'
+    },
+    {
+      titulo_noticia: 'hola2',
+      link_contenido: img.img2,
+      visible: true,
+      url_noticia: 'hola2'
+    },
+    {
+      titulo_noticia: 'hola2',
+      link_contenido: img.imgSam,
+      visible: true,
+      url_noticia: 'hola2'
+    },
+    {
+      titulo_noticia: 'hola2',
+      link_contenido: img.imgUni,
+      visible: true,
+      url_noticia: 'hola2'
+    }
+  ]);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -31,10 +57,10 @@ const Noticias = () => {
   };
 
   /*Estructura de la noticia*/
-  const ContentNews = ({ key, title, srcImg, linkPage }) => {
+  const ContentNews = ({ title, srcImg, linkPage }) => {
     const [open, setOpen] = useState(false);
     return (
-      <div className="col-md-4 col-sm-6 mix mix-082e3a1 portfolio-item business-082e3a1 onepage-082e3a1">
+      <div className="col-md-4 col-sm-6 mix mix-082e3a1 portfolio-item business-082e3a1 onepage-082e3a1 col-news-user">
         <span className="span-img" style={{ backgrounColor: "black" }}>
           <a
             className="vinculo-noticia"
@@ -43,12 +69,12 @@ const Noticias = () => {
             rel="noreferrer"
             onMouseOut={() => setOpen(false)}
           >
-            {/* <Fade in={!open}> */}
-            {/*     <img src={srcImg} alt="Switch Pro" onMouseEnter={()=>setOpen(true)} onMouseOut={()=>setOpen(false)}/> */}
-            {/* </Fade> */}
-            {/* <Fade in={open} className='titulo-noticia' onMouseOver={()=>setOpen(true)}> */}
-            {/*     <h4>{title}</h4> */}
-            {/* </Fade> */}
+            <Fade open={!open}>
+                <img src={srcImg} alt="Switch Pro" onMouseEnter={()=>setOpen(true)} onMouseOut={()=>setOpen(false)}/>
+            </Fade>
+            <Fade open={open}>
+                <h4 className='titulo-noticia' onMouseOver={()=>setOpen(true)}>{title}</h4>
+            </Fade>
           </a>
         </span>
       </div>
@@ -66,7 +92,8 @@ const Noticias = () => {
         <ContentNews 
           key={index + 1}
           title={valueNew.titulo_noticia}
-          srcImg={urlService + "img/" + valueNew.link_contenido}
+          // srcImg={urlService + "img/" + valueNew.link_contenido}
+          srcImg={valueNew.link_contenido}
           linkPage={valueNew.url_noticia}
         />
       );
@@ -144,7 +171,9 @@ const Noticias = () => {
         data-settings='{"background_background":"classic"}'
       >
         {isLoading ? (
-          <Loader />
+          <div className="elementor-container-loader">
+            <Loader />
+          </div>
         ) : (
           <div className="elementor-container elementor-column-gap-default">
             <div

@@ -32,8 +32,8 @@
   position: relative;
   width: auto;
   pointer-events: none;
-  max-width: 500px;
-  margin: 1.75rem auto;
+  margin: 0.5rem auto;
+  max-width: 800px;
   overflow: hidden;
 }
 .content-modal-user {
@@ -145,4 +145,15 @@
 }
 .card-text-modal-user {
   text-align: center;
+}
+@media only screen and (max-width: 840px) {
+  .dialog-modal-user {
+    max-width: 500px;
+    margin: 1.75rem auto;
+  }
+}
+@media only screen and (max-width: 530px) {
+  .dialog-modal-user {
+    margin: .5rem;
+  }
 }

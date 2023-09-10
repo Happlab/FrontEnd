@@ -2,16 +2,14 @@ import React from "react";
 import "./Modal.css";
 
 const Modal = ({ show, children }) => {
-  const moveToRoot = () => {
-    const backdrop = document.querySelector(".backdrop-modal-user");
-    const container = document.querySelector(".container-modal-user");
-    console.log(window.document.body);
-    if(backdrop) document.body.appendChild(backdrop);
-    if(container) document.body.appendChild(container);
+  const quitScroll = () => {
+    if(show) document.body.style.overflow = "hidden";
+    else document.body.style.overflow = "auto";
   };
 
   return (
     <>
+      {quitScroll()}
       <div className={show ? "backdrop-modal-user show-backdrop" : "backdrop-modal-user"}></div>
       <div className={show ? "container-modal-user show-modal-container" : "container-modal-user"}>
         <div className="dialog-modal-user">

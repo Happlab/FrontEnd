@@ -43,7 +43,6 @@ $tam-2: 100px;
 }
 
 .columna-inicio-texto{
-    // width: 90%;
     @include formacion_texto($tam-2,$posicion-izq);
     margin:0;
     margin-top: 3%;
@@ -53,8 +52,7 @@ $tam-2: 100px;
 
 .columna-inicio-video{
     @include formacion_imagen($tam-2,$posicion-izq);
-    margin-right: 20%;
-    margin-left: 20%;
+    padding: 0 2%;
     height: 300px;
 }
 
@@ -73,7 +71,4 @@ $tam-2: 100px;
  }
  .br-carousel {
     padding-bottom: 40px;
- }
- .inicio-content {
-     margin: 1rem 7.5rem;
  }

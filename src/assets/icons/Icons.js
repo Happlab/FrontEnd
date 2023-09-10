@@ -8,7 +8,9 @@ import { ReactComponent as HomeIcon } from "./home.svg";
 import { ReactComponent as LocationIcon } from "./location.svg";
 import { ReactComponent as SignoutIcon } from "./signout.svg";
 import { ReactComponent as StartIcon } from "./start.svg";
+import { ReactComponent as StartFillIcon } from "./startFill.svg";
 import { ReactComponent as UploadIcon } from "./upload.svg";
+import { ReactComponent as LogoIcon } from "./logo.svg";
 
 // eslint-disable-next-line import/no-anonymous-default-export
 export {
@@ -22,5 +24,7 @@ export {
     LocationIcon,
     SignoutIcon,
     StartIcon,
+    StartFillIcon,
     UploadIcon,
+    LogoIcon,
 }
