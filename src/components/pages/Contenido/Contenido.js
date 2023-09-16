@@ -9,7 +9,7 @@ import Modal from "../../navegation/modal/Modal";
 import Rating from "../../navegation/rating/Rating";
 import NotAvalaible from "../../navegation/notavalaible/NotAvalaible";
 import { UploadIcon } from "../../../assets/icons/Icons";
-import "./Contenido.scss";
+import "./Contenido.css";
 
 const urlService = environment.baseUrl + "/contenido/";
 

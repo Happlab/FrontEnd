@@ -1,7 +1,7 @@
 import { FacebookIcon, TwitterIcon, InstagramIcon, LinkedinIcon } from '../../../assets/icons/Icons';
 import LogoU from "../../../../src/assets/images/logo2.png"; 
 import imagenes from '../../../assets/images/imagenes';
-import "./_Footer.scss";
+import "./Footer.css";
 
 let showUrl = (url) => window.open(url);
 

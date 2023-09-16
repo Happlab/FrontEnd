@@ -4,7 +4,7 @@ import { TokenContext } from "../../../context/GlobalContext";
 import MainPages from "../../wrappers/mainpages/MainPages";
 import { onLogin, updateUser } from "../../../services/UserServices";
 import Popup from "../../navegation/popup/Popup";
-import "./Password.scss";
+import "./Password.css";
 
 const Password = () => {
   const [dataUpdate, setDataUpdate] = useState(null);

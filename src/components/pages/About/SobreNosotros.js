@@ -1,6 +1,6 @@
 import MainPages from "../../wrappers/mainpages/MainPages";
 import imagenes from "../../../assets/images/imagenes";
-import "./SobreNosotros.scss";
+import "./SobreNosotros.css";
 
 const SobreNosotros = () => {
   const getAddStylesElements = () => {

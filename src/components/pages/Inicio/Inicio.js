@@ -7,7 +7,7 @@ import Player from "../../navegation/player/Player";
 import Carousel from "../../navegation/carousel/Carousel";
 import NotAvalaible from "../../navegation/notavalaible/NotAvalaible";
 import imagenes from "../../../assets/images/imagenes";
-import "./Inicio.scss";
+import "./Inicio.css";
 
 const urlService = environment.baseUrl + "/seccion/";
 

@@ -4,7 +4,7 @@ import { TokenContext } from "../../../context/GlobalContext";
 import MainPages from "../../wrappers/mainpages/MainPages";
 import { disabledUser, updateUser, onLogin } from "../../../services/UserServices";
 import Popup from "../../navegation/popup/Popup";
-import "./Perfil.scss";
+import "./Perfil.css";
 
 const Perfil = () => {
   const [showNotification, setShowNotification] = useState(false);

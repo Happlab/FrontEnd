@@ -8,7 +8,7 @@ import { environment } from "../../../environments/environment";
 import Player from "../../navegation/player/Player";
 import Loader from "../../navegation/loader/Loader";
 import NotAvalaible from "../../navegation/notavalaible/NotAvalaible";
-import "./Acerca.scss";
+import "./Acerca.css";
 
 const urlService = environment.baseUrl + "/seccion/";
 

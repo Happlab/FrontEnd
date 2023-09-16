@@ -1,19 +1,12 @@
-@import "/src/components/navegation/footer/mixins";
-
-$color-background: #1E86C0;
-$color-page: white;
-$colr-titulos: #B33030;
-$posicion-izq: left;
-$posicion-rig: right;
-$tam: 150px;
-$tam-2: 100px;
-
 .row-inicio{
-    @include formacion_columnas($color-page);
+    column-count: 2;
+    column-width: 300px;
+    background-color: white;
+    column-gap: 4em;
 }
 
 .title{
-    color: $colr-titulos;
+    color: #B33030;
 }
 
 .text-lore-happ{
@@ -23,7 +16,7 @@ $tam-2: 100px;
 }
 
 .title-h2{
-    color: $color-page;
+    color: white;
     text-align: center;
     margin: 5px;
     text-shadow: 1px 1px 2px black;
@@ -34,7 +27,10 @@ $tam-2: 100px;
 }
 
 .columna-inicio{
-    @include formacion_columnas($color-page);
+    column-count: 2;
+    column-width: 300px;
+    background-color: white;
+    column-gap: 4em;
     margin: 2% 9%;
     padding: 2% 0% 1% 0%;
     border-radius: 35px 35px 35px 35px;
@@ -43,7 +39,8 @@ $tam-2: 100px;
 }
 
 .columna-inicio-texto{
-    @include formacion_texto($tam-2,$posicion-izq);
+    text-align: left;
+    min-width: 100px;
     margin:0;
     margin-top: 3%;
     margin-left: 18%;
@@ -51,21 +48,23 @@ $tam-2: 100px;
 }
 
 .columna-inicio-video{
-    @include formacion_imagen($tam-2,$posicion-izq);
+    text-align: left;
+    min-width: 100px;
+    margin: 3%;
     padding: 0 2%;
     height: 300px;
 }
 
 .title-dest{
     margin-left: 18%;
-    color: $colr-titulos;
+    color: #B33030;
     text-align: justify;
 }
 
 .main-carousel{
     margin: 2% 9%;
     padding: 0.1px 0;
-    background-color: $color-page;
+    background-color: white;
     text-align: center;
     border-radius: 20px;
  }

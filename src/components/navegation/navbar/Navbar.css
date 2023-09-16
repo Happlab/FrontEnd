@@ -1,14 +1,7 @@
-$color-background: #1E86C0;
-$alineacion: center;
-$separacion-letras: 1px;
-
 .navbar {
-    background-color: $color-background; 
+    background-color: #1E86C0; 
     display: flex;
-    // width: 100%;
     padding: 0.5rem;
-    // flex-basis: 100%;
-    // flex-grow: 1;
     align-items: center;
     justify-content: space-between;
 }
@@ -92,23 +85,20 @@ $separacion-letras: 1px;
 
 .Logo{
     background-color: white;
-    text-align: $alineacion;
+    text-align: center;
 }
 
 .navbar-login{
     border-radius: 10px;
     background: #EA5356;
-    letter-spacing: $separacion-letras;
-    text-align: $alineacion;
-    .button{
-        background: #EA5356;
-    }
+    letter-spacing: 1px;
+    text-align: center;
     width: 38%;
 }
 .me-auto{
-    background-color: $color-background;
+    background-color: #1E86C0;
     width: 100%;
-    letter-spacing: $separacion-letras;
+    letter-spacing: 1px;
 }
 .navbar-toggler-icon {
     display: inline-block;

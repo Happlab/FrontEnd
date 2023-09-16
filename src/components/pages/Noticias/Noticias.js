@@ -5,7 +5,7 @@ import { environment } from "../../../environments/environment";
 import Loader from "../../navegation/loader/Loader";
 import NotAvalaible from "../../navegation/notavalaible/NotAvalaible";
 import Fade from "../../navegation/fade/Fade";
-import "./Noticias.scss";
+import "./Noticias.css";
 import img from '../../../assets/images/imagenes';
 
 const urlService = environment.baseUrl + "/noticia/";

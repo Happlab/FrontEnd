@@ -1,10 +1,5 @@
-@import "/src/components/navegation/footer/mixins";
-
-$color-background: #1E86C0;
-$color-words: white;
-
 .footer-main{
-    background-color: $color-background;
+    background-color: #1E86C0;
     width: 100%;
     height: 40px;
 }
@@ -12,13 +7,15 @@ $color-words: white;
 .columnas{
    column-count: 3;
    column-width: 300px;
-   background-color: $color-background;
+   background-color: #1E86C0;
    column-gap: 4em;
    padding: 2% 8%;
 }
 
 .pos1{
-    @include lineamientos_columnas($color-background);
+    margin: 20px;
+    background-color: #1E86C0;
+    color: white;
 }
 
 .pos2{
@@ -29,11 +26,10 @@ $color-words: white;
     text-align: center;
 }
 
-
 .credits{
     background-color: #C53E3E;
     text-align: center;
-    color: $color-words;
+    color: white;
 }
 
 .images-footer {
