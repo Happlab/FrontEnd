@@ -2,7 +2,7 @@ import React, { useContext, useState } from "react";
 import { Navigate } from "react-router-dom";
 import { TokenContext } from "../../../context/GlobalContext";
 import MainPages from "../../wrappers/mainpages/MainPages";
-import user_service from "../../../services/UserServices";
+import { disabledUser, updateUser, onLogin } from "../../../services/UserServices";
 import Popup from "../../navegation/popup/Popup";
 import "./Perfil.scss";
 
@@ -12,7 +12,7 @@ const Perfil = () => {
   const [messageNotification, setMessageNotification] = useState("");
   const [profession, setProfession] = useState("");
   const [isProfession, setIsProfession] = useState(true);
-  const { tokenUser, setTokenUser } = useContext(TokenContext);
+  const { tokenUser, setTokenUser, unsetTokenUser } = useContext(TokenContext);
 
   const handleChange = (e) => {
     setProfession(e.target.value);
@@ -31,7 +31,7 @@ const Perfil = () => {
   };
 
   const onChangedStatusAccount = (email) => {
-    user_service.disabledUser(email).then((response) => {
+    disabledUser(email).then((response) => {
       setShowNotification(true);
       setTitleNotification("Perfil del Usuario");
       if (response === 200)
@@ -44,7 +44,7 @@ const Perfil = () => {
   };
 
   const saveChange = (dataUpdate) => {
-    user_service.updateUser(dataUpdate).then((data) => {
+    updateUser(dataUpdate).then((data) => {
       setShowNotification(true);
       setTitleNotification("Perfil de usuario");
       if (data) {
@@ -63,11 +63,11 @@ const Perfil = () => {
   };
 
   const deleteCookie = () => {
-    user_service.deleteToken();
+    unsetTokenUser();
   };
 
   const onUpdateToken = () => {
-    user_service.onLogin(tokenUser.email, tokenUser.password).then((data) => {
+    onLogin(tokenUser.email, tokenUser.password).then((data) => {
       if (data) setTokenUser(data);
     });
   };

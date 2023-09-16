@@ -4,7 +4,7 @@ import { TokenContext } from "../../../context/GlobalContext";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faEyeLowVision } from "@fortawesome/free-solid-svg-icons";
 import MainPages from "../../wrappers/mainpages/MainPages";
-import user_service from "../../../services/UserServices";
+import { onLogin } from "../../../services/UserServices";
 import Popup from "../../navegation/popup/Popup";
 import "../Login/Login.scss";
 
@@ -39,8 +39,7 @@ const Login = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    user_service
-      .onLogin(values.email, values.password)
+    onLogin(values.email, values.password)
       .then((data) => {
         if (data) {
           setTokenUser(data);

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import AdminMainPages from "../../../wrappers/adminMainPages/AdminMainPages";
-import { PeticionEnvioDataFrom, PeticionGet } from "../../../../services/AdminServices";
+import { peticionEnvioDataFrom, peticionGet } from "../../../../services/AdminServices";
 import { environment } from "../../../../environments/environment";
 import Popup from "../../../navegation/popup/Popup";
 import "./AdminAcercaDe.css";
@@ -71,7 +71,7 @@ const AdminAcercaDe = () => {
     dataForm.append("coordenadas", [values.latitud, values.longitud]);
 
     const url = urlService + "update/" + values.id;
-    PeticionEnvioDataFrom(dataForm, url, "PUT").then((data) => {
+    peticionEnvioDataFrom(dataForm, url, "PUT").then((data) => {
       setShowNotification(true);
       setTitleNotification("Gestión de Información de Acerca");
       if (data) {
@@ -90,7 +90,7 @@ const AdminAcercaDe = () => {
   useEffect(() => listAbout(), []);
 
   const listAbout = () => {
-    PeticionGet(urlService).then((data) => {
+    peticionGet(urlService).then((data) => {
       if (data) setAboutInformation(Array.from(data));
     });
   };

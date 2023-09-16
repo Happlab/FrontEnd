@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import MainPages from "../../wrappers/mainpages/MainPages";
-import { PeticionGet } from "../../../services/AdminServices";
+import { peticionGet } from "../../../services/AdminServices";
 import { environment } from "../../../environments/environment";
 import Loader from "../../navegation/loader/Loader";
 import Player from "../../navegation/player/Player";
@@ -33,7 +33,7 @@ const Inicio = () => {
 
   const listStart = () => {
     const mensajeError = "no hay informacion de inicio";
-    PeticionGet(urlService, mensajeError)
+    peticionGet(urlService, mensajeError)
       .then((data) => {
         if (data) setStart(Array.from(data));
         setIsLoading(false);

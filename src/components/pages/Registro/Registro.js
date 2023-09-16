@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import MainPages from "../../wrappers/mainpages/MainPages";
-import { environment } from "../../../environments/environment";
+import { registerUser } from "../../../services/UserServices";
 import Alert from "../../navegation/alert/Alert";
 import "./Registro.css";
 
@@ -101,25 +101,11 @@ const Registro = () => {
       tipo_docente: values.teacherType,
       tokens: 0,
     };
-    const requestOptions = {
-      method: "POST",
-      mode: "cors",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-        "Access-Control-Allow-Origin": "*",
-      },
-      body: JSON.stringify(data),
-    };
-    fetch(environment.baseUrl + "/persona/registro", requestOptions)
+    registerUser(data)
       .then((response) => {
-        if (response.status === 200) setSuccess(true);
-        else setError(true);
+        if (response) setSuccess(response);
+        else setError(!response);
       })
-      .catch((error) => {
-        setError(true);
-        console.log("Error", error);
-      });
   };
 
   return (

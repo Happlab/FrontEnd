@@ -1,5 +1,5 @@
-import React from "react";
-import user_service from "../../../../../services/UserServices";
+import React, { useContext } from "react";
+import { TokenContext } from "../../../../../context/GlobalContext";
 import "./Sidebar.css";
 import {
   TachometerIcon,
@@ -13,6 +13,8 @@ import {
 } from "../../../../../assets/icons/Icons";
 
 const Sidebar = ({ option }) => {
+  const { unsetTokenUser } = useContext(TokenContext);
+
   const handleCloseMenu = (e) => {
     e.preventDefault();
     let menu = document.querySelector(".nav-item-admin");
@@ -20,7 +22,7 @@ const Sidebar = ({ option }) => {
   };
 
   const handleClickCerrarSesion = () => {
-    user_service.deleteToken();
+    unsetTokenUser();
   };
 
   return (

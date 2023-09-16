@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import AdminMainPages from "../../../wrappers/adminMainPages/AdminMainPages";
 import {
-  PeticionEnvio,
-  PeticionEnvioDataFrom,
-  PeticionGet,
+  peticionEnvio,
+  peticionEnvioDataFrom,
+  peticionGet,
 } from "../../../../services/AdminServices";
 import { environment } from "../../../../environments/environment";
 import Popup from "../../../navegation/popup/Popup";
@@ -86,7 +86,7 @@ const AdminNoticias = () => {
 
   const deleteNewsForLink = (link) => {
     const url = urlService + "delete/" + link;
-    PeticionEnvio(" ", url, "DELETE").then((data) => {
+    peticionEnvio(" ", url, "DELETE").then((data) => {
       setShowNotification(true);
       setTitleNotification("Gestión de Noticias");
       if (data) {
@@ -102,7 +102,7 @@ const AdminNoticias = () => {
 
   const hiddenNewsForLink = (link) => {
     const url = urlService + "changeVisible/" + link;
-    PeticionEnvio(" ", url, "PUT").then((data) => {
+    peticionEnvio(" ", url, "PUT").then((data) => {
       setShowNotification(true);
       setTitleNotification("Gestión de Noticias");
       if (data) {
@@ -128,7 +128,7 @@ const AdminNoticias = () => {
 
     const url = urlService + "create";
 
-    PeticionEnvioDataFrom(dataForm, url, "POST").then((data) => {
+    peticionEnvioDataFrom(dataForm, url, "POST").then((data) => {
       setShowNotification(true);
       setTitleNotification("Gestión de Noticias");
       if (data) {
@@ -152,7 +152,7 @@ const AdminNoticias = () => {
 
     const url = urlService + "update/" + noticeSelect.link_contenido;
 
-    PeticionEnvioDataFrom(dataForm, url, "PUT").then((data) => {
+    peticionEnvioDataFrom(dataForm, url, "PUT").then((data) => {
       setShowNotification(true);
       setTitleNotification("Gestión de Noticias");
       if (data) {
@@ -169,7 +169,7 @@ const AdminNoticias = () => {
   useEffect(() => listNews(), []);
 
   const listNews = () => {
-    PeticionGet(urlService, "No hay noticias").then((data) => {
+    peticionGet(urlService, "No hay noticias").then((data) => {
       if (data) setNews(Array.from(data));
     });
   };

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import MainPages from "../../wrappers/mainpages/MainPages";
-import { PeticionGet } from "../../../services/AdminServices";
+import { peticionGet } from "../../../services/AdminServices";
 import { environment } from "../../../environments/environment";
 import Loader from "../../navegation/loader/Loader";
 import NotAvalaible from "../../navegation/notavalaible/NotAvalaible";
@@ -46,7 +46,7 @@ const Noticias = () => {
 
   const listNews = () => {
     const mensajeError = "no hay noticias";
-    PeticionGet(urlService, mensajeError)
+    peticionGet(urlService, mensajeError)
       .then((data) => {
         if (data) {
           setNews(Array.from(data));

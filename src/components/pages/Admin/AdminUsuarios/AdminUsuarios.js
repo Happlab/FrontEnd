@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import AdminMainPages from "../../../wrappers/adminMainPages/AdminMainPages";
-import { PeticionEnvio, PeticionGet } from "../../../../services/AdminServices";
+import { peticionEnvio, peticionGet } from "../../../../services/AdminServices";
 import { environment } from "../../../../environments/environment";
 import Popup from "../../../navegation/popup/Popup";
 import "./AdminUsuarios.css";
@@ -20,7 +20,7 @@ const AdminUsuarios = () => {
 
   const desactiveUser = (user) => {
     const url = urlService + "desactivar/" + user.email;
-    PeticionEnvio(" ", url, "DELETE").then((data) => {
+    peticionEnvio(" ", url, "DELETE").then((data) => {
       setShowNotification(true);
       setTitleNotification("Gestión de Usuarios");
       if (data) {
@@ -38,7 +38,7 @@ const AdminUsuarios = () => {
 
   const deleteUser = (user) => {
     const url = urlService + "delete/" + user.email;
-    PeticionEnvio(" ", url, "DELETE").then((data) => {
+    peticionEnvio(" ", url, "DELETE").then((data) => {
       setShowNotification(true);
       setTitleNotification("Gestión de Usuarios");
       if (data) {
@@ -59,7 +59,7 @@ const AdminUsuarios = () => {
     user.activo = true;
     user.tipoDocente = user.tipo_docente;
     const url = urlService + "update";
-    PeticionEnvio(user, url, "PUT").then((data) => {
+    peticionEnvio(user, url, "PUT").then((data) => {
       setShowNotification(true);
       setTitleNotification("Gestión de Usuarios");
       if (data) {
@@ -79,7 +79,7 @@ const AdminUsuarios = () => {
     user.activo = true;
     user.tipoDocente = user.tipo_docente;
     const url = urlService + "update";
-    PeticionEnvio(user, url, "PUT").then((data) => {
+    peticionEnvio(user, url, "PUT").then((data) => {
       setShowNotification(true);
       setTitleNotification("Gestión de Usuarios");
       if (data) {
@@ -98,7 +98,7 @@ const AdminUsuarios = () => {
   useEffect(() => listUsers(), []);
 
   const listUsers = () => {
-    PeticionGet(urlService).then((data) => {
+    peticionGet(urlService).then((data) => {
       if (data) {
         let dataFilter = data.filter((user) => user.activo && !user.pendiente);
         setCount(dataFilter.length);

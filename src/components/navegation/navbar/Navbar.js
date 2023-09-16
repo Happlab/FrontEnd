@@ -1,15 +1,14 @@
 import React, { useContext, useState } from "react";
 import { TokenContext } from "../../../context/GlobalContext";
-import user_service from "../../../services/UserServices";
 import logo from "../../../../src/assets/images/logo3.jpg";
 import "./_Navbar.scss";
 
 const Navbar = () => {
   const [isCollapse, setIsCollapse] = useState(false);
-  const { tokenUser } = useContext(TokenContext);
+  const { tokenUser, unsetTokenUser } = useContext(TokenContext);
 
   const deleteCookie = () => {
-    user_service.deleteToken();
+    unsetTokenUser();
   };
 
   const showMenuCollapse = () => {

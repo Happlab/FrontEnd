@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { Navigate } from "react-router-dom";
 import { TokenContext } from "../../../context/GlobalContext";
 import MainPages from "../../wrappers/mainpages/MainPages";
-import user_service from "../../../services/UserServices";
+import { onLogin, updateUser } from "../../../services/UserServices";
 import Popup from "../../navegation/popup/Popup";
 import "./Password.scss";
 
@@ -79,7 +79,7 @@ const Password = () => {
   };
 
   const handleSubmit = (dataChanged) => {
-    user_service.onLogin(tokenUser.email, values.passwordOld).then((data) => {
+    onLogin(tokenUser.email, values.passwordOld).then((data) => {
       setShowNotification(true);
       setTitleNotification("Cambio de Contraseña");
       if (data) {
@@ -94,7 +94,7 @@ const Password = () => {
 
   const onSendUpdateRequest = (dataChanged) => {
     dataChanged.password = values.passwordNew;
-    user_service.updateUser(dataChanged).then((data) => {
+    updateUser(dataChanged).then((data) => {
       setShowNotification(true);
       setTitleNotification("Cambio de contraseña");
       if (data) {
@@ -117,7 +117,7 @@ const Password = () => {
   const onUpdateToken = () => {
     if (!dataUpdate) return;
 
-    user_service.onLogin(dataUpdate.email, dataUpdate.password).then((data) => {
+    onLogin(dataUpdate.email, dataUpdate.password).then((data) => {
       if (data) setTokenUser(data);
     });
   };

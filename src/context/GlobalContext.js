@@ -1,18 +1,23 @@
 import React, { createContext, useState } from "react";
-import user_services from "../services/UserServices";
+import { setToken, getDataToken, deleteToken } from "../services/UserServices";
 
 export const TokenContext = createContext(null);
 
 const TokenContextProvider = ({ children }) => {
-  const [token, setToken] = useState(null);
+  const [tokenContext, setTokenContext] = useState(null);
 
   const setTokenUser = (newToken) => {
-    user_services.setToken(newToken);
-    setToken(user_services.getDataToken(newToken));
+    setToken(newToken);
+    setTokenContext(getDataToken(newToken));
+  };
+
+  const unsetTokenUser = () => {
+    deleteToken();
+    setTokenContext(null);
   };
 
   return (
-    <TokenContext.Provider value={{ tokenUser: token, setTokenUser: setTokenUser }}>
+    <TokenContext.Provider value={{ tokenUser: tokenContext, setTokenUser: setTokenUser, unsetTokenUser: unsetTokenUser }}>
       {children}
     </TokenContext.Provider>
   );

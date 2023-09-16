@@ -3,7 +3,7 @@ import MainPages from "../../wrappers/mainpages/MainPages";
 // import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 // import markerIconPng from "leaflet/dist/images/marker-icon.png";
 // import { Icon } from "leaflet";
-import { PeticionGet } from "../../../services/AdminServices";
+import { peticionGet } from "../../../services/AdminServices";
 import { environment } from "../../../environments/environment";
 import Player from "../../navegation/player/Player";
 import Loader from "../../navegation/loader/Loader";
@@ -23,7 +23,7 @@ const Acerca = () => {
 
   const listAbout = () => {
     const mensajeError = "No hay informacion de inicio";
-    PeticionGet(urlService, mensajeError)
+    peticionGet(urlService, mensajeError)
       .then((data) => {
         if (data) setAbouts(Array.from(data));
         setIsLoading(false);

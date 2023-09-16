@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import AdminMainPages from "../../../wrappers/adminMainPages/AdminMainPages";
-import { PeticionEnvio, PeticionGet } from "../../../../services/AdminServices";
+import { peticionEnvio, peticionGet } from "../../../../services/AdminServices";
 import { environment } from "../../../../environments/environment";
 import Popup from "../../../navegation/popup/Popup";
 import "./AdminContenido.css";
@@ -24,7 +24,7 @@ const AdminContenido = () => {
   const showOrCloseContent = (content) => {
     content.visible = content.visible ? false : true;
     const url = urlService + "changeVisible/" + content.link;
-    PeticionEnvio("", url, "PUT").then((data) => {
+    peticionEnvio("", url, "PUT").then((data) => {
       setShowNotification(true);
       setTitleNotification("Gestión de Contenidos");
       if (data) {
@@ -44,7 +44,7 @@ const AdminContenido = () => {
     content.pendiente = false;
     content.visible = true;
     const url = urlService + "changePendiente/" + content.link;
-    PeticionEnvio("", url, "PUT").then((data) => {
+    peticionEnvio("", url, "PUT").then((data) => {
       setShowNotification(true);
       setTitleNotification("Gestión de Contenidos");
       if (data) {
@@ -62,7 +62,7 @@ const AdminContenido = () => {
 
   const deleteContent = (content) => {
     const url = urlService + "delete/" + content.link;
-    PeticionEnvio("", url, "DELETE").then((data) => {
+    peticionEnvio("", url, "DELETE").then((data) => {
       setShowNotification(true);
       setTitleNotification("Gestión de Contenidos");
       if (data) {
@@ -81,7 +81,7 @@ const AdminContenido = () => {
   useEffect(() => listContent(), []);
 
   const listContent = () => {
-    PeticionGet(urlService).then((data) => {
+    peticionGet(urlService).then((data) => {
       if (data) {
         let dataFilter = data.filter(
           (value) => value.visible && value.pendiente

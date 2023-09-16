@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { TokenContext } from "../../../context/GlobalContext";
 import MainPages from "../../wrappers/mainpages/MainPages";
 import { environment } from "../../../environments/environment";
-import contentService from "../../../services/ContentServices";
+import { listContent, uploadContent, writeComment, updateCredit } from "../../../services/ContentServices";
 import Loader from "../../navegation/loader/Loader";
 import Popup from "../../navegation/popup/Popup";
 import Modal from "../../navegation/modal/Modal";
@@ -147,8 +147,7 @@ const Contenido = () => {
   };
 
   const listContents = () => {
-    contentService
-      .listContent()
+    listContent()
       .then((data) => {
         if (data) setContents(Array.from(data));
         setIsLoading(false);
@@ -169,7 +168,7 @@ const Contenido = () => {
     formdata.append("autores", values.autor);
     formdata.append("tags", values.tags);
 
-    contentService.uploadContent(formdata).then((data) => {
+    uploadContent(formdata).then((data) => {
       setShowNotification(true);
       setTitleNotification("Contenido");
       if (data) setMessageNotification("Contenido subido correctamente");
@@ -177,8 +176,8 @@ const Contenido = () => {
     });
   };
 
-  const updateCredit = () => {
-    contentService.updateCredit(user.email, user.tokens);
+  const updateCreditFront = () => {
+    updateCredit(user.email, user.tokens);
   };
 
   const downloadContent = () => {
@@ -210,7 +209,7 @@ const Contenido = () => {
       setShowModal(false);
       window.location.href = urlService + "download/" + contentSelected.link;
       user.tokens -= 1;
-      updateCredit();
+      updateCreditFront();
     } else if (numRequest === 1) {
       setShowModal(false);
       listContents();
@@ -229,8 +228,7 @@ const Contenido = () => {
       valoracion: user.valoracion,
       comentario: user.comentario,
     };
-    contentService
-      .writeComment(contentSelected.link, comentarioUsuario)
+    writeComment(contentSelected.link, comentarioUsuario)
       .then((response) => {
         setShowNotification(true);
         setTitleNotification("Comentario");
