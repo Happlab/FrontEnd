@@ -1,4 +1,3 @@
-import React from "react";
 import MainPages from "../../wrappers/mainpages/MainPages";
 import imagenes from "../../../assets/images/imagenes";
 import "./SobreNosotros.scss";

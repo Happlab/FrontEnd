@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import MainPages from "../../wrappers/mainpages/MainPages";
 import { peticionGet } from "../../../services/AdminServices";
 import { environment } from "../../../environments/environment";

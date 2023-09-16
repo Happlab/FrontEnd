@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { StartIcon, StartFillIcon } from "../../../assets/icons/Icons";
 import "./Rating.css";
 

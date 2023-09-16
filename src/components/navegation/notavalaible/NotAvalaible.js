@@ -1,4 +1,3 @@
-import React from "react";
 import "./NotAvalaible.css";
 
 const NotAvalaible = ({ children }) => {

@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Navigate } from "react-router-dom";
 import { TokenContext } from "../../../context/GlobalContext";
 import MainPages from "../../wrappers/mainpages/MainPages";

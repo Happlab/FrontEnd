@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import { useContext, useState } from "react";
 import { TokenContext } from "../../../context/GlobalContext";
 import logo from "../../../../src/assets/images/logo3.jpg";
 import "./_Navbar.scss";

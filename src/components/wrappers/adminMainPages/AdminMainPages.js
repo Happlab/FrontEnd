@@ -1,4 +1,4 @@
-import React, { Component, useContext } from "react";
+import { useContext } from "react";
 import { Navigate } from "react-router-dom";
 import { TokenContext } from "../../../context/GlobalContext";
 import Header from "../../pages/Admin/navegation/Header/Header";

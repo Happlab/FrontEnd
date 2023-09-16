@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { TokenContext } from "../../../context/GlobalContext";
 import MainPages from "../../wrappers/mainpages/MainPages";
 import { environment } from "../../../environments/environment";

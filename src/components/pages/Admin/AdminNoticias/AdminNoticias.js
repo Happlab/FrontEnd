@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import AdminMainPages from "../../../wrappers/adminMainPages/AdminMainPages";
 import {
   peticionEnvio,
