@@ -5,7 +5,7 @@ import "./Rating.css";
 const Rating = ({ initialRating = null }) => {
   const [rating, setRating] = useState(initialRating);
   const [hoveredRating, setHoveredRating] = useState(null);
-  const [readOnly, setReadOnly] = useState(initialRating !== null);
+  const [readOnly] = useState(initialRating !== null);
 
   const handleStartHover = (startIndex, isHalf) => {
     if (!readOnly) {

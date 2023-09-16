@@ -1,8 +1,7 @@
 import { useContext, useState } from "react";
 import { Navigate } from "react-router-dom";
 import { TokenContext } from "../../../context/GlobalContext";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEye, faEyeLowVision } from "@fortawesome/free-solid-svg-icons";
+import { EyeLowVisionIcon, EyeVisionIcon} from "../../../assets/icons/Icons";
 import MainPages from "../../wrappers/mainpages/MainPages";
 import { onLogin } from "../../../services/UserServices";
 import Popup from "../../navegation/popup/Popup";
@@ -79,9 +78,9 @@ const Login = () => {
   )
     return <Navigate replace to="/" />;
 
-  let iconEye = <FontAwesomeIcon icon={faEyeLowVision} size="1x" fixedWidth />;
+  let iconEye = <EyeLowVisionIcon className="icons-eye-login" />
   if (isPressEye) {
-    iconEye = <FontAwesomeIcon icon={faEye} size="1x" fixedWidth />;
+    iconEye = <EyeVisionIcon className="icons-eye-login" />
   }
 
   return (

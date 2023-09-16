@@ -41,8 +41,13 @@ $color-words: white;
     height: 20vh;
 }
 
-.icons {
+.icons-social-media {
     cursor: pointer;
+    fill: rgb(255, 255, 255);
+    font-size: 48px;
+    text-align: center;
+    vertical-align: -0.125em;
+    margin: 0.5px 5px;
 }
 
 @media screen and (max-width: 1210px) {

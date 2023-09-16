@@ -1,5 +1,4 @@
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faFacebookSquare, faInstagram, faLinkedin, faTwitter } from '@fortawesome/free-brands-svg-icons';
+import { FacebookIcon, TwitterIcon, InstagramIcon, LinkedinIcon } from '../../../assets/icons/Icons';
 import LogoU from "../../../../src/assets/images/logo2.png"; 
 import imagenes from '../../../assets/images/imagenes';
 import "./_Footer.scss";
@@ -26,10 +25,10 @@ const Footer = () => {
                     {/* Redes sociales */}
                     <div className='pos1'>
                         <h4>¡Aqui puedes encontar nuestras redes sociales!</h4>
-                        <FontAwesomeIcon className="icons" icon={faFacebookSquare} size='3x' onClick={redireccionF} fixedWidth/>
-                        <FontAwesomeIcon className="icons" icon={faTwitter} size='3x' onClick={redireccionT} fixedWidth />
-                        <FontAwesomeIcon className="icons" icon={faInstagram} size='3x' onClick={redireccionI} fixedWidth />
-                        <FontAwesomeIcon className="icons" icon={faLinkedin} size='3x' onClick={redireccionL} fixedWidth />
+                        <FacebookIcon className="icons-social-media" onClick={redireccionF} />
+                        <TwitterIcon className="icons-social-media" onClick={redireccionT} />
+                        <InstagramIcon className="icons-social-media" onClick={redireccionI}/>
+                        <LinkedinIcon className="icons-social-media" onClick={redireccionL} />
                     </div>
                     {/* Escudo */}
                     <div className='pos2'>

@@ -5,7 +5,7 @@ import Header from "../../pages/Admin/navegation/Header/Header";
 import Sidebar from "../../pages/Admin/navegation/Sidebar/Sidebar";
 
 const AdminMainPages = ({ option, children }) => {
-  const { tokenUser, setTokenUser } = useContext(TokenContext);
+  const { tokenUser } = useContext(TokenContext);
 
   let data = tokenUser;
   // if (data === null) {

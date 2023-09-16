@@ -11,6 +11,12 @@ import { ReactComponent as StartIcon } from "./start.svg";
 import { ReactComponent as StartFillIcon } from "./startFill.svg";
 import { ReactComponent as UploadIcon } from "./upload.svg";
 import { ReactComponent as LogoIcon } from "./logo.svg";
+import { ReactComponent as FacebookIcon } from "./facebook.svg";
+import { ReactComponent as TwitterIcon } from "./twitter.svg";
+import { ReactComponent as InstagramIcon } from "./instagram.svg";
+import { ReactComponent as LinkedinIcon } from "./linkedin.svg";
+import { ReactComponent as EyeLowVisionIcon } from "./eyeLowVision.svg";
+import { ReactComponent as EyeVisionIcon } from "./eyeVision.svg";
 
 // eslint-disable-next-line import/no-anonymous-default-export
 export {
@@ -27,4 +33,10 @@ export {
     StartFillIcon,
     UploadIcon,
     LogoIcon,
+    FacebookIcon,
+    TwitterIcon,
+    InstagramIcon,
+    LinkedinIcon,
+    EyeLowVisionIcon,
+    EyeVisionIcon,
 }
