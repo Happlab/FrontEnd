@@ -5,7 +5,7 @@ import { EyeLowVisionIcon, EyeVisionIcon} from "../../../assets/icons/Icons";
 import MainPages from "../../wrappers/mainpages/MainPages";
 import { onLogin } from "../../../services/UserServices";
 import Popup from "../../navegation/popup/Popup";
-import "../Login/Login.css";
+import "./Login.css";
 
 const Login = () => {
   const [showNotification, setShowNotification] = useState(false);

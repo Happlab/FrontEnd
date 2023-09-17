@@ -1,14 +1,12 @@
 import { useEffect, useState } from "react";
 import MainPages from "../../wrappers/mainpages/MainPages";
-// import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
-// import markerIconPng from "leaflet/dist/images/marker-icon.png";
-// import { Icon } from "leaflet";
 import { peticionGet } from "../../../services/AdminServices";
 import { environment } from "../../../environments/environment";
 import Player from "../../navegation/player/Player";
 import Loader from "../../navegation/loader/Loader";
 import NotAvalaible from "../../navegation/notavalaible/NotAvalaible";
 import "./Acerca.css";
+import MapCustom from "../../navegation/mapcustom/MapCustom";
 
 const urlService = environment.baseUrl + "/seccion/";
 
@@ -94,28 +92,7 @@ const Acerca = () => {
                           integrity="sha512-hoalWLoI8r4UszCkZ5kL8vayOGVae1oxXe/2A4AO6J9+580uKHDO3JdHb7NzwwzK5xr/Fs0W40kiNHxM9vyTtQ=="
                           crossOrigin=""
                         />
-                        {/* <MapContainer */}
-                        {/*   center={position} */}
-                        {/*   zoom={25} */}
-                        {/*   scrollWheelZoom={false} */}
-                        {/* > */}
-                        {/*   <TileLayer */}
-                        {/*     attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors' */}
-                        {/*     url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" */}
-                        {/*   /> */}
-                        {/*   <Marker */}
-                        {/*     position={position} */}
-                        {/*     icon={ */}
-                        {/*       new Icon({ */}
-                        {/*         iconUrl: markerIconPng, */}
-                        {/*         iconSize: [25, 41], */}
-                        {/*         iconAnchor: [12, 41], */}
-                        {/*       }) */}
-                        {/*     } */}
-                        {/*   > */}
-                        {/*     <Popup>HappLab</Popup> */}
-                        {/*   </Marker> */}
-                        {/* </MapContainer> */}
+                        <MapCustom position={position} />
                       </div>
 
                       <div className="col-text">

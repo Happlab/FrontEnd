@@ -1,8 +1,8 @@
 import { useContext } from "react";
 import { Navigate } from "react-router-dom";
 import { TokenContext } from "../../../context/GlobalContext";
-import Header from "../../pages/Admin/navegation/Header/Header";
-import Sidebar from "../../pages/Admin/navegation/Sidebar/Sidebar";
+import Header from "../../pages/admin/navegation/header/Header";
+import Sidebar from "../../pages/admin/navegation/sidebar/Sidebar";
 
 const AdminMainPages = ({ option, children }) => {
   const { tokenUser } = useContext(TokenContext);
