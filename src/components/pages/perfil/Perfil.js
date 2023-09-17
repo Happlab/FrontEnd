@@ -12,6 +12,7 @@ const Perfil = () => {
   const [messageNotification, setMessageNotification] = useState("");
   const [profession, setProfession] = useState("");
   const [isProfession, setIsProfession] = useState(true);
+  const [isStatusAccount, setIsStatusAccount] = useState(false);
   const { tokenUser, setTokenUser, unsetTokenUser } = useContext(TokenContext);
 
   const handleChange = (e) => {
@@ -34,8 +35,10 @@ const Perfil = () => {
     disabledUser(email).then((response) => {
       setShowNotification(true);
       setTitleNotification("Perfil del Usuario");
-      if (response === 200)
+      if (response === 200) {
         setMessageNotification("La cuenta ha sido desactivada correctamente");
+        setIsStatusAccount(true);
+      }
       else
         setMessageNotification(
           "La cuenta no pudo ser desactivada, verifique su conexión a internet"
@@ -58,8 +61,8 @@ const Perfil = () => {
 
   const handleClickCloseModal = () => {
     setShowNotification(false);
-    // if (!this.state.isStatus) this.eliminarCookie();
-    // if (this.state.cargo !== "") this.onUpdateToken();
+    if (isStatusAccount) deleteCookie();
+    if (isProfession) onUpdateToken();
   };
 
   const deleteCookie = () => {

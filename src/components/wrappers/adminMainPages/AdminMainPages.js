@@ -8,11 +8,11 @@ const AdminMainPages = ({ option, children }) => {
   const { tokenUser } = useContext(TokenContext);
 
   let data = tokenUser;
-  // if (data === null) {
-  //   return <Navigate to="/login" state={{ data }} />;
-  // } else if ((data !== null) & (data.rol[0] !== "ADMIN")) {
-  //   return <Navigate to="/" />;
-  // }
+  if (data === null) {
+    return <Navigate to="/login" state={{ data }} />;
+  } else if ((data !== null) & (data.rol[0] !== "ADMIN")) {
+    return <Navigate to="/" />;
+  }
   return (
     <>
       <Header />
