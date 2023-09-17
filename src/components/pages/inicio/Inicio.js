@@ -12,18 +12,7 @@ import "./Inicio.css";
 const urlService = environment.baseUrl + "/seccion/";
 
 const Inicio = () => {
-  const [start, setStart] = useState([
-    {
-      titulo_seccion: 'Amargura - Karol G',
-      descripcion: 'vacilando con otra',
-      url: 'https://www.youtube.com/watch?v=fEWhm_TVvUw',
-    },
-    {
-      titulo_seccion: 'Lala - Mike Towers',
-      descripcion: 'a manejar me dejo',
-      url: 'https://www.youtube.com/watch?v=BVdngsy95mY',
-    }
-  ]);
+  const [start, setStart] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {

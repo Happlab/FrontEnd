@@ -6,37 +6,11 @@ import Loader from "../../navegation/loader/Loader";
 import NotAvalaible from "../../navegation/notavalaible/NotAvalaible";
 import Fade from "../../navegation/fade/Fade";
 import "./Noticias.css";
-import img from '../../../assets/images/imagenes';
 
 const urlService = environment.baseUrl + "/noticia/";
 
 const Noticias = () => {
-  const [news, setNews] = useState([
-    {
-      titulo_noticia: 'hola',
-      link_contenido: img.img1,
-      visible: true,
-      url_noticia: 'hola'
-    },
-    {
-      titulo_noticia: 'hola2',
-      link_contenido: img.img2,
-      visible: true,
-      url_noticia: 'hola2'
-    },
-    {
-      titulo_noticia: 'hola2',
-      link_contenido: img.imgSam,
-      visible: true,
-      url_noticia: 'hola2'
-    },
-    {
-      titulo_noticia: 'hola2',
-      link_contenido: img.imgUni,
-      visible: true,
-      url_noticia: 'hola2'
-    }
-  ]);
+  const [news, setNews] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
