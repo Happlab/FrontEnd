@@ -74,7 +74,7 @@
 .elementor-widget-heading .elementor-heading-title.elementor-size-xxl {
     font-size: 59px;
 }
-.tgx-portfolio .hover-1 .row {
+.tgx-portfolio .hover-1 .row:not('notAvalaible') {
     display: flex;
     flex-wrap: wrap;
 }
